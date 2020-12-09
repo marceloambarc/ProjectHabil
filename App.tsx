@@ -1,5 +1,5 @@
 import * as React from 'react';
-import Routes from './routes/routes.tsx';
+import Routes from './src/routes';
 
 export default function App(){
   return(
