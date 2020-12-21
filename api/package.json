@@ -1,0 +1,25 @@
+{
+  "name": "ipapi",
+  "version": "1.0.0",
+  "description": "ip capture",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "ip",
+    "node",
+    "localization"
+  ],
+  "author": "mambarc",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "ejs": "^3.1.5",
+    "express": "^4.17.1",
+    "geolocation": "^0.2.0",
+    "ip": "^1.1.5",
+    "navigator": "^1.0.1",
+    "public-ip": "^4.0.3"
+  }
+}
