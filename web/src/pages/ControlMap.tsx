@@ -3,6 +3,7 @@ import React from 'react';
 import Sidebar from '../components/Sidebar'
 
 import '../styles/pages/controlmap.css';
+import '../styles/pages/home.css';
 
 function ControlMap(){
   return(

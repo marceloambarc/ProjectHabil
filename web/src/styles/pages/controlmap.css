@@ -8,8 +8,9 @@
 }
 
 .control-map {
-   width: 700px;
-   margin: 64px auto;
+   width: 82%;
+   margin: 40px auto 15px;
+   margin-right: 40px;
 
    background: #FFFFFF;
    border: 1px solid #D3E2E5;
@@ -18,7 +19,8 @@
    overflow: hidden;
 }
 
-.text {
+.control-map h1 {
    color: black;
-   padding: 5px;
+   padding: 5;
 }
+
