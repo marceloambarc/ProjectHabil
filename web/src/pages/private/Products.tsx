@@ -35,7 +35,7 @@ function Products(){
       <main>
         <div className="control-map">
 
-          <h1>Novos Produtos Cadastrados</h1>
+          <h1>Novas Promoções Cadastradas</h1>
           
           <div className="row">
             
