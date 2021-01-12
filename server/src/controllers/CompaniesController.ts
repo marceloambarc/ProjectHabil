@@ -1,8 +1,10 @@
 import { Request, Response } from 'express';
 import { getRepository } from 'typeorm';
 import companyView from '../views/companies_views';
-import * as Yup from 'yup'; 
+import * as Yup from 'yup';
+import jwt from 'jsonwebtoken';
 
+import { JWTSecret } from '../secure/secret';
 import Company from '../models/Company';
 
 export default {
@@ -13,6 +15,36 @@ export default {
       relations: ['companyImages']
     });
     return response.json(companyView.renderMany(companies));
+  },
+
+  async auth(request: Request, response: Response) {
+    const { cnpj, password } = request.body;
+    const companiesRepository = getRepository(Company);
+    
+    try{
+      const company = await companiesRepository.findOne({ cnpj });
+      if(company){
+        if(company.password == password){
+          jwt.sign({id: company.id, cnpj: company.cnpj}, JWTSecret,{expiresIn: '2h'}, (err, token) => {
+            if(err){
+              response.status(400);
+              response.json({err: "Erro Interno"});
+            }else{
+              response.status(200);
+              response.json({token: token});
+            }
+          })
+        }else{
+         response.status(401);
+         response.json({err: "Credenciais Inválidas"});
+        }
+      }else{
+        response.status(401);
+        response.json({err: "CNPJ inválido"});
+      }
+    }catch(err){
+      response.status(400).json({ error: "Validation Error" })
+    }
   },
 
   async show(request: Request, response: Response) {
