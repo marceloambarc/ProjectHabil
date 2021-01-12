@@ -4,21 +4,50 @@ import { useState } from 'react';
 import { View, Text, StyleSheet, KeyboardAvoidingView,
 TextInput, TouchableOpacity, Animated } from 'react-native';
 
+import api from '../../services/api';
 import { useNavigation } from '@react-navigation/native';
 
 export default function Login(){
-    const navigation = useNavigation();
-    const [logo] = useState(new Animated.ValueXY({x: 90, y: 90}));
+
+  const [cnpj, setCnpj] = useState('');
+  const [password, setPassword] = useState('');
+
+  const navigation = useNavigation();
+  const [logo] = useState(new Animated.ValueXY({x: 90, y: 90}));
+
+  async function handleAccess(){
+    const data = {cnpj, password}
+
+    try {
+      await api.post('auth', {
+        cnpj: data.cnpj,
+        password: data.password,
+      }).then(res => {
+        var token = res.data.token;
+        console.log(token);
+        navigation.navigate('Home');
+      }).catch(err => {
+        alert(err);
+      });
+    }catch(err){
+      console.log(err);
+      navigation.navigate('Login');
+    }
+  }
+
+  async function handleRegister(){
+    navigation.navigate('Register');
+  }
   
-    return(
+   return(
     <KeyboardAvoidingView style={styles.background}>
-        <View style={styles.containerLogo}>
-          <Animated.Image
-          style={{
-            width: logo.x,
-            height: logo.y
-          }}
-          source={require('../../assets/icons/adaptive-icon.png')}
+      <View style={styles.containerLogo}>
+        <Animated.Image
+         style={{
+           width: logo.x,
+           height: logo.y
+         }}
+         source={require('../../../assets/icons/adaptive-icon.png')}
           />
         </View>
   
@@ -28,21 +57,26 @@ export default function Login(){
           style={styles.input}
           placeholder="Cnpj"
           autoCorrect={false}
-          onChangeText={() => {}}
+          value={cnpj}
+          onChangeText={setCnpj}
           />
+
           <TextInput
           secureTextEntry={true}
           style={styles.input}
           placeholder="Senha"
           autoCorrect={false}
-          onChangeText={() => {}}
+          autoCompleteType="password"
+          caretHidden={true}
+          value={password}
+          onChangeText={setPassword}
           />
   
-          <TouchableOpacity style={styles.btnSubmit} onPress={() => navigation.navigate('Home')}>
+          <TouchableOpacity style={styles.btnSubmit} onPress={handleAccess}>
             <Text style={styles.submitText}>Acessar</Text>
           </TouchableOpacity>
   
-          <TouchableOpacity style={styles.btnRegister} onPress={() => navigation.navigate('Register')}>
+          <TouchableOpacity style={styles.btnRegister} onPress={handleRegister}>
             <Text style={styles.registerText}>Criar conta Gratuita</Text>
           </TouchableOpacity>
         </View>
