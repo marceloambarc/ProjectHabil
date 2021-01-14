@@ -1,9 +1,13 @@
 import React, { Component } from 'react';
-import { View, Text, FlatList, StyleSheet, Image } from 'react-native';
+import { View, Text, FlatList, StyleSheet, Image, TouchableWithoutFeedback } from 'react-native';
 
 const baseURL = 'http://192.168.15.58:8080/products';
 
-export default class App extends Component {
+interface Props {
+  navigation: any
+}
+
+export default class App extends Component<Props> {
   state = {
     data: [],
   };
@@ -21,19 +25,31 @@ export default class App extends Component {
     });
   }
 
+  Listener = async({item}:{item:any}) => {
+    console.log("Navigation is :", this.props.navigation.navigate('ProductView',{
+      id: item.id,
+      name: item.name,
+      price: item.price,
+      date: item.date,
+      description: item.description
+    }));
+  }
+  
   renderItem = ({ item }: {item: any}) => (
-    <View style={styles.listItem}>
-      {item.images.map((image:any) => {
-        return(
-          <Image source={{uri: image.url}} key={item.id.toString()} style={styles.image} />
-        );
-        })}
-          
-      <View style={styles.contentContainer}>
-        <Text style={styles.contentText}>{item.name}</Text>
-        <Text style={styles.contentTextPrice}>R$: {item.price}</Text>
+    <TouchableWithoutFeedback onPress={() => this.Listener({item})}>
+      <View style={styles.listItem}>
+        {item.images.map((image:any) => {
+          return(
+            <Image source={{uri: image.url}} key={item.id.toString()} style={styles.image} />
+          );
+          })}
+            
+        <View style={styles.contentContainer}>
+          <Text style={styles.contentText}>{item.name}</Text>
+          <Text style={styles.contentTextPrice}>R$: {item.price}</Text>
+        </View>
       </View>
-    </View>
+    </TouchableWithoutFeedback>
   );
 
   render() {
