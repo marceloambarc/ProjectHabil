@@ -1,4 +1,4 @@
-import { Column, Entity, PrimaryGeneratedColumn, OneToMany, JoinColumn } from 'typeorm';
+import { Column, Entity, PrimaryGeneratedColumn, OneToMany, JoinColumn, ManyToOne } from 'typeorm';
 import Image from './Image';
 
 @Entity('products')
@@ -17,6 +17,9 @@ export default class Product {
 
     @Column()
     date: string;
+
+    @Column()
+    company_id: string;
 
     @OneToMany(() => Image, image => image.product, {
         cascade: ['insert', 'update']

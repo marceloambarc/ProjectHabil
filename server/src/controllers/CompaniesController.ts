@@ -1,37 +1,66 @@
 import { Request, Response } from 'express';
 import { getRepository } from 'typeorm';
-import companyView from '../views/companies_views';
-import * as Yup from 'yup';
+import * as Yup from 'yup'; 
 import jwt from 'jsonwebtoken';
+import bcrypt from 'bcryptjs';
 
-import { JWTSecret } from '../secure/secret';
+import {JWTSecret} from './secure/secret';
+
+import companyView from '../views/companies_views';
 import Company from '../models/Company';
 
 export default {
+
+  /* INDEX */
   async index(request: Request, response: Response) {
-    const companiesRepository = getRepository(Company); 
+    try{
+      const companiesRepository = getRepository(Company); 
     
-    const companies = await companiesRepository.find({
-      relations: ['companyImages']
-    });
-    return response.json(companyView.renderMany(companies));
+      const companies = await companiesRepository.find({
+        relations: ['company_images']
+      });
+      return response.json(companyView.renderMany(companies));
+    }catch(err){
+      return response.json('Ops! Tivemos um problema');
+    }
   },
 
+  async show(request: Request, response: Response) {
+    try{
+      const { id } = request.params;
+
+      const companiesRepository = getRepository(Company);
+  
+      const company = await companiesRepository.findOneOrFail(id, {
+        relations: ['company_images']
+      });
+      return response.json(companyView.render(company));
+    }catch(err){
+      return response.json('Ops! Tivemos um problema');
+    }
+  },
+
+
+  /*  AUTHORIZATION */
   async auth(request: Request, response: Response) {
     const { cnpj, password } = request.body;
     const companiesRepository = getRepository(Company);
     
     try{
-      const company = await companiesRepository.findOne({ cnpj });
+      const company = await companiesRepository.findOne({cnpj},{
+        relations: ['company_images']
+      });
       if(company){
-        if(company.password == password){
-          jwt.sign({id: company.id, cnpj: company.cnpj}, JWTSecret,{expiresIn: '2h'}, (err, token) => {
+        var correct = bcrypt.compareSync(password,company.password);
+        if(correct){
+          jwt.sign({id: company.id, cnpj: company.cnpj, name: company.name}, JWTSecret,{expiresIn: '2h'}, (err, token) => {
             if(err){
               response.status(400);
               response.json({err: "Erro Interno"});
             }else{
               response.status(200);
-              response.json({token: token});
+              const col = response.json({token: token, name: company.name, id: company.id, images: company.company_images});
+              console.log(company.company_images);
             }
           })
         }else{
@@ -47,20 +76,10 @@ export default {
     }
   },
 
-  async show(request: Request, response: Response) {
-    const { id } = request.params;
 
-    const companiesRepository = getRepository(Company);
-
-    const company = await companiesRepository.findOneOrFail(id, {
-      relations: ['companyImages']
-    });
-    return response.json(companyView.render(company));
-  },
-
+  /* CREATION */
   async create(request: Request, response: Response) {
-    console.log(request.files);
-
+    
     const {
       business,
       cnpj,
@@ -71,56 +90,67 @@ export default {
       district,
       city,
       uf,
-      password,
     } = request.body;
 
+    const passwordHash = request.body.password;
+
     const companiesRepository = getRepository(Company);
+    const validateCompany = await companiesRepository.findOne({ cnpj });
+    try {
+      if(validateCompany){
+        response.status(400).json({error:"Empresa já Cadastrado"});
+      }
+      const requestCompanyImages = request.files as Express.Multer.File[];
 
-    const requestCompanyImages = request.files as Express.Multer.File[];
+      const company_images = requestCompanyImages.map(company_image => {
+        return { path: company_image.filename }
+      })
 
-    const companyImages = requestCompanyImages.map(companyImage => {
-      return { path: companyImage.filename }
-    })
-
-    const data = {
-      business,
-      cnpj,
-      name,
-      phone,
-      email,
-      address,
-      district,
-      city,
-      uf,
-      password,
-      companyImages
-    };
-
-    const schema = Yup.object().shape({
-      business: Yup.string().required(),
-      cnpj: Yup.string().required(),
-      name: Yup.string().required(),
-      phone: Yup.string().required(),
-      email: Yup.string().required(),
-      address: Yup.string().required(),
-      district: Yup.string().required(),
-      city: Yup.string().required(),
-      password: Yup.string().required(),
-      companyImages: Yup.array(
-        Yup.object().shape({
-          path: Yup.string().required()
-        })
-      )
-    });
-
-    await schema.validate(data, {
-      abortEarly: false,
-    });
-
-    const company = companiesRepository.create(data);
-
-    await companiesRepository.save(company);
-
-    return response.status(201).json(company);
+      var salt = bcrypt.genSaltSync(3);
+      var password = bcrypt.hashSync(passwordHash, salt);
+  
+      const data = {
+        business,
+        cnpj,
+        name,
+        phone,
+        email,
+        address,
+        district,
+        city,
+        uf,
+        password,
+        company_images
+      };
+  
+      const schema = Yup.object().shape({
+        business: Yup.string().required(),
+        cnpj: Yup.string().required(),
+        name: Yup.string().required(),
+        phone: Yup.string().required(),
+        email: Yup.string().required(),
+        address: Yup.string().required(),
+        district: Yup.string().required(),
+        city: Yup.string().required(),
+        password: Yup.string().required(),
+        company_images: Yup.array(
+          Yup.object().shape({
+            path: Yup.string().required()
+          })
+        )
+      });
+  
+      await schema.validate(data, {
+        abortEarly: false,
+      });
+  
+      const company = companiesRepository.create(data);
+  
+      await companiesRepository.save(company);
+  
+      return response.status(201).json(company);
+    }catch(err){
+      response.status(400).json({ error: "Registro do Usuário Falhou" });
+    }
   }
 }

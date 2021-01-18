@@ -1,4 +1,4 @@
-import { Column, Entity, PrimaryGeneratedColumn, OneToMany, JoinColumn } from 'typeorm';
+import { Column, Entity, PrimaryGeneratedColumn, OneToMany, JoinColumn, ManyToOne } from 'typeorm';
 import CompanyImage from './CompanyImage';
 
 @Entity('companies')
@@ -40,5 +40,5 @@ export default class Company {
         cascade: ['insert', 'update']
     })
     @JoinColumn({ name: 'company_id' })
-    companyImages: CompanyImage[];
+    company_images: CompanyImage[];
 }

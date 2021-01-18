@@ -8,7 +8,9 @@ export default {
             name: product.name,
             price: product.price,
             description: product.description,
-            images: ImagesView.renderMany(product.images)
+            date: product.date,
+            company_id: product.company_id,
+            images: ImagesView.renderMany(product.images),
         };
     },
 
