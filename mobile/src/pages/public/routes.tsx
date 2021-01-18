@@ -23,7 +23,13 @@ export default function MainScreen() {
         }}
       />
 
-      <Stack.Screen name="ProductView" component={ProductDetailsScreen} />
+      <Stack.Screen 
+        name="ProductView" 
+        component={ProductDetailsScreen} 
+        options={{
+          headerShown: false
+        }}
+      />
 
     </Stack.Navigator>  
       

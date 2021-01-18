@@ -1,30 +1,45 @@
 import * as React from 'react';
-import { useState } from 'react';
+import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
+import { useNavigation, useRoute } from '@react-navigation/native';
+import Constants from "expo-constants";
 
-import { View, Text, Animated, StyleSheet, TouchableOpacity } from 'react-native';
-
-import { useNavigation } from '@react-navigation/native';
+interface CompanyDataRouteParams {
+  name: string,
+  token: string,
+  id: string,
+  images: string[],
+}
 
 export default function HomeScreen(){
   const navigation = useNavigation();
-  const [logo] = useState(new Animated.ValueXY({x: 90, y: 90}));
+  const route = useRoute();
+  const params = route.params as CompanyDataRouteParams;
+
+  const companyName = params.name;
+  const companyToken = params.token;
+  const companyId = params.id;
+  const companyImages = params.images;
 
   return(
     <View style={styles.background}>
       <View style={styles.container}>
-        <Text style={styles.title}>Bem-vindo "USUÁRIO"</Text>
+        <Text style={styles.title}>Bem-vindo {companyName}</Text>
 
-        <View style={styles.containerLogo}>
-          <Animated.Image
-              style={{
-              width: logo.x,
-              height: logo.y
-            }}
-            source={require('../../assets/icons/adaptive-icon.png')}
-          />
+        <View style={styles.companyImageContainer}>
+          {companyImages.map(image => { 
+            return(
+              <Image
+                key={image}
+                style={styles.companyImage}
+                source={{ uri: `http://192.168.15.58:8080/uploads/${image.path}` }}
+              />
+            );
+          })}
         </View>
 
-        <TouchableOpacity style={styles.btnSubmit} onPress={() => navigation.navigate('CompanyProducts')}>
+        <TouchableOpacity style={styles.btnSubmit} onPress={() => navigation.navigate('CompanyProducts',{
+          companyId
+        })}>
           <Text style={styles.submitText}>Visualizar minhas promoções</Text>
         </TouchableOpacity>
 
@@ -43,6 +58,17 @@ const styles = StyleSheet.create({
     flex:1,
     alignItems:'center',
     justifyContent:'center',
+    height: Constants.statusBarHeight + 40
+  },
+  companyImageContainer:{
+    flex:1,
+    justifyContent:'center',
+  },
+  companyImage: {
+    width: 160,
+    height: 160,
+    borderRadius: 20,
+    marginBottom: 32,
   },
   container:{
     flex:1,

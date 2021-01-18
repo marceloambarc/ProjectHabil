@@ -1,22 +1,12 @@
 import * as React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
+import Routes from './src/routes';
+import { StatusBar } from 'react-native';
 
-import MainScreen from './pages/public/routes';
-import CompanyPath from './pages/client/routes';
-
-const Stack  = createStackNavigator();
-
-export default function Routes(){
+export default function App(){
   return(
-    <NavigationContainer>
-      <Stack.Navigator initialRouteName="Main">
-
-        <Stack.Screen name="Main" component={MainScreen} />
-
-        <Stack.Screen name="CompanyPath" component={CompanyPath} />
-  
-      </Stack.Navigator>
-    </NavigationContainer>
-  )
-}
+    <>
+      <StatusBar barStyle='light-content' />
+      <Routes />
+    </>
+  );
+};

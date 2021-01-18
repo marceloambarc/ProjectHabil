@@ -1,38 +1,94 @@
 import React, { Component } from 'react';
-import { View, Text, FlatList, StyleSheet, Image, TouchableWithoutFeedback } from 'react-native';
-
-const baseURL = 'http://192.168.15.58:8080/products';
+import { View, Text, FlatList, StyleSheet, Image, TouchableWithoutFeedback, ActivityIndicator } from 'react-native';
+import { SearchBar } from 'react-native-elements';
 
 interface Props {
-  navigation: any
+  navigation: any,
+  text: string
 }
 
 export default class App extends Component<Props> {
   state = {
     data: [],
+    loading: false,
+    search: '',
   };
+  arrayholder = [];
 
   componentDidMount() {
     this.loadRepositories();
   }
 
   loadRepositories = async () => {
-    const response = await fetch(`${baseURL}`);
-    const repositories = await response.json();
-    
-    this.setState({
-      data: [ ...this.state.data, ...repositories],
+    const baseURL = 'http://192.168.15.58:8080/products';
+    this.setState({ loading: true });
+
+    fetch(baseURL)
+    .then(response => response.json())
+    .then(response => {
+      this.setState({
+        data: response,
+        error: response.error || null,
+        loading: false,
+      });
+      this.arrayholder = response;
+    })
+    .catch(error => {
+      this.setState({ error, loading: false });
     });
+  };
+
+  renderSeparator = () => {
+    return (
+      <View
+        style={{
+          height: 1,
+          width: '86%',
+          backgroundColor: '#CED0CE',
+          marginLeft: '14%',
+        }}
+      />
+    );
+  };
+
+  searchFilterFunction = (text:string) => {
+    this.setState({
+      value:text,
+    });
+
+    const newData = this.arrayholder.filter(item => {
+      const itemData = `${item.name.toUpperCase()}`;
+      const textData = text.toUpperCase();
+
+      return itemData.indexOf(textData) > -1;
+    });
+    this.setState({
+      data: newData,
+    });
+  };
+
+  renderHeader = () => {
+    return (
+      <SearchBar
+        placeholder="Procure..."
+        lightTheme
+        round
+        autoCorrect={false}
+        onChangeText={text => this.searchFilterFunction(text)}
+        value={this.state.value}
+      />
+    )
   }
 
   Listener = async({item}:{item:any}) => {
-    console.log("Navigation is :", this.props.navigation.navigate('ProductView',{
+    this.props.navigation.navigate('ProductView',{
       id: item.id,
       name: item.name,
       price: item.price,
       date: item.date,
-      description: item.description
-    }));
+      description: item.description,
+      images: item.images,
+    });
   }
   
   renderItem = ({ item }: {item: any}) => (
@@ -42,7 +98,7 @@ export default class App extends Component<Props> {
           return(
             <Image source={{uri: image.url}} key={item.id.toString()} style={styles.image} />
           );
-          })}
+        })}
             
         <View style={styles.contentContainer}>
           <Text style={styles.contentText}>{item.name}</Text>
@@ -53,13 +109,24 @@ export default class App extends Component<Props> {
   );
 
   render() {
+    if (this.state.loading) {
+      return (
+        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+          <ActivityIndicator />
+        </View>
+      );
+    }
     return (
-      <FlatList
-        style={styles.list}
-        data={this.state.data}
-        renderItem={this.renderItem}
-        keyExtractor={item => item.id.toString()}
-      />
+    
+        <FlatList
+          style={styles.list}
+          data={this.state.data}
+          renderItem={this.renderItem}
+          keyExtractor={item => item.id.toString()}
+          ItemSeparatorComponent={this.renderSeparator}
+          ListHeaderComponent={this.renderHeader}
+        />
+
     );
   }
 }

@@ -1,11 +1,12 @@
 import * as React from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import { View, Text, StyleSheet, KeyboardAvoidingView,
 TextInput, TouchableOpacity, Animated } from 'react-native';
-
-import api from '../../services/api';
 import { useNavigation } from '@react-navigation/native';
+import { TextInputMask } from 'react-native-masked-text';
+import api from '../../services/api';
+
 
 export default function Login(){
 
@@ -16,16 +17,24 @@ export default function Login(){
   const [logo] = useState(new Animated.ValueXY({x: 90, y: 90}));
 
   async function handleAccess(){
+
     const data = {cnpj, password}
 
     try {
       await api.post('auth', {
         cnpj: data.cnpj,
         password: data.password,
-      }).then(res => {
+      }).then(async res => {
         var token = res.data.token;
-        console.log(token);
-        navigation.navigate('Home');
+        var name = res.data.name;
+        var id = res.data.id;
+        var images = res.data.images
+        navigation.navigate('Home',{
+          name: name,
+          token: token,
+          id: id,
+          images: images
+        });
       }).catch(err => {
         alert(err);
       });
@@ -53,7 +62,6 @@ export default function Login(){
   
         <View style={styles.container}>
           <TextInput
-          keyboardType='number-pad'
           style={styles.input}
           placeholder="Cnpj"
           autoCorrect={false}

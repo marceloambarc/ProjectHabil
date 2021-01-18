@@ -1,14 +1,15 @@
 import * as React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, StatusBar } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import Constants from "expo-constants";
 
 export default function Header(){
   const navigation = useNavigation();
 
   return(
     <View style={styles.container}>
-      <Text>Header</Text>
-      <TouchableOpacity style={styles.btnLogin} onPress={() => navigation.navigate('Root')}>
+      <Text style={styles.title}>Hábil App 0.0.4</Text>
+      <TouchableOpacity style={styles.btnLogin} onPress={() => navigation.navigate('Company')}>
         <Text style={styles.textBtn}>Empresas</Text>
       </TouchableOpacity>
     </View>
@@ -17,10 +18,11 @@ export default function Header(){
 
 const styles = StyleSheet.create({
   container:{
-    backgroundColor: '#191919',
+    backgroundColor: 'black',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center'
+    alignItems: 'center',
+    height: Constants.statusBarHeight + 40
   },
   btnLogin: {
     backgroundColor: '#35AAFF',
@@ -32,5 +34,9 @@ const styles = StyleSheet.create({
   textBtn: {
     color: '#FFF',
     fontSize: 16
+  },
+  title:{
+    marginLeft:50,
+    color: '#FFF'
   }
 });

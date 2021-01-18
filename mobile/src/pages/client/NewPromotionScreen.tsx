@@ -3,9 +3,9 @@ import { useState } from 'react';
 import { View, Text, TextInput, 
 TouchableOpacity, StyleSheet, ScrollView, Image
 } from 'react-native';
+import { TextInputMask } from 'react-native-masked-text';
 import { useNavigation } from '@react-navigation/native';
 import * as ImagePicker from 'expo-image-picker';
-import api from '../../services/api';
 
 export default function NewPromotionScreen(){
   const [name, setName] = useState('');
@@ -16,25 +16,14 @@ export default function NewPromotionScreen(){
 
   const navigation = useNavigation();
 
-  async function handleCreateProduct() {
-    const data = new FormData();
-
-    data.append('name', name);
-    data.append('price', price);
-    data.append('description', description);
-    data.append('date', date);
-
-    images.forEach((image, index) => {
-      data.append('images', {
-        name: `image_${index}.jpg`,
-        type: `image/jpg`,
-        uri: image,
-      } as any)
-    })
-
-    await api.post('products', data)
-
-    navigation.navigate('CompanyProducts');
+  async function handleNextStepProduct() {
+    navigation.navigate('NewPromotionOverview', {
+      name,
+      price,
+      description,
+      date,
+      images
+    });
   }
 
   async function handleSelectImages() {
@@ -64,7 +53,6 @@ export default function NewPromotionScreen(){
     <ScrollView style={{ backgroundColor: '#191919' }}>
     <View style={styles.background}>
       <View style={styles.container}>
-        <Text style={styles.title}>Bem-vindo "USER"</Text>
         <Text style={styles.subTitle}>Cadastrar Promoção</Text>
 
         <TextInput
@@ -76,7 +64,7 @@ export default function NewPromotionScreen(){
 
         <TextInput
           style={styles.input}
-          placeholder="Valor"
+          placeholder={"Valor"}
           autoCorrect={false}
           onChangeText={setPrice}
         />
@@ -93,7 +81,7 @@ export default function NewPromotionScreen(){
 
         <TextInput
           style={styles.input}
-          placeholder="Data"
+          placeholder="Validade Promoção DD/MM/AAAA"
           autoCorrect={false}
           onChangeText={setDate}
         />
@@ -115,7 +103,7 @@ export default function NewPromotionScreen(){
             <Text style={styles.submitText}>Selecionar Foto</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.btnSubmit} onPress={handleCreateProduct}>
+          <TouchableOpacity style={styles.btnSubmit} onPress={handleNextStepProduct}>
             <Text style={styles.submitText}>Visualizar</Text>
           </TouchableOpacity>
         </View>
