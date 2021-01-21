@@ -24,8 +24,8 @@ export default function Register() {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [company_images, setCompanyImages] = useState<string[]>([]);
-
   const [term_is_true, setTermIsTrue] = useState(false);
+
   const [modalVisible, setModalVisible] = useState(false);
 
   const navigation = useNavigation();
@@ -35,6 +35,12 @@ export default function Register() {
       alert("Senha não confere.")
       return;
     }
+
+    if(term_is_true !== true){
+      alert("Você de aceitar os Termos de Uso")
+      return;
+    }
+    
     const data = new FormData();
 
     data.append('business', business);
@@ -61,7 +67,8 @@ export default function Register() {
 
       navigation.navigate('Login');
     }catch(err){
-      console.log(err);
+      alert("CNPJ já cadastrado!");
+      return;
     }
   }
   
@@ -211,11 +218,11 @@ export default function Register() {
             </TouchableOpacity>
 
             <View style={styles.switchContainer}>
-              <Text style={styles.termText}>Concordo com os</Text>
+              <Text style={styles.termText}>Concordo com os </Text>
               <TouchableOpacity onPress={() => {
                 setModalVisible(true);
                 }}>
-                <Text style={styles.termText}>Termos de Uso</Text>
+                <Text style={[styles.termText, styles.termTextButton]}>Termos de Uso</Text>
               </TouchableOpacity>
               <Switch 
                 thumbColor="#fff"
@@ -340,6 +347,9 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 10
   },
+  termTextButton:{
+    color:'#35AAFF'
+  },
   btnSubmit:{
     backgroundColor: '#35AAFF',
     width:'90%',
@@ -361,6 +371,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     marginTop: 16,
+    marginBottom: 16
   },
 
 
@@ -421,7 +432,8 @@ const styles = StyleSheet.create({
     borderColor: '#96D2F0',
     borderWidth: 1.4,
     borderRadius: 20,
-    height: 56,
+    height: 64,
+    width: 64,
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom: 32,

@@ -7,7 +7,8 @@ interface ProductDataRouteParams {
   name: string,
   price: string,
   description: string,
-  date: string,
+  protoDate: string,
+  company_id: string,
   images: string[];
 }
 
@@ -19,8 +20,10 @@ export default function NewPromotionOverviewScreen(){
   const productName = params.name;
   const productPrice = params.price;
   const productDescription = params.description;
-  const productDate = params.date;
+  const productDate = params.protoDate;
+  const companyId = params.company_id;
   const productImages = params.images;
+
 
   async function handleCreateProduct(){
     const data = new FormData();
@@ -28,6 +31,7 @@ export default function NewPromotionOverviewScreen(){
     data.append('name', productName);
     data.append('price', productPrice);
     data.append('description', productDescription);
+    data.append('company_id', companyId);
     data.append('date', productDate);
     
     productImages.forEach((image, index) => {
@@ -42,7 +46,7 @@ export default function NewPromotionOverviewScreen(){
       await api.post('products', data)
       navigation.navigate('CompanyProducts');
     }catch(err){
-      console.log(err);
+      alert(err);
     }
   }
 
