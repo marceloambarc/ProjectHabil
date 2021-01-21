@@ -1,30 +1,84 @@
 import * as React from 'react';
 import { useState } from 'react';
 import { View, Text, TextInput, 
-TouchableOpacity, StyleSheet, ScrollView, Image
-} from 'react-native';
-import { TextInputMask } from 'react-native-masked-text';
-import { useNavigation } from '@react-navigation/native';
+TouchableOpacity, StyleSheet, ScrollView, Image,
+Platform } from 'react-native';
+import { useNavigation, useRoute } from '@react-navigation/native';
+import {Feather} from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
+import DateTimePicker from '@react-native-community/datetimepicker';
+
+
+interface NewPromotionParams {
+  companyId: string,
+}
 
 export default function NewPromotionScreen(){
   const [name, setName] = useState('');
   const [price, setPrice] = useState('');
   const [description, setDescription] = useState('');
-  const [date, setDate] = useState('');
   const [images, setImages] = useState<string[]>([]);
 
+  
+  const today = new Date().setDate(50);
+
+  const [date, setDate] = useState(new Date(today));
+
+  const currentDayOfMonth = date.getDate();
+  const currentMonth = date.getMonth() + 1;
+  const currentYear = date.getFullYear();
+  
+  const [mode, setMode] = useState('date');
+  const [show, setShow] = useState(false);
+
   const navigation = useNavigation();
+  const route = useRoute();
+  const params = route.params as NewPromotionParams;
+
+  const company_id = params.companyId;
 
   async function handleNextStepProduct() {
+    const currentDayOfMonth = date.getDate();
+    const currentMonth = date.getMonth() + 1;
+    const currentYear = date.getFullYear();
+    const protoDate = `${currentDayOfMonth}/${currentMonth}/${currentYear}`;
     navigation.navigate('NewPromotionOverview', {
       name,
       price,
       description,
-      date,
+      protoDate,
+      company_id,
       images
     });
   }
+
+  function ProductsHeader(){
+    const navigation = useNavigation();
+  
+    return(
+      <View style={styles.header}>
+        <TouchableOpacity style={styles.backBtn} onPress={() => navigation.navigate('Home')}>
+            <Feather name="arrow-left" size={28} color="#e82041" />
+        </TouchableOpacity>
+        <Text style={styles.headerTitle}>Cadastrar Promoção</Text>
+      </View>
+    );
+}
+
+  const onChange = (event: Event, selectedDate:any) => {
+    const currentDate = selectedDate || date;
+    setShow(Platform.OS === 'ios');
+    setDate(currentDate);
+  };
+
+  const showMode = (currentMode:any) => {
+    setShow(true);
+    setMode(currentMode);
+  };
+
+  const showDatepicker = () => {
+    showMode('date');
+  };
 
   async function handleSelectImages() {
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -51,9 +105,9 @@ export default function NewPromotionScreen(){
 
   return(
     <ScrollView style={{ backgroundColor: '#191919' }}>
+    <ProductsHeader />
     <View style={styles.background}>
       <View style={styles.container}>
-        <Text style={styles.subTitle}>Cadastrar Promoção</Text>
 
         <TextInput
           style={styles.input}
@@ -79,12 +133,35 @@ export default function NewPromotionScreen(){
           onChangeText={setDescription}
         />
 
-        <TextInput
+        <Text style={styles.dateSelected}>
+          Vencimento: {`${currentDayOfMonth}/${currentMonth}/${currentYear}`}
+        </Text>
+
+        <View style={styles.btnContainer}>
+          <TouchableOpacity style={styles.btnSubmit} onPress={showDatepicker}>
+            <Text style={styles.submitText}>Selecionar Vencimento</Text>
+          </TouchableOpacity>
+        </View>
+        <View>
+          {show && (
+            <DateTimePicker
+            defaultDate={today}
+            testID="dateTimePicker"
+            value={today}
+            mode={mode}
+            is24Hour={true}
+            display="default"
+            onChange={onChange}
+            />
+          )}
+        </View>
+
+        {/*<TextInput
           style={styles.input}
           placeholder="Validade Promoção DD/MM/AAAA"
           autoCorrect={false}
           onChangeText={setDate}
-        />
+        />*/}
 
         <View style={styles.uploadedImagesContainer}>
           {images.map(image => {
@@ -174,6 +251,10 @@ const styles = StyleSheet.create({
     borderRadius:7,
     padding:10
   },
+  dateSelected:{
+    color: '#FFF',
+    fontSize: 20
+  },
   submitText:{
     color: '#FFF',
     fontSize: 20
@@ -185,7 +266,7 @@ const styles = StyleSheet.create({
     width: 64,
     height: 64,
     borderRadius: 20,
-    marginBottom: 32,
+    marginBottom: 7,
     marginRight: 8,
   },
   imagesInput: {
@@ -199,4 +280,24 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 32,
   },
+
+  /*HEADER*/
+  header: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    width: '73%'
+  },
+  headerTitle: {
+    fontWeight: 'bold',
+    fontSize: 18,
+    justifyContent: 'center',
+    color: '#FFF'
+  },
+  backBtn:{
+    marginTop:20,
+    marginLeft:25,
+    flex:1,
+    padding:10
+  }
 });
