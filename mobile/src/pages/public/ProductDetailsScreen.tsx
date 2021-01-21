@@ -1,7 +1,10 @@
 import * as React from 'react';
+import { useEffect, useState } from 'react'
 import { View, Text, StyleSheet, Image, TouchableOpacity, ScrollView, Linking } from 'react-native';
 import { useNavigation ,useRoute } from '@react-navigation/native';
 import {Feather} from '@expo/vector-icons';
+
+import api from '../../services/api';
 
 interface ProductDetailsRouteParams {
   id: string,
@@ -9,7 +12,15 @@ interface ProductDetailsRouteParams {
   price: string,
   description: string,
   date: string,
+  company_id: string,
   images: string[];
+}
+
+interface Company {
+  id: number;
+  name: string,
+  phone: string,
+  email: string,
 }
 
 function ProductsDetailsHeader(){
@@ -29,21 +40,32 @@ export default function UserProductDetailsScreen(){
   const route = useRoute();
   const params = route.params as ProductDetailsRouteParams;
 
+  const [company, setCompany] = useState<Company>();
+  
   const productName = params.name;
   const productPrice = params.price;
   const productDescription = params.description;
   const productDate = params.date;
   const productImages = params.images;
 
-  const companyWhatsapp = "5551992381616";
-  const companyEmail = "marcelo_reto7@hotmail.com"
+  const companyId = params.company_id;
+
+  useEffect(() => {
+    api.get(`products/company_id/${companyId}`).then(response => {
+      setCompany(response.data);
+    })
+  }, [params.id])
 
   function handleWhatsapp(){
-    Linking.openURL(`https://api.whatsapp.com/send?phone=${companyWhatsapp}&text=%20Gostaria%20de%20Informações%20sobre%20o%20Produto%20${productName}%20+`)
+    Linking.openURL(`https://api.whatsapp.com/send?phone=${company?.phone}&text=%20Gostaria%20de%20Informações%20sobre%20o%20Produto%20${productName}%20+`)
   }
 
   function handleEmail(){
-    Linking.openURL(`mailto:${companyEmail}?subject=SendMail&body=Isto é um template literal!`)
+    Linking.openURL(`mailto:${company?.email}?subject=SendMail&body=Isto é um template literal!`)
+  }
+
+  function handlePhoneCall(){
+    Linking.openURL(`tel:${company?.phone}`)
   }
 
   return(
@@ -75,7 +97,7 @@ export default function UserProductDetailsScreen(){
               </View>
 
               <View style={styles.padding}>
-                <TouchableOpacity style={[styles.contactsBtn, styles.btnColor2]} onPress={()=> {}}>
+                <TouchableOpacity style={[styles.contactsBtn, styles.btnColor2]} onPress={handlePhoneCall}>
                   <Text style={styles.contactsBtnText}>Telefone</Text>  
                 </TouchableOpacity>
               </View>
