@@ -38,18 +38,6 @@ export default class App extends Component<Props> {
     });
   };
 
-  renderSeparator = () => {
-    return (
-      <View
-        style={{
-          height: 1,
-          width: '86%',
-          backgroundColor: '#CED0CE',
-          marginLeft: '14%',
-        }}
-      />
-    );
-  };
 
   searchFilterFunction = (text:string) => {
     this.setState({
@@ -87,6 +75,7 @@ export default class App extends Component<Props> {
       price: item.price,
       date: item.date,
       description: item.description,
+      company_id: item.company_id,
       images: item.images,
     });
   }
@@ -123,7 +112,6 @@ export default class App extends Component<Props> {
           data={this.state.data}
           renderItem={this.renderItem}
           keyExtractor={item => item.id.toString()}
-          ItemSeparatorComponent={this.renderSeparator}
           ListHeaderComponent={this.renderHeader}
         />
 

@@ -6,8 +6,11 @@ import Constants from "expo-constants";
 interface CompanyDataRouteParams {
   name: string,
   token: string,
-  id: string,
-  images: string[],
+  id: number,
+  images: Array <{
+    id: number;
+    path: string;
+  }>;
 }
 
 export default function HomeScreen(){
@@ -29,7 +32,7 @@ export default function HomeScreen(){
           {companyImages.map(image => { 
             return(
               <Image
-                key={image}
+                key={image.id}
                 style={styles.companyImage}
                 source={{ uri: `http://192.168.15.58:8080/uploads/${image.path}` }}
               />
@@ -43,8 +46,14 @@ export default function HomeScreen(){
           <Text style={styles.submitText}>Visualizar minhas promoções</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.btnNew} onPress={() => navigation.navigate('NewPromotion')}>
+        <TouchableOpacity style={styles.btnNew} onPress={() => navigation.navigate('NewPromotion', {
+          companyId
+        })}>
           <Text style={styles.submitText}>Cadastrar promoções</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.btnLogout} onPress={() => navigation.navigate('Main')}>
+          <Text style={styles.outText}>Sair</Text>
         </TouchableOpacity>
 
       </View>
@@ -107,5 +116,17 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     borderRadius: 7,
     marginBottom: 70
+  },
+  btnLogout:{
+    backgroundColor: '#f1f1f1',
+    width: '70%',
+    height: 45,
+    alignItems:'center',
+    justifyContent: 'center',
+    borderRadius: 7,
+    marginBottom: 70
+  },
+  outText:{
+    color: '#191919'
   }
 });

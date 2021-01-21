@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, View, FlatList, 
-Image, TouchableOpacity, TouchableWithoutFeedback, Alert } from 'react-native';
+Image, TouchableOpacity, TouchableWithoutFeedback, Alert, ActivityIndicator } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import {Feather} from '@expo/vector-icons';
 import api from '../../services/api';
@@ -85,6 +85,7 @@ function ProductsHeader(){
 export default class App extends React.Component<Props> {
   state = {
     data:[],
+    loading: false,
   };
 
   componentDidMount() {
@@ -92,14 +93,30 @@ export default class App extends React.Component<Props> {
   }
 
   loadRepositories = async () => {
+    if (this.state.loading) return;
+
+    this.setState({ loading: true });
+
     const { route } = this.props;
     const params = route.params as Props
     const id = params.companyId;
 
     const response = await fetch(`${baseURL}/${id}`);
     const repositories = await response.json();
-    this.setState({ data: repositories })
+    this.setState({ 
+      data: repositories,
+      loading: false,
+    });
   }
+
+  renderFooter = () => {
+    if (!this.state.loading) return null;
+    return (
+      <View style={styles.loading}>
+        <ActivityIndicator />
+      </View>
+    );
+  };
 
   render(){
     return (
@@ -109,6 +126,8 @@ export default class App extends React.Component<Props> {
           style={{flex:1}}
           data={this.state.data}
           renderItem={renderItem}
+          extraData={this.state}
+          ListFooterComponent={this.renderFooter}
           keyExtractor={item => item.id.toString()}
         />
       </View>
@@ -178,5 +197,15 @@ const styles = StyleSheet.create({
     marginLeft:23,
     flex:1,
     padding:10
+  },
+  description: {
+    color: '#5c8599',
+    lineHeight: 24,
+    marginTop: 16,
+  },
+
+  loading: {
+    alignSelf: 'center',
+    marginVertical: 20,
   },
 });

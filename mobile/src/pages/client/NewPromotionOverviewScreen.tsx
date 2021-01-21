@@ -44,7 +44,7 @@ export default function NewPromotionOverviewScreen(){
 
     try {
       await api.post('products', data)
-      navigation.navigate('CompanyProducts');
+      navigation.navigate('Home');
     }catch(err){
       alert(err);
     }

@@ -2,7 +2,7 @@ import * as React from 'react';
 import { useEffect, useState } from 'react'
 import { View, Text, StyleSheet, Image, TouchableOpacity, ScrollView, Linking } from 'react-native';
 import { useNavigation ,useRoute } from '@react-navigation/native';
-import {Feather} from '@expo/vector-icons';
+import { Feather } from '@expo/vector-icons';
 
 import api from '../../services/api';
 
@@ -39,8 +39,6 @@ function ProductsDetailsHeader(){
 export default function UserProductDetailsScreen(){
   const route = useRoute();
   const params = route.params as ProductDetailsRouteParams;
-
-  const [company, setCompany] = useState<Company>();
   
   const productName = params.name;
   const productPrice = params.price;
@@ -48,24 +46,37 @@ export default function UserProductDetailsScreen(){
   const productDate = params.date;
   const productImages = params.images;
 
-  const companyId = params.company_id;
+  const companyId = params.company_id; /*GET COMPANY OVER COMPANYID*/
 
-  useEffect(() => {
-    api.get(`products/company_id/${companyId}`).then(response => {
-      setCompany(response.data);
-    })
-  }, [params.id])
 
-  function handleWhatsapp(){
-    Linking.openURL(`https://api.whatsapp.com/send?phone=${company?.phone}&text=%20Gostaria%20de%20Informações%20sobre%20o%20Produto%20${productName}%20+`)
+  async function handleWhatsapp(){
+    const result = await api.get(`companies/${companyId}`)
+    const companyPhone = result.data.phone;
+
+    console.log(companyPhone);
+
+    Linking.openURL(`https://api.whatsapp.com/send?phone=55${companyPhone}&text=%20Estou%20interessado%20no%20produto:%20${productName}%20+`)
   }
 
-  function handleEmail(){
-    Linking.openURL(`mailto:${company?.email}?subject=SendMail&body=Isto é um template literal!`)
+  async function handleEmail(){
+    const result = await api.get(`companies/${companyId}`)
+    const companyEmail = result.data.email;
+
+    console.log(companyEmail);
+
+    Linking.openURL(`mailto:${companyEmail}?subject=Interesse em: ${productName}&body=
+      Aqui é um modelo de template Literal, qualquer formato é adaptável para o envio de Email.
+      Variável 1: ${productPrice}, Variável 2: ${productDescription}
+    `)
   }
 
-  function handlePhoneCall(){
-    Linking.openURL(`tel:${company?.phone}`)
+  async function handlePhoneCall(){
+    const result = await api.get(`companies/${companyId}`)
+    const companyPhone = result.data.phone;
+
+    console.log(companyPhone);
+
+    Linking.openURL(`tel:0${companyPhone}`)
   }
 
   return(

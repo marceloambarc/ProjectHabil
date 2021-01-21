@@ -67,7 +67,7 @@ export default function Register() {
 
       navigation.navigate('Login');
     }catch(err){
-      alert("CNPJ já cadastrado!");
+      alert("Credenciais Inválidas!");
       return;
     }
   }

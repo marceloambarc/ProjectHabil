@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 
 import { View, Text, StyleSheet, KeyboardAvoidingView,
 TextInput, TouchableOpacity, Animated } from 'react-native';
@@ -19,6 +19,10 @@ export default function Login(){
   async function handleAccess(){
 
     const data = {cnpj, password}
+    if(!cnpj || !password){
+      alert("Credenciais Inválidas!");
+      return;
+    }
 
     try {
       await api.post('auth', {
@@ -61,7 +65,8 @@ export default function Login(){
         </View>
   
         <View style={styles.container}>
-          <TextInput
+          <TextInputMask
+          type={'cnpj'}
           style={styles.input}
           placeholder="Cnpj"
           autoCorrect={false}
