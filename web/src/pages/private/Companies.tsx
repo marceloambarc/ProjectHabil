@@ -26,7 +26,6 @@ interface Company {
 }
 
 function Products(){
-
   const [companies, setCompanies] = useState<Company[]>([]);
 
   useEffect(() => {
@@ -34,6 +33,10 @@ function Products(){
       setCompanies(response.data);
     });
   }, []);
+
+  async function handleDelete(){
+    console.log("delete");
+  }
 
   return(
     <div id="page-control-map">
@@ -57,11 +60,11 @@ function Products(){
               <th>Cidade</th>
               <th>UF</th>
               <th>Foto</th>
-              <th></th>
+              <th className="noWrap">Comandos</th>
             </tr>
 
             {companies.map(company => {return(
-            <tr>
+            <tr key={company.id}>
               <td>{company.name}</td>
               <td>{company.business}</td>
               <td>{company.cnpj}</td>
@@ -71,11 +74,11 @@ function Products(){
               <td>{company.district}</td>
               <td>{company.city}</td>
               <td>{company.uf}</td>
-              <td>Placeholder</td>
+              <td>{company.company_images}</td>
               <td>
                 <div className="button-row">
                   <div className="button-col">
-                    <button className="cancel">
+                    <button className="cancel" onClick={() => handleDelete()}>
                       <FiAlertOctagon size="13" color="#FFF" />
                     </button>
                   </div>

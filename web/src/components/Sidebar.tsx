@@ -1,6 +1,6 @@
 import React from 'react';
 import { FiArrowLeft, FiArrowRight, FiHome } from 'react-icons/fi';
-import { useHistory, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 import HabilImg from '../images/logo.svg';
 

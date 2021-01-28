@@ -1,12 +1,30 @@
 import React, { useState } from 'react';
 import { FiArrowRight } from 'react-icons/fi'
-import { Link } from 'react-router-dom';
 
+import api from '../services/api';
 import '../styles/pages/landing.css';
 
 function Landing() {
   const [user, setUser] = useState('');
   const [password, setPassword] = useState('');
+
+  async function handleAccess(){
+    const data = { user, password }
+    console.log(user,password);
+
+    try {
+      await api.post('adminauth',{
+        user: data.user,
+        password: data.password,
+      }).then(res => {
+        var token = res.data.token;
+        console.log(token);
+        window.location.href = '/app';
+      })
+    }catch(err){
+      console.log(err);
+    }
+  }
 
   return (
     <div id="page-landing">
@@ -39,13 +57,13 @@ function Landing() {
         </main>
 
         <div className="location">
-          <strong>Canoas</strong>
+          <strong>Nova Santa Rita</strong>
           <span>Rio Grande do Sul</span>
         </div>
 
-        <Link to="/app" className="enter-app">
+        <button type="button" onClick={() => handleAccess()} className="enter-app">
           <FiArrowRight size="26" color="rgba(0, 0, 0, 0.6)" />
-        </Link>
+        </button>
       </div>
     </div>
   ); 
