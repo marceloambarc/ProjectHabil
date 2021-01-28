@@ -8,7 +8,6 @@ import Header from '../../components/Header';
 
 const Stack = createStackNavigator();
 
-
 export default function MainScreen() {
   return (
 

@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { useEffect, useState } from 'react'
-import { View, Text, StyleSheet, Image, TouchableOpacity, ScrollView, Linking } from 'react-native';
+import { View, Text, StyleSheet, Image, TouchableOpacity, ScrollView, 
+Linking, Modal, TouchableHighlight } from 'react-native';
 import { useNavigation ,useRoute } from '@react-navigation/native';
 import { Feather } from '@expo/vector-icons';
 
@@ -45,25 +46,19 @@ export default function UserProductDetailsScreen(){
   const productDescription = params.description;
   const productDate = params.date;
   const productImages = params.images;
-
   const companyId = params.company_id; /*GET COMPANY OVER COMPANYID*/
 
+  const [modalVisible,setModalVisible] = useState(false);
 
   async function handleWhatsapp(){
     const result = await api.get(`companies/${companyId}`)
     const companyPhone = result.data.phone;
-
-    console.log(companyPhone);
-
     Linking.openURL(`https://api.whatsapp.com/send?phone=55${companyPhone}&text=%20Estou%20interessado%20no%20produto:%20${productName}%20+`)
   }
 
   async function handleEmail(){
     const result = await api.get(`companies/${companyId}`)
     const companyEmail = result.data.email;
-
-    console.log(companyEmail);
-
     Linking.openURL(`mailto:${companyEmail}?subject=Interesse em: ${productName}&body=
       Aqui é um modelo de template Literal, qualquer formato é adaptável para o envio de Email.
       Variável 1: ${productPrice}, Variável 2: ${productDescription}
@@ -73,9 +68,6 @@ export default function UserProductDetailsScreen(){
   async function handlePhoneCall(){
     const result = await api.get(`companies/${companyId}`)
     const companyPhone = result.data.phone;
-
-    console.log(companyPhone);
-
     Linking.openURL(`tel:0${companyPhone}`)
   }
 
@@ -88,12 +80,15 @@ export default function UserProductDetailsScreen(){
 
         <ScrollView>
           <View style={{alignItems: 'center', marginHorizontal:30}}>
-            
-            {productImages.map((image:any) => {
-              return(
-                <Image source={{uri: image.url}} key={image.id.toString()} style={styles.productImg} />
-              );
-            })}
+            <TouchableOpacity onPress={() => {
+              setModalVisible(true);
+            }}>
+              {productImages.map((image:any) => {
+                return(
+                  <Image source={{uri: image.url}} key={image.id.toString()} style={styles.productImg} />
+                );
+              })}
+            </TouchableOpacity>
             
             <Text style={styles.name}>{productName}</Text>
             <Text style={styles.price}>Valor R$ {productPrice}</Text>
@@ -122,6 +117,27 @@ export default function UserProductDetailsScreen(){
             </View> 
           </View>
         </ScrollView>
+
+        {/* IMAGE MODAL */}
+        <Modal
+          animationType="fade"
+          transparent={true}
+          visible={modalVisible}
+        >
+          <View style={styles.modalView}>
+          {productImages.map((image:any) => {
+            return(
+              <Image source={{uri: image.url}} key={image.id.toString()} style={styles.modalImg} />
+            );
+          })}
+            <TouchableHighlight onPress={() => {
+              setModalVisible(!modalVisible);
+              }}
+            >
+            <Text style={styles.modalText}>Fechar</Text>
+            </TouchableHighlight>
+          </View>
+        </Modal>
 
       </View>
     </View>
@@ -230,5 +246,31 @@ const styles = StyleSheet.create({
   },
   padding: {
     padding: 5
-  }
+  },
+
+    /* MODAL VIEW */
+    modalView:{
+      width: '100%',
+      flex:1,
+      backgroundColor: "#191919",
+      alignItems: "center",
+      justifyContent: 'center',
+      shadowColor: "#000",
+      shadowOffset: {
+        width: 0,
+        height: 2
+      },
+      shadowOpacity: 0.25,
+      shadowRadius: 3.84,
+      elevation: 5
+    },
+    modalImg:{
+      height: '40%',
+      width: '80%',
+      borderRadius: 20,
+    },
+    modalText:{
+      color: '#FFF',
+      marginTop: 70
+    }
 })

@@ -68,7 +68,7 @@ export default class App extends Component<Props> {
     )
   }
 
-  Listener = async({item}:{item:any}) => {
+  handleView = async({item}:{item:any}) => {
     this.props.navigation.navigate('ProductView',{
       id: item.id,
       name: item.name,
@@ -81,7 +81,7 @@ export default class App extends Component<Props> {
   }
   
   renderItem = ({ item }: {item: any}) => (
-    <TouchableWithoutFeedback onPress={() => this.Listener({item})}>
+    <TouchableWithoutFeedback onPress={() => this.handleView({item})}>
       <View style={styles.listItem}>
         {item.images.map((image:any) => {
           return(

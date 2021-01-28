@@ -15,60 +15,6 @@ interface Props{
 
 const baseURL = 'http://192.168.15.58:8080/products/company_id';
 
-async function handleDelete({item}:{item:any}){
-  try{
-    Alert.alert(
-      "Deletar",
-      `Quer mesmo deletar ${item.name}?`,
-      [
-        {
-          text: "Cancelar",
-          style: "cancel"
-        },
-        { text: "OK", 
-        onPress: () => api.delete(`products/${item.id}`)}
-      ],
-      { cancelable: false }
-    );
-  }catch(err){
-    alert(err);
-  }
-}
-
-function renderItem({item} : {item: any}) {
-  return (
-    <TouchableWithoutFeedback onPress={() => {}}>
-      <View style={styles.listItem}>
-        
-          {/* IMAGE */}
-          {item.images.map((image:any) => {
-            return(
-              <Image source={{uri: image.url}} key={item.id.toString()} style={styles.image} />
-            );
-          })}
-  
-          {/* CONTENT */}
-          <View style={styles.contentContainer}>
-            <Text style={styles.contentText}>{item.name}</Text>
-            <Text style={styles.contentTextPrice}>R$: {item.price}</Text>
-            <Text>{item.position}</Text>
-          </View>
-        
-        {/* SIDE BUTTONS */}
-        <View style={styles.btnContainer}>
-          <TouchableOpacity style={styles.btnModify} onPress={() => handleDelete({item})}>
-              <Text style={{color:"red"}}>Deletar</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.btnModify} onPress={() => {}}>
-              <Text style={{color:"gold"}}>Editar</Text>
-          </TouchableOpacity>
-        </View>
-
-      </View>
-    </TouchableWithoutFeedback>
-  );
-}
-
 function ProductsHeader(){
   const navigation = useNavigation();
 
@@ -109,6 +55,85 @@ export default class App extends React.Component<Props> {
     });
   }
 
+  handleView = async({item}:{item:any}) => {
+    this.props.navigation.navigate('CompanyProductOverview',{
+      id: item.id,
+      name: item.name,
+      price: item.price,
+      date: item.date,
+      description: item.description,
+      company_id: item.company_id,
+      images: item.images,
+    });
+  }
+
+  handleDelete = async({item}:{item:any}) => {
+    try{
+      Alert.alert(
+        "Deletar",
+        `Quer mesmo deletar ${item.name}?`,
+        [
+          {
+            text: "Cancelar",
+            style: "cancel"
+          },
+          { text: "OK", 
+          onPress: () => api.delete(`products/${item.id}`).then(this.props.navigation.navigate('Home'))
+        }
+        ],
+        { cancelable: false },
+      );
+      
+    }catch(err){
+      alert(err);
+    }
+  }
+
+  handleEdit = async({item}:{item:any}) => {
+    this.props.navigation.navigate('EditProduct',{
+      id: item.id,
+      name: item.name,
+      price: item.price,
+      date: item.date,
+      description: item.description,
+      company_id: item.company_id,
+      images: item.images,
+    });
+  }
+
+  renderItem = ({item}:{item: any}) =>(
+      <TouchableWithoutFeedback onPress={() => this.handleView({item})}>
+        <View style={styles.listItem}>
+          
+            {/* IMAGE */}
+            {item.images.map((image:any) => {
+              return(
+                <Image source={{uri: image.url}} key={item.id.toString()} style={styles.image} />
+              );
+            })}
+    
+            {/* CONTENT */}
+            <View style={styles.contentContainer}>
+              <Text style={styles.contentText}>{item.name}</Text>
+              <Text style={styles.contentTextPrice}>R$: {item.price}</Text>
+              <Text>{item.position}</Text>
+            </View>
+          
+          {/* SIDE BUTTONS */}
+          <View style={styles.btnContainer}>
+            <TouchableOpacity style={styles.btnModify} onPress={() => this.handleDelete({item})}>
+                <Text style={{color:"red"}}>Deletar</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.btnModify} onPress={() => this.handleEdit({item})}>
+                <Text style={{color:"gold"}}>Editar</Text>
+            </TouchableOpacity>
+          </View>
+  
+        </View>
+      </TouchableWithoutFeedback>
+    
+  )
+  
   renderFooter = () => {
     if (!this.state.loading) return null;
     return (
@@ -125,7 +150,7 @@ export default class App extends React.Component<Props> {
         <FlatList
           style={{flex:1}}
           data={this.state.data}
-          renderItem={renderItem}
+          renderItem={this.renderItem}
           extraData={this.state}
           ListFooterComponent={this.renderFooter}
           keyExtractor={item => item.id.toString()}

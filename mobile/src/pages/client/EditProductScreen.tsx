@@ -2,22 +2,44 @@ import * as React from 'react';
 import { useState } from 'react';
 import { View, Text, TextInput, 
 TouchableOpacity, StyleSheet, ScrollView, Image,
-Platform } from 'react-native';
+Platform, 
+TouchableWithoutFeedback} from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import {Feather} from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
 import DateTimePicker from '@react-native-community/datetimepicker';
 
-interface NewPromotionParams {
-  companyId: string,
+interface EditPromotionParams {
+  id: number,
+  name: string,
+  price: string,
+  description: string,
+  date: string,
+  company_id: string,
+  images: Array <{
+    id: number;
+    url: string;
+  }>;
 }
 
-export default function NewPromotionScreen(){
-  const [name, setName] = useState('');
-  const [price, setPrice] = useState('');
-  const [description, setDescription] = useState('');
-  const [images, setImages] = useState<string[]>([]);
+export default function EditProductScreen(){
+  const navigation = useNavigation();
+  const route = useRoute();
+  const params = route.params as EditPromotionParams;
 
+  const editId = params.id;
+  const editName = params.name;
+  const editPrice = params.price;
+  const editDescription = params.description;
+  const company_id = params.company_id;
+  const editImages = params.images;
+
+  const [id, setId] = useState(`${editId}`);
+  const [name, setName] = useState(`${editName}`);
+  const [price, setPrice] = useState(`${editPrice}`);
+  const [description, setDescription] = useState(`${editDescription}`);
+  const [images, setImages] = useState<string[]>([editImages[0].url]);
+  
   const today = new Date().setDate(50);
   const [date, setDate] = useState(new Date(today));
 
@@ -28,24 +50,23 @@ export default function NewPromotionScreen(){
   const [mode, setMode] = useState('date');
   const [show, setShow] = useState(false);
 
-  const navigation = useNavigation();
-  const route = useRoute();
-  const params = route.params as NewPromotionParams;
-
-  const company_id = params.companyId;
+  const [text] = useState('text');
+  const [to] = useState('to');
+  const [v] = useState('v');
 
   async function handleNextStepProduct() {
     const currentDayOfMonth = date.getDate();
     const currentMonth = date.getMonth() + 1;
     const currentYear = date.getFullYear();
     const protoDate = `${currentDayOfMonth}/${currentMonth}/${currentYear}`;
-    navigation.navigate('NewPromotionOverview', {
+    navigation.navigate('EditProductOverview', {
+      id,
       name,
       price,
       description,
       protoDate,
       company_id,
-      images,
+      images
     });
   }
 
@@ -54,10 +75,10 @@ export default function NewPromotionScreen(){
   
     return(
       <View style={styles.header}>
-        <TouchableOpacity style={styles.backBtn} onPress={() => navigation.navigate('Home')}>
+        <TouchableOpacity style={styles.backBtn} onPress={() => navigation.navigate('CompanyProducts')}>
             <Feather name="arrow-left" size={28} color="#e82041" />
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>Cadastrar Promoção</Text>
+        <Text style={styles.headerTitle}>Editar Promoção</Text>
       </View>
     );
 }
@@ -100,6 +121,10 @@ export default function NewPromotionScreen(){
     setImages([...images, image]);
   }
 
+  async function handleRemoveItem(){
+    setImages([]);
+  }
+
   return(
     <ScrollView style={{ backgroundColor: '#191919' }}>
     <ProductsHeader />
@@ -110,6 +135,7 @@ export default function NewPromotionScreen(){
           style={styles.input}
           placeholder="Produto"
           autoCorrect={false}
+          value={name}
           onChangeText={setName}
         />
 
@@ -117,6 +143,7 @@ export default function NewPromotionScreen(){
           style={styles.input}
           placeholder={"Valor"}
           autoCorrect={false}
+          value={price}
           onChangeText={setPrice}
         />
 
@@ -127,6 +154,7 @@ export default function NewPromotionScreen(){
           autoCapitalize='sentences'
           placeholder="Descrição"
           autoCorrect={false}
+          value={description}
           onChangeText={setDescription}
         />
 
@@ -160,17 +188,28 @@ export default function NewPromotionScreen(){
           onChangeText={setDate}
         />*/}
 
-        <View style={styles.uploadedImagesContainer}>
+          <View style={styles.uploadedImagesContainer}>
           {images.map(image => {
             return (
-              <Image 
-                key={image}
-                source={{ uri: image }}
-                style={styles.uploadedImage}
-              />
+              <>
+              
+              
+                <TouchableWithoutFeedback key={to} onPress={handleRemoveItem}>
+                <View style={styles.imageContainer} key={v}>
+                  <Image
+                    key={image.toString()}
+                    source={{ uri: image }}
+                    style={styles.uploadedImage}
+                  />
+                  <Text style={styles.uploadedImageText} key={text}>Toque para remover.</Text>
+                  </View>
+                </TouchableWithoutFeedback>
+              
+
+              </>
             );
           })}
-        </View>
+          </View>
 
         <View style={styles.btnContainer}>
           <TouchableOpacity style={styles.btnSubmit} onPress={handleSelectImages}>
@@ -257,7 +296,8 @@ const styles = StyleSheet.create({
     fontSize: 20
   },
   uploadedImagesContainer: {
-    flexDirection: 'row',
+    flex:1,
+    justifyContent:'center',
   },
   uploadedImage: {
     width: 64,
@@ -265,6 +305,14 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     marginBottom: 7,
     marginRight: 8,
+  },
+  uploadedImageText: {
+    color: '#FFF',
+    marginBottom: 7
+  },
+  imageContainer:{
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   imagesInput: {
     backgroundColor: 'rgba(255, 255, 255, 0.5)',

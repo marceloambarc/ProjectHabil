@@ -3,7 +3,7 @@ import { useState } from 'react';
 
 import { View, Text, ScrollView, TextInput, 
 Image, TouchableOpacity, StyleSheet,
-Modal, TouchableHighlight, Switch, Dimensions } from 'react-native';
+Modal, TouchableHighlight, Switch, Dimensions, TouchableWithoutFeedback } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import { TextInputMask } from 'react-native-masked-text';
 
@@ -24,6 +24,7 @@ export default function Register() {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [company_images, setCompanyImages] = useState<string[]>([]);
+  const [text] = useState('t');
   const [term_is_true, setTermIsTrue] = useState(false);
 
   const [modalVisible, setModalVisible] = useState(false);
@@ -37,7 +38,7 @@ export default function Register() {
     }
 
     if(term_is_true !== true){
-      alert("Você de aceitar os Termos de Uso")
+      alert("Você deve aceitar os Termos de Uso")
       return;
     }
     
@@ -94,6 +95,10 @@ export default function Register() {
     const { uri: company_image } = result;
 
     setCompanyImages([...company_images, company_image]);
+  }
+
+  async function handleRemoveItem(){
+    setCompanyImages([]);
   }
 
   return(
@@ -204,12 +209,23 @@ export default function Register() {
             <View style={styles.uploadedImagesContainer}>
               {company_images.map(company_image => {
                 return (
-                  <Image 
-                    key={company_image}
-                    source={{ uri: company_image }}
-                    style={styles.uploadedImage}
-                  />
-                )
+                  <>
+                  
+                  
+                    <TouchableWithoutFeedback onPress={handleRemoveItem}>
+                    <View style={styles.imageContainer}>
+                      <Image 
+                        key={company_image}
+                        source={{ uri: company_image }}
+                        style={styles.uploadedImage}
+                      />
+                      <Text key={text} style={styles.uploadedImageText}>Toque para remover.</Text>
+                      </View>
+                    </TouchableWithoutFeedback>
+                  
+
+                  </>
+                );
               })}
             </View>
 
@@ -269,7 +285,6 @@ export default function Register() {
                         setModalVisible(!modalVisible);
                       }}
                     >
-
                       <Text>Hide Modal</Text>
                     </TouchableHighlight>
                   </View>
@@ -386,11 +401,11 @@ const styles = StyleSheet.create({
     shadowOffset: {
       width: 0,
       height: 2
-    },
+      },
       shadowOpacity: 0.25,
       shadowRadius: 3.84,
       elevation: 5
-  },
+    },
   modalTitle:{
     fontSize: 22,
     alignSelf: 'center'
@@ -418,12 +433,22 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
 
+  imageContainer:{
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+
   uploadedImage: {
     width: 64,
     height: 64,
     borderRadius: 20,
-    marginBottom: 32,
+    marginBottom: 10,
     marginRight: 8,
+  },
+
+  uploadedImageText: {
+    color: '#FFF',
+    marginBottom: 7
   },
 
   imagesInput: {
