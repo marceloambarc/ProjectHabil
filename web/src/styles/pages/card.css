@@ -47,6 +47,7 @@
 
 .card button:hover {
   opacity: 0.7;
+  cursor: pointer;
 }
 
 .aprove {
@@ -54,5 +55,5 @@
 }
 
 .cancel {
-  background-color: #DE463E;
+  background-color: #DE2121;
 }
