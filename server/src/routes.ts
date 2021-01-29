@@ -4,6 +4,7 @@ import multer from 'multer';
 import uploadConfig from './config/upload';
 import CompaniesController from './controllers/CompaniesController';
 import ProductsController from './controllers/ProductsController';
+import DeletedCompaniesController from './controllers/DeletedCompanyController';
 import AdminController from './controllers/AdminController';
 
 const routes = Router();
@@ -25,5 +26,9 @@ routes.post('/products', upload.array('images'),ProductsController.create);
 routes.get('/companies', CompaniesController.index);
 routes.get('/companies/:id', CompaniesController.show);
 routes.post('/companies', upload.array('company_images'),CompaniesController.create);
+routes.put('/companies', CompaniesController.edit);
+routes.delete('/companies/:id', CompaniesController.delete);
 
-export default routes;
+/*DELETED COMPANIES*/
+routes.get('/deleted_companies', DeletedCompaniesController.index);
+routes.post('/deleted_companies', upload.array('deleted_company_images'),DeletedCompaniesController.create);
