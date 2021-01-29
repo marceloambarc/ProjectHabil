@@ -40,7 +40,7 @@ export default function EditProductScreen(){
   const [description, setDescription] = useState(`${editDescription}`);
   const [images, setImages] = useState<string[]>([editImages[0].url]);
   
-  const today = new Date().setDate(50);
+  const today = new Date().setDate(59);
   const [date, setDate] = useState(new Date(today));
 
   const currentDayOfMonth = date.getDate();
@@ -49,10 +49,6 @@ export default function EditProductScreen(){
   
   const [mode, setMode] = useState('date');
   const [show, setShow] = useState(false);
-
-  const [text] = useState('text');
-  const [to] = useState('to');
-  const [v] = useState('v');
 
   async function handleNextStepProduct() {
     const currentDayOfMonth = date.getDate();
@@ -189,26 +185,20 @@ export default function EditProductScreen(){
         />*/}
 
           <View style={styles.uploadedImagesContainer}>
-          {images.map(image => {
-            return (
-              <>
-              
-              
-                <TouchableWithoutFeedback key={to} onPress={handleRemoveItem}>
-                <View style={styles.imageContainer} key={v}>
-                  <Image
-                    key={image.toString()}
-                    source={{ uri: image }}
-                    style={styles.uploadedImage}
-                  />
-                  <Text style={styles.uploadedImageText} key={text}>Toque para remover.</Text>
-                  </View>
-                </TouchableWithoutFeedback>
-              
-
-              </>
-            );
-          })}
+            <TouchableWithoutFeedback onPress={handleRemoveItem}>
+              <View style={styles.imageContainer}>
+                {images.map(image => {
+                  return (
+                    <Image
+                      key={image.toString()}
+                      source={{ uri: image }}
+                      style={styles.uploadedImage}
+                    />
+                  );
+                })}
+                <Text style={styles.uploadedImageText}>Toque para remover.</Text>
+              </View>
+            </TouchableWithoutFeedback>
           </View>
 
         <View style={styles.btnContainer}>

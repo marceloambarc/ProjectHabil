@@ -25,6 +25,7 @@ export default function Register() {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [company_images, setCompanyImages] = useState<string[]>([]);
   const [text] = useState('t');
+  const [twf] = useState('to');
   const [term_is_true, setTermIsTrue] = useState(false);
 
   const [modalVisible, setModalVisible] = useState(false);
@@ -207,26 +208,22 @@ export default function Register() {
             </View>
 
             <View style={styles.uploadedImagesContainer}>
-              {company_images.map(company_image => {
-                return (
-                  <>
-                  
-                  
-                    <TouchableWithoutFeedback onPress={handleRemoveItem}>
-                    <View style={styles.imageContainer}>
+        
+              <TouchableWithoutFeedback onPress={handleRemoveItem}>
+                <View style={styles.imageContainer}>
+                  {company_images.map(company_image => {
+                    return (
                       <Image 
                         key={company_image}
                         source={{ uri: company_image }}
                         style={styles.uploadedImage}
                       />
-                      <Text key={text} style={styles.uploadedImageText}>Toque para remover.</Text>
-                      </View>
-                    </TouchableWithoutFeedback>
-                  
+                    );
+                  })}
+                  <Text style={styles.uploadedImageText}>Toque para remover.</Text>
+                </View>
+              </TouchableWithoutFeedback>
 
-                  </>
-                );
-              })}
             </View>
 
             <TouchableOpacity style={styles.imagesInput} onPress={handleSelectImages}>

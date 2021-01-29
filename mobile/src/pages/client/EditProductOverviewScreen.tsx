@@ -1,5 +1,7 @@
 import * as React from 'react';
-import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
+import { useState } from 'react'
+import { View, Text, Image, StyleSheet, TouchableOpacity, 
+Modal, TouchableHighlight } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import api from '../../services/api';
 
@@ -26,7 +28,7 @@ export default function EditPromotionOverviewScreen(){
   const companyId = params.company_id;
   const productImages = params.images;
 
-  console.log(productImages);
+  const [modalVisible, setModalVisible] = useState(false);
 
   async function handleEditProduct(){
     const data = new FormData();
@@ -70,15 +72,19 @@ export default function EditPromotionOverviewScreen(){
 
         
         <View style={styles.productImageContainer}>
-          {productImages.map(image => {
-            return(
-              <Image
-                key={image}
-                style={styles.productImage}
-                source={{ uri: image }}
-              />
-            );
-          })}
+          <TouchableOpacity onPress={() => {
+            setModalVisible(true);
+          }}>
+            {productImages.map(image => {
+              return(
+                <Image
+                  key={image}
+                  style={styles.productImage}
+                  source={{ uri: image }}
+                />
+              );
+            })}
+          </TouchableOpacity>
         </View>
 
         <TouchableOpacity style={styles.btnEdit} onPress={() => navigation.navigate('EditProduct')}>
@@ -88,6 +94,32 @@ export default function EditPromotionOverviewScreen(){
         <TouchableOpacity style={styles.btnSubmit} onPress={handleEditProduct}>
           <Text style={styles.btnText}>Enviar</Text>
         </TouchableOpacity>
+
+        {/* IMAGE MODAL */}
+        <Modal
+          animationType="fade"
+          transparent={true}
+          visible={modalVisible}
+        >
+          <View style={styles.modalView}>
+            {productImages.map(image => {
+              return(
+                <Image
+                  key={image}
+                  style={styles.modalImg}
+                  source={{ uri: image }}
+                />
+              );
+            })}
+            <TouchableHighlight onPress={() => {
+              setModalVisible(!modalVisible);
+              }}
+            >
+              <Text style={styles.modalText}>Fechar</Text>
+            </TouchableHighlight>
+          </View>
+        </Modal>
+
       </View>
     </View>
   );
@@ -158,4 +190,30 @@ const styles = StyleSheet.create({
     color: '#FFF',
     fontSize: 20
   },
+
+   /* MODAL VIEW */
+   modalView:{
+    width: '100%',
+    flex:1,
+    backgroundColor: "#191919",
+    alignItems: "center",
+    justifyContent: 'center',
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5
+  },
+  modalImg:{
+    height: '40%',
+    width: '80%',
+    borderRadius: 20,
+  },
+  modalText:{
+    color: '#FFF',
+    marginTop: 70
+  }
 })
