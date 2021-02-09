@@ -1,2 +1,2 @@
-const JWTSecret = "insert_here_your_secret";
+const JWTSecret = "habil003";
 export {JWTSecret};

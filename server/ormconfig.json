@@ -6,6 +6,7 @@
   "password": "yhw7107",
   "logging": ["query"],
   "database": "test",
+  "synchronize": true,
   "migrations": [
     "./src/database/migrations/*.ts"
   ],

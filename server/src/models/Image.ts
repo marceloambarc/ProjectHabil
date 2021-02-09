@@ -9,7 +9,10 @@ export default class Image {
     @Column()
     path: string;
 
-    @ManyToOne(() => Product, product => product.images)
+    @ManyToOne(() => Product, product => product.images,{
+        onUpdate: "CASCADE",
+        onDelete: "CASCADE"
+    })
     @JoinColumn({ name: 'product_id' })
     product: Product;
 }

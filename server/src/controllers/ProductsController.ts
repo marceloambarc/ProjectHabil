@@ -1,10 +1,9 @@
-import { Request, Response, Send } from 'express';
+import { Request, Response } from 'express';
 import { getRepository } from 'typeorm';
 import * as Yup from 'yup';
 
 import productView from '../views/products_view';
 import Product from '../models/Product';
-import Image from '../models/Image';
 
 export default {
   async index(request: Request, response: Response) {
@@ -143,48 +142,67 @@ export default {
         company_id
       } = request.body;
 
-      const requestImages = request.files as Express.Multer.File[];
-      const images = requestImages.map(image => {
-        return { path: image.filename }
-      })
+      try{
+        const requestImages = request.files as Express.Multer.File[];
+        const images = requestImages.map(image => {
+          return { path: image.filename }
+        });
 
-      const productsRepository = await getRepository(Product);
-      const product = await productsRepository.findOneOrFail(id, {
-        relations: ['images']
-      });
-      await productsRepository.remove(product);
+        try{
 
-      const data = {
-        name,
-        price,
-        description,
-        date,
-        company_id,
-        images,
-      };
+          const productsRepository = await getRepository(Product);
+          const product = await productsRepository.findOneOrFail(id, {
+            relations: ['images']
+          });
+          await productsRepository.remove(product);
 
-      const schema = Yup.object().shape({
-        name: Yup.string().required(),
-        price: Yup.string().required(),
-        description: Yup.string().required(),
-        date: Yup.string().required(),
-        images: Yup.array(
-          Yup.object().shape({
-            path: Yup.string().required()
-          })
-        ),
-        company_id: Yup.string().required()
-      });
+          try{
 
-      await schema.validate(data, {
-        abortEarly: false,
-      });
+            const data = {
+              name,
+              price,
+              description,
+              date,
+              company_id,
+              images,
+            };
+      
+            const schema = Yup.object().shape({
+              name: Yup.string().required(),
+              price: Yup.string().required(),
+              description: Yup.string().required(),
+              date: Yup.string().required(),
+              images: Yup.array(
+                Yup.object().shape({
+                  path: Yup.string().required()
+                })
+              ),
+              company_id: Yup.string().required()
+            });
+      
+            await schema.validate(data, {
+              abortEarly: false,
+            });
 
-      const newProduct = productsRepository.create(data);
-  
-      await productsRepository.save(newProduct);
-  
-      return response.status(201).json(newProduct);
+            try{
+              const newProduct = productsRepository.create(data);
+        
+              await productsRepository.save(newProduct);
+          
+              return response.status(201).json(newProduct);
+            }catch(err){
+              return response.status(400).json({err: "Erro ao enviar Para o banco de dados"});
+            }
+          }catch(err){
+            return response.status(400).json({err: "Construcao da Data Falhou!"});
+          }
+        }catch(err){
+          return response.status(400).json({err: "Problema no Repositório"});
+        }
+
+      }catch(err){
+        return response.status(400).json({err: "Problema na imagem"});
+      }
 
     } catch(err){
       return response.json(err);

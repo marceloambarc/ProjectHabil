@@ -21,8 +21,10 @@ export default class Product {
     @Column()
     company_id: string;
 
-    @OneToMany(() => Image, image => image.product, {
-        cascade: ['insert', 'update']
+    @OneToMany(() => Image, image => image.product,{
+        cascade: ['insert', 'update'],
+        eager: true,
+        onUpdate: 'CASCADE'
     })
     @JoinColumn({ name: 'product_id' })
     images: Image[];

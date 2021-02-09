@@ -36,6 +36,9 @@ export default class Company {
     @Column()
     password: string;
 
+    @Column()
+    is_active: number;
+
     @OneToMany(() => CompanyImage, company_image => company_image.company, {
         cascade: ['insert', 'update']
     })

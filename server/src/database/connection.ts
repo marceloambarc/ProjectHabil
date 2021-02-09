@@ -2,11 +2,11 @@ import { createConnection } from 'typeorm';
 
 createConnection({
     type: "mysql",
-    host: "localhost",
+    host: "192.168.15.12",
     port: 3306,
-    username: "root",
-    password: "yhw7107",
-    database: "test",
+    username: "user",
+    password: "@gr3m10@",
+    database: "db",
     "entities": [
         "./src/models/*.ts"
     ],

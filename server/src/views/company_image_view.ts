@@ -1,14 +1,14 @@
 import CompanyImage from '../models/CompanyImage';
 
 export default {
-  render(companyImage: CompanyImage) {
+  render(company_image: CompanyImage) {
     return {
-      id: companyImage.id,
-      url: `http://192.168.0.7:8080/uploads/${companyImage.path}`,
+      id: company_image.id,
+      url: `http://192.168.15.58:8080/uploads/${company_image.path}`,
     };
   },
 
-  renderMany(companyImages: CompanyImage[]) {
-    return companyImages.map(companyImage => this.render(companyImage));
+  renderMany(company_images: CompanyImage[]) {
+    return company_images.map(company_image => this.render(company_image));
   }
 }

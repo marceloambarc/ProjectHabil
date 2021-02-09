@@ -15,7 +15,8 @@ export default {
       city: company.city,
       uf: company.uf,
       password: company.password,
-      images: CompanyImagesView.renderMany(company.companyImages)
+      is_active: company.is_active,
+      images: CompanyImagesView.renderMany(company.company_images)
     };
   },
 

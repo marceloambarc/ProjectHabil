@@ -32,3 +32,6 @@ routes.delete('/companies/:id', CompaniesController.delete);
 /*DELETED COMPANIES*/
 routes.get('/deleted_companies', DeletedCompaniesController.index);
 routes.post('/deleted_companies', upload.array('deleted_company_images'),DeletedCompaniesController.create);
+
+
+export default routes;

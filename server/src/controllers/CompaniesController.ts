@@ -10,6 +10,30 @@ import companyView from '../views/companies_views';
 import Company from '../models/Company';
 
 export default {
+  async edit(request: Request, response: Response){
+    try{
+      const { id, is_active } = request.body;
+      try{
+        const companiesRepository = await getRepository(Company);
+        const company = await companiesRepository.findOneOrFail(id);
+        try{
+          company.is_active = is_active;
+          try{
+            await companiesRepository.save(company);
+            return response.status(200).json("tudo certo");
+          }catch(err){
+            console.log(err);
+          }
+        }catch(err){
+          console.log(err);
+        }
+      }catch(err){
+        console.log(err);
+      }
+    }catch(err){
+      console.log(err);
+    }
+  },
 
   /* INDEX */
   async index(request: Request, response: Response) {
@@ -19,7 +43,11 @@ export default {
       const companies = await companiesRepository.find({
         relations: ['company_images']
       });
-      return response.json(companyView.renderMany(companies));
+      if(companies){
+        return response.json(companyView.renderMany(companies));
+      }else{
+        return response.json('Problemas Internos');
+      }
     }catch(err){
       return response.json('Ops! Tivemos um problema');
     }
@@ -34,7 +62,11 @@ export default {
       const company = await companiesRepository.findOneOrFail(id, {
         relations: ['company_images']
       });
-      return response.json(companyView.render(company));
+      if(company){
+        return response.json(companyView.render(company));
+      }else{
+        return response.json('Problemas Internos');
+      }
     }catch(err){
       return response.json('Ops! Tivemos um problema');
     }
@@ -43,43 +75,72 @@ export default {
 
   /*  AUTHORIZATION */
   async auth(request: Request, response: Response) {
-    const { cnpj, password } = request.body;
-    const companiesRepository = getRepository(Company);
-    
     try{
-      const company = await companiesRepository.findOne({cnpj},{
-        relations: ['company_images']
-      });
-      if(company){
-        var correct = bcrypt.compareSync(password,company.password);
-        if(correct){
-          jwt.sign({id: company.id, cnpj: company.cnpj, name: company.name}, JWTSecret,{expiresIn: '2h'}, (err, token) => {
-            if(err){
-              response.status(400);
-              response.json({err: "Erro Interno"});
+      const { cnpj, password } = request.body;
+      if(!cnpj || !password){
+        response.status(401).json({error: "Credenciais Inválidas"})
+      }
+      const companiesRepository = getRepository(Company);
+    
+      try{
+        const company = await companiesRepository.findOne({cnpj},{
+          relations: ['company_images']
+        });
+        if(company){
+          {/*
+          if(company.is_active > 0){
+          */}
+            var correct = bcrypt.compareSync(password,company.password);
+            if(correct){
+              jwt.sign({id: company.id, cnpj: company.cnpj, name: company.name}, JWTSecret,{expiresIn: '2h'}, (err, token) => {
+                if(err){
+                  response.status(400);
+                  response.json({err: "Erro Interno"});
+                }else{
+                  response.status(200);
+                  const col = response.json({token: token, name: company.name, id: company.id, images: company.company_images});
+                }
+              })
             }else{
-              response.status(200);
-              const col = response.json({token: token, name: company.name, id: company.id, images: company.company_images});
-              console.log(company.company_images);
+            response.status(401).json({err: "Credenciais Inválidas"});
             }
-          })
+          {/*
+          }else{
+            response.status(401).json({err: "Empresa em Análise"});
+          }
+          */}
         }else{
-         response.status(401);
-         response.json({err: "Credenciais Inválidas"});
+          response.status(401).json({err: "CNPJ inválido"});
         }
-      }else{
-        response.status(401);
-        response.json({err: "CNPJ inválido"});
+      }catch(err){
+        response.status(400).json({ error: "Validation Error" })
       }
     }catch(err){
-      response.status(400).json({ error: "Validation Error" })
+      response.status(401).json({error: "Credenciais Inválidas"})
     }
   },
 
+  async delete(request: Request, response: Response){
+    try{
+      const { id } = request.params;
+
+      const companiesRepository = await getRepository(Company);
+      const company = await companiesRepository.findOneOrFail(id,{
+        relations: ['company_images']
+      });
+      try{
+        await companiesRepository.remove(company);
+        response.json("Tudo certo");
+      }catch(err){
+        response.status(400).json(err);
+      }
+    }catch(err){
+      response.status(400).json(err);
+    }
+  },
 
   /* CREATION */
   async create(request: Request, response: Response) {
-    
     const {
       business,
       cnpj,
