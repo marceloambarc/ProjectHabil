@@ -3,7 +3,8 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
 import MainPath from './pages/public/routes';
-import CompanyPath from './pages/client/routes';
+import SupplierPath from './pages/client/routes';
+
 
 const Stack  = createStackNavigator();
 
@@ -14,7 +15,7 @@ export default function Routes(){
 
         <Stack.Screen name="Main" options={{headerShown: false}} component={MainPath} />
 
-        <Stack.Screen name="Company" options={{headerShown: false}} component={CompanyPath} />
+        <Stack.Screen name="Supplier" options={{headerShown: false}} component={SupplierPath} />
   
       </Stack.Navigator>
     </NavigationContainer>

@@ -10,7 +10,6 @@ interface ProductDataRouteParams {
   name: string,
   price: string,
   description: string,
-  protoDate: string,
   company_id: string,
   images: string[];
 }
@@ -24,13 +23,12 @@ export default function EditPromotionOverviewScreen(){
   const productName = params.name;
   const productPrice = params.price;
   const productDescription = params.description;
-  const productDate = params.protoDate;
   const companyId = params.company_id;
   const productImages = params.images;
 
   const [modalVisible, setModalVisible] = useState(false);
 
-  async function handleEditProduct(){
+  async function handleEditPromotion(){
     const data = new FormData();
 
     data.append('id', productId);
@@ -38,7 +36,6 @@ export default function EditPromotionOverviewScreen(){
     data.append('price', productPrice);
     data.append('description', productDescription);
     data.append('company_id', companyId);
-    data.append('date', productDate);
     
     productImages.forEach((image, index) => {
       data.append('images', {
@@ -66,8 +63,6 @@ export default function EditPromotionOverviewScreen(){
           </View>
           <Text style={styles.productText}>Descrição: {productDescription}
           </Text>
-          <Text style={styles.productText}>Vencimento: {productDate}
-          </Text>
         </View>
 
         
@@ -87,11 +82,11 @@ export default function EditPromotionOverviewScreen(){
           </TouchableOpacity>
         </View>
 
-        <TouchableOpacity style={styles.btnEdit} onPress={() => navigation.navigate('EditProduct')}>
+        <TouchableOpacity style={styles.btnEdit} onPress={() => navigation.navigate('EditPromotion')}>
           <Text style={styles.btnText}>Editar</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.btnSubmit} onPress={handleEditProduct}>
+        <TouchableOpacity style={styles.btnSubmit} onPress={handleEditPromotion}>
           <Text style={styles.btnText}>Enviar</Text>
         </TouchableOpacity>
 

@@ -12,7 +12,6 @@ interface ProductDetailsRouteParams {
   name: string,
   price: string,
   description: string,
-  date: string,
   company_id: string,
   images: string[];
 }
@@ -39,7 +38,6 @@ export default function UserProductDetailsScreen(){
   const productName = params.name;
   const productPrice = params.price;
   const productDescription = params.description;
-  const productDate = params.date;
   const productImages = params.images;
   const companyId = params.company_id;
 
@@ -71,7 +69,6 @@ export default function UserProductDetailsScreen(){
       id: productId,
       name: productName,
       price: productPrice,
-      date: productDate,
       description: productDescription,
       company_id: companyId,
       images: productImages,
@@ -101,7 +98,6 @@ export default function UserProductDetailsScreen(){
             <Text style={styles.name}>{productName}</Text>
             <Text style={styles.price}>Valor R$ {productPrice}</Text>
             <Text style={styles.description}>Descrição: {productDescription}</Text>
-            <Text style={styles.date}>Validade: {productDate}</Text>
             <View style={styles.separator}></View>
             <View style={styles.contactsBtnContainer}>
               <View style={styles.padding}>
@@ -205,11 +201,6 @@ const styles = StyleSheet.create({
     textAlign:'center',
     marginTop:10,
     color:"#696969",
-  },
-  date: {
-    textAlign: 'center',
-    marginTop: 10,
-    color: '#696969'
   },
   separator:{
     height:2,

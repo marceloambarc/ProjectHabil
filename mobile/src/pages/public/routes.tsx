@@ -1,36 +1,51 @@
 import * as React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 
-import ProductDetailsScreen from './ProductDetailsScreen';
-import ProductListScreen from './ProductListScreen';
-
-import Header from '../../components/Header';
+import SplashScreen from './SplashScreen';
+import WelcomeScreen from './WelcomeScreen';
+import SupplierView from './SupplierViewScreen';
+import PromotionDetailsScreen from './PromotionDetailsScreen.tsx';
 
 const Stack = createStackNavigator();
 
-export default function MainScreen() {
-  return (
+export default function MainRoute(){
+  return(
 
-    <Stack.Navigator initialRouteName="tabNavigation">
+    <Stack.Navigator initialRouteName="Splash">
 
       <Stack.Screen 
-        name="ProductList" 
-        component={ProductListScreen}
+        name="Splash"
+        component={SplashScreen}
         options={{
-          headerShown: true,
-          header: () => <Header />
+          headerShown: false,          
         }}
       />
 
       <Stack.Screen 
-        name="ProductView" 
-        component={ProductDetailsScreen} 
+        name="Welcome"
+        component={WelcomeScreen}
         options={{
           headerShown: false
         }}
       />
 
-    </Stack.Navigator>  
-      
+      <Stack.Screen 
+        name="SupplierView"
+        component={SupplierView}
+        options={{
+          headerShown: true
+        }}
+      />
+
+      <Stack.Screen 
+        name="PromotionDetails"
+        component={PromotionDetailsScreen}
+        options={{
+          headerShown: true
+        }}
+      />
+
+    </Stack.Navigator>
+
   );
 }

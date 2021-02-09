@@ -7,14 +7,12 @@ TouchableWithoutFeedback} from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import {Feather} from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
-import DateTimePicker from '@react-native-community/datetimepicker';
 
 interface EditPromotionParams {
   id: number,
   name: string,
   price: string,
   description: string,
-  date: string,
   company_id: string,
   images: Array <{
     id: number;
@@ -40,27 +38,15 @@ export default function EditProductScreen(){
   const [description, setDescription] = useState(`${editDescription}`);
   const [images, setImages] = useState<string[]>([editImages[0].url]);
   
-  const today = new Date().setDate(59);
-  const [date, setDate] = useState(new Date(today));
-
-  const currentDayOfMonth = date.getDate();
-  const currentMonth = date.getMonth() + 1;
-  const currentYear = date.getFullYear();
-  
   const [mode, setMode] = useState('date');
   const [show, setShow] = useState(false);
 
   async function handleNextStepProduct() {
-    const currentDayOfMonth = date.getDate();
-    const currentMonth = date.getMonth() + 1;
-    const currentYear = date.getFullYear();
-    const protoDate = `${currentDayOfMonth}/${currentMonth}/${currentYear}`;
-    navigation.navigate('EditProductOverview', {
+    navigation.navigate('EditPromotionOverview', {
       id,
       name,
       price,
       description,
-      protoDate,
       company_id,
       images
     });
@@ -71,28 +57,13 @@ export default function EditProductScreen(){
   
     return(
       <View style={styles.header}>
-        <TouchableOpacity style={styles.backBtn} onPress={() => navigation.navigate('CompanyProducts')}>
+        <TouchableOpacity style={styles.backBtn} onPress={() => navigation.navigate('SupplierPromotions')}>
             <Feather name="arrow-left" size={28} color="#e82041" />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Editar Promoção</Text>
       </View>
     );
 }
-
-  const onChange = (event: Event, selectedDate:any) => {
-    const currentDate = selectedDate || date;
-    setShow(Platform.OS === 'ios');
-    setDate(currentDate);
-  };
-
-  const showMode = (currentMode:any) => {
-    setShow(true);
-    setMode(currentMode);
-  };
-
-  const showDatepicker = () => {
-    showMode('date');
-  };
 
   async function handleSelectImages() {
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -153,36 +124,6 @@ export default function EditProductScreen(){
           value={description}
           onChangeText={setDescription}
         />
-
-        <Text style={styles.dateSelected}>
-          Vencimento: {`${currentDayOfMonth}/${currentMonth}/${currentYear}`}
-        </Text>
-
-        <View style={styles.btnContainer}>
-          <TouchableOpacity style={styles.btnSubmit} onPress={showDatepicker}>
-            <Text style={styles.submitText}>Selecionar Vencimento</Text>
-          </TouchableOpacity>
-        </View>
-        <View>
-          {show && (
-            <DateTimePicker
-            defaultDate={today}
-            testID="dateTimePicker"
-            value={today}
-            mode={mode}
-            is24Hour={true}
-            display="default"
-            onChange={onChange}
-            />
-          )}
-        </View>
-
-        {/*<TextInput
-          style={styles.input}
-          placeholder="Validade Promoção DD/MM/AAAA"
-          autoCorrect={false}
-          onChangeText={setDate}
-        />*/}
 
           <View style={styles.uploadedImagesContainer}>
             <TouchableWithoutFeedback onPress={handleRemoveItem}>
@@ -276,10 +217,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     borderRadius:7,
     padding:10
-  },
-  dateSelected:{
-    color: '#FFF',
-    fontSize: 20
   },
   submitText:{
     color: '#FFF',

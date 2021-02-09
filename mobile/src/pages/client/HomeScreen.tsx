@@ -40,7 +40,7 @@ export default function HomeScreen(){
           })}
         </View>
 
-        <TouchableOpacity style={styles.btnSubmit} onPress={() => navigation.navigate('CompanyProducts',{
+        <TouchableOpacity style={styles.btnSubmit} onPress={() => navigation.navigate('SupplierPromotions',{
           companyId
         })}>
           <Text style={styles.submitText}>Visualizar minhas promoções</Text>

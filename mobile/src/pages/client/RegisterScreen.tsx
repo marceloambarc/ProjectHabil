@@ -3,15 +3,16 @@ import { useState } from 'react';
 
 import { View, Text, ScrollView, TextInput, 
 Image, TouchableOpacity, StyleSheet,
-Modal, TouchableHighlight, Switch, Dimensions, TouchableWithoutFeedback } from 'react-native';
+Modal, TouchableHighlight, Switch, Dimensions, 
+TouchableWithoutFeedback } from 'react-native';
+
 import * as ImagePicker from 'expo-image-picker';
 import { TextInputMask } from 'react-native-masked-text';
-
-import { Feather } from '@expo/vector-icons'
 import { useNavigation } from '@react-navigation/native';
 import api from '../../services/api';
+import { color } from 'react-native-reanimated';
 
-export default function Register() {
+export default function Register(){
   const [business, setBusiness] = useState('');
   const [cnpj, setCnpj] = useState('');
   const [name, setName] = useState('');
@@ -24,10 +25,8 @@ export default function Register() {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [company_images, setCompanyImages] = useState<string[]>([]);
-  const [text] = useState('t');
-  const [twf] = useState('to');
-  const [term_is_true, setTermIsTrue] = useState(false);
 
+  const [term_is_true, setTermIsTrue] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
 
   const navigation = useNavigation();
@@ -66,24 +65,22 @@ export default function Register() {
 
     try {
       await api.post('companies', data);
-
       navigation.navigate('Login');
     }catch(err){
       alert("Credenciais Inválidas!");
       return;
     }
   }
-  
 
-  async function handleSelectImages(){
-    const { status } = await ImagePicker.requestCameraPermissionsAsync();
-
+  async function handleSelectImages() {
+    const { status } = await ImagePicker.getCameraPermissionsAsync();
+    
     if (status !== 'granted') {
-      alert('Precisamos de acesso as suas fotos...');
+      alert('Precisamos de acesso a images');
       return;
     }
 
-    const result = await ImagePicker.launchImageLibraryAsync({
+    const result = await ImagePicker.launchCameraAsync({
       allowsEditing: true,
       quality: 1,
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
@@ -102,203 +99,210 @@ export default function Register() {
     setCompanyImages([]);
   }
 
-  return(
+  return (
     <ScrollView>
 
-        <View style={styles.background}>
-          <View style={styles.container}>
-            <TextInput
-            style={styles.input}
-            placeholder="Nome Fantasia"
-            autoCorrect={false}
-            value={name}
-            onChangeText={setName}
-            />
+    <View style={styles.background}>
+      <View style={styles.container}>
+        <Image 
+          source={require('../../../assets/cmalogo.png')}
+          style={styles.headImage}
+        />
 
-            <TextInputMask
-            type={'cnpj'}
-            style={styles.input}
-            placeholder="CNPJ"
-            autoCorrect={false}
-            value={cnpj}
-            onChangeText={setCnpj}
-            />
+        <TextInput
+        style={styles.input}
+        placeholder="Nome Fantasia"
+        autoCorrect={false}
+        value={name}
+        onChangeText={setName}
+        />
 
-            <TextInput
-            style={styles.input}
-            placeholder="Ramo"
-            autoCorrect={false}
-            value={business}
-            onChangeText={setBusiness}
-            />
+        <TextInputMask
+        type={'cnpj'}
+        style={styles.input}
+        placeholder="CNPJ"
+        autoCorrect={false}
+        value={cnpj}
+        onChangeText={setCnpj}
+        />
 
-            <TextInputMask
-            type={'cel-phone'}
-            options={{
-              maskType: 'BRL',
-              withDDD: true,
-            }}
-            style={styles.input}
-            placeholder="Adicionar Telefone"
-            autoCorrect={false}
-            value={phone}
-            onChangeText={setPhone}
-            />
+        <TextInput
+        style={styles.input}
+        placeholder="Ramo"
+        autoCorrect={false}
+        value={business}
+        onChangeText={setBusiness}
+        />
 
-            <TextInput
-            keyboardType='email-address'
-            style={styles.input}
-            placeholder="Email"
-            autoCorrect={false}
-            autoCompleteType="email"
-            value={email}
-            onChangeText={setEmail}
-            />
+        <TextInputMask
+        type={'cel-phone'}
+        options={{
+          maskType: 'BRL',
+          withDDD: true,
+        }}
+        style={styles.input}
+        placeholder="Adicionar Telefone"
+        autoCorrect={false}
+        value={phone}
+        onChangeText={setPhone}
+        />
 
-            <TextInput
-            style={styles.input}
-            placeholder="Endereço"
-            autoCorrect={false}
-            value={address}
-            onChangeText={setAddress}
-            />
+        <TextInput
+        keyboardType='email-address'
+        style={styles.input}
+        placeholder="Email"
+        autoCorrect={false}
+        autoCompleteType="email"
+        value={email}
+        onChangeText={setEmail}
+        />
 
-            <TextInput
-            style={styles.input}
-            placeholder="Bairro"
-            autoCorrect={false}
-            value={district}
-            onChangeText={setDistrict}
-            />
+        <TextInput
+        style={styles.input}
+        placeholder="Endereço"
+        autoCorrect={false}
+        value={address}
+        onChangeText={setAddress}
+        />
 
-            <TextInput
-            style={styles.input}
-            placeholder="Cidade"
-            autoCorrect={false}
-            value={city}
-            onChangeText={setCity}
-            />
+        <TextInput
+        style={styles.input}
+        placeholder="Bairro"
+        autoCorrect={false}
+        value={district}
+        onChangeText={setDistrict}
+        />
 
-            <TextInput
-            style={styles.input}
-            placeholder="UF"
-            autoCorrect={false}
-            value={uf}
-            onChangeText={setUf}
-            />
+        <TextInput
+        style={styles.input}
+        placeholder="Cidade"
+        autoCorrect={false}
+        value={city}
+        onChangeText={setCity}
+        />
 
-            <View style={styles.passwordContainer}>
-              <TextInput
-              style={styles.passwordInput}
-              placeholder="Senha"
-              autoCorrect={false}
-              value={password}
-              caretHidden={true}
-              onChangeText={setPassword} 
-              />
+        <TextInput
+        style={styles.input}
+        placeholder="UF"
+        autoCorrect={false}
+        value={uf}
+        onChangeText={setUf}
+        />
 
-              <TextInput
-              style={styles.passwordInput}
-              placeholder="Confirme Senha"
-              autoCorrect={false}
-              caretHidden={true}
-              value={confirmPassword}
-              onChangeText={setConfirmPassword}
-              />
+        <View style={styles.passwordContainer}>
+          <TextInput
+          style={styles.passwordInput}
+          placeholder="Senha"
+          autoCorrect={false}
+          value={password}
+          caretHidden={true}
+          onChangeText={setPassword} 
+          />
+
+          <TextInput
+          style={styles.passwordInput}
+          placeholder="Confirme Senha"
+          autoCorrect={false}
+          caretHidden={true}
+          value={confirmPassword}
+          onChangeText={setConfirmPassword}
+          />
+        </View>
+
+        <View style={styles.uploadedImagesContainer}>
+    
+          <TouchableWithoutFeedback onPress={handleRemoveItem}>
+            <View style={styles.imageContainer}>
+              {company_images.map(company_image => {
+                return (
+                  <Image 
+                    key={company_image}
+                    source={{ uri: company_image }}
+                    style={styles.uploadedImage}
+                  />
+                );
+              })}
+              <Text style={styles.uploadedImageText}>Toque para remover.</Text>
             </View>
+          </TouchableWithoutFeedback>
 
-            <View style={styles.uploadedImagesContainer}>
-        
-              <TouchableWithoutFeedback onPress={handleRemoveItem}>
-                <View style={styles.imageContainer}>
-                  {company_images.map(company_image => {
-                    return (
-                      <Image 
-                        key={company_image}
-                        source={{ uri: company_image }}
-                        style={styles.uploadedImage}
-                      />
-                    );
-                  })}
-                  <Text style={styles.uploadedImageText}>Toque para remover.</Text>
-                </View>
-              </TouchableWithoutFeedback>
-
-            </View>
-
-            <TouchableOpacity style={styles.imagesInput} onPress={handleSelectImages}>
-              <Feather name="plus" size={24} color="#15B6D6" />
-            </TouchableOpacity>
-
-            <View style={styles.switchContainer}>
-              <Text style={styles.termText}>Concordo com os </Text>
-              <TouchableOpacity onPress={() => {
-                setModalVisible(true);
-                }}>
-                <Text style={[styles.termText, styles.termTextButton]}>Termos de Uso</Text>
-              </TouchableOpacity>
-              <Switch 
-                thumbColor="#fff"
-                trackColor={{ false: '#ccc', true: '#39CC83' }}
-                value={term_is_true}
-                onValueChange={setTermIsTrue}
-              />
-            </View>
-
-            {/*TERM MODAL*/}
-              <Modal
-                animationType="slide"
-                transparent={true}
-                visible={modalVisible}
-              >
-                
-                  <View style={styles.modalView}>
-
-                    {/* MODAL CONTENT */}
-                    <Text style={styles.modalTitle}>Termo de uso.</Text>
-                    <ScrollView style={styles.tcContainer}>
-                      
-                      <Text style={styles.tcP}>
-                        LoreLorem Ipsum is simply dummy text of the printing and typesetting industry. 
-                        Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, 
-                        when an unknown printer took a galley of type and scrambled it to make a type specimen book.
-                      </Text>
-                      <Text style={styles.tcP}>
-                        It has survived not only five centuries, but also the leap into electronic typesetting, 
-                        remaining essentially unchanged. It was popularised in the 1960s with the release of 
-                        Letraset sheets containing Lorem Ipsum passages.
-                      </Text>
-                        <Text style={styles.tcL}>{'\u2022'}</Text>
-                      <Text style={styles.tcP}>
-                        It is a long established fact that a reader will be distracted by the readable content 
-                        of a page when looking at its layout.
-                      </Text>
-
-                    </ScrollView>
-
-                    {/* MODAL CLOSE BUTTON */}
-                    <TouchableHighlight
-                      onPress={() => {
-                        setModalVisible(!modalVisible);
-                      }}
-                    >
-                      <Text>Hide Modal</Text>
-                    </TouchableHighlight>
-                  </View>
-                
-              </Modal>
-            
-
-            <TouchableOpacity 
-              style={styles.btnSubmit}
-              onPress={handleCreateCompany}
-            >
-              <Text style={styles.submitText}>Cadastrar</Text>
-            </TouchableOpacity>
-          </View>
         </View>
         
-      </ScrollView>
+        <View style={styles.btnContainer}>
+          <TouchableOpacity style={styles.btnSubmit} onPress={handleSelectImages}>
+            <Text style={styles.submitText}>Selecionar Foto</Text>
+          </TouchableOpacity>
+        </View>
+
+        <View style={styles.switchContainer}>
+          <Text style={styles.termText}>Concordo com os </Text>
+          <TouchableOpacity onPress={() => {
+            setModalVisible(true);
+            }}>
+            <Text style={[styles.termText, styles.termTextButton]}>Termos de Uso</Text>
+          </TouchableOpacity>
+          <Switch 
+            thumbColor="#fff"
+            trackColor={{ false: '#ccc', true: '#39CC83' }}
+            value={term_is_true}
+            onValueChange={setTermIsTrue}
+          />
+        </View>
+
+        {/*TERM MODAL*/}
+          <Modal
+            animationType="slide"
+            transparent={true}
+            visible={modalVisible}
+          >
+            
+              <View style={styles.modalView}>
+
+                {/* MODAL CONTENT */}
+                <Text style={styles.modalTitle}>Termos de uso.</Text>
+                <ScrollView style={styles.tcContainer}>
+                  
+                  <Text style={styles.tcP}>
+                    LoreLorem Ipsum is simply dummy text of the printing and typesetting industry. 
+                    Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, 
+                    when an unknown printer took a galley of type and scrambled it to make a type specimen book.
+                  </Text>
+                  <Text style={styles.tcP}>
+                    It has survived not only five centuries, but also the leap into electronic typesetting, 
+                    remaining essentially unchanged. It was popularised in the 1960s with the release of 
+                    Letraset sheets containing Lorem Ipsum passages.
+                  </Text>
+                    <Text style={styles.tcL}>{'\u2022'}</Text>
+                  <Text style={styles.tcP}>
+                    It is a long established fact that a reader will be distracted by the readable content 
+                    of a page when looking at its layout.
+                  </Text>
+
+                </ScrollView>
+
+                {/* MODAL CLOSE BUTTON */}
+                <TouchableHighlight
+                  onPress={() => {
+                    setModalVisible(!modalVisible);
+                  }}
+                >
+                  <Text style={styles.hideBtn}>Fechar</Text>
+                </TouchableHighlight>
+              </View>
+            
+          </Modal>
+        
+
+          <TouchableOpacity 
+            style={styles.btnSubmit}
+            onPress={handleCreateCompany}
+          >
+            <Text style={styles.submitText}>Cadastrar</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+    
+    </ScrollView>
   );
 }
 
@@ -306,7 +310,7 @@ const { height } = Dimensions.get('window');
 
 const styles = StyleSheet.create({
   background:{
-    backgroundColor: '#191919',
+    backgroundColor: '#FFF',
     flex:1,
     alignItems:'center',
     justifyContent:'center',
@@ -317,15 +321,21 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     width: '90%'
   },
+  headImage: {
+    height: 40,
+    width: 100,
+    paddingBottom: 10,
+    paddingTop: 10,
+    marginBottom: 20
+  },
   containerLogo:{
     flex:1,
     justifyContent:'center',
     padding: 20
   },
 
-
   input:{
-    backgroundColor:'#FFF',
+    backgroundColor:'#a9acb1',
     width:'90%',
     marginBottom: 15,
     color:'#222',
@@ -342,7 +352,7 @@ const styles = StyleSheet.create({
     width: '90%'
   },
   passwordInput:{
-    backgroundColor:'#FFF',
+    backgroundColor:'#a9acb1',
     width:'90%',
     marginTop: 15,
     color:'#222',
@@ -354,7 +364,7 @@ const styles = StyleSheet.create({
     marginBottom: 20
   },
   termText:{
-    color: '#FFF',
+    color: '#ff6600',
     fontSize: 10,
     fontWeight: 'bold',
     marginBottom: 10
@@ -377,6 +387,13 @@ const styles = StyleSheet.create({
     color: '#FFF',
     fontSize: 20
   },
+  btnContainer:{
+    width: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 30,
+    marginBottom: 30
+  },
 
   switchContainer: {
     flexDirection: 'row',
@@ -385,7 +402,6 @@ const styles = StyleSheet.create({
     marginTop: 16,
     marginBottom: 16
   },
-
 
   modalView:{
     margin: 20,
@@ -405,9 +421,9 @@ const styles = StyleSheet.create({
     },
   modalTitle:{
     fontSize: 22,
-    alignSelf: 'center'
+    alignSelf: 'center',
+    color: '#017895'
   },
-
 
   tcP:{
     marginTop: 10,
@@ -424,6 +440,9 @@ const styles = StyleSheet.create({
     marginTop:15,
     marginBottom:15,
     height: height * .7
+  },
+  hideBtn: {
+    color: '#ff6600'
   },
 
   uploadedImagesContainer: {
@@ -444,7 +463,7 @@ const styles = StyleSheet.create({
   },
 
   uploadedImageText: {
-    color: '#FFF',
+    color: '#191919',
     marginBottom: 7
   },
 

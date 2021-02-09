@@ -1,10 +1,32 @@
 import React, { Component } from 'react';
-import { View, Text, FlatList, StyleSheet, Image, TouchableWithoutFeedback, ActivityIndicator } from 'react-native';
+import { View, Text, FlatList, StyleSheet, 
+Image, TouchableWithoutFeedback, ActivityIndicator,
+TouchableOpacity } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import { SearchBar } from 'react-native-elements';
+import { Feather } from '@expo/vector-icons';
 
 interface Props {
   navigation: any,
   text: string
+}
+
+function WelcomeHeader(){
+  const navigation = useNavigation();
+
+  return (
+    <View style={styles.welcomeHeaderBackground}>
+      <View style={styles.welcomeHeaderContainer}>
+        <Image
+          source={require('../../../assets/icon.png')}
+          style={styles.headerImage}
+        />
+        <TouchableOpacity>
+          <Feather style={styles.icon} name="menu" size={28} color="#191919"/>
+        </TouchableOpacity>
+      </View>
+    </View>
+  );
 }
 
 export default class App extends Component<Props> {
@@ -12,6 +34,7 @@ export default class App extends Component<Props> {
     data: [],
     loading: false,
     search: '',
+    value: ''
   };
   arrayholder = [];
 
@@ -20,7 +43,7 @@ export default class App extends Component<Props> {
   }
 
   loadRepositories = async () => {
-    const baseURL = 'http://192.168.15.58:8080/products';
+    const baseURL = 'http://192.168.15.58:8080/companies';
     this.setState({ loading: true });
 
     fetch(baseURL)
@@ -37,7 +60,6 @@ export default class App extends Component<Props> {
       this.setState({ error, loading: false });
     });
   };
-
 
   searchFilterFunction = (text:string) => {
     this.setState({
@@ -57,11 +79,11 @@ export default class App extends Component<Props> {
 
   renderHeader = () => {
     return (
-      <SearchBar
+      <SearchBar 
         placeholder="Procure..."
         lightTheme
         round
-        autoCorrect={false}
+        autoCorrect={true}
         onChangeText={text => this.searchFilterFunction(text)}
         value={this.state.value}
       />
@@ -69,29 +91,22 @@ export default class App extends Component<Props> {
   }
 
   handleView = async({item}:{item:any}) => {
-    this.props.navigation.navigate('ProductView',{
+    this.props.navigation.navigate('SupplierView',{
       id: item.id,
-      name: item.name,
-      price: item.price,
-      date: item.date,
-      description: item.description,
-      company_id: item.company_id,
-      images: item.images,
     });
   }
-  
-  renderItem = ({ item }: {item: any}) => (
-    <TouchableWithoutFeedback onPress={() => this.handleView({item})}>
+
+  renderItem = ({ item } : { item: any }) => (
+    <TouchableWithoutFeedback style={styles.itemContainer} onPress={() => this.handleView({item})}>
       <View style={styles.listItem}>
         {item.images.map((image:any) => {
           return(
             <Image source={{uri: image.url}} key={item.id.toString()} style={styles.image} />
           );
         })}
-            
+
         <View style={styles.contentContainer}>
           <Text style={styles.contentText}>{item.name}</Text>
-          <Text style={styles.contentTextPrice}>R$: {item.price}</Text>
         </View>
       </View>
     </TouchableWithoutFeedback>
@@ -106,7 +121,8 @@ export default class App extends Component<Props> {
       );
     }
     return (
-    
+      <View style={styles.fullContainer}>
+        <WelcomeHeader />
         <FlatList
           style={styles.list}
           data={this.state.data}
@@ -114,12 +130,34 @@ export default class App extends Component<Props> {
           keyExtractor={item => item.id.toString()}
           ListHeaderComponent={this.renderHeader}
         />
+      </View>
 
     );
   }
 }
 
 const styles = StyleSheet.create({
+  /* HEADER */
+  welcomeHeaderBackground: {
+    backgroundColor: '#FFF'
+  },
+  welcomeHeaderContainer: {
+    flexDirection: 'row',
+    justifyContent:'space-between',
+    paddingTop: 10,
+    paddingLeft: 10,
+    paddingRight: 10
+  },
+  headerImage: {
+    marginLeft: 10,
+    height: 30,
+    width: 30,
+  },
+  icon:{
+    marginRight: 10,
+  },
+
+  /*BODY*/
   list: {
     flex: 1,
     marginTop: 30
@@ -128,6 +166,10 @@ const styles = StyleSheet.create({
     marginTop: 30,
     flex: 1,
     backgroundColor: '#F7F7F7',
+  },
+  fullContainer: {
+    flex: 1,
+    backgroundColor: '#FFF',
   },
   listItem:{
     margin:7,
@@ -142,8 +184,9 @@ const styles = StyleSheet.create({
     borderRadius:5
   },
   image:{
-    width:60,
-    height:60,
+    position: 'absolute',
+    width:'100%',
+    height:'100%',
     borderRadius:30,
     alignItems: 'center',
     justifyContent: 'center'
@@ -160,4 +203,7 @@ const styles = StyleSheet.create({
     color: 'red',
     fontWeight:'bold'
   },
+  itemContainer: {
+    alignItems: 'center'
+  }
 });

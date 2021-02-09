@@ -7,14 +7,12 @@ import { useNavigation } from '@react-navigation/native';
 import { TextInputMask } from 'react-native-masked-text';
 import api from '../../services/api';
 
-
 export default function Login(){
-
   const [cnpj, setCnpj] = useState('');
   const [password, setPassword] = useState('');
 
   const navigation = useNavigation();
-  const [logo] = useState(new Animated.ValueXY({x: 90, y: 90}));
+  const [logo] = useState(new Animated.ValueXY({ x: 90, y: 90 }));
 
   async function handleAccess(){
 
@@ -51,8 +49,8 @@ export default function Login(){
   async function handleRegister(){
     navigation.navigate('Register');
   }
-  
-   return(
+
+  return (
     <KeyboardAvoidingView style={styles.background}>
       <View style={styles.containerLogo}>
         <Animated.Image
@@ -60,7 +58,7 @@ export default function Login(){
            width: logo.x,
            height: logo.y
          }}
-         source={require('../../../assets/icons/adaptive-icon.png')}
+         source={require('../../../assets/adaptive-icon.png')}
           />
         </View>
   
@@ -92,54 +90,60 @@ export default function Login(){
           <TouchableOpacity style={styles.btnRegister} onPress={handleRegister}>
             <Text style={styles.registerText}>Criar conta Gratuita</Text>
           </TouchableOpacity>
+          <TouchableOpacity style={styles.btnRegister} onPress={handleRegister}>
+            <Text style={styles.forgetText}>Esqueci minha Senha.</Text>
+          </TouchableOpacity>
         </View>
     </KeyboardAvoidingView>
-    );
+  );
 }
 
 const styles = StyleSheet.create({
-    background:{
-      flex:1,
-      alignItems:'center',
-      justifyContent:'center',
-      backgroundColor: '#191919'
-    },
-    containerLogo:{
-      flex:1,
-      justifyContent:'center',
-    },
-    container:{
-      flex:1,
-      alignItems:'center',
-      justifyContent:'center',
-      width: '90%',
-      paddingTop: 50
-    },
-    input:{
-      backgroundColor:'#FFF',
-      width:'90%',
-      marginBottom: 15,
-      color:'#222',
-      fontSize: 17,
-      borderRadius:7,
-      padding:10
-    },
-    btnSubmit:{
-      backgroundColor: '#35AAFF',
-      width: '90%',
-      height: 45,
-      alignItems:'center',
-      justifyContent: 'center',
-      borderRadius: 7
-    },
-    submitText:{
-      color: '#FFF',
-      fontSize: 18
-    },
-    btnRegister:{
-      marginTop: 20
-    },
-    registerText:{
-      color: '#FFF'
-    }
+  background:{
+    flex:1,
+    alignItems:'center',
+    justifyContent:'center',
+    backgroundColor: '#FFF'
+  },
+  containerLogo:{
+    flex:1,
+    justifyContent:'center',
+  },
+  container:{
+    flex:1,
+    alignItems:'center',
+    justifyContent:'center',
+    width: '90%',
+    paddingTop: 50
+  },
+  input:{
+    backgroundColor:'#a9acb1',
+    width:'90%',
+    marginBottom: 15,
+    color:'#222',
+    fontSize: 17,
+    borderRadius:7,
+    padding:10
+  },
+  btnSubmit:{
+    backgroundColor: '#35AAFF',
+    width: '90%',
+    height: 45,
+    alignItems:'center',
+    justifyContent: 'center',
+    borderRadius: 7
+  },
+  submitText:{
+    color: '#FFF',
+    fontSize: 18
+  },
+  btnRegister:{
+    marginTop: 20
+  },
+  registerText:{
+    color: '#35AAFF'
+  },
+  forgetText: {
+    color: '#ff6600'
+  }
 });

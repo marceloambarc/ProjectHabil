@@ -56,11 +56,10 @@ export default class App extends React.Component<Props> {
   }
 
   handleView = async({item}:{item:any}) => {
-    this.props.navigation.navigate('CompanyProductOverview',{
+    this.props.navigation.navigate('SupplierPromotionOverview',{
       id: item.id,
       name: item.name,
       price: item.price,
-      date: item.date,
       description: item.description,
       company_id: item.company_id,
       images: item.images,
@@ -90,11 +89,10 @@ export default class App extends React.Component<Props> {
   }
 
   handleEdit = async({item}:{item:any}) => {
-    this.props.navigation.navigate('EditProduct',{
+    this.props.navigation.navigate('EditPromotion',{
       id: item.id,
       name: item.name,
       price: item.price,
-      date: item.date,
       description: item.description,
       company_id: item.company_id,
       images: item.images,
