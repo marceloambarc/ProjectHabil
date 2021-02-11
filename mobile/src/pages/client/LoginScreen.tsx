@@ -47,7 +47,7 @@ export default function Login(){
   }
 
   async function handleRegister(){
-    navigation.navigate('Register');
+    navigation.navigate('Cadastre-se');
   }
 
   return (

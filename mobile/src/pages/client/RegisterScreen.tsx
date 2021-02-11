@@ -10,7 +10,6 @@ import * as ImagePicker from 'expo-image-picker';
 import { TextInputMask } from 'react-native-masked-text';
 import { useNavigation } from '@react-navigation/native';
 import api from '../../services/api';
-import { color } from 'react-native-reanimated';
 
 export default function Register(){
   const [business, setBusiness] = useState('');

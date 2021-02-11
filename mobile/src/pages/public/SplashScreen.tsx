@@ -1,7 +1,10 @@
 import React from 'react';
-import { View, TouchableWithoutFeedback, Text, StyleSheet, Image } from 'react-native';
+import { View, TouchableWithoutFeedback, Text, StyleSheet, Image, Dimensions } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { Ionicons } from '@expo/vector-icons'; 
+import { Ionicons } from '@expo/vector-icons';
+import ImageZoom from 'react-native-image-pan-zoom';
+
+const splashBackgroundImage = '../../../assets/content_id.png';
 
 export default function SplashScreen(){
   const navigation = useNavigation();
@@ -9,23 +12,32 @@ export default function SplashScreen(){
     <TouchableWithoutFeedback style={styles.background} onPress={() => navigation.navigate('Welcome')}>
       <View style={styles.container}>
         <View style={styles.logoContainer}>
+          
+        <ImageZoom cropWidth={420}
+                    cropHeight={390}
+                   imageWidth={420}
+                   imageHeight={390}>
           <Image 
             style={styles.companyImage}
-            source={require('../../../assets/adaptive-icon.png')}
-          />
-          <Image 
-            style={styles.textImageLogo}
-            source={require('../../../assets/cmatextlogo.png')}
-          />
+            source={require(splashBackgroundImage)}
+          />       
+        </ImageZoom>
         </View>
-        <View style={styles.splashTextContainer}>
-          <Text style={styles.splashTitle}>Bem-Vindo,</Text>
-          <Text style={styles.splashText}>O app que leva as promoções de Nova Santa Rita até você.</Text>
+        <View style={styles.splashRow}>
+          <View style={styles.splashTextContainer}>
+              <Image 
+              style={styles.welcomeLogo}
+              source={require('../../../assets/cmatextlogo.png')}
+            />
+            <Text style={styles.splashTitle}>Bem-Vindo,</Text>
+            <Text style={styles.splashText}>O app que leva as promoções de Nova Santa Rita até você.</Text>
+          </View>
+          <View style={styles.footer}>
+            <Ionicons name="enter-outline" size={40} color="#017895" />
+            <Text style={styles.iconText}>Entrar</Text>
+          </View>
         </View>
-        <View style={styles.footer}>
-          <Ionicons name="enter-outline" size={40} color="#017895" />
-          <Text style={styles.iconText}>Entrar</Text>
-        </View>
+
         <View style={styles.advise}>
           <Text style={styles.splashAdvise}>Digite na pesquisa os termos que você deseja.</Text>
           <Text style={styles.splashAdvise2}>Se deseja anunciar produtos/serviço entre no menu superior.</Text>
@@ -49,11 +61,10 @@ const styles = StyleSheet.create({
   },
   logoContainer: {
     alignItems: 'center',
-    marginBottom: 70,
   },
   companyImage: {
-    height: 124,
-    width: 124,
+    height: 420,
+    width: '100%',
   },
   textImageLogo: {
     height: 50,
@@ -61,24 +72,26 @@ const styles = StyleSheet.create({
   },
   splashTextContainer: {
     width: '70%',
-    marginBottom: 25
+    marginBottom: 10
   },
   splashTitle: {
-    fontSize: 40
+    fontSize: 20,
+    color:'darkgrey'
   },
   splashText: {
-    fontSize: 25
+    fontSize: 18,
+    color: 'silver',
+    paddingBottom: 10
   },
   footer: {
     alignItems: 'center',
-    marginTop: 30
   },
   iconText: {
     color: '#017895'
   },
   advise: {
-    marginTop:50,
-    maxWidth: '70%',
+    alignItems: 'flex-start',
+    paddingHorizontal: 40
   },
   splashAdvise: {
     color: '#ff6600',
@@ -87,5 +100,14 @@ const styles = StyleSheet.create({
   splashAdvise2: {
     color: '#CC5200',
     fontSize: 12
+  },
+  splashRow: {
+    marginTop: '10%',
+    flexDirection: 'row',
+    justifyContent: 'center',
+  },
+  welcomeLogo: {
+    height: 40,
+    width: 200
   }
 });

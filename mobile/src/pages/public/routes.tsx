@@ -3,8 +3,10 @@ import { createStackNavigator } from '@react-navigation/stack';
 
 import SplashScreen from './SplashScreen';
 import WelcomeScreen from './WelcomeScreen';
-import SupplierView from './SupplierViewScreen';
-import PromotionDetailsScreen from './PromotionDetailsScreen.tsx';
+import SupplierScreen from './SupplierScreen';
+import PromotionsScreen from './PromotionScreen';
+import PromotionDetailsScreen from './PromotionDetailsScreen';
+import SupplierAboutScreen from './SupplierAboutScreen';
 
 const Stack = createStackNavigator();
 
@@ -17,7 +19,7 @@ export default function MainRoute(){
         name="Splash"
         component={SplashScreen}
         options={{
-          headerShown: false,          
+          headerShown: false          
         }}
       />
 
@@ -30,10 +32,26 @@ export default function MainRoute(){
       />
 
       <Stack.Screen 
-        name="SupplierView"
-        component={SupplierView}
+        name="Supplier"
+        component={SupplierScreen}
         options={{
           headerShown: true
+        }}
+      />
+
+      <Stack.Screen 
+        name="Promotions"
+        component={PromotionsScreen}
+        options={{
+          headerShown: false
+        }}
+      />
+
+      <Stack.Screen 
+        name="SupplierAbout"
+        component={SupplierAboutScreen}
+        options={{
+          headerShown: false
         }}
       />
 
@@ -41,7 +59,7 @@ export default function MainRoute(){
         name="PromotionDetails"
         component={PromotionDetailsScreen}
         options={{
-          headerShown: true
+          headerShown: false
         }}
       />
 

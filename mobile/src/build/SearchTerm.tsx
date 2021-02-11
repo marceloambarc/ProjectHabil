@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { View, Text, ImageBackground, TouchableOpacity, 
-StyleSheet, FlatList } from 'react-native';
+StyleSheet, FlatList, TouchableWithoutFeedback } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { SearchBar } from 'react-native-elements';
 import { Feather } from '@expo/vector-icons';

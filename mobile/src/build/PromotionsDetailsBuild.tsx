@@ -5,8 +5,6 @@ Image, ScrollView, Modal, TouchableHighlight } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { Feather } from '@expo/vector-icons';
 
-import api from '../../services/api';
-
 interface PromotiosDetailsRoutePrams {
   id: string,
   name: string,
