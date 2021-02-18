@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { FiArrowRight } from 'react-icons/fi'
 
-import api from '../services/api';
+import logoImg from '../images/cmatextlogo.png';
+
 import '../styles/pages/landing.css';
 
 function Landing() {
@@ -9,18 +10,8 @@ function Landing() {
   const [password, setPassword] = useState('');
 
   async function handleAccess(){
-    const data = { user, password }
-    console.log(user,password);
-
     try {
-      await api.post('adminauth',{
-        user: data.user,
-        password: data.password,
-      }).then(res => {
-        var token = res.data.token;
-        console.log(token);
-        window.location.href = '/app';
-      })
+      window.location.href = '/app';
     }catch(err){
       console.log(err);
     }
@@ -31,7 +22,7 @@ function Landing() {
       <div className="content-wrapper">
 
         <main>
-          <h1>Administração Hábil</h1>
+          <h1>Administração <img src={logoImg} className="landingImg" alt="CompreMaisAki" /></h1>
           <p>verificação de dados App</p>
           <p>AlphaTest 0.0.3</p>
 
@@ -62,7 +53,7 @@ function Landing() {
         </div>
 
         <button type="button" onClick={() => handleAccess()} className="enter-app">
-          <FiArrowRight size="26" color="rgba(0, 0, 0, 0.6)" />
+          <FiArrowRight size="26" color="#fff" />
         </button>
       </div>
     </div>

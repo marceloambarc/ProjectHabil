@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { FiDollarSign, FiLayers, FiAlertCircle, FiBookOpen, FiArrowDownCircle } from 'react-icons/fi';
+import { FiDollarSign, FiLayers, FiBookOpen, FiArrowDownCircle } from 'react-icons/fi';
 
 import Sidebar from '../../components/Sidebar'
 import api from '../../services/api';
@@ -15,10 +15,10 @@ interface Product {
   description: string;
   date: string;
   company_id: number;
-  images: Array<{
-    id: number;
-    url: string;
-  }>;
+  image: string;
+  validate: string;
+  discount: string;
+  is_active: number;
 }
 
 function Products(){
@@ -97,21 +97,42 @@ function Products(){
 
           </div>
           
-          <div className="row">
-            
-              {products.map(product => {
-                return(
-              <div key={product.id} className="column">
-                <div className="card">
-                  <h1 className="card-title">{product.name}</h1>
-                  <p className="card-price">R$ {product.price}</p>
-                  <p className="card-text">{product.description}</p>
-                  <p><button className="cancel" onClick={() => handleDelete({product})}>Rejeitar</button> <button className="aprove">Aprovar</button></p>
-                </div>
-              </div>)
-            })}
+          <div className="table-container">
+           <table id="companies">
+            <tbody>
+            <tr>
+              <th>Produto</th>
+              <th>Preco</th>
+              <th>Descricao</th>
+              <th>Data</th>
+              <th>Empresa</th>
+              <th>validade</th>
+              <th>Desconto</th>
+              <th>Imagem</th>
+              <th className="noWrap">Comandos</th>
+            </tr>
 
-            </div>
+            {products.map(products => {
+              if(products){
+                return(
+                    <tr key={products.id}>
+                    <td>{products.name}</td>
+                    <td>{products.price}</td>
+                    <td>{products.description}</td>
+                    <td>{products.date}</td>
+                    <td>{products.company_id}</td>
+                    <td>{products.validate}</td>
+                    <td>{products.discount}</td>
+                    <td>placeholder</td>
+                  </tr>
+                );
+              }else{
+                return;
+              }
+            })}
+            </tbody>
+          </table>
+          </div>
         
         </div>
       </main>

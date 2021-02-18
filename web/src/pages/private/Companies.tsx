@@ -15,16 +15,13 @@ interface Company {
   name: string;
   phone: string;
   email: string;
-  address: string;
+  addres: string;
   district: string;
   city: string;
   uf: string;
+  keywords: string;
   password: string;
   is_active: string;
-  company_images: Array<{
-    id: number;
-    url: string;
-  }>;
 }
 
 function Products(){
@@ -34,55 +31,88 @@ function Products(){
   useEffect(() => {
     api.get('companies').then(response => {
       setCompanies(response.data);
+      console.log(response.data);
     });
   }, []);
 
+
   async function handleViewActive(){
-    api.get('companies').then(response => {
-      setCompanies(response.data);
-      setActive('1');
-    });
+    try{
+      api.get('companies').then(response => {
+        setCompanies(response.data);
+        setActive('1');
+      });
+    }catch(err){
+      alert(err);
+    }
   }
 
   async function handleViewCanceled(){
-    api.get('deleted_companies').then(response => {
-      setCompanies(response.data);
-      setActive('2');
-    })
+    try{
+      api.get('deleted_companies').then(response => {
+        setCompanies(response.data);
+      })
+    }catch(err){
+      alert(err);
+    }
   }
 
   async function handleViewInactive(){
-    api.get('companies').then(response => {
-      setCompanies(response.data);
-      setActive('0');
-    });
+    try{
+      api.get('companies').then(response => {
+        setCompanies(response.data);
+        setActive('0');
+      });
+    }catch(err){
+      alert(err);
+    }
   }
 
   async function handleInactive({company}:{company:any}){
-    api.put('companies',{
-      id: company.id,
-      is_active: 0,
-    }).then(() => {
-      api.get('companies').then(response => {
-        setCompanies(response.data);
+    try{
+      api.put('companies',{
+        id: company.id,
+        is_active: 0,
+      }).then(() => {
+        api.get('companies').then(response => {
+          setCompanies(response.data);
+        });
       });
-    });
+    }catch(err){
+      alert(err);
+    }
   }
 
   async function handleCanceled({company}:{company:any}){
-    console.log("TODO CANCEL")
+    try{
+      api.put('companies',{
+        id: company.id,
+        is_active: 2,
+      }).then(() => {
+        api.delete(`companies/${company.id}`).then(() => {
+          api.get('companies').then(response => {
+            setCompanies(response.data);
+          })
+        })
+      })
+    }catch(err){
+      alert(err);
+    }
   }
 
   async function handleActive({company}:{company:any}){
-    console.log(company);
-    api.put('companies',{
-      id: company.id,
-      is_active: 1,
-    }).then(() => {
-      api.get('companies').then(response => {
-        setCompanies(response.data);
+    try{
+      api.put('companies',{
+        id: company.id,
+        is_active: 1,
+      }).then(() => {
+        api.get('companies').then(response => {
+          setCompanies(response.data);
+        });
       });
-    });
+    }catch(err){
+      alert(err);
+    }
   }
 
   function renderButton({company}:{company:any}){
@@ -112,8 +142,8 @@ function Products(){
           </div>
           
           <div className="button-col">
-            <button className="aprove" onClick={() => handleCanceled({company})}>
-              <FiCheck size="13" color="#FFF" />
+            <button className="cancel" onClick={() => handleCanceled({company})}>
+              <FiAlertOctagon size="13" color="#FFF" />
             </button>
           </div>
         </div>
@@ -160,6 +190,7 @@ function Products(){
             <tr>
               <th>Empresa</th>
               <th>Ramo</th>
+              <th>Palavras-Chaves</th>
               <th>cnpj</th>
               <th>Telefone</th>
               <th>Email</th>
@@ -177,14 +208,15 @@ function Products(){
                     <tr key={company.id}>
                     <td>{company.name}</td>
                     <td>{company.business}</td>
+                    <td>{company.keywords}</td>
                     <td>{company.cnpj}</td>
                     <td>{company.phone}</td>
                     <td>{company.email}</td>
-                    <td>{company.address}</td>
+                    <td>{company.addres}</td>
                     <td>{company.district}</td>
                     <td>{company.city}</td>
                     <td>{company.uf}</td>
-                    <td>{company.company_images}</td>
+                    <td>placeholder</td>
                     <td>
                       {renderButton({company})}
                     </td>

@@ -1,0 +1,129 @@
+#page-welcome {
+  width: 100vw;
+  height: 100vh;
+  background: linear-gradient(329.54deg, #9edbe4 0%, #9edbe4 100%);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#page-welcome .welcome-wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 1090px;
+
+  height: 100%;
+  max-height: 588px;
+
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+#page-welcome .welcome-wrapper main{
+  max-width: 400px;
+}
+
+#page-welcome .welcome-wrapper main h1{
+  font-size: 45px;
+  font-weight: 900;
+  line-height: 70px;
+  color:#212529;
+}
+
+#page-welcome .welcome-wrapper main p{
+  font-size: 31px;
+  color:#212529;
+}
+
+.welcome-block{
+  margin-top: 20px;
+  display: flex;
+  flex-direction: row;
+}
+
+.welcome-block-row {
+  display: flex;
+  flex-direction: column;
+}
+
+.welcome-wrapper .location{
+  position: absolute;
+  right: 0;
+  top: 0;
+
+  margin-top: 0px;
+
+  font-size: 24px;
+  color:#017895;
+
+  display: flex;
+  flex-direction: column;
+}
+
+.welcome-wrapper .enter-app-container {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  
+  margin-bottom: 61px;
+}
+
+.welcome-wrapper .enter-app-col1 {
+  margin-top: 20px;
+}
+
+.welcome-wrapper .enter-app-col2 {
+  margin-top: 20px;
+}
+
+.enter-text {
+  margin-left: 10px;
+  color: #fa690a;
+  margin-bottom: 10px;
+}
+
+.welcome-wrapper .enter-app {
+  width: 80px;
+  height: 80px;
+  background: #017895;
+  border-radius: 30px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  transition: background-color 0.2s;
+}
+
+.welcome-wrapper .enter-app:hover {
+  background: #96feff;
+}
+
+.qrcodeLogo {
+  width: 200px;
+}
+
+.appstoreLogo{
+  margin-top: 20px;
+  width: 200px;
+  margin-left: 20px;
+}
+
+.googleplayLogo {
+  width: 220px;
+  margin-left: 20px;
+}
+
+.landingImg1 {
+  width: 300px;
+  margin-bottom: 24px;
+}
+
+.smartphone {
+  width: 700px;
+}

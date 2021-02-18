@@ -14,18 +14,22 @@
 }
 
 #companies th {
-    background: linear-gradient(329.54deg, #42b3c5 0%, #119999 100%);
+    background: linear-gradient(329.54deg, #017895 0%, #017895 100%);
 }
 
 #companies td {
     background:  #a9acb1;
-}
-
-#companies td, #companies th {
+    color: black;
     padding: 8px;
 
     font-size: 12px;
-    color: black;
+}
+
+#companies th {
+    padding: 8px;
+
+    font-size: 12px;
+    color: white;
 }
 
 #noWrap {
