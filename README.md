@@ -13,4 +13,5 @@ Database - MYSQL
 ## ALPHA CONSTRUCTION
 <p>0.0.2 = 07/01/2021</p>
 <p>0.0.3 = 21/01/2021</p>
+<p>v1 = 19/02/2021</p>
 
