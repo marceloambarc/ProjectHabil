@@ -12,7 +12,7 @@
   
     border: 0;
   
-    background: #12AFCB;
+    background: #017895;
     border-radius: 16px;
   
     cursor: pointer;
@@ -36,8 +36,9 @@
 
 button{
     border: none;
+    color: #FFF;
 }
 
 label {
-    color: #191919;
+    color: #017895;
 }
