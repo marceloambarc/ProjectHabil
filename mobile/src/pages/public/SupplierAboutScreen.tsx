@@ -3,7 +3,6 @@ import { View ,Image ,TextInput, ScrollView, StyleSheet } from 'react-native';
 import { useRoute } from '@react-navigation/native';
 
 interface Props {
-  id: number,
   name: any,
   image: any,
   cnpj: string,

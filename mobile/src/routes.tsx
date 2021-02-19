@@ -5,7 +5,6 @@ import { createStackNavigator } from '@react-navigation/stack';
 import MainPath from './pages/public/routes';
 import SupplierPath from './pages/client/routes';
 
-
 const Stack  = createStackNavigator();
 
 export default function Routes(){

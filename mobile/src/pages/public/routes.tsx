@@ -10,6 +10,7 @@ import SupplierAboutScreen from './SupplierAboutScreen';
 
 const Stack = createStackNavigator();
 
+
 export default function MainRoute(){
   return(
 
@@ -35,7 +36,7 @@ export default function MainRoute(){
         name="Supplier"
         component={SupplierScreen}
         options={{
-          headerShown: true
+          headerShown: false
         }}
       />
 

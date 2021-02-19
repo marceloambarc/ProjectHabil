@@ -23,7 +23,9 @@ export default function Register(){
   const [uf, setUf] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [company_images, setCompanyImages] = useState<string[]>([]);
+  const [image, setImage] = useState<string>('');
+
+  const [tags, setTags] = useState('');
 
   const [term_is_true, setTermIsTrue] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
@@ -42,44 +44,46 @@ export default function Register(){
     }
     
     const data = new FormData();
-
-    data.append('business', business);
-    data.append('cnpj', cnpj);
-    data.append('name', name);
-    data.append('phone', phone);
-    data.append('email', email);
-    data.append('address', address);
-    data.append('district', district);
-    data.append('city', city);
-    data.append('uf', uf);
-    data.append('password', password);
     
-    company_images.forEach((company_image, index) => {
-      data.append('company_images', {
-        name: `company_image_${index}.jpg`,
-        type: 'image/jpg',
-        uri: company_image,
-      } as any)
-    })
+    try{
+      data.append('business', business);
+      data.append('cnpj', cnpj);
+      data.append('name', name);
+      data.append('phone', phone);
+      data.append('email', email);
+      data.append('address', address);
+      data.append('district', district);
+      data.append('city', city);
+      data.append('uf', uf);
+      data.append('password', password);
 
-    try {
-      await api.post('companies', data);
-      navigation.navigate('Login');
+      data.append('image', {
+        name: `image.jpg`,
+        type: 'image/jpg',
+        uri: image,
+      } as any);
+
+      try {
+        await api.post('companies', data);
+        navigation.navigate('Login');
+      }catch(err){
+        alert(err);
+        return;
+      }
     }catch(err){
-      alert("Credenciais Inválidas!");
-      return;
+      alert(err);
     }
   }
 
   async function handleSelectImages() {
-    const { status } = await ImagePicker.getCameraPermissionsAsync();
+    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
     
     if (status !== 'granted') {
       alert('Precisamos de acesso a images');
       return;
     }
 
-    const result = await ImagePicker.launchCameraAsync({
+    const result = await ImagePicker.launchImageLibraryAsync({
       allowsEditing: true,
       quality: 1,
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
@@ -89,13 +93,13 @@ export default function Register(){
       return;
     }
 
-    const { uri: company_image } = result;
+    const { uri: image } = result;
 
-    setCompanyImages([...company_images, company_image]);
+    setImage(image);
   }
 
   async function handleRemoveItem(){
-    setCompanyImages([]);
+    setImage('');
   }
 
   return (
@@ -188,6 +192,19 @@ export default function Register(){
         onChangeText={setUf}
         />
 
+        <View style={styles.keywordsContainer}>
+        <Text style={styles.termText}>Insira as palavras-chaves separadas por vírgula</Text>
+        <TextInput
+        style={[styles.input, styles.keywords]}
+        value={tags}
+        onChangeText={setTags}
+        autoCorrect={true}
+        placeholder="Palavras-Chaves"
+        multiline
+        numberOfLines={4}
+        />
+        </View>
+
         <View style={styles.passwordContainer}>
           <TextInput
           style={styles.passwordInput}
@@ -211,17 +228,13 @@ export default function Register(){
         <View style={styles.uploadedImagesContainer}>
     
           <TouchableWithoutFeedback onPress={handleRemoveItem}>
-            <View style={styles.imageContainer}>
-              {company_images.map(company_image => {
-                return (
-                  <Image 
-                    key={company_image}
-                    source={{ uri: company_image }}
-                    style={styles.uploadedImage}
-                  />
-                );
-              })}
-              <Text style={styles.uploadedImageText}>Toque para remover.</Text>
+            <View style={styles.imageContainer}>  
+                <Image 
+                  key={image}
+                  source={{uri: image !== ""? image : undefined}}
+                  style={styles.uploadedImage}
+                />
+              <Text style={[styles.uploadedImageText, styles.termText]}>Toque na imagem para remover.</Text>
             </View>
           </TouchableWithoutFeedback>
 
@@ -342,6 +355,15 @@ const styles = StyleSheet.create({
     borderRadius:7,
     padding:10
   },
+  keywords: {
+    marginTop: 5
+  },
+  keywordsContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '90%',
+    marginTop: 30
+  },
   passwordContainer:{
     flex:1,
     justifyContent: 'center',
@@ -398,7 +420,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    marginTop: 16,
+    marginTop: 1,
     marginBottom: 16
   },
 
@@ -463,7 +485,7 @@ const styles = StyleSheet.create({
 
   uploadedImageText: {
     color: '#191919',
-    marginBottom: 7
+    marginBottom: 2
   },
 
   imagesInput: {

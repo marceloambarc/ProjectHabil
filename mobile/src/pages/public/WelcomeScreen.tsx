@@ -7,14 +7,29 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import ImageZoom from 'react-native-image-pan-zoom';
 
-import LoginScreen from '../client/LoginScreen';
+import MainPath from '../../../src/pages/client/routes';
+
 import RegisterScreen from '../client/RegisterScreen';
-import About from './view/About';
+import About from './view/AboutScreen';
 
 const welcomeBackgroundImage = "../../../assets/content_id.png";
 
 function WelcomeScreen({ navigation }:{ navigation:any }){
   const [search, setSearch] = useState('');
+
+  async function handleSearchTerm(){
+    try{
+      
+        const searchTerm = search;
+        navigation.navigate('Supplier',{
+          searchTerm
+        });
+    
+    }catch(err){
+      alert(err);
+    }
+  }
+
   return (
     <SafeAreaView>
       <View style={styles.headerBackground}>
@@ -41,7 +56,7 @@ function WelcomeScreen({ navigation }:{ navigation:any }){
           />
         </View>
         <View style={styles.searchBtnContainer}>
-          <TouchableOpacity style={styles.searchBtn} onPress={() => navigation.navigate('Supplier')}>
+          <TouchableOpacity style={styles.searchBtn} onPress={handleSearchTerm}>
             <Feather name="search" size={20} color="white" />
             <Text style={styles.searchBtnText}>Procurar</Text>
           </TouchableOpacity>
@@ -66,15 +81,14 @@ function WelcomeScreen({ navigation }:{ navigation:any }){
   );
 }
 
-
-export default function SplashScreen() {
+export default function DrawerRoute() {
   const Drawer = createDrawerNavigator();
   return (
     <Drawer.Navigator
       initialRouteName="Início"
       overlayColor="#017895">
       <Drawer.Screen name="Início" component={WelcomeScreen} />
-      <Drawer.Screen name="Fornecedores" component={LoginScreen} />
+      <Drawer.Screen name="Fornecedores" component={MainPath} />
       <Drawer.Screen name="Cadastre-se" component={RegisterScreen} />
       <Drawer.Screen name="Desenvolvido por" component={About} />
     </Drawer.Navigator>

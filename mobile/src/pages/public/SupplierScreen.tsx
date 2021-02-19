@@ -1,10 +1,15 @@
-import React, { Component } from 'react';
+import React, { Component, useState } from 'react';
 import { View, Text, ImageBackground, TouchableOpacity, Image,
-StyleSheet, FlatList, TouchableWithoutFeedback, SafeAreaView, ScrollView } from 'react-native';
+StyleSheet, FlatList, TouchableWithoutFeedback, SafeAreaView, ActivityIndicator } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import { SearchBar } from 'react-native-elements';
-import { Feather } from '@expo/vector-icons';
+import { Feather, AntDesign } from '@expo/vector-icons';
+
+const baseURL = 'http://192.168.15.200:8008/v1/companies/';
+const promoURL = 'http://192.168.15.200.8008/v1/products/';
 
 function WelcomeHeader(){
+  const navigation = useNavigation();
   return (
     <SafeAreaView>
       <View style={styles.headerBackground}>
@@ -13,8 +18,8 @@ function WelcomeHeader(){
             style={styles.cmaLogo}
             source={require("../../../assets/cmatextlogo.png")}
           />
-          <TouchableOpacity onPress={() => {}}>
-            <Feather style={styles.icon} name="menu" size={28} color="#191919" />
+          <TouchableOpacity onPress={() => navigation.navigate('Welcome')}>
+            <AntDesign style={styles.icon} name="back" size={24} color="#191919" />
           </TouchableOpacity>
         </View>
       </View>
@@ -24,54 +29,96 @@ function WelcomeHeader(){
 
 interface Props {
   navigation: any,
-  text: string
+  route: any,
+  text: string,
+  searchTerm: string,
 }
 
 export default class App extends Component<Props> {
   state = {
-    data: [
-      { 
-        id: 0, 
-        name: 'Alfaiate Klein', 
-        image: "https://img.diytrade.com/cdimg/1995729/31020741/0/1353484016/Modern_Clothing_Store_Fixture.jpg",
-        cnpj: '50.409.655/0001-96',
-        business: 'Roupas',
-        phone: '5551992381717',
-        email: 'kleinalfa@alfaiatek.com',
-        address: 'R. Waldemar Vicente da Costa, 468',
-        district: 'Centro',
-        city: 'Nova Santa Rita',
-        uf: 'RS',
-        isPromo: 1
-      },
-      { 
-        id: 1, 
-        name: 'Tênis do Guga', 
-        image: "https://kissmiklos.com/i/12/40/0/2223.jpg",
-        isPromo: 0
-      },
-      {
-        id: 2, 
-        name: 'Marta Dress', 
-        image: "https://i.pinimg.com/originals/69/56/fd/6956fdb16cea3a63ad77762a9a8e6013.jpg",
-        isPromo: 1
-      },
-      { 
-        id: 3, 
-        name: 'R&B Bolsas', 
-        image: "https://dynamic.brandcrowd.com/asset/logo/823feadf-f9b9-4ab7-a26b-3bcbe0d2fe52/logo?v=4",
-        isPromo: 0
-      },
-      { 
-        id: 4, 
-        name: 'Boutique Gentil', 
-        image: "https://www.crystalclutch.com/wp-content/uploads/2017/03/Display-Handbags-370x240_c.jpg",
-        isPromo: 0
-      },
-    ],
+    data: [],
+    loading: false,
+    promoData: [],
+    promoLoading: false,
   };
 
+  componentDidMount() {
+    this.loadRepositories();
+  }
+
+  loadRepositories = async() => {
+    try{
+      if (this.state.loading) return;
+      this.setState({ loading: true });
+
+      fetch(baseURL)
+      .then(response => response.json())
+      .then(response => {
+        this.setState({
+          data: response,
+          error: response.error || null,
+          loading: false,
+        });
+      })
+      .catch(error => {
+        this.setState({ error, loading: false });
+      });
+
+    }catch(err){
+      alert(err);
+    }
+  }
+
+  loadPromo = async() => {
+    try{
+      if (this.state.promoLoading) return;
+      this.setState({ promoLoading: true });
+
+      fetch(promoURL)
+      .then(response => response.json())
+      .then(response => {
+        this.setState({
+          promoData: response,
+          error: response.error || null,
+          promoLoading: false,
+        });
+      })
+      .catch(error => {
+        this.setState({ error, promoLoading: false });
+      });
+
+    }catch(err){
+      alert(err);
+    }
+  }
+
+  renderFooter = () => {
+    if (!this.state.loading) return null;
+    return (
+      <View style={styles.loading}>
+        <ActivityIndicator />
+      </View>
+    );
+  };
+
+  handleSearch = async({search}:{search:any}) => {
+    try {
+      const searchTerm = search;
+      this.props.navigation.navigate('Supplier',{
+        searchTerm
+      });
+    }catch(err){
+      alert(err);
+    }
+  }
+
   renderHeader = () => {
+    const { route } = this.props;
+    const params = route.params as Props;
+    const searchTerm = params.searchTerm;
+
+    const [search, setSearch] = useState('');
+
     return (
       <SafeAreaView>
       <View style={styles.searchRow}>
@@ -82,53 +129,67 @@ export default class App extends Component<Props> {
             lightTheme
             round
             autoCorrect={true}
-            onChangeText={() => {}}
+            onChangeText={setSearch}
+            value={search}
           />
         </View>
         <View style={styles.searchBtnContainer}>
-          <TouchableOpacity style={styles.searchBtn} onPress={() => this.props.navigation.navigate('Supplier')}>
+          <TouchableOpacity style={styles.searchBtn} onPress={() => this.handleSearch({search})}>
             <Feather name="search" size={20} color="white" />
             <Text style={styles.searchBtnText}>Procurar</Text>
           </TouchableOpacity>
         </View>
       </View>
       <View style={styles.foundContainer}>
-        <Text style={styles.foundText}>Resultados: `Roupas`</Text>
+        <Text style={styles.foundText}>Resultados: {searchTerm}</Text>
       </View>
       </SafeAreaView>
     );
   }
 
-  renderPromo({ item }:{ item:any }){
-    if(item.isPromo == '1' ){
-      return(
-        <View style={styles.isPromoContainer}>
-          <View style={styles.isPromoRow}>
-            <Text style={styles.isPromoText}>Temos Promoções</Text><Feather name="percent" size={24} color="#FFF" />
-          </View>
-        </View>
-      );
-    }else{
-      return;
+  handleGoToPromotion = async ({item}:{item:any}) => {
+    const { route } = this.props;
+    const params = route.params as Props;
+    const searchTerm = params.searchTerm;
+    try{
+      this.props.navigation.navigate('Promotions',{
+        companyId: item.id,
+        companyName: item.name,
+        companyImage: item.image,
+        companyCnpj: item.cnpj,
+        companyBusiness: item.business,
+        companyPhone: item.phone,
+        companyEmail: item.email,
+        companyAddress: item.address,
+        companyDistrict: item.district,
+        companyCity: item.city,
+        companyUf: item.uf,
+        companyKeywords: item.keywords,
+        searchTerm: searchTerm,
+      });
+    }catch(err){
+      alert(err);
     }
   }
 
+  renderPromo = () => {
+      if(this.state.promoData){
+        return(
+          <View style={styles.isPromoContainer}>
+            <View style={styles.isPromoRow}>
+              <Text style={styles.isPromoText}>Temos Promoções</Text><Feather name="percent" size={24} color="#FFF" />
+            </View>
+          </View>
+        );
+      }else{
+        return;
+      }
+  }
+
   renderItem = ({ item }:{ item: any }) => (
-    <TouchableWithoutFeedback onPress={() => this.props.navigation.navigate('Promotions',{
-      id: item.id,
-      name: item.name,
-      image: item.image,
-      cnpj: item.cnpj,
-      business: item.business,
-      phone: item.phone,
-      email: item.email,
-      address: item.address,
-      district: item.district,
-      city: item.city,
-      uf: item.uf
-    })}>
-      <ImageBackground source={{uri: item.image}} style={styles.image}>
-        { this.renderPromo({item}) }
+    <TouchableWithoutFeedback onPress={() => this.handleGoToPromotion({item})}>
+      <ImageBackground source={{uri: item.image !== ""? item.image : undefined}} style={styles.image}>
+        { this.renderPromo() }
         <View style={styles.titleContainer}>
           <Text style={styles.titleText}>{item.name}</Text>
         </View>
@@ -147,6 +208,7 @@ export default class App extends Component<Props> {
           renderItem={this.renderItem}
           keyExtractor={item => item.id.toString()}
           ListHeaderComponent={this.renderHeader}
+          ListFooterComponent={this.renderFooter}
         />
       </SafeAreaView>
     );
@@ -240,6 +302,8 @@ const styles = StyleSheet.create({
     padding: 20,
     height: 200,
   },
+
+  /*ISPROMO*/
   isPromoContainer: {
     backgroundColor: '#ff6600',
     position: 'absolute',
@@ -258,5 +322,11 @@ const styles = StyleSheet.create({
     textAlign: 'right',
     fontSize: 10,
     color: '#FFF'
-  }
+  },
+
+  /*FOOTER*/
+  loading: {
+    alignSelf: 'center',
+    marginVertical: 20,
+  },
 });

@@ -1,11 +1,32 @@
 import React, { useState } from 'react';
 import { View, Text, SafeAreaView, TouchableOpacity,
-StyleSheet, Image, TouchableWithoutFeedback, FlatList } from 'react-native';
-import { Feather, Fontisto, Ionicons, MaterialIcons, Entypo } from '@expo/vector-icons';
+StyleSheet, Image, TouchableWithoutFeedback, FlatList, Linking, ActivityIndicator } from 'react-native';
+import { Feather, Fontisto, Ionicons, MaterialIcons, Entypo, AntDesign } from '@expo/vector-icons';
 import { SearchBar } from 'react-native-elements';
 import { useNavigation, useRoute } from '@react-navigation/native';
 
+interface Props {
+  searchTerm: any,
+  companyId: number,
+  companyName: any,
+  companyImage: any,
+  companyCnpj: any,
+  companyBusiness: any,
+  companyPhone: any,
+  companyEmail: any,
+  companyAddress: any,
+  companyDistrict: any,
+  companyCity: any,
+  companyUf: any,
+  route: any
+}
+
 function PromotionHeader() {
+  const route = useRoute();
+  const params = route.params as Props;
+
+  const searchTerm = params.searchTerm;
+
   const navigation = useNavigation();
   const [search, setSearch] = useState('');
   return (
@@ -16,8 +37,8 @@ function PromotionHeader() {
             style={styles.cmaLogo}
             source={require("../../../assets/cmatextlogo.png")}
           />
-          <TouchableOpacity onPress={() => {}}>
-            <Feather style={styles.icon} name="menu" size={28} color="#191919" />
+          <TouchableOpacity onPress={() => navigation.navigate('Supplier')}>
+            <AntDesign style={styles.icon} name="back" size={24} color="#191919" />
           </TouchableOpacity>
         </View>
       </View>
@@ -41,43 +62,62 @@ function PromotionHeader() {
         </View>
       </View>
       <View style={styles.foundContainer}>
-        <Text style={styles.foundText}>Resultados: `Roupas`</Text>
+        <Text style={styles.foundText}>Resultados: { searchTerm }</Text>
       </View>
     </SafeAreaView>
   );
-}
-
-interface Props {
-  id: number,
-  name: any,
-  image: any,
-  cnpj: any,
-  business: any,
-  phone: any,
-  email: any,
-  address: any,
-  district: any,
-  city: any,
-  uf: any,
-  navigation: any
 }
 
 function CompanyCard(){
   const route = useRoute();
   const navigation = useNavigation();
   const params = route.params as Props;
+  
+  const companyId = params.companyId;
+  const companyName = params.companyName;
+  const companyImage = params.companyImage;
+  const companyCnpj = params.companyCnpj;
+  const companyBusiness = params.companyBusiness;
+  const companyPhone = params.companyPhone;
+  const companyEmail = params.companyEmail;
+  const companyAddress = params.companyAddress;
+  const companyDistrict = params.companyDistrict;
+  const companyCity = params.companyCity;
+  const companyUf = params.companyUf;
 
-  const companyId = params.id;
-  const companyName = params.name;
-  const companyImage = params.image;
-  const companyCnpj = params.cnpj;
-  const companyBusiness = params.business;
-  const companyPhone = params.phone;
-  const companyEmail = params.email;
-  const companyAddress = params.address;
-  const companyDistrict = params.district;
-  const companyCity = params.city;
-  const companyUf = params.uf;
+  async function handleSendEmail(){
+    try{
+      Linking.openURL(`mailto:${companyEmail}?subject=Contato CompreMaisAki&body=
+        ${companyName}, encontrei seu contato pelo aplicativo CompreMaisAqui!
+      `)
+    }catch(err){
+      alert(err);
+    }
+  }
+
+  async function handleCall(){
+    try{
+      Linking.openURL(`tel:0${companyPhone}`);
+    }catch(err){
+      alert(err);
+    }
+  }
+
+  async function handleGoogleMaps(){
+    try{
+      Linking.openURL(`https://www.google.com/maps/dir/?api=1&destination=${companyAddress},${companyDistrict},${companyCity},${companyUf}`)
+    }catch(err){
+      alert(err);
+    }
+  }
+
+  async function handleWhatsapp(){
+    try{
+      Linking.openURL(`https://api.whatsapp.com/send?phone=${companyPhone}&text=%20Olá%20${companyName}%20encontrei%20seu%20contato%20pelo%20aplicativo%20CompreMaisAki%20+`);
+    }catch(err){
+      alert(err);
+    }
+  }
 
   return(
     <View style={styles.background}>
@@ -86,23 +126,23 @@ function CompanyCard(){
           <Image 
             source={{ uri: companyImage }}
             style={styles.companyImage}
+            key={companyId}
           />
           <Text style={styles.companyName}>{ companyName }</Text>
         </View>
         <View style={styles.btnRow}>
 
-          <TouchableOpacity style={styles.btnSupplierContact}>
+          <TouchableOpacity style={styles.btnSupplierContact} onPress={handleSendEmail}>
             <Fontisto name="email" size={25} color="#FFF" />
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.btnSupplierContact1}>
+          <TouchableOpacity style={styles.btnSupplierContact1} onPress={handleCall}>
             <Feather name="phone-call" size={27} color="#FFF" />
           </TouchableOpacity>
 
           <TouchableOpacity style={styles.btnSupplierContact2} onPress={() => navigation.navigate('SupplierAbout',{
             name: companyName,
             image: companyImage,
-            id: companyId,
             cnpj: companyCnpj,
             business: companyBusiness,
             phone: companyPhone,
@@ -115,11 +155,11 @@ function CompanyCard(){
             <Feather name="info" size={25} color="#FFF" />
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.btnSupplierContact3}>
+          <TouchableOpacity style={styles.btnSupplierContact3} onPress={handleGoogleMaps}>
             <Entypo name="location-pin" size={27} color="#FFF" />
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.btnSupplierContact4}>
+          <TouchableOpacity style={styles.btnSupplierContact4} onPress={handleWhatsapp}>
             <Ionicons name="logo-whatsapp" size={25} color="#FFF" />
           </TouchableOpacity>
 
@@ -130,84 +170,103 @@ function CompanyCard(){
 }
 
 interface HandleNextPage {
-  navigation: any
+  navigation: any,
+  route: any,
 }
+
+const promoBaseURL = 'http://192.168.15.200:8008/v1/companies/products/company_id/'
 
 export default class App extends React.Component<HandleNextPage> {
   state = {
-    data: [
-      {
-        id: 0, 
-        name: 'Camisa e Colete', 
-        price: '119,00',
-        image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQAltpOcvT80khv4rnHJVc77wuF1-czXtzrEkXQjVn96OLLSfFwGRdjR3SWlCsTy2Ti7F6jv3I&usqp=CAc",
-        description: `Essa camisa social preta masculina é produzida em tricoline, de manga longa, quase não amassa e muito fácil de ser passada, perfeitas para ser utilizada no dia a dia, colete algodão de alta costura. LALALALALALALALAL LAA AS S S JJ SJJ SJ SJJJS JS SJ J J SJ J`,
-      },
-      { 
-        id: 1,  
-        name: 'Camisa Social', 
-        price: '89,00',
-        image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTtGFKPHkbd11yTxA2kJr1Fudo1-5X-HNQNig&usqp=CAU",
-        description: `Essa camisa social branca masculina é produzida em tricoline, de manga longa, quase não amassa e muito fácil de ser passada.`
-      },
-      {
-        id: 2, 
-        name: 'Abotoadura', 
-        price: '109,00',
-        image: "https://i.pinimg.com/originals/69/56/fd/6956fdb16cea3a63ad77762a9a8e6013.jpg",
-        description: `Abotoaduras ou Botões de punho são acessórios de moda usados por homens e mulheres para prender os dois lados da bainha de uma camisa.`
-      },
-      { 
-        id: 3, 
-        name: 'Terno Slim Sob-Medida', 
-        price: '780,00',
-        image: "https://images-americanas.b2w.io/produtos/01/00/img/59516/1/59516106_1GG.jpg",
-        description: `Terno preto veja e conheça AGORA. Produto diferenciado.`,
-      },
-      { 
-        id: 4, 
-        name: 'Meias Hugo Boss',
-        price: '59,00',
-        image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ35QY6lCMvNBnFxETbPVmcJqYpv4XSHBQFXQ&usqp=CAU",
-        description: `Hugo Boss. KIT MASCULINO MEIA 2P PIANO`,
-      },
-      { 
-        id: 5, 
-        name: 'Gravata em Seda',
-        price: '130,00',
-        image: "https://img.elo7.com.br/product/main/34727BC/gravata-em-seda-100-luxuosa-gravata-italiana.jpg",
-        description: `Gravatas de Seda feitas especialmente para você.`,
-      },
-      {
-        id: 6,
-        name: 'Calça  de Alfaiataria',
-        price: '80',
-        image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQwJZ4gca5khWI5z_uUjkxJ7Zjw6aeKNi93-w&usqp=CAU",
-        description: `Os looks com calça de alfaiataria estão cada vez mais variados… e estilosos! Essa roupa irá ajuda a arrasar com a peça que está super em alta.`,
-      }
-    ],
+    data: [],
+    loading: false,
   };
 
+  componentDidMount() {
+    this.loadRepositories();
+  }
+
+  loadRepositories = async () => {
+    if (this.state.loading) return;
+
+    this.setState({ loading: true });
+    const { route } = this.props;
+    const params = route.params as Props;
+    const companyId = params.companyId;
+
+    const response = await fetch(`${promoBaseURL}/${companyId}`);
+    const repositories = await response.json();
+    this.setState({
+      data: repositories,
+      loading: false,
+    });
+  }
+
+  renderFooter = () => {
+    if(!this.state.loading) return null;
+    return(
+      <View style={styles.loading}>
+        <ActivityIndicator />
+      </View>
+    )
+  }
+
+  renderDiscount({item}:{item: any}) {
+    if(item > 0){
+      return(
+        <View style={styles.discountCol}>
+          <Text style={styles.titleDiscount}>DESCONTO</Text>
+          <Text style={styles.discountText}>{item.discount}</Text>
+          <Feather name="percent" size={16} color="#FFF" />
+        </View>
+      );
+    }else{
+      return (
+        <View style={styles.discountColEmpty}>
+          <Text style={styles.discountText}>{item.discount}</Text><Feather name="percent" size={16} color="#FFF" />
+        </View>
+      )
+    }
+  }
+
+  handlePromotionDetail = async({item}:{item:any}) => {
+    const { route } = this.props;
+    const params = route.params as Props;
+
+    const companyName = params.companyName;
+    const companyEmail = params.companyEmail;
+    const companyPhone = params.companyPhone;
+    const searchTerm = params.searchTerm;
+
+    this.props.navigation.navigate('PromotionDetails',{
+      id: item.id,
+      name: item.name,
+      price: item.price,
+      image: item.image,
+      description: item.description,
+      discount: item.discount,
+      companyName: companyName,
+      companyEmail: companyEmail,
+      companyPhone: companyPhone,
+      searchTerm: searchTerm,
+    })
+  }
+
   renderItem = ({ item }:{ item:any }) => (
-    <TouchableWithoutFeedback onPress={() => {}}>
+     <TouchableWithoutFeedback onPress={() => {}}>
       <View style={styles.listItem}>
+        { this.renderDiscount({ item }) }
         <Image
-          source={{ uri: item.image }}
+          source={{uri: item.image !== ""? item.image : undefined}}
           style={styles.image}
         />
 
         <View style={styles.contentContainer}>
           <Text style={styles.contentText}>{item.name}</Text>
-          <Text style={styles.contentText}>{item.price}</Text>
+          <Text style={styles.contentText}>R$ {item.price}</Text>
         </View>
 
-        <TouchableOpacity style={styles.moreContainer} onPress={() => this.props.navigation.navigate('PromotionDetails',{
-          id: item.id,
-          name: item.name,
-          price: item.price,
-          image: item.image,
-          description: item.description
-        })}>
+        <TouchableOpacity style={styles.moreContainer} onPress={() => this.handlePromotionDetail({item})}>
           <View style={styles.moreCol}>
               <Text style={styles.moreText}>Saiba Mais </Text>
               <MaterialIcons name="read-more" size={30} color="white" />
@@ -215,7 +274,7 @@ export default class App extends React.Component<HandleNextPage> {
         </TouchableOpacity>
 
 
-      </View>
+      </View> 
     </TouchableWithoutFeedback>
   )
 
@@ -228,6 +287,7 @@ export default class App extends React.Component<HandleNextPage> {
         style={{ flex: 1, backgroundColor: '#bdc6cf', marginTop: -140, paddingTop: 10, marginBottom: 10}}
         data={this.state.data}
         renderItem={this.renderItem}
+        ListFooterComponent={this.renderFooter}
         keyExtractor={item => item.id.toString()}
       />
     </View>
@@ -421,5 +481,38 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     fontSize: 10,
     color: '#FFF'
-  }
+  },
+
+  /*DISCOUNT PIN*/
+  discountCol: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#ff6600',
+    flexDirection: 'column',
+    padding: '2%',
+    borderRadius: 5
+  },
+  discountColEmpty: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#FFF',
+    flexDirection: 'column',
+    padding: '2%',
+    borderRadius: 5
+  },
+  titleDiscount: {
+    fontSize: 5,
+    color: '#FFF',
+    fontWeight: 'bold'
+  },
+  discountText: {
+    color: '#FFF',
+    fontWeight: 'bold'
+  },
+  
+    /* FOOTER */
+  loading: {
+    alignSelf: 'center',
+    marginVertical: 20,
+  },
 });

@@ -47,7 +47,7 @@ export default function Login(){
   }
 
   async function handleRegister(){
-    navigation.navigate('Cadastre-se');
+    navigation.navigate('Register');
   }
 
   return (
@@ -90,7 +90,7 @@ export default function Login(){
           <TouchableOpacity style={styles.btnRegister} onPress={handleRegister}>
             <Text style={styles.registerText}>Criar conta Gratuita</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.btnRegister} onPress={handleRegister}>
+          <TouchableOpacity style={styles.btnRegister} onPress={() => {}}>
             <Text style={styles.forgetText}>Esqueci minha Senha.</Text>
           </TouchableOpacity>
         </View>

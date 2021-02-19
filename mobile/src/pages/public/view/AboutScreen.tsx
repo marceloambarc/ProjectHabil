@@ -5,11 +5,11 @@ import { Feather, Ionicons, Entypo } from '@expo/vector-icons';
 
 
 function handleWhatsLucas() {
-  Linking.openURL("https://api.whatsapp.com/send?phone=555196215684&text=%20Olá%20Lucas!%20")
+  Linking.openURL(`https://api.whatsapp.com/send?phone=555196215684&text=Olá%20Lucas!%20Venho%20Através%20do%20Aplicativo%20CompreMaisAki`)
 }
 
 function handleWhtasMarcio() {
-  Linking.openURL("https://api.whatsapp.com/send?phone=555196156020&text=%20Olá%20Márcio!%20")
+  Linking.openURL(`https://api.whatsapp.com/send?phone=555196156020&text=Olá%20Márcio!%20Venho%20Através%20do%20Aplicativo%20CompreMaisAki`)
 }
 
 function handleHabilSite() {

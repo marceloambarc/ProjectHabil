@@ -13,6 +13,7 @@ interface NewPromotionParams {
 export default function NewPromotionScreen(){
   const [name, setName] = useState('');
   const [price, setPrice] = useState('');
+  const [discount, setDiscount] = useState('');
   const [description, setDescription] = useState('');
   const [images, setImages] = useState<string[]>([]);
 
@@ -29,6 +30,7 @@ export default function NewPromotionScreen(){
       description,
       company_id,
       images,
+      discount,
     });
   }
 
@@ -46,14 +48,14 @@ export default function NewPromotionScreen(){
 }
 
   async function handleSelectImages() {
-    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    const { status } = await ImagePicker.requestCameraPermissionsAsync();
     
     if (status !== 'granted') {
       alert('Precisamos de acesso a images');
       return;
     }
 
-    const result = await ImagePicker.launchImageLibraryAsync({
+    const result = await ImagePicker.launchCameraAsync({
       allowsEditing: true,
       quality: 1,
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
@@ -109,6 +111,14 @@ export default function NewPromotionScreen(){
             );
           })}
         </View>
+
+        <TextInput
+          style={styles.input}
+          keyboardType="number-pad"
+          placeholder={"Desconto"}
+          autoCorrect={false}
+          onChangeText={setDiscount}
+        />
 
         <View style={styles.btnContainer}>
           <TouchableOpacity style={styles.btnSubmit} onPress={handleSelectImages}>
