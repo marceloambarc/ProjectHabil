@@ -13,7 +13,7 @@ interface Props{
   route: any
 }
 
-const baseURL = 'http://192.168.15.58:8080/products/company_id';
+const baseURL = 'http://192.168.15.58:8080/companies/products/company_id/';
 
 function ProductsHeader(){
   const navigation = useNavigation();

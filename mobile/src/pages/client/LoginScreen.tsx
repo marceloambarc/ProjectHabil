@@ -15,27 +15,23 @@ export default function Login(){
   const [logo] = useState(new Animated.ValueXY({ x: 90, y: 90 }));
 
   async function handleAccess(){
-
-    const data = {cnpj, password}
     if(!cnpj || !password){
       alert("Credenciais Inválidas!");
       return;
     }
 
     try {
-      await api.post('auth', {
-        cnpj: data.cnpj,
-        password: data.password,
+      await api.post('companies/logon', {
+        cnpj: cnpj,
+        password: password,
       }).then(async res => {
-        var token = res.data.token;
-        var name = res.data.name;
         var id = res.data.id;
-        var images = res.data.images
+        var name = res.data.name;
+        var image = res.data.image;
         navigation.navigate('Home',{
-          name: name,
-          token: token,
           id: id,
-          images: images
+          name: name,
+          image: image,
         });
       }).catch(err => {
         alert(err);

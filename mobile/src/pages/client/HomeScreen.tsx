@@ -5,12 +5,8 @@ import Constants from "expo-constants";
 
 interface CompanyDataRouteParams {
   name: string,
-  token: string,
   id: number,
-  images: Array <{
-    id: number;
-    path: string;
-  }>;
+  image: string,
 }
 
 export default function HomeScreen(){
@@ -19,9 +15,8 @@ export default function HomeScreen(){
   const params = route.params as CompanyDataRouteParams;
 
   const companyName = params.name;
-  const companyToken = params.token;
   const companyId = params.id;
-  const companyImages = params.images;
+  const companyImage = params.image;
 
   return(
     <View style={styles.background}>
@@ -29,18 +24,16 @@ export default function HomeScreen(){
         <Text style={styles.title}>Bem-vindo {companyName}</Text>
 
         <View style={styles.companyImageContainer}>
-          {companyImages.map(image => { 
-            return(
+
+            
               <Image
-                key={image.id}
                 style={styles.companyImage}
-                source={{ uri: `http://192.168.15.58:8080/uploads/${image.path}` }}
+                source={{uri: `data:image/jpeg;base64,${companyImage}`}}
               />
-            );
-          })}
+          
         </View>
 
-        <TouchableOpacity style={styles.btnSubmit} onPress={() => navigation.navigate('SupplierPromotions',{
+        <TouchableOpacity style={styles.btnSubmit} onPress={() => navigation.navigate('SupplierPromotion',{
           companyId
         })}>
           <Text style={styles.submitText}>Visualizar minhas promoções</Text>

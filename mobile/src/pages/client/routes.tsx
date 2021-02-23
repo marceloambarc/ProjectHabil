@@ -24,7 +24,7 @@ export default function Root(){
       <Stack.Screen name="NewPromotion" component={ NewPromotionScreen } />
       <Stack.Screen name="NewPromotionOverview" component={ NewPromotionOverviewScreen } />
       <Stack.Screen name="SupplierPromotion" component={ SupplierPromotionScreen } />
-      <Stack.Screen name="SupplierPromotionOverviewS" component={ SupplierPromotionOverviewScreen } />
+      <Stack.Screen name="SupplierPromotionOverview" component={ SupplierPromotionOverviewScreen } />
       <Stack.Screen name="EditPromotion" component={ EditPromotionScreen } />
       <Stack.Screen name="EditPromotionOverview" component={ EditPromotionOverviewScreen } />
 

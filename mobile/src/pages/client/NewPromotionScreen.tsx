@@ -15,7 +15,9 @@ export default function NewPromotionScreen(){
   const [price, setPrice] = useState('');
   const [discount, setDiscount] = useState('');
   const [description, setDescription] = useState('');
-  const [images, setImages] = useState<string[]>([]);
+  const [base, setBase] = useState('');
+
+  const [image, setImage] = useState<string>('');
 
   const navigation = useNavigation();
   const route = useRoute();
@@ -29,7 +31,7 @@ export default function NewPromotionScreen(){
       price,
       description,
       company_id,
-      images,
+      image,
       discount,
     });
   }
@@ -59,6 +61,7 @@ export default function NewPromotionScreen(){
       allowsEditing: true,
       quality: 1,
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      base64: true,
     });
 
     if (result.cancelled) {
@@ -66,8 +69,10 @@ export default function NewPromotionScreen(){
     }
 
     const { uri: image } = result;
+    const { base64: imageBase } = result;
 
-    setImages([...images, image]);
+    setBase(imageBase!);
+    setImage(image);
   }
 
   return(
@@ -101,15 +106,12 @@ export default function NewPromotionScreen(){
         />
 
         <View style={styles.uploadedImagesContainer}>
-          {images.map(image => {
-            return (
-              <Image 
-                key={image}
-                source={{ uri: image }}
+      
+              <Image
+                source={{uri: image !== ""? image : undefined}}
                 style={styles.uploadedImage}
               />
-            );
-          })}
+  
         </View>
 
         <TextInput

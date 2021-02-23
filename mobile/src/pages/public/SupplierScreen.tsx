@@ -4,9 +4,9 @@ StyleSheet, FlatList, TouchableWithoutFeedback, SafeAreaView, ActivityIndicator 
 import { useNavigation } from '@react-navigation/native';
 import { SearchBar } from 'react-native-elements';
 import { Feather, AntDesign } from '@expo/vector-icons';
+import api from '../../services/api';
 
 const baseURL = 'http://192.168.15.200:8008/v1/companies/';
-const promoURL = 'http://192.168.15.200.8008/v1/products/';
 
 function WelcomeHeader(){
   const navigation = useNavigation();
@@ -62,29 +62,6 @@ export default class App extends Component<Props> {
       })
       .catch(error => {
         this.setState({ error, loading: false });
-      });
-
-    }catch(err){
-      alert(err);
-    }
-  }
-
-  loadPromo = async() => {
-    try{
-      if (this.state.promoLoading) return;
-      this.setState({ promoLoading: true });
-
-      fetch(promoURL)
-      .then(response => response.json())
-      .then(response => {
-        this.setState({
-          promoData: response,
-          error: response.error || null,
-          promoLoading: false,
-        });
-      })
-      .catch(error => {
-        this.setState({ error, promoLoading: false });
       });
 
     }catch(err){
@@ -172,24 +149,29 @@ export default class App extends Component<Props> {
     }
   }
 
-  renderPromo = () => {
-      if(this.state.promoData){
-        return(
-          <View style={styles.isPromoContainer}>
-            <View style={styles.isPromoRow}>
-              <Text style={styles.isPromoText}>Temos Promoções</Text><Feather name="percent" size={24} color="#FFF" />
+  renderPromo = async({item}:{item:any}) => {
+    try{
+      const isPromo = await api.get(`companies/products/company_id/${item.id}`);
+        if(isPromo){
+          return(
+            <View style={styles.isPromoContainer}>
+              <View style={styles.isPromoRow}>
+                <Text style={styles.isPromoText}>Temos Promoções</Text><Feather name="percent" size={24} color="#FFF" />
+              </View>
             </View>
-          </View>
-        );
-      }else{
-        return;
-      }
+          );
+        }else{
+          return;
+        }
+    }catch(err){
+      alert(err);
+    }
   }
 
   renderItem = ({ item }:{ item: any }) => (
     <TouchableWithoutFeedback onPress={() => this.handleGoToPromotion({item})}>
-      <ImageBackground source={{uri: item.image !== ""? item.image : undefined}} style={styles.image}>
-        { this.renderPromo() }
+      <ImageBackground source={{uri: `data:image/jpeg;base64,${item.image}`}} style={styles.image}>
+        { this.renderPromo({item}) }
         <View style={styles.titleContainer}>
           <Text style={styles.titleText}>{item.name}</Text>
         </View>

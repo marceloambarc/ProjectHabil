@@ -23,9 +23,10 @@ export default function Register(){
   const [uf, setUf] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [image, setImage] = useState<string>('');
+  const [keywords, setKeywords] = useState('');
+  const [base, setBase] = useState('');
 
-  const [tags, setTags] = useState('');
+  const [image, setImage] = useState<string>('');
 
   const [term_is_true, setTermIsTrue] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
@@ -42,37 +43,88 @@ export default function Register(){
       alert("Você deve aceitar os Termos de Uso")
       return;
     }
-    
-    const data = new FormData();
-    
-    try{
-      data.append('business', business);
-      data.append('cnpj', cnpj);
-      data.append('name', name);
-      data.append('phone', phone);
-      data.append('email', email);
-      data.append('address', address);
-      data.append('district', district);
-      data.append('city', city);
-      data.append('uf', uf);
-      data.append('password', password);
 
-      data.append('image', {
-        name: `image.jpg`,
-        type: 'image/jpg',
-        uri: image,
-      } as any);
+    if(business.length <= 3){
+      alert("Ramo Inválido");
+      return;
+    }else if(business === undefined){
+      alert("Ramo Inválido");
+      return;
+    }
+
+    if(name.length <= 3){
+      alert("Nome Inválido");
+      return;
+    }else if(name === undefined){
+      alert("Nome Inválido");
+      return;
+    }
+
+    if(cnpj.length < 18){
+      alert("CNPJ Inválido");
+      return;
+    }
+
+    if(phone.length < 13){
+      alert("Telefone Inváido");
+      return;
+    }
+
+    if(email.length < 7){
+      alert("E-mail Inválido");
+      return;
+    }
+
+    if(address.length < 3){
+      alert("Endereco Incorreto");
+      return;
+    }else if(address === undefined){
+      alert("Endereco Incorreto");
+      return;
+    }
+
+    if(district.length < 2){
+      alert("Bairro Incorreto");
+      return;
+    }else if(district === undefined){
+      alert("Bairro Incorrecto");
+      return;
+    }else if(city.length < 3){
+      alert("Cidade Incorreta");
+      return;
+    }else if(uf.length < 2){
+      alert("Unidade Federal Incorreta");
+      return;
+    }
+
+    if(keywords.length <= 0){
+      alert("Inserir Palavras-Chaves");
+      return;
+    }else if(keywords === undefined){
+      alert("Inserir Palavras-Chaves válidas");
+      return;
+    }
 
       try {
-        await api.post('companies', data);
-        navigation.navigate('Login');
+        await api.post('companies',{
+          business: business,
+          cnpj: cnpj,
+          name: name,
+          phone: phone,
+          email: email,
+          address: address,
+          district: district,
+          city: city,
+          uf: uf,
+          password: password,
+          image: base,
+          keywords: keywords
+        }).then(() => navigation.goBack());
       }catch(err){
         alert(err);
         return;
       }
-    }catch(err){
-      alert(err);
-    }
+
   }
 
   async function handleSelectImages() {
@@ -87,6 +139,7 @@ export default function Register(){
       allowsEditing: true,
       quality: 1,
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      base64: true,
     });
 
     if (result.cancelled) {
@@ -94,7 +147,9 @@ export default function Register(){
     }
 
     const { uri: image } = result;
+    const { base64: imageBase } = result;
 
+    setBase(imageBase!);
     setImage(image);
   }
 
@@ -196,8 +251,8 @@ export default function Register(){
         <Text style={styles.termText}>Insira as palavras-chaves separadas por vírgula</Text>
         <TextInput
         style={[styles.input, styles.keywords]}
-        value={tags}
-        onChangeText={setTags}
+        value={keywords}
+        onChangeText={setKeywords}
         autoCorrect={true}
         placeholder="Palavras-Chaves"
         multiline
