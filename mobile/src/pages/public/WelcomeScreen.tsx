@@ -19,12 +19,10 @@ function WelcomeScreen({ navigation }:{ navigation:any }){
 
   async function handleSearchTerm(){
     try{
-      
         const searchTerm = search;
         navigation.navigate('Supplier',{
           searchTerm
         });
-    
     }catch(err){
       alert(err);
     }
@@ -103,14 +101,16 @@ const styles = StyleSheet.create({
   headerContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingTop: 10,
+    paddingTop: 12,
+    paddingBottom: 10,
     paddingLeft: 10,
     paddingRight: 10
   },
   cmaLogo: {
     height: 20,
     width: 100,
-    marginLeft: 10
+    marginLeft: 10,
+    marginTop: 5,
   },
   icon: {
     marginRight: 10

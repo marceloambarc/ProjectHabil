@@ -25,25 +25,32 @@ export default function Login(){
         cnpj: cnpj,
         password: password,
       }).then(async res => {
-        var id = res.data.id;
-        var name = res.data.name;
-        var image = res.data.image;
-        navigation.navigate('Home',{
-          id: id,
-          name: name,
-          image: image,
-        });
+        if(!res.data.name){
+          alert("Credenciais Inválidas")
+        }else{
+          var id = res.data.id;
+          var name = res.data.name;
+          var image = res.data.image;
+          navigation.navigate('Home',{
+            id: id,
+            name: name,
+            image: image,
+          });
+        }
       }).catch(err => {
-        alert(err);
+        alert("Credenciais Inválidas");
       });
     }catch(err){
-      console.log(err);
       navigation.navigate('Login');
     }
   }
 
   async function handleRegister(){
     navigation.navigate('Register');
+  }
+
+  async function handleForgotPassword(){
+    alert("Ops! Tivemos um Erro, Entre em contato.");
   }
 
   return (
@@ -86,7 +93,7 @@ export default function Login(){
           <TouchableOpacity style={styles.btnRegister} onPress={handleRegister}>
             <Text style={styles.registerText}>Criar conta Gratuita</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.btnRegister} onPress={() => {}}>
+          <TouchableOpacity style={styles.btnRegister} onPress={handleForgotPassword}>
             <Text style={styles.forgetText}>Esqueci minha Senha.</Text>
           </TouchableOpacity>
         </View>

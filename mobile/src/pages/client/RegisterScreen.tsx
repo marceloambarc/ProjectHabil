@@ -6,10 +6,12 @@ Image, TouchableOpacity, StyleSheet,
 Modal, TouchableHighlight, Switch, Dimensions, 
 TouchableWithoutFeedback } from 'react-native';
 
-import * as ImagePicker from 'expo-image-picker';
 import { TextInputMask } from 'react-native-masked-text';
 import { useNavigation } from '@react-navigation/native';
 import api from '../../services/api';
+
+import * as ImagePicker from 'expo-image-picker';
+import * as ImageManipulator from 'expo-image-manipulator';
 
 export default function Register(){
   const [business, setBusiness] = useState('');
@@ -26,7 +28,7 @@ export default function Register(){
   const [keywords, setKeywords] = useState('');
   const [base, setBase] = useState('');
 
-  const [image, setImage] = useState<string>('');
+  const [image, setImage] = useState('');
 
   const [term_is_true, setTermIsTrue] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
@@ -119,15 +121,15 @@ export default function Register(){
           password: password,
           image: base,
           keywords: keywords
-        }).then(() => navigation.goBack());
+        }).then(() => navigation.navigate('Início'));
       }catch(err){
-        alert(err);
+        alert("Erro de Servidor.");
         return;
       }
 
   }
 
-  async function handleSelectImages() {
+  async function handleSelectImage() {
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
     
     if (status !== 'granted') {
@@ -137,20 +139,24 @@ export default function Register(){
 
     const result = await ImagePicker.launchImageLibraryAsync({
       allowsEditing: true,
-      quality: 1,
+      quality: 0.5,
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      base64: true,
     });
 
     if (result.cancelled) {
       return;
+    }else{
+      const { uri: image } = result;
+      setImage(image);
+
+      const manipulatedImage = await ImageManipulator.manipulateAsync(
+        image,
+        [{ resize: {width: 251,height: 251} }],
+        { compress: 1, base64: true }
+      );
+
+      setBase(manipulatedImage.base64!);
     }
-
-    const { uri: image } = result;
-    const { base64: imageBase } = result;
-
-    setBase(imageBase!);
-    setImage(image);
   }
 
   async function handleRemoveItem(){
@@ -263,6 +269,7 @@ export default function Register(){
         <View style={styles.passwordContainer}>
           <TextInput
           style={styles.passwordInput}
+          secureTextEntry={true}
           placeholder="Senha"
           autoCorrect={false}
           value={password}
@@ -272,6 +279,7 @@ export default function Register(){
 
           <TextInput
           style={styles.passwordInput}
+          secureTextEntry={true}
           placeholder="Confirme Senha"
           autoCorrect={false}
           caretHidden={true}
@@ -285,7 +293,6 @@ export default function Register(){
           <TouchableWithoutFeedback onPress={handleRemoveItem}>
             <View style={styles.imageContainer}>  
                 <Image 
-                  key={image}
                   source={{uri: image !== ""? image : undefined}}
                   style={styles.uploadedImage}
                 />
@@ -296,7 +303,7 @@ export default function Register(){
         </View>
         
         <View style={styles.btnContainer}>
-          <TouchableOpacity style={styles.btnSubmit} onPress={handleSelectImages}>
+          <TouchableOpacity style={styles.btnSubmit} onPress={handleSelectImage}>
             <Text style={styles.submitText}>Selecionar Foto</Text>
           </TouchableOpacity>
         </View>

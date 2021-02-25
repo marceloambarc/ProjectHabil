@@ -9,11 +9,12 @@ interface Props{
   navigation: any,
   companyName: string,
   companyId: number,
+  image: string,
   id: number,
   route: any
 }
 
-const baseURL = 'http://192.168.15.58:8080/companies/products/company_id/';
+const baseURL = 'http://192.168.15.200:8008/v1/companies/products/company_id/';
 
 function ProductsHeader(){
   const navigation = useNavigation();
@@ -23,7 +24,7 @@ function ProductsHeader(){
       <TouchableOpacity style={styles.backBtn} onPress={() => navigation.navigate('Home')}>
           <Feather name="arrow-left" size={28} color="#e82041" />
       </TouchableOpacity>
-      <Text style={styles.headerTitle}>Meus Produtos</Text>
+      <Text style={styles.headerTitle}>Minhas Promoções</Text>
     </View>
   );
 }
@@ -39,18 +40,18 @@ export default class App extends React.Component<Props> {
   }
 
   loadRepositories = async () => {
-    if (this.state.loading) return;
-
-    this.setState({ loading: true });
-
     const { route } = this.props;
     const params = route.params as Props
     const id = params.companyId;
 
+    if (this.state.loading) return;
+
+    this.setState({ loading: true });
+
     const response = await fetch(`${baseURL}/${id}`);
     const repositories = await response.json();
     this.setState({ 
-      data: repositories,
+      data: [...this.state.data, ...repositories],
       loading: false,
     });
   }
@@ -60,7 +61,9 @@ export default class App extends React.Component<Props> {
       id: item.id,
       name: item.name,
       price: item.price,
+      image: item.image,
       description: item.description,
+      discount: item.discount,
       company_id: item.company_id,
       images: item.images,
     });
@@ -77,7 +80,7 @@ export default class App extends React.Component<Props> {
             style: "cancel"
           },
           { text: "OK", 
-          onPress: () => api.delete(`products/${item.id}`).then(this.props.navigation.navigate('Home'))
+          onPress: async() => await api.delete(`products/${item.id}`).then(this.props.navigation.navigate('Home'))
         }
         ],
         { cancelable: false },
@@ -94,21 +97,18 @@ export default class App extends React.Component<Props> {
       name: item.name,
       price: item.price,
       description: item.description,
+      discount: item.discount,
       company_id: item.company_id,
-      images: item.images,
+      image: item.image,
     });
   }
 
   renderItem = ({item}:{item: any}) =>(
       <TouchableWithoutFeedback onPress={() => this.handleView({item})}>
         <View style={styles.listItem}>
-          
-            {/* IMAGE */}
-            {item.images.map((image:any) => {
-              return(
-                <Image source={{uri: image.url}} key={item.id.toString()} style={styles.image} />
-              );
-            })}
+  
+          {/* IMAGE */}
+          <Image source={{uri: `data:image/jpeg;base64,${item.image}`}} style={styles.image} />
     
             {/* CONTENT */}
             <View style={styles.contentContainer}>
@@ -141,6 +141,14 @@ export default class App extends React.Component<Props> {
     );
   };
 
+  renderEmpty = () => {
+    return  (
+      <View style={styles.loading}>
+        <Text style={styles.contentText}>Procurando Seus Produtos...</Text>
+      </View>
+    )
+  }
+
   render(){
     return (
       <View style={styles.container}>
@@ -151,6 +159,7 @@ export default class App extends React.Component<Props> {
           renderItem={this.renderItem}
           extraData={this.state}
           ListFooterComponent={this.renderFooter}
+          ListEmptyComponent={this.renderEmpty}
           keyExtractor={item => item.id.toString()}
         />
       </View>

@@ -8,7 +8,10 @@ interface ProductDataRouteParams {
   price: string,
   description: string,
   company_id: string,
-  images: string[];
+  validate: string,
+  image: string,
+  base: string,
+  discount: string,
 }
 
 export default function NewPromotionOverviewScreen(){
@@ -20,27 +23,25 @@ export default function NewPromotionOverviewScreen(){
   const productPrice = params.price;
   const productDescription = params.description;
   const companyId = params.company_id;
-  const productImages = params.images;
+  const productImage = params.base;
+  const productValidate = params.validate;
+  const productDiscount = params.discount;
 
   async function handleCreateProduct(){
-    const data = new FormData();
-
-    data.append('name', productName);
-    data.append('price', productPrice);
-    data.append('description', productDescription);
-    data.append('company_id', companyId);
-    
-    productImages.forEach((image, index) => {
-      data.append('images', {
-        name: `image_${index}.jpg`,
-        type: `image/jpg`,
-        uri: image,
-      } as any)
-    })
-
     try {
-      await api.post('products', data)
-      navigation.navigate('Home');
+      await api.post('products',{
+        name: productName,
+        price: productPrice,
+        description: productDescription,
+        date: "teste3",
+        company_id: companyId,
+        image: productImage,
+        validate: productValidate,
+        discount: productDiscount,
+        is_active: 0
+      }).then(() => {
+        navigation.navigate('Home');
+      })
     }catch(err){
       alert(err);
     }
@@ -54,20 +55,16 @@ export default function NewPromotionOverviewScreen(){
             <Text style={styles.productTitle}>{productName}</Text>
             <Text style={styles.productTitle}>Valor: R$ {productPrice}</Text>
           </View>
-          <Text style={styles.productText}>Descrição: {productDescription}
-          </Text>
+          <Text style={styles.productText}>Descrição: {productDescription}</Text>
+          <Text style={styles.productText}>Validade: {productValidate} </Text>
+          <Text style={styles.productText}>Desconto: {productDiscount}% </Text>
         </View>
 
         <View style={styles.productImageContainer}>
-          {productImages.map(image => {
-            return(
-              <Image
-                key={image}
-                style={styles.productImage}
-                source={{ uri: image }}
-              />
-            );
-          })}
+        <Image
+            source={{uri: `data:image/jpeg;base64,${productImage}`}}
+            style={{width: 200, height: 200}}
+          />
         </View>
 
         <TouchableOpacity style={styles.btnEdit} onPress={() => navigation.navigate('NewPromotion')}>
@@ -116,8 +113,8 @@ const styles = StyleSheet.create({
     justifyContent:'center',
   },
   productImage: {
-    width: 100,
-    height: 100,
+    width: 300,
+    height: 300,
     borderRadius: 20,
     marginBottom: 32,
   },

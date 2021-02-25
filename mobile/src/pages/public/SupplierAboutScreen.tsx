@@ -49,7 +49,7 @@ export default function SupplierAboutScreen(){
               source={require("../../../assets/cmatextlogo.png")}
             />
           <Image
-            source={{ uri: companyImage }}
+            source={{ uri: `data:image/jpeg;base64,${companyImage}` }}
             style={{width: 250, height: 170, marginBottom: 7, borderRadius: 20}}
           />
 

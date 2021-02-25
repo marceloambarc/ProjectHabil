@@ -42,10 +42,10 @@ export default function HomeScreen(){
         <TouchableOpacity style={styles.btnNew} onPress={() => navigation.navigate('NewPromotion', {
           companyId
         })}>
-          <Text style={styles.submitText}>Cadastrar promoções</Text>
+          <Text style={styles.submitText}>Cadastrar promoção</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.btnLogout} onPress={() => navigation.navigate('Main')}>
+        <TouchableOpacity style={styles.btnLogout} onPress={() => navigation.navigate('Login')}>
           <Text style={styles.outText}>Sair</Text>
         </TouchableOpacity>
 

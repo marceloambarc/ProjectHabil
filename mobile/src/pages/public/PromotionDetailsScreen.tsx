@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, SafeAreaView, StyleSheet, Image, TouchableOpacity,
 ScrollView, Modal, TouchableHighlight, Dimensions, Linking } from 'react-native';
-import { SearchBar } from 'react-native-elements';
 import { Feather, Fontisto, Ionicons, AntDesign } from '@expo/vector-icons';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import ImageZoom from 'react-native-image-pan-zoom';
@@ -16,7 +15,6 @@ function PromotionDetailsHeader(){
   const params = route.params as handleCompanyParams;
 
   const navigation = useNavigation();
-  const [search, setSearch] = useState('');
   const companyName = params.companyName;
   const searchTerm = params.searchTerm;
 
@@ -28,27 +26,11 @@ function PromotionDetailsHeader(){
             style={styles.cmaLogo}
             source={require("../../../assets/cmatextlogo.png")}
           />
+          <TouchableOpacity style={styles.homeButton} onPress={() => navigation.navigate('Welcome')}>
+            <AntDesign name="home" size={24} color="black" />
+          </TouchableOpacity>
           <TouchableOpacity onPress={() => navigation.navigate('Promotions')}>
             <AntDesign style={styles.icon} name="back" size={24} color="#191919" />
-          </TouchableOpacity>
-        </View>
-      </View>
-      <View style={styles.searchRow}>
-        <View style={styles.searchBarContainer}>
-          <SearchBar
-            style={styles.searchBar}
-            placeholder="Procure Aki as promoções..."
-            lightTheme
-            round
-            autoCorrect={true}
-            onChangeText={setSearch}
-            value={search}
-          />
-        </View>
-        <View style={styles.searchBtnContainer}>
-          <TouchableOpacity style={styles.searchBtn} onPress={() => navigation.navigate('Supplier')}>
-            <Feather name="search" size={20} color="white" />
-            <Text style={styles.searchBtnText}>Procurar</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -135,13 +117,13 @@ export default function PromotionDetailsScreen(){
             
             <Image
               style={{width:'100%', height: '100%', borderRadius: 20}}
-              source={{ uri: productImage }}
+              source={{ uri: `data:image/jpeg;base64,${productImage}` }}
             />
             
           </ImageZoom>
           </View>
           <View style={styles.productDescription}>
-            <View style={{flexDirection: 'row'}}>
+            <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
               <View>
                 <View>
                   <Text style={styles.productTextPriceTitle}>Preço sem Desconto:</Text><Text style={styles.productTextPrice}> R$ {productPrice}</Text>
@@ -248,7 +230,8 @@ const styles = StyleSheet.create({
   headerContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingTop: 10,
+    paddingTop: 12,
+    paddingBottom: 10,
     paddingLeft: 10,
     paddingRight: 10
   },
@@ -265,6 +248,9 @@ const styles = StyleSheet.create({
   },
   companyTitle: {
     marginLeft: '7%'
+  },
+  homeButton: {
+    marginRight: 40,
   },
 
   /* SEARCH */
@@ -304,16 +290,16 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: '#8f98a1',
     paddingLeft: '12%',
-    paddingRight: '30%',
+    paddingRight: '20%',
     paddingTop: 2
-    },
+  },
 
     /*BODY*/
     container: {
       alignItems: 'center',
       height: '100%',
       flex: 1,
-      paddingHorizontal: 10
+      paddingHorizontal: 5
     },
     borderContainer: {
       backgroundColor: '#FFF',
@@ -332,7 +318,7 @@ const styles = StyleSheet.create({
     productTextPrice: {
       fontSize: 26,
       marginBottom: 4,
-      justifyContent: 'flex-end'
+      justifyContent: 'space-between'
     },
     productTextPriceTitle: {
       fontSize: 10,
@@ -345,14 +331,14 @@ const styles = StyleSheet.create({
     productTextDescription: {
       fontSize: 16,
       marginBottom: 4,
-      textAlign: 'justify'
+      textAlign: 'center'
     },
 
   /*MODAL BUTTON*/
   moreContainer: {
     backgroundColor: '#ff6600',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'flex-end',
     borderRadius: 7,
     padding: 7
   },

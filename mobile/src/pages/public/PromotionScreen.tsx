@@ -1,25 +1,25 @@
-import React, { useState } from 'react';
+import React, { useState, PureComponent } from 'react';
 import { View, Text, SafeAreaView, TouchableOpacity,
-StyleSheet, Image, TouchableWithoutFeedback, FlatList, Linking, ActivityIndicator } from 'react-native';
+StyleSheet, Image, TouchableWithoutFeedback, FlatList, Linking } from 'react-native';
 import { Feather, Fontisto, Ionicons, MaterialIcons, Entypo, AntDesign } from '@expo/vector-icons';
-import { SearchBar } from 'react-native-elements';
 import { useNavigation, useRoute } from '@react-navigation/native';
 
 interface Props {
-  searchTerm: any,
-  companyId: number,
-  companyName: any,
-  companyImage: any,
-  companyCnpj: any,
-  companyBusiness: any,
-  companyPhone: any,
-  companyEmail: any,
-  companyAddress: any,
-  companyDistrict: any,
-  companyCity: any,
-  companyUf: any,
-  route: any
+    searchTerm: string,
+    companyId: number,
+    companyName: any,
+    companyImage: any,
+    companyCnpj: any,
+    companyBusiness: any,
+    companyPhone: any,
+    companyEmail: any,
+    companyAddress: any,
+    companyDistrict: any,
+    companyCity: any,
+    companyUf: any,
+    route: any
 }
+
 
 function PromotionHeader() {
   const route = useRoute();
@@ -28,7 +28,7 @@ function PromotionHeader() {
   const searchTerm = params.searchTerm;
 
   const navigation = useNavigation();
-  const [search, setSearch] = useState('');
+
   return (
     <SafeAreaView>
       <View style={styles.headerBackground}>
@@ -37,27 +37,11 @@ function PromotionHeader() {
             style={styles.cmaLogo}
             source={require("../../../assets/cmatextlogo.png")}
           />
+          <TouchableOpacity style={styles.homeButton} onPress={() => navigation.navigate('Welcome')}>
+            <AntDesign name="home" size={24} color="black" />
+          </TouchableOpacity>
           <TouchableOpacity onPress={() => navigation.navigate('Supplier')}>
             <AntDesign style={styles.icon} name="back" size={24} color="#191919" />
-          </TouchableOpacity>
-        </View>
-      </View>
-      <View style={styles.searchRow}>
-        <View style={styles.searchBarContainer}>
-          <SearchBar
-            style={styles.searchBar}
-            placeholder="Procure Aki as promoções..."
-            lightTheme
-            round
-            autoCorrect={true}
-            onChangeText={setSearch}
-            value={search}
-          />
-        </View>
-        <View style={styles.searchBtnContainer}>
-          <TouchableOpacity style={styles.searchBtn} onPress={() => navigation.navigate('Supplier')}>
-            <Feather name="search" size={20} color="white" />
-            <Text style={styles.searchBtnText}>Procurar</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -124,7 +108,7 @@ function CompanyCard(){
       <View style={styles.companyContainer}>
         <View style={styles.imageContainer}>
           <Image 
-            source={{ uri: companyImage }}
+            source={{ uri: `data:image/jpeg;base64,${companyImage}`}}
             style={styles.companyImage}
             key={companyId}
           />
@@ -174,9 +158,9 @@ interface HandleNextPage {
   route: any,
 }
 
-const promoBaseURL = 'http://192.168.15.200:8008/v1/companies/products/company_id/'
+const baseURL = 'http://192.168.15.200:8008/v1/companies/products/company_id';
 
-export default class App extends React.Component<HandleNextPage> {
+export default class App extends PureComponent<HandleNextPage> {
   state = {
     data: [],
     loading: false,
@@ -187,46 +171,23 @@ export default class App extends React.Component<HandleNextPage> {
   }
 
   loadRepositories = async () => {
-    if (this.state.loading) return;
+    if(this.state.loading) return;
 
-    this.setState({ loading: true });
     const { route } = this.props;
     const params = route.params as Props;
-    const companyId = params.companyId;
+    const companyId = params.companyId
 
-    const response = await fetch(`${promoBaseURL}/${companyId}`);
-    const repositories = await response.json();
-    this.setState({
-      data: repositories,
-      loading: false,
-    });
-  }
+    this.setState({ loading: true });
+    const response = await fetch(`${baseURL}/${companyId}`);
+    if(response.ok) {
+      const repositories = await response.json();
 
-  renderFooter = () => {
-    if(!this.state.loading) return null;
-    return(
-      <View style={styles.loading}>
-        <ActivityIndicator />
-      </View>
-    )
-  }
-
-  renderDiscount({item}:{item: any}) {
-    if(item > 0){
-      return(
-        <View style={styles.discountCol}>
-          <Text style={styles.titleDiscount}>DESCONTO</Text>
-          <Text style={styles.discountText}>{item.discount}</Text>
-          <Feather name="percent" size={16} color="#FFF" />
-        </View>
-      );
-    }else{
-      return (
-        <View style={styles.discountColEmpty}>
-          <Text style={styles.discountText}>{item.discount}</Text><Feather name="percent" size={16} color="#FFF" />
-        </View>
-      )
+      this.setState({
+        data: [...this.state.data, ...repositories],
+        loading: false,
+      });
     }
+    return;
   }
 
   handlePromotionDetail = async({item}:{item:any}) => {
@@ -244,6 +205,7 @@ export default class App extends React.Component<HandleNextPage> {
       price: item.price,
       image: item.image,
       description: item.description,
+      date: item.date,
       discount: item.discount,
       companyName: companyName,
       companyEmail: companyEmail,
@@ -252,12 +214,19 @@ export default class App extends React.Component<HandleNextPage> {
     })
   }
 
+  renderEmpty = () => {
+    return (
+    <View>
+      <Text style={{textAlign: 'center'}}>Procurando produtos...</Text>
+    </View>
+    );
+  }
+
   renderItem = ({ item }:{ item:any }) => (
      <TouchableWithoutFeedback onPress={() => {}}>
       <View style={styles.listItem}>
-        { this.renderDiscount({ item }) }
         <Image
-          source={{uri: item.image !== ""? item.image : undefined}}
+          source={{uri: `data:image/jpeg;base64,${item.image}`}}
           style={styles.image}
         />
 
@@ -287,8 +256,8 @@ export default class App extends React.Component<HandleNextPage> {
         style={{ flex: 1, backgroundColor: '#bdc6cf', marginTop: -140, paddingTop: 10, marginBottom: 10}}
         data={this.state.data}
         renderItem={this.renderItem}
-        ListFooterComponent={this.renderFooter}
-        keyExtractor={item => item.id.toString()}
+        keyExtractor={(_item, index) => index.toString()}
+        ListEmptyComponent={this.renderEmpty}
       />
     </View>
     );
@@ -303,7 +272,8 @@ const styles = StyleSheet.create({
   headerContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingTop: 10,
+    paddingTop: 12,
+    paddingBottom: 10,
     paddingLeft: 10,
     paddingRight: 10
   },
@@ -318,51 +288,13 @@ const styles = StyleSheet.create({
     width: 100,
     marginLeft: 10
   },
-
-  /* SEARCH */
-  searchRow: {
-    flexDirection: 'row',
-    width: '100%',
-  },
-  searchBarContainer: {
-    width: '80%'
-  },
-  searchBar: {
-    width: '100%'
-  },
-  searchBtnContainer: {
-    width: '20%',
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
-  searchBtn: {
-    width: 90,
-    padding: 10,
-    paddingRight: 7,
-    backgroundColor: '#ff6600',
-    borderRadius: 10
-  },
-  searchBtnText: {
-    fontSize: 10,
-    color: '#FFF'
-  },
-
-  /* FOUND BANNER */
-  foundContainer: {
-    backgroundColor: '#bdc6cf',
-    height: 25,
-  },
-  foundText: {
-    fontSize: 12,
-    color: '#8f98a1',
-    paddingLeft: '12%',
-    paddingRight: '30%',
-    paddingTop: 2
+  homeButton: {
+    marginRight: 40,
   },
 
   /* COMPANY CARD */
   companyContainer: {
-    paddingTop: 10,
+    paddingTop: 31,
     paddingLeft: 10,
     paddingRight: 10
   },
@@ -514,5 +446,18 @@ const styles = StyleSheet.create({
   loading: {
     alignSelf: 'center',
     marginVertical: 20,
+  },
+
+  /* FOUND BANNER */
+  foundContainer: {
+    backgroundColor: '#bdc6cf',
+    height: 25,
+  },
+  foundText: {
+    fontSize: 12,
+    color: '#8f98a1',
+    paddingLeft: '12%',
+    paddingRight: '20%',
+    paddingTop: 2
   },
 });

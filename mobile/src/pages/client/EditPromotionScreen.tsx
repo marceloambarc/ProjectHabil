@@ -5,8 +5,9 @@ TouchableOpacity, StyleSheet, ScrollView, Image,
 Platform, 
 TouchableWithoutFeedback} from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
-import {Feather} from '@expo/vector-icons';
+import { Feather, Ionicons } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
+import * as ImageManipulator from 'expo-image-manipulator';
 
 interface EditPromotionParams {
   id: number,
@@ -14,10 +15,8 @@ interface EditPromotionParams {
   price: string,
   description: string,
   company_id: string,
-  images: Array <{
-    id: number;
-    url: string;
-  }>;
+  discount: string;
+  image: string,
 }
 
 export default function EditProductScreen(){
@@ -29,26 +28,29 @@ export default function EditProductScreen(){
   const editName = params.name;
   const editPrice = params.price;
   const editDescription = params.description;
+  const editImage = params.image;
+  const editDiscount = params.discount;
+
   const company_id = params.company_id;
-  const editImages = params.images;
 
   const [id, setId] = useState(`${editId}`);
   const [name, setName] = useState(`${editName}`);
   const [price, setPrice] = useState(`${editPrice}`);
   const [description, setDescription] = useState(`${editDescription}`);
-  const [images, setImages] = useState<string[]>([editImages[0].url]);
-  
-  const [mode, setMode] = useState('date');
-  const [show, setShow] = useState(false);
+  const [discount, setDiscount] = useState(`${editDiscount}`);
+
+  const [image, setImage] = useState('');
+  const [base, setBase] = useState(`${editImage}`)
 
   async function handleNextStepProduct() {
     navigation.navigate('EditPromotionOverview', {
       id,
       name,
       price,
+      discount,
       description,
       company_id,
-      images
+      image: base,
     });
   }
 
@@ -57,7 +59,7 @@ export default function EditProductScreen(){
   
     return(
       <View style={styles.header}>
-        <TouchableOpacity style={styles.backBtn} onPress={() => navigation.navigate('SupplierPromotions')}>
+        <TouchableOpacity style={styles.backBtn} onPress={() => navigation.navigate('SupplierPromotion')}>
             <Feather name="arrow-left" size={28} color="#e82041" />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Editar Promoção</Text>
@@ -65,31 +67,70 @@ export default function EditProductScreen(){
     );
 }
 
-  async function handleSelectImages() {
-    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
-    
-    if (status !== 'granted') {
-      alert('Precisamos de acesso a images');
-      return;
-    }
-
-    const result = await ImagePicker.launchImageLibraryAsync({
-      allowsEditing: true,
-      quality: 1,
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
-    });
-
-    if (result.cancelled) {
-      return;
-    }
-
-    const { uri: image } = result;
-
-    setImages([...images, image]);
+async function handleSelectImage() {
+  const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+  
+  if (status !== 'granted') {
+    alert('Precisamos de acesso');
+    return;
   }
 
+  const result = await ImagePicker.launchImageLibraryAsync({
+    allowsEditing: true,
+    quality: 0.5,
+    mediaTypes: ImagePicker.MediaTypeOptions.Images,
+    aspect: [1, 1],
+  });
+
+  if (result.cancelled) {
+    return;
+  }else{
+    const { uri: image } = result;
+    setImage(image);
+
+    const manipulatedImage = await ImageManipulator.manipulateAsync(
+      image,
+      [{ resize: {width: 251,height: 251} }],
+      { compress: 1, base64: true }
+    );
+
+    setBase(manipulatedImage.base64!);
+  }
+}
+
+async function handleTakePicture() {
+  const { status } = await ImagePicker.requestCameraPermissionsAsync();
+
+  if(status !== 'granted'){
+    alert('Precisamos de acesso');
+    return;
+  }
+
+  const result = await ImagePicker.launchCameraAsync({
+    allowsEditing: true,
+    quality: 0.5,
+    mediaTypes: ImagePicker.MediaTypeOptions.Images,
+    aspect: [1, 1],
+  });
+
+  if (result.cancelled) {
+    return;
+  }else{
+    const { uri: image } = result;
+    setImage(image);
+
+    const manipulatedImage = await ImageManipulator.manipulateAsync(
+      image,
+      [{ resize: {width: 251,height: 251} }],
+      { compress: 1, base64: true }
+    );
+
+  setBase(manipulatedImage.base64!);
+  }
+}
+
   async function handleRemoveItem(){
-    setImages([]);
+    setImage('');
   }
 
   return(
@@ -108,8 +149,9 @@ export default function EditProductScreen(){
 
         <TextInput
           style={styles.input}
-          placeholder={"Valor"}
+          placeholder="Preço"
           autoCorrect={false}
+          keyboardType='number-pad'
           value={price}
           onChangeText={setPrice}
         />
@@ -125,27 +167,42 @@ export default function EditProductScreen(){
           onChangeText={setDescription}
         />
 
+        <TextInput
+          style={styles.input}
+          placeholder={"Desconto"}
+          keyboardType='number-pad'
+          autoCorrect={false}
+          value={discount}
+          onChangeText={setDiscount}
+        />
+
           <View style={styles.uploadedImagesContainer}>
             <TouchableWithoutFeedback onPress={handleRemoveItem}>
               <View style={styles.imageContainer}>
-                {images.map(image => {
-                  return (
+                
                     <Image
-                      key={image.toString()}
-                      source={{ uri: image }}
+                      source={{uri: `data:image/jpeg;base64,${base}`}}
                       style={styles.uploadedImage}
                     />
-                  );
-                })}
+                  
                 <Text style={styles.uploadedImageText}>Toque para remover.</Text>
               </View>
             </TouchableWithoutFeedback>
           </View>
 
         <View style={styles.btnContainer}>
-          <TouchableOpacity style={styles.btnSubmit} onPress={handleSelectImages}>
-            <Text style={styles.submitText}>Selecionar Foto</Text>
-          </TouchableOpacity>
+          <View style={styles.galleryButtonsRow}>
+            <View style={styles.galleryButtonsCol}>
+              <TouchableOpacity style={styles.btnSubmit} onPress={handleTakePicture}>
+                <Feather name="camera" size={24} color="#FFF" />
+              </TouchableOpacity>
+            </View>
+            <View style={styles.galleryButtonsCol}>
+              <TouchableOpacity style={styles.btnSubmit} onPress={handleSelectImage}>
+                <Ionicons name="albums-outline" size={24} color="#FFF" />
+              </TouchableOpacity>
+            </View>
+          </View>
 
           <TouchableOpacity style={styles.btnSubmit} onPress={handleNextStepProduct}>
             <Text style={styles.submitText}>Visualizar</Text>
@@ -251,6 +308,18 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom: 32,
+  },
+
+  /*BUTTONS*/
+  galleryButtonsRow: {
+    display:'flex',
+    flexDirection: 'row',
+    width: '60%'
+  },
+  galleryButtonsCol: {
+    flexDirection: 'column',
+    width: '50%',
+    height: 100,
   },
 
   /*HEADER*/

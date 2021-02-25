@@ -10,8 +10,9 @@ interface ProductDataRouteParams {
   name: string,
   price: string,
   description: string,
+  discount: string,
   company_id: string,
-  images: string[];
+  image: string;
 }
 
 export default function EditPromotionOverviewScreen(){
@@ -23,30 +24,26 @@ export default function EditPromotionOverviewScreen(){
   const productName = params.name;
   const productPrice = params.price;
   const productDescription = params.description;
+  const productImage = params.image;
+  const productDiscount = params.discount;
+
   const companyId = params.company_id;
-  const productImages = params.images;
 
   const [modalVisible, setModalVisible] = useState(false);
 
   async function handleEditPromotion(){
-    const data = new FormData();
-
-    data.append('id', productId);
-    data.append('name', productName);
-    data.append('price', productPrice);
-    data.append('description', productDescription);
-    data.append('company_id', companyId);
-    
-    productImages.forEach((image, index) => {
-      data.append('images', {
-        name: `image_${index}.jpg`,
-        type: `image/jpg`,
-        uri: image,
-      } as any)
-    })
-
     try {
-      await api.put(`products`, data)
+      await api.put(`products/${productId}`,{
+        name: productName,
+        price: productPrice,
+        description: productDescription,
+        date: Date.now(),
+        company_id: companyId,
+        image: productImage,
+        validate: '0',
+        discount: productDiscount,
+        is_active: 0,
+      })
       navigation.navigate('Home');
     }catch(err){
       alert(err);
@@ -58,11 +55,13 @@ export default function EditPromotionOverviewScreen(){
       <View style={styles.container}>
         <View style={styles.textContainer}>
           <View style={styles.titleContainer}>
+          <Text style={styles.productTitle}>{productId}</Text>
             <Text style={styles.productTitle}>{productName}</Text>
             <Text style={styles.productTitle}>Valor: R$ {productPrice}</Text>
           </View>
-          <Text style={styles.productText}>Descrição: {productDescription}
-          </Text>
+          <Text style={styles.productText}>Descrição: {productDescription}</Text>
+          <Text style={styles.productText}>Desconto: {productDiscount}%</Text>
+          <Text style={styles.productText}>{companyId}</Text>
         </View>
 
         
@@ -70,15 +69,11 @@ export default function EditPromotionOverviewScreen(){
           <TouchableOpacity onPress={() => {
             setModalVisible(true);
           }}>
-            {productImages.map(image => {
-              return(
-                <Image
-                  key={image}
-                  style={styles.productImage}
-                  source={{ uri: image }}
-                />
-              );
-            })}
+            <Image
+              style={styles.productImage}
+              source={{uri: `data:image/jpeg;base64,${productImage}`}}
+            />
+             
           </TouchableOpacity>
         </View>
 
@@ -97,15 +92,11 @@ export default function EditPromotionOverviewScreen(){
           visible={modalVisible}
         >
           <View style={styles.modalView}>
-            {productImages.map(image => {
-              return(
-                <Image
-                  key={image}
-                  style={styles.modalImg}
-                  source={{ uri: image }}
-                />
-              );
-            })}
+            
+            <Image
+              style={styles.modalImg}
+              source={{uri: `data:image/jpeg;base64,${productImage}`}}
+            />
             <TouchableHighlight onPress={() => {
               setModalVisible(!modalVisible);
               }}

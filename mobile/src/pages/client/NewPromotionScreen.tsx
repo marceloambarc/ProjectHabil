@@ -1,10 +1,12 @@
 import * as React from 'react';
 import { useState } from 'react';
 import { View, Text, TextInput, 
-TouchableOpacity, StyleSheet, ScrollView, Image } from 'react-native';
+TouchableOpacity, StyleSheet, ScrollView, Image} from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
-import { Feather } from '@expo/vector-icons';
+
+import { Feather, Ionicons } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
+import * as ImageManipulator from 'expo-image-manipulator';
 
 interface NewPromotionParams {
   companyId: string,
@@ -15,9 +17,9 @@ export default function NewPromotionScreen(){
   const [price, setPrice] = useState('');
   const [discount, setDiscount] = useState('');
   const [description, setDescription] = useState('');
-  const [base, setBase] = useState('');
 
-  const [image, setImage] = useState<string>('');
+  const [base, setBase] = useState('');
+  const [image, setImage] = useState('');
 
   const navigation = useNavigation();
   const route = useRoute();
@@ -31,7 +33,8 @@ export default function NewPromotionScreen(){
       price,
       description,
       company_id,
-      image,
+      base,
+      validate: '9a',
       discount,
     });
   }
@@ -47,32 +50,68 @@ export default function NewPromotionScreen(){
         <Text style={styles.headerTitle}>Cadastrar Promoção</Text>
       </View>
     );
-}
+  }
 
-  async function handleSelectImages() {
-    const { status } = await ImagePicker.requestCameraPermissionsAsync();
+  async function handleSelectImage() {
+    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
     
     if (status !== 'granted') {
-      alert('Precisamos de acesso a images');
+      alert('Precisamos de acesso');
+      return;
+    }
+
+    const result = await ImagePicker.launchImageLibraryAsync({
+      allowsEditing: true,
+      quality: 0.5,
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      aspect: [1, 1],
+    });
+
+    if (result.cancelled) {
+      return;
+    }else{
+      const { uri: image } = result;
+      setImage(image);
+
+      const manipulatedImage = await ImageManipulator.manipulateAsync(
+        image,
+        [{ resize: {width: 251,height: 251} }],
+        { compress: 1, base64: true }
+      );
+
+      setBase(manipulatedImage.base64!);
+    }
+  }
+
+  async function handleTakePicture() {
+    const { status } = await ImagePicker.requestCameraPermissionsAsync();
+
+    if(status !== 'granted'){
+      alert('Precisamos de acesso');
       return;
     }
 
     const result = await ImagePicker.launchCameraAsync({
       allowsEditing: true,
-      quality: 1,
+      quality: 0.5,
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      base64: true,
+      aspect: [1, 1],
     });
 
     if (result.cancelled) {
       return;
+    }else{
+      const { uri: image } = result;
+      setImage(image);
+
+      const manipulatedImage = await ImageManipulator.manipulateAsync(
+        image,
+        [{ resize: {width: 251,height: 251} }],
+        { compress: 1, base64: true }
+      );
+
+    setBase(manipulatedImage.base64!);
     }
-
-    const { uri: image } = result;
-    const { base64: imageBase } = result;
-
-    setBase(imageBase!);
-    setImage(image);
   }
 
   return(
@@ -96,6 +135,14 @@ export default function NewPromotionScreen(){
         />
 
         <TextInput
+          style={styles.input}
+          keyboardType="number-pad"
+          placeholder={"Desconto"}
+          autoCorrect={false}
+          onChangeText={setDiscount}
+        />
+
+        <TextInput
           style={styles.inputDescription}
           textAlignVertical='top'
           multiline={true}
@@ -108,24 +155,29 @@ export default function NewPromotionScreen(){
         <View style={styles.uploadedImagesContainer}>
       
               <Image
-                source={{uri: image !== ""? image : undefined}}
+                source={{
+                  uri: image !== ""? 
+                  image : undefined
+                }}
                 style={styles.uploadedImage}
               />
   
         </View>
 
-        <TextInput
-          style={styles.input}
-          keyboardType="number-pad"
-          placeholder={"Desconto"}
-          autoCorrect={false}
-          onChangeText={setDiscount}
-        />
-
         <View style={styles.btnContainer}>
-          <TouchableOpacity style={styles.btnSubmit} onPress={handleSelectImages}>
-            <Text style={styles.submitText}>Selecionar Foto</Text>
-          </TouchableOpacity>
+          
+          <View style={styles.galleryButtonsRow}>
+            <View style={styles.galleryButtonsCol}>
+              <TouchableOpacity style={styles.btnSubmit} onPress={handleTakePicture}>
+                <Feather name="camera" size={24} color="#FFF" />
+              </TouchableOpacity>
+            </View>
+            <View style={styles.galleryButtonsCol}>
+              <TouchableOpacity style={styles.btnSubmit} onPress={handleSelectImage}>
+                <Ionicons name="albums-outline" size={24} color="#FFF" />
+              </TouchableOpacity>
+            </View>
+          </View>
 
           <TouchableOpacity style={styles.btnSubmit} onPress={handleNextStepProduct}>
             <Text style={styles.submitText}>Visualizar</Text>
@@ -204,6 +256,7 @@ const styles = StyleSheet.create({
   },
   uploadedImagesContainer: {
     flexDirection: 'row',
+    marginBottom: 20
   },
   uploadedImage: {
     width: 64,
@@ -224,6 +277,18 @@ const styles = StyleSheet.create({
     marginBottom: 32,
   },
 
+  /*BUTTONS*/
+  galleryButtonsRow: {
+    display:'flex',
+    flexDirection: 'row',
+    width: '60%'
+  },
+  galleryButtonsCol: {
+    flexDirection: 'column',
+    width: '50%',
+    height: 100,
+  },
+
   /*HEADER*/
   header: {
     flexDirection: 'row',
@@ -242,5 +307,5 @@ const styles = StyleSheet.create({
     marginLeft:25,
     flex:1,
     padding:10
-  }
+  },
 });

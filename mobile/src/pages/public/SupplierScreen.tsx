@@ -1,12 +1,9 @@
-import React, { Component, useState } from 'react';
-import { View, Text, ImageBackground, TouchableOpacity, Image,
-StyleSheet, FlatList, TouchableWithoutFeedback, SafeAreaView, ActivityIndicator } from 'react-native';
+import React, { PureComponent, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { SearchBar } from 'react-native-elements';
 import { Feather, AntDesign } from '@expo/vector-icons';
-import api from '../../services/api';
-
-const baseURL = 'http://192.168.15.200:8008/v1/companies/';
+import { View, Text, ImageBackground, TouchableOpacity, Image,
+  StyleSheet, FlatList, TouchableWithoutFeedback, SafeAreaView, ActivityIndicator } from 'react-native';
 
 function WelcomeHeader(){
   const navigation = useNavigation();
@@ -34,100 +31,95 @@ interface Props {
   searchTerm: string,
 }
 
-export default class App extends Component<Props> {
+const baseURL = 'http://192.168.15.200:8008/v1/companies'
+
+export default class App extends PureComponent<Props> {
   state = {
     data: [],
     loading: false,
-    promoData: [],
-    promoLoading: false,
+    searchGreyBar: '',
   };
 
   componentDidMount() {
     this.loadRepositories();
   }
 
-  loadRepositories = async() => {
-    try{
-      if (this.state.loading) return;
+  loadRepositories = async () => {
+    if(this.state.loading) return;
+
+    const { route } = this.props;
+    const params = route.params as Props;
+    const searchTerm = params.searchTerm;
+
+    if (searchTerm == '' || searchTerm == undefined || searchTerm == ' '){
       this.setState({ loading: true });
-
-      fetch(baseURL)
-      .then(response => response.json())
-      .then(response => {
+      const response = await fetch(`${baseURL}`);
+      if(response.ok) {
+        const repositories = await response.json();
+  
         this.setState({
-          data: response,
-          error: response.error || null,
+          data: [...this.state.data, ...repositories],
           loading: false,
+          searchGreyBar: searchTerm,
         });
-      })
-      .catch(error => {
-        this.setState({ error, loading: false });
-      });
-
-    }catch(err){
-      alert(err);
+      }
+      return;
+    }else{
+      this.setState({ loading: true });
+      const response = await fetch(`${baseURL}/keywords/${searchTerm}`);
+      if(response.ok) {
+        const repositories = await response.json();
+  
+        this.setState({
+          data: [...this.state.data, ...repositories],
+          loading: false,
+          searchGreyBar: searchTerm,
+        });
+      }
+      return;
     }
   }
-
-  renderFooter = () => {
-    if (!this.state.loading) return null;
-    return (
-      <View style={styles.loading}>
-        <ActivityIndicator />
-      </View>
-    );
-  };
 
   handleSearch = async({search}:{search:any}) => {
     try {
-      const searchTerm = search;
-      this.props.navigation.navigate('Supplier',{
-        searchTerm
+      this.setState({
+        data: [],
+        loading: true 
       });
+      const searchTerm = search;
+
+      if(searchTerm =='' || searchTerm == undefined || searchTerm == ' '){
+        const response = await fetch(`${baseURL}`);
+        if(response.ok) {
+          const repositories = await response.json();
+    
+          this.setState({
+            data: [...this.state.data, ...repositories],
+            loading: false,
+            searchGreyBar: searchTerm,
+          });
+        }
+        return;
+      }else{
+        const response = await fetch(`${baseURL}/keywords/${searchTerm}`);
+        if(response.ok) {
+          const repositories = await response.json();
+
+          this.setState({
+            data: [...this.state.data, ...repositories],
+            loading: false,
+            searchGreyBar: searchTerm,
+          });
+        }
+        return;
+      }
     }catch(err){
       alert(err);
     }
   }
 
-  renderHeader = () => {
-    const { route } = this.props;
-    const params = route.params as Props;
-    const searchTerm = params.searchTerm;
-
-    const [search, setSearch] = useState('');
-
-    return (
-      <SafeAreaView>
-      <View style={styles.searchRow}>
-        <View style={styles.searchBarContainer}>
-          <SearchBar 
-            style={styles.searchBar}
-            placeholder="Procure Aki as promoções..."
-            lightTheme
-            round
-            autoCorrect={true}
-            onChangeText={setSearch}
-            value={search}
-          />
-        </View>
-        <View style={styles.searchBtnContainer}>
-          <TouchableOpacity style={styles.searchBtn} onPress={() => this.handleSearch({search})}>
-            <Feather name="search" size={20} color="white" />
-            <Text style={styles.searchBtnText}>Procurar</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
-      <View style={styles.foundContainer}>
-        <Text style={styles.foundText}>Resultados: {searchTerm}</Text>
-      </View>
-      </SafeAreaView>
-    );
-  }
-
   handleGoToPromotion = async ({item}:{item:any}) => {
-    const { route } = this.props;
-    const params = route.params as Props;
-    const searchTerm = params.searchTerm;
+    const searchTerm = this.state.searchGreyBar;
     try{
       this.props.navigation.navigate('Promotions',{
         companyId: item.id,
@@ -141,7 +133,6 @@ export default class App extends Component<Props> {
         companyDistrict: item.district,
         companyCity: item.city,
         companyUf: item.uf,
-        companyKeywords: item.keywords,
         searchTerm: searchTerm,
       });
     }catch(err){
@@ -149,28 +140,70 @@ export default class App extends Component<Props> {
     }
   }
 
-  renderPromo = async({item}:{item:any}) => {
-    try{
-      const isPromo = await api.get(`companies/products/company_id/${item.id}`);
-        if(isPromo){
-          return(
-            <View style={styles.isPromoContainer}>
-              <View style={styles.isPromoRow}>
-                <Text style={styles.isPromoText}>Temos Promoções</Text><Feather name="percent" size={24} color="#FFF" />
-              </View>
-            </View>
-          );
-        }else{
-          return;
-        }
-    }catch(err){
-      alert(err);
+  renderHeader = () => {
+    const [search, setSearch] = useState(this.state.searchGreyBar);
+    return (
+      <SafeAreaView>
+        <View style={styles.searchRow}>
+          <View style={styles.searchBarContainer}>
+            <SearchBar 
+              style={styles.searchBar}
+              placeholder="Procure Aki as promoções..."
+              lightTheme
+              round
+              autoCorrect={true}
+              onChangeText={setSearch}
+              value={search}
+            />
+          </View>
+          <View style={styles.searchBtnContainer}>
+            <TouchableOpacity style={styles.searchBtn} onPress={() => this.handleSearch({search})}>
+              <Feather name="search" size={20} color="white" />
+              <Text style={styles.searchBtnText}>Procurar</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+        <View style={styles.foundContainer}>
+          <Text style={styles.foundText}>Resultados: {this.state.searchGreyBar}</Text>
+        </View>
+      </SafeAreaView>
+    );
+  }
+
+  renderEmpty = () => {
+    return (
+      <View style={styles.titleContainer}>
+        <Text style={styles.emptyText}>Procurando Empresas...</Text>
+      </View>
+    );
+  }
+
+  renderPromo = ({item}:{item:any}) => {
+    if(item.item){
+      return(
+        <View style={styles.isPromoContainer}>
+          <View style={styles.isPromoRow}>  
+            <Text style={styles.isPromoText}>Temos Promoções</Text><Feather name="percent" size={24} color="#FFF" />
+          </View>
+        </View>
+      );
+    }else{
+      return;
     }
   }
 
-  renderItem = ({ item }:{ item: any }) => (
+  renderFooter = () => {
+    if (!this.state.loading) return null;
+    return (
+      <View style={styles.loading}>
+        <ActivityIndicator />
+      </View>
+    );
+  };
+
+  renderItem = ({item}:{item:any}) => (
     <TouchableWithoutFeedback onPress={() => this.handleGoToPromotion({item})}>
-      <ImageBackground source={{uri: `data:image/jpeg;base64,${item.image}`}} style={styles.image}>
+      <ImageBackground source={{uri: `data:image/jpeg;base64,${item.image}`}} style={styles.imageBackground}>
         { this.renderPromo({item}) }
         <View style={styles.titleContainer}>
           <Text style={styles.titleText}>{item.name}</Text>
@@ -179,40 +212,76 @@ export default class App extends Component<Props> {
     </TouchableWithoutFeedback>
   );
 
-  render() {
+  render(){
     return (
       <SafeAreaView style={styles.repositoriesContainer}>
         <WelcomeHeader />
-        <FlatList
+        <FlatList 
           style={styles.list}
           contentContainerStyle={styles.list}
           data={this.state.data}
           renderItem={this.renderItem}
-          keyExtractor={item => item.id.toString()}
+          keyExtractor={(item,index) => index.toString()}
+          ListEmptyComponent={this.renderEmpty}
           ListHeaderComponent={this.renderHeader}
           ListFooterComponent={this.renderFooter}
+          removeClippedSubviews={true}
+          initialNumToRender={4}
         />
       </SafeAreaView>
-    );
+    )
   }
 }
 
 const styles = StyleSheet.create({
-    /* Header */
+  repositoriesContainer: {
+    marginBottom: 50
+  },
+  list: {
+    paddingHorizontal: 2,
+  },
+  listItem: {
+    backgroundColor: '#EEE',
+    marginTop: 20,
+    padding: 30,
+  },
+  imageBackground: {
+    flex: 1,
+    resizeMode: "cover",
+    justifyContent: "center",
+    marginTop: 10,
+    padding: 20,
+    height: 200,
+  },
+  titleContainer :{
+    marginTop: 20,
+    alignItems: 'center',
+    maxWidth: '65%',
+    backgroundColor: 'rgba(1, 120, 149, 0.8)'
+  },
+  titleText: {
+    paddingHorizontal: 20,
+    fontSize: 30,
+    color: 'aliceblue'
+  },
+
+  /* Header */
   headerBackground: {
     backgroundColor: '#FFF'
   },
   headerContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingTop: 10,
+    paddingTop: 12,
+    paddingBottom: 10,
     paddingLeft: 10,
     paddingRight: 10
   },
   cmaLogo: {
     height: 20,
     width: 100,
-    marginLeft: 10
+    marginLeft: 10,
+    marginTop: 5,
   },
   icon: {
     marginRight: 10,
@@ -258,57 +327,34 @@ const styles = StyleSheet.create({
     paddingTop: 2
   },
 
-  /* BODY */
-  repositoriesContainer: {
-    marginBottom: 50
-  },
-  list: {
-    paddingHorizontal: 2,
-  },
-  titleContainer :{
-    marginTop: 20,
-    alignItems: 'center',
-    maxWidth: '65%',
-    backgroundColor: 'rgba(1, 120, 149, 0.8)'
-  },
-  titleText: {
-    paddingHorizontal: 20,
-    fontSize: 30,
-    color: 'aliceblue'
-  },
-  image: {
-    flex: 1,
-    resizeMode: "cover",
-    justifyContent: "center",
-    marginTop: 10,
-    padding: 20,
-    height: 200,
-  },
+    /*ISPROMO*/
+    isPromoContainer: {
+      backgroundColor: '#ff6600',
+      position: 'absolute',
+      alignItems: 'center',
+      justifyContent: 'center',
+      right: '0%',
+      top: '13%',
+      borderRadius: 7
+    },
+    isPromoRow: {
+      flexDirection: 'row',
+      alignItems:'center',
+      padding: 8
+    },
+    isPromoText: {
+      textAlign: 'right',
+      fontSize: 10,
+      color: '#FFF'
+    },
+    emptyText: {
+      textAlign:'center',
+      fontSize: 20,
+    },
 
-  /*ISPROMO*/
-  isPromoContainer: {
-    backgroundColor: '#ff6600',
-    position: 'absolute',
-    alignItems: 'center',
-    justifyContent: 'center',
-    right: '0%',
-    top: '13%',
-    borderRadius: 7
-  },
-  isPromoRow: {
-    flexDirection: 'row',
-    alignItems:'center',
-    padding: 8
-  },
-  isPromoText: {
-    textAlign: 'right',
-    fontSize: 10,
-    color: '#FFF'
-  },
-
-  /*FOOTER*/
-  loading: {
-    alignSelf: 'center',
-    marginVertical: 20,
-  },
+    /*FOOTER*/
+    loading: {
+      alignSelf: 'center',
+      marginVertical: 20,
+    },
 });

@@ -12,8 +12,9 @@ interface ProductDetailsRouteParams {
   name: string,
   price: string,
   description: string,
+  discount: string,
   company_id: string,
-  images: string[];
+  image: string;
 }
 
 function ProductsDetailsHeader(){
@@ -21,7 +22,7 @@ function ProductsDetailsHeader(){
 
   return(
     <View style={styles.header}>
-      <TouchableOpacity style={styles.backBtn} onPress={() => navigation.navigate('CompanyProducts')}>
+      <TouchableOpacity style={styles.backBtn} onPress={() => navigation.navigate('SupplierPromotion')}>
           <Feather name="arrow-left" size={28} color="#e82041" />
       </TouchableOpacity>
       <Text style={styles.headerTitle}>Retornar</Text>
@@ -38,7 +39,8 @@ export default function UserProductDetailsScreen(){
   const productName = params.name;
   const productPrice = params.price;
   const productDescription = params.description;
-  const productImages = params.images;
+  const productDiscount = params.discount;
+  const productImage = params.image;
   const companyId = params.company_id;
 
   const [modalVisible, setModalVisible] = useState(false);
@@ -65,13 +67,14 @@ export default function UserProductDetailsScreen(){
   }
 
   async function handleEdit(){
-    navigation.navigate('EditProduct',{
+    navigation.navigate('EditPromotion',{
       id: productId,
       name: productName,
       price: productPrice,
       description: productDescription,
+      discount: productDiscount,
       company_id: companyId,
-      images: productImages,
+      image: productImage,
     });
   }
 
@@ -88,11 +91,11 @@ export default function UserProductDetailsScreen(){
             <TouchableOpacity onPress={() => {
               setModalVisible(true);
             }}>
-            {productImages.map((image:any) => {
-              return(
-                <Image source={{uri: image.url}} key={image.id.toString()} style={styles.productImg} />
-              );
-            })}
+           
+            
+                <Image source={{uri: `data:image/jpeg;base64,${productImage}`}} style={styles.productImg} />
+          
+          
             </TouchableOpacity>
             
             <Text style={styles.name}>{productName}</Text>
@@ -121,11 +124,10 @@ export default function UserProductDetailsScreen(){
               visible={modalVisible}
             >
               <View style={styles.modalView}>
-                {productImages.map((image:any) => {
-                  return(
-                    <Image source={{uri: image.url}} key={image.id.toString()} style={styles.modalImg} />
-                  );
-                })}
+                
+                  
+                    <Image source={{uri: `data:image/jpeg;base64,${productImage}`}} style={styles.modalImg} />
+                
                 <TouchableHighlight onPress={() => {
                   setModalVisible(!modalVisible);
                   }}
