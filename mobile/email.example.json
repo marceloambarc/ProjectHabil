@@ -1,0 +1,6 @@
+{
+    "host": "smtp.example",
+    "port": "465",
+    "fromEmail": "example@example.net.br",
+    "pass":"emailpasswordhere"
+}

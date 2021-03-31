@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Text, View, TouchableOpacity, StyleSheet, Image, 
-Linking, TouchableHighlight } from 'react-native';
+Linking, TouchableHighlight, Alert } from 'react-native';
 import { SearchBar } from 'react-native-elements';
 import { Feather } from '@expo/vector-icons';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -10,6 +10,7 @@ import ImageZoom from 'react-native-image-pan-zoom';
 import MainPath from '../../../src/pages/client/routes';
 
 import RegisterScreen from '../client/RegisterScreen';
+import SuportScreen from './view/SupportScreen';
 import About from './view/AboutScreen';
 
 const welcomeBackgroundImage = "../../../assets/content_id.png";
@@ -24,7 +25,10 @@ function WelcomeScreen({ navigation }:{ navigation:any }){
           searchTerm
         });
     }catch(err){
-      alert(err);
+      Alert.alert(
+        'Ops!',
+        'Ocorreu um Erro, entre em contato com o suporte.'
+      );
     }
   }
 
@@ -89,6 +93,7 @@ export default function DrawerRoute() {
       <Drawer.Screen name="Fornecedores" component={MainPath} />
       <Drawer.Screen name="Cadastre-se" component={RegisterScreen} />
       <Drawer.Screen name="Desenvolvido por" component={About} />
+      <Drawer.Screen name="Suporte" component={SuportScreen} />
     </Drawer.Navigator>
   );
 }

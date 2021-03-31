@@ -1,19 +1,48 @@
 import * as React from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import { View, Text, ScrollView, TextInput, 
 Image, TouchableOpacity, StyleSheet,
-Modal, TouchableHighlight, Switch, Dimensions, 
-TouchableWithoutFeedback } from 'react-native';
+Modal, Switch, Dimensions, 
+TouchableWithoutFeedback, Alert, 
+ActivityIndicator} from 'react-native';
 
 import { TextInputMask } from 'react-native-masked-text';
 import { useNavigation } from '@react-navigation/native';
 import api from '../../services/api';
+import mailgun from '../../services/mailgun';
+import { host, port, fromEmail, pass } from '../../../email.json';
 
 import * as ImagePicker from 'expo-image-picker';
 import * as ImageManipulator from 'expo-image-manipulator';
 
+import Userterm from '../../components/Userterm';
+
 export default function Register(){
+  const [isLoading, setIsLoading] = useState(false);
+  const [userToken, setUserToken] = useState('');
+
+  const params  = new URLSearchParams();
+  params.append('username', 'acr')
+  params.append('password', '123')
+  params.append('grant_type', 'password')
+
+  async function getToken() {
+    const response = await api.post('token',params, {
+      headers: {
+        ['Content-type'] : 'application/x-www-urlencoded'
+      }
+    })
+    setUserToken(response.data.access_token);
+  }
+
+  useEffect(() => {
+    setTimeout(() => {
+      getToken();
+      setIsLoading(false);
+    }, 1000);
+  },[]);
+
   const [business, setBusiness] = useState('');
   const [cnpj, setCnpj] = useState('');
   const [name, setName] = useState('');
@@ -33,82 +62,153 @@ export default function Register(){
   const [term_is_true, setTermIsTrue] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
 
+  const title = "Confirmar E-mail"; 
+  const message = "Confirmar E-mail";
+  const content = "Teste para verificar E-mail: <a href=\"http:\/\/www.habilinformatica.com.br\/\">CompreMaisAki<\/a>";
+
   const navigation = useNavigation();
 
   async function handleCreateCompany() {
     if(password !== confirmPassword){
-      alert("Senha não confere.")
+      Alert.alert(
+        'Erro',
+        'Credenciais inválidas.'
+      );
       return;
     }
 
     if(term_is_true !== true){
-      alert("Você deve aceitar os Termos de Uso")
+      Alert.alert(
+        'Erro',
+        'Você deve aceitar os Termos de Uso.',
+      );
       return;
     }
 
     if(business.length <= 3){
-      alert("Ramo Inválido");
+      Alert.alert(
+        'Erro',
+        'Ramo Inválido.',
+      );
       return;
     }else if(business === undefined){
-      alert("Ramo Inválido");
+      Alert.alert(
+        'Erro',
+        'Ramo Inválido.',
+      );
       return;
     }
 
     if(name.length <= 3){
-      alert("Nome Inválido");
+      Alert.alert(
+        'Erro',
+        'Nome Inválido.',
+      );
       return;
     }else if(name === undefined){
-      alert("Nome Inválido");
+      Alert.alert(
+        'Erro',
+        'Nome Inválido.',
+      );
       return;
     }
 
     if(cnpj.length < 18){
-      alert("CNPJ Inválido");
+      Alert.alert(
+        'Erro',
+        'CNPJ Inválido.',
+      );
       return;
     }
 
     if(phone.length < 13){
-      alert("Telefone Inváido");
+      Alert.alert(
+        'Erro',
+        'Telefone Inválido.',
+      );
       return;
     }
 
     if(email.length < 7){
-      alert("E-mail Inválido");
+      Alert.alert(
+        'Erro',
+        'E-mail Inválido.',
+      );
       return;
     }
 
     if(address.length < 3){
-      alert("Endereco Incorreto");
+      Alert.alert(
+        'Erro',
+        'Endereço Incorreto.',
+      );
       return;
     }else if(address === undefined){
-      alert("Endereco Incorreto");
+      Alert.alert(
+        'Erro',
+        'Endereço Incorreto.',
+      );
       return;
     }
 
     if(district.length < 2){
-      alert("Bairro Incorreto");
+      Alert.alert(
+        'Erro',
+        'Bairro Inválido.',
+      );
       return;
     }else if(district === undefined){
-      alert("Bairro Incorrecto");
+      Alert.alert(
+        'Erro',
+        'Bairro Inválido.',
+      );
       return;
     }else if(city.length < 3){
-      alert("Cidade Incorreta");
+      Alert.alert(
+        'Erro',
+        'Cidade Incorreta.',
+      );
       return;
     }else if(uf.length < 2){
-      alert("Unidade Federal Incorreta");
+      Alert.alert(
+        'Erro',
+        'Unidade Federal Incorreta.',
+      );
       return;
     }
 
     if(keywords.length <= 0){
-      alert("Inserir Palavras-Chaves");
+      Alert.alert(
+        'Erro',
+        'Inserir Palavras-Chaves.',
+      );
       return;
     }else if(keywords === undefined){
-      alert("Inserir Palavras-Chaves válidas");
+      Alert.alert(
+        'Erro',
+        'Inserir Palavras-Chaves Válidas',
+      );
       return;
     }
 
-      try {
-        await api.post('companies',{
+    
+
+    try {
+      await mailgun.post('/',{
+        host: host,
+        port: port,
+        fromEmail: fromEmail,
+        pass: pass,
+        toEmail: email,
+        title: title,
+        message: message,
+        content: content
+      },{
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      }).then(res => {
+        api.post('companies',{
           business: business,
           cnpj: cnpj,
           name: name,
@@ -120,12 +220,31 @@ export default function Register(){
           uf: uf,
           password: password,
           image: base,
-          keywords: keywords
-        }).then(() => navigation.navigate('Início'));
-      }catch(err){
-        alert("Erro de Servidor.");
-        return;
-      }
+          keywords: keywords,
+          is_active: 0
+        },{
+          headers: {'Authorization': 'Bearer '+userToken}
+        }).then(() => {
+          Alert.alert(
+            "Sucesso!",
+            "Confirme seu E-mail (Verifique a sua caixa de Spam) e aguarde a confirmação do Administrador."
+          );
+          navigation.navigate("Início");
+        })
+      }).catch(err => {
+        Alert.alert(
+          "Ops!",
+          "Tivemos um Erro, entre em contato com o Suporte.",
+        )
+      })
+    }catch(err){
+      Alert.alert(
+        'Ops!',
+        'Tivemos um erro de servidor, entre em contato com o suporte.'
+      );
+      console.log(err);
+      return;
+    }
 
   }
 
@@ -163,6 +282,13 @@ export default function Register(){
     setImage('');
   }
 
+  if(isLoading){
+    return (
+      <View style={{flex:1, justifyContent:'center',alignItems:'center'}}>
+        <ActivityIndicator size='large' color='#ff6600'/>
+      </View>
+    )
+  }
   return (
     <ScrollView>
 
@@ -256,13 +382,13 @@ export default function Register(){
         <View style={styles.keywordsContainer}>
         <Text style={styles.termText}>Insira as palavras-chaves separadas por vírgula</Text>
         <TextInput
-        style={[styles.input, styles.keywords]}
-        value={keywords}
-        onChangeText={setKeywords}
-        autoCorrect={true}
-        placeholder="Palavras-Chaves"
-        multiline
-        numberOfLines={4}
+          style={[styles.input, styles.keywords]}
+          value={keywords}
+          onChangeText={setKeywords}
+          autoCorrect={true}
+          placeholder="Palavras-Chaves"
+          multiline
+          numberOfLines={4}
         />
         </View>
 
@@ -315,7 +441,8 @@ export default function Register(){
             }}>
             <Text style={[styles.termText, styles.termTextButton]}>Termos de Uso</Text>
           </TouchableOpacity>
-          <Switch 
+          <Switch
+            style={{marginBottom: 8}} 
             thumbColor="#fff"
             trackColor={{ false: '#ccc', true: '#39CC83' }}
             value={term_is_true}
@@ -328,40 +455,25 @@ export default function Register(){
             animationType="slide"
             transparent={true}
             visible={modalVisible}
+            onRequestClose={() => setModalVisible(false)}
           >
             
               <View style={styles.modalView}>
 
                 {/* MODAL CONTENT */}
                 <Text style={styles.modalTitle}>Termos de uso.</Text>
-                <ScrollView style={styles.tcContainer}>
                   
-                  <Text style={styles.tcP}>
-                    LoreLorem Ipsum is simply dummy text of the printing and typesetting industry. 
-                    Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, 
-                    when an unknown printer took a galley of type and scrambled it to make a type specimen book.
-                  </Text>
-                  <Text style={styles.tcP}>
-                    It has survived not only five centuries, but also the leap into electronic typesetting, 
-                    remaining essentially unchanged. It was popularised in the 1960s with the release of 
-                    Letraset sheets containing Lorem Ipsum passages.
-                  </Text>
-                    <Text style={styles.tcL}>{'\u2022'}</Text>
-                  <Text style={styles.tcP}>
-                    It is a long established fact that a reader will be distracted by the readable content 
-                    of a page when looking at its layout.
-                  </Text>
-
-                </ScrollView>
+                  <Userterm />
 
                 {/* MODAL CLOSE BUTTON */}
-                <TouchableHighlight
-                  onPress={() => {
-                    setModalVisible(!modalVisible);
-                  }}
+                <TouchableOpacity
+                style={styles.hideBtn}
+                onPress={() => {
+                  setModalVisible(!modalVisible);
+                }}
                 >
-                  <Text style={styles.hideBtn}>Fechar</Text>
-                </TouchableHighlight>
+                  <Text style={styles.hidebtnText}>Voltar</Text>
+                </TouchableOpacity>
               </View>
             
           </Modal>
@@ -453,7 +565,7 @@ const styles = StyleSheet.create({
     marginBottom: 10
   },
   termTextButton:{
-    color:'#35AAFF'
+    color:'#35AAFF',
   },
   btnSubmit:{
     backgroundColor: '#35AAFF',
@@ -475,7 +587,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: 30,
-    marginBottom: 30
+    marginBottom: 0
   },
 
   switchContainer: {
@@ -487,6 +599,7 @@ const styles = StyleSheet.create({
   },
 
   modalView:{
+    height: height * .9,
     margin: 20,
     width: '90%',
     backgroundColor: "white",
@@ -507,25 +620,16 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     color: '#017895'
   },
-
-  tcP:{
-    marginTop: 10,
-    marginBottom: 10,
-    fontSize: 12
-  },
-  tcL:{
-    marginLeft:10,
-    marginTop:10,
-    marginBottom:10,
-    fontSize:12
-  },
-  tcContainer:{
-    marginTop:15,
-    marginBottom:15,
-    height: height * .7
-  },
   hideBtn: {
-    color: '#ff6600'
+    backgroundColor: '#fa690a',
+    width: '90%',
+    height: 45,
+    alignItems:'center',
+    justifyContent: 'center',
+    borderRadius: 7
+  },
+  hidebtnText: {
+    color: 'white'
   },
 
   uploadedImagesContainer: {
@@ -536,15 +640,13 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center'
   },
-
   uploadedImage: {
-    width: 64,
-    height: 64,
+    width: 101,
+    height: 101,
     borderRadius: 20,
     marginBottom: 10,
     marginRight: 8,
   },
-
   uploadedImageText: {
     color: '#191919',
     marginBottom: 2
@@ -562,4 +664,5 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 32,
   },
+
 });

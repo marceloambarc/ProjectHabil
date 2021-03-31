@@ -2,7 +2,6 @@ import * as React from 'react';
 import { useState } from 'react';
 import { View, Text, TextInput, 
 TouchableOpacity, StyleSheet, ScrollView, Image,
-Platform, 
 TouchableWithoutFeedback} from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { Feather, Ionicons } from '@expo/vector-icons';
@@ -14,9 +13,10 @@ interface EditPromotionParams {
   name: string,
   price: string,
   description: string,
-  company_id: string,
+  company_id: number,
   discount: string;
   image: string,
+  userToken: string,
 }
 
 export default function EditProductScreen(){
@@ -30,6 +30,7 @@ export default function EditProductScreen(){
   const editDescription = params.description;
   const editImage = params.image;
   const editDiscount = params.discount;
+  const editUserToken = params.userToken;
 
   const company_id = params.company_id;
 
@@ -38,6 +39,7 @@ export default function EditProductScreen(){
   const [price, setPrice] = useState(`${editPrice}`);
   const [description, setDescription] = useState(`${editDescription}`);
   const [discount, setDiscount] = useState(`${editDiscount}`);
+  const [userToken, setUserToken] = useState(`${editUserToken}`);
 
   const [image, setImage] = useState('');
   const [base, setBase] = useState(`${editImage}`)
@@ -51,6 +53,7 @@ export default function EditProductScreen(){
       description,
       company_id,
       image: base,
+      userToken
     });
   }
 
@@ -184,8 +187,6 @@ async function handleTakePicture() {
                       source={{uri: `data:image/jpeg;base64,${base}`}}
                       style={styles.uploadedImage}
                     />
-                  
-                <Text style={styles.uploadedImageText}>Toque para remover.</Text>
               </View>
             </TouchableWithoutFeedback>
           </View>

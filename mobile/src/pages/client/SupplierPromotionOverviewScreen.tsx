@@ -62,7 +62,10 @@ export default function UserProductDetailsScreen(){
         { cancelable: false },
       );
     }catch(err){
-      alert(err);
+      Alert.alert(
+        'Ops!',
+        'Tivemos um erro, entre em contato com suporte.'
+      );
     }
   }
 
@@ -92,9 +95,7 @@ export default function UserProductDetailsScreen(){
               setModalVisible(true);
             }}>
            
-            
-                <Image source={{uri: `data:image/jpeg;base64,${productImage}`}} style={styles.productImg} />
-          
+              <Image source={{uri: `data:image/jpeg;base64,${productImage}`}} style={styles.productImg} />
           
             </TouchableOpacity>
             

@@ -72,14 +72,16 @@ const styles = StyleSheet.create({
   headerContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingTop: 10,
+    paddingTop: 12,
+    paddingBottom: 10,
     paddingLeft: 10,
     paddingRight: 10
   },
   cmaLogo: {
     height: 20,
     width: 100,
-    marginLeft: 10
+    marginLeft: 10,
+    marginTop: 5,
   },
   icon: {
     marginRight: 10

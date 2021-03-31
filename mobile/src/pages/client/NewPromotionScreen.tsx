@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useState } from 'react';
 import { View, Text, TextInput, 
-TouchableOpacity, StyleSheet, ScrollView, Image} from 'react-native';
+TouchableOpacity, StyleSheet, ScrollView, Image, Alert } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 
 import { Feather, Ionicons } from '@expo/vector-icons';
@@ -10,6 +10,7 @@ import * as ImageManipulator from 'expo-image-manipulator';
 
 interface NewPromotionParams {
   companyId: string,
+  userToken: string,
 }
 
 export default function NewPromotionScreen(){
@@ -26,6 +27,7 @@ export default function NewPromotionScreen(){
   const params = route.params as NewPromotionParams;
 
   const company_id = params.companyId;
+  const userToken = params.userToken;
 
   async function handleNextStepProduct() {
     navigation.navigate('NewPromotionOverview', {
@@ -34,8 +36,9 @@ export default function NewPromotionScreen(){
       description,
       company_id,
       base,
-      validate: '9a',
+      validate: '',
       discount,
+      userToken,
     });
   }
 
@@ -87,7 +90,10 @@ export default function NewPromotionScreen(){
     const { status } = await ImagePicker.requestCameraPermissionsAsync();
 
     if(status !== 'granted'){
-      alert('Precisamos de acesso');
+      Alert.alert(
+        'Ops!',
+        'Precisamos do acesso.',
+      );
       return;
     }
 

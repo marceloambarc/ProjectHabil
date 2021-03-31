@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { View, Text, SafeAreaView, StyleSheet, Image, TouchableOpacity,
-ScrollView, Modal, TouchableHighlight, Dimensions, Linking } from 'react-native';
+ScrollView, Modal, Dimensions, Linking, Alert } from 'react-native';
 import { Feather, Fontisto, Ionicons, AntDesign } from '@expo/vector-icons';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import ImageZoom from 'react-native-image-pan-zoom';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 interface handleCompanyParams {
   companyName: any,
@@ -27,7 +28,7 @@ function PromotionDetailsHeader(){
             source={require("../../../assets/cmatextlogo.png")}
           />
           <TouchableOpacity style={styles.homeButton} onPress={() => navigation.navigate('Welcome')}>
-            <AntDesign name="home" size={24} color="black" />
+            <Ionicons name="home-outline" size={24} color="black" />
           </TouchableOpacity>
           <TouchableOpacity onPress={() => navigation.navigate('Promotions')}>
             <AntDesign style={styles.icon} name="back" size={24} color="#191919" />
@@ -56,6 +57,15 @@ interface handlePromotionDetailParams {
 }
 
 export default function PromotionDetailsScreen(){
+  const [font, setFont] = useState(0);
+  async function handleIncreaseFont(){
+    setFont(3);
+  }
+
+  async function handleDecreaseFont(){
+    setFont(-1);
+  }
+
   const route = useRoute();
   const params = route.params as handlePromotionDetailParams;
 
@@ -82,7 +92,10 @@ export default function PromotionDetailsScreen(){
       ganhe desconto de: ${ productDiscount } por cento.
     `)
     }catch(err){
-      alert(err);
+      Alert.alert(
+        'Ops!',
+        'Tivemos um erro, entre em contato com o suporte.',
+      );
     }
   }
   
@@ -90,7 +103,10 @@ export default function PromotionDetailsScreen(){
    try{
      Linking.openURL(`tel:0${companyPhone}`);
    }catch(err){
-     alert(err);
+     Alert.alert(
+        'Ops!',
+        'Tivemos um erro, entre em contato com o suporte.',
+      );
    }
   }
   
@@ -98,7 +114,10 @@ export default function PromotionDetailsScreen(){
     try{
       Linking.openURL(`https://api.whatsapp.com/send?phone=${companyPhone}&text=%20Mensagem%20vinda%20do%20App%20CompreMaisAki:%20Produto:%20${productName}%20;%20Preço%20sem%20Desconto:%20${productPrice};%20Validade%20Promoção:%20Validade;%20Desconto:%20${productDiscount}%20por%20cento;%20Com%20essa%20mensagem%20pelo%20Aplicativo%20CompreMaisAki%20,%20ganhe%20deconto%20de%20:%20${productDiscount}%20por%20cento+`);
     }catch(err){
-      alert(err)
+      Alert.alert(
+        'Ops!',
+        'Tivemos um erro, entre em contato.'
+      );
     }
   }
 
@@ -110,10 +129,12 @@ export default function PromotionDetailsScreen(){
         <View style={styles.borderContainer}>
           <View>
 
-          <ImageZoom cropWidth={350}
-                    cropHeight={370}
-                   imageWidth={330}
-                   imageHeight={350}>
+          <ImageZoom 
+            cropWidth={350}
+            cropHeight={370}
+            imageWidth={330}
+            imageHeight={350}
+          >
             
             <Image
               style={{width:'100%', height: '100%', borderRadius: 20}}
@@ -123,95 +144,110 @@ export default function PromotionDetailsScreen(){
           </ImageZoom>
           </View>
           <View style={styles.productDescription}>
-            <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-              <View>
-                <View>
-                  <Text style={styles.productTextPriceTitle}>Preço sem Desconto:</Text><Text style={styles.productTextPrice}> R$ {productPrice}</Text>
-                </View>
-                <View>
+            <View style={{flexDirection: 'row', justifyContent: 'space-around'}}>
+              <View style={{flexDirection: 'column', paddingHorizontal: 20}}>
+                  <Text style={styles.productTextPriceTitle}>
+                    Preço sem Desconto:
+                  </Text>
+                  <Text style={styles.productTextPrice}> 
+                    R$ {productPrice}
+                  </Text>
                   <Text style={styles.productTextName}>{productName}</Text>
-                </View>
               </View>
-              <View>
+              <View style={{flexDirection: 'column', paddingHorizontal: 20}}>
                 <TouchableOpacity style={styles.moreContainer} onPress={() => {
-                  setModalVisible(true);
-                }}>
-                  <View style={styles.moreCol}>
-                    <Text style={styles.moreText}>Saiba Mais </Text>
-                    <Text style={styles.moreText}>Como Solicitar</Text>
-                    <Text style={styles.moreText}>Desconto: { productDiscount }%</Text>
-                  </View>
-                </TouchableOpacity>
+                    setModalVisible(true);
+                  }}>
+                    <View style={styles.moreCol}>
+                      <Text style={styles.moreText}>Saiba Mais </Text>
+                      <Text style={styles.moreText}>Como Solicitar</Text>
+                      <Text style={styles.moreText}>Desconto: { productDiscount }%</Text>
+                    </View>
+                  </TouchableOpacity>
               </View>
             </View>
             
-            <ScrollView style={{maxHeight: '90%', maxWidth: '90%'}}>
+            <ScrollView style={{maxHeight: '90%', maxWidth: '90%', marginTop: '16%'}}>
               <Text style={styles.productTextDescription}>{productDescription}</Text>
             </ScrollView>
           </View>
         </View>
 
-                {/*TERM MODAL*/}
-                <Modal
-            animationType="slide"
-            transparent={true}
-            visible={modalVisible}
-          >
+        {/*TERM MODAL*/}
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={modalVisible}
+          onRequestClose={() => setModalVisible(false)}
+        >
             
-              <View style={styles.modalView}>
+          <View style={styles.modalView}>
 
-                {/* MODAL CONTENT */}
-                <Text style={styles.modalTitle}>Como Solicitar o Desconto</Text>
-                <ScrollView style={styles.tcContainer}>
+            {/* MODAL CONTENT */}
+            <Text style={styles.modalTitle}>Como Solicitar o Desconto</Text>
+            <ScrollView style={styles.tcContainer}>
                   
-                  <Text style={styles.tcP}>
+              <Text style={[styles.tcP, {fontSize: 12 + font}]}>
                   A Promoção do aplicativo CompreMaisAki para este produto vai 
                   acontecer pelo click nos seguintes botoes: email na cor 
                   vermelha com image de carta, ligacao na cor verde escura 
                   e com imagem de telefone tocando e whatsapp na cor verde clara 
                   com o ícone do Whatsapp.
-                  </Text>
-                  <Text style={styles.tcP}>
+              </Text>
+              <Text style={[styles.tcP, {fontSize: 12 + font}]}>
                   Ao clicar no botão do Whatsapp, irá gerar a tela do aplicativo 
                   do Whatsapp, para enviar uma mensagem pré-determinada 
                   onde o fornecedor irá liberar o desconto anunciado.
-                  </Text>
-                  <Text style={styles.tcP}>
+              </Text>
+              <Text style={[styles.tcP, {fontSize: 12 + font}]}>
                   Ao clicar no botão ligação, irá carregar o número do fornecedor para realizar
                    a ligacao que deverá ser efetuado. Ao falar com o fornecedor solicitar o desconto para
                   este produto visualizado, e solicitar o desconto.
-                  </Text>
-                  <Text style={styles.tcP}>
+              </Text>
+              <Text style={[styles.tcP, {fontSize: 12 + font}]}>
                   Ao clicar no e-mail, irá gerar uma mensagem pré-determinada que será encaminhada 
                   ao e-mail 
                   do fornecedor e a negociação será feita diretamente por e-mail.
-                  </Text>
+              </Text>
 
-                  <View style={styles.btnRow}>
-                    <TouchableOpacity style={styles.btnSupplierContact} onPress={handleSendProductEmail}>
-                      <Fontisto name="email" size={25} color="#FFF" />
-                    </TouchableOpacity>
+              <View style={styles.btnRow}>
+                <TouchableOpacity style={styles.btnSupplierContact} onPress={handleSendProductEmail}>
+                  <Fontisto name="email" size={25} color="#FFF" />
+                </TouchableOpacity>
 
-                    <TouchableOpacity style={styles.btnSupplierContact1} onPress={handleCallProduct}>
-                      <Feather name="phone-call" size={27} color="#FFF" />
-                    </TouchableOpacity>
+                <TouchableOpacity style={styles.btnSupplierContact1} onPress={handleCallProduct}>
+                  <Feather name="phone-call" size={27} color="#FFF" />
+                </TouchableOpacity>
 
-                    <TouchableOpacity style={styles.btnSupplierContact4} onPress={handleSendProductWhatsapp}>
-                      <Ionicons name="logo-whatsapp" size={25} color="#FFF" />
-                    </TouchableOpacity>
-                  </View>
-
-                </ScrollView>
-
-                {/* MODAL CLOSE BUTTON */}
-                <TouchableHighlight
-                  onPress={() => {
-                    setModalVisible(!modalVisible);
-                  }}
-                >
-                  <Text style={styles.hideBtn}>Voltar</Text>
-                </TouchableHighlight>
+                <TouchableOpacity style={styles.btnSupplierContact4} onPress={handleSendProductWhatsapp}>
+                  <Ionicons name="logo-whatsapp" size={25} color="#FFF" />
+                </TouchableOpacity>
               </View>
+
+              </ScrollView>
+              <View style={styles.fontbtnRow}>
+                <View style={styles.fontbtnCol}>
+                  <TouchableOpacity style={styles.fontBtn} onPress={handleDecreaseFont} >
+                    <MaterialCommunityIcons name="format-font-size-decrease" size={24} color="white" />
+                  </TouchableOpacity>
+                </View>
+                <View style={styles.fontbtnCol}>
+                  <TouchableOpacity style={styles.fontBtn} onPress={handleIncreaseFont}>
+                    <MaterialCommunityIcons name="format-font-size-increase" size={24} color="white" />
+                  </TouchableOpacity>
+                </View>
+              </View>
+
+              {/* MODAL CLOSE BUTTON */}
+              <TouchableOpacity
+                style={styles.hideBtn}
+                onPress={() => {
+                  setModalVisible(!modalVisible);
+                }}
+              >
+                <Text style={styles.hidebtnText}>Voltar</Text>
+              </TouchableOpacity>
+            </View>
             
           </Modal>
 
@@ -247,7 +283,12 @@ const styles = StyleSheet.create({
     marginLeft: 10
   },
   companyTitle: {
-    marginLeft: '7%'
+    marginLeft: '10%',
+    paddingVertical: 10,
+    paddingLeft: 10,
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#017895',
   },
   homeButton: {
     marginRight: 40,
@@ -318,7 +359,7 @@ const styles = StyleSheet.create({
     productTextPrice: {
       fontSize: 26,
       marginBottom: 4,
-      justifyContent: 'space-between'
+      textAlign: 'left'
     },
     productTextPriceTitle: {
       fontSize: 10,
@@ -338,7 +379,6 @@ const styles = StyleSheet.create({
   moreContainer: {
     backgroundColor: '#ff6600',
     alignItems: 'center',
-    justifyContent: 'flex-end',
     borderRadius: 7,
     padding: 7
   },
@@ -358,6 +398,7 @@ const styles = StyleSheet.create({
 
   /*MODAL*/
   modalView:{
+    height: height * .9,
     margin: 20,
     width: '90%',
     backgroundColor: "white",
@@ -382,7 +423,6 @@ const styles = StyleSheet.create({
   tcP:{
     marginTop: 10,
     marginBottom: 10,
-    fontSize: 12
   },
   tcL:{
     marginLeft:10,
@@ -392,11 +432,19 @@ const styles = StyleSheet.create({
   },
   tcContainer:{
     marginTop:15,
-    marginBottom:15,
-    height: height * .7
   },
+  
   hideBtn: {
-    color: '#ff6600'
+    backgroundColor: '#fa690a',
+    width: '90%',
+    height: 45,
+    alignItems:'center',
+    justifyContent: 'center',
+    borderRadius: 7,
+    paddingTop: 7
+  },
+  hidebtnText: {
+    color: 'white'
   },
 
   /*MODAL BUTTONS */
@@ -430,5 +478,21 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#25d366'
+  },
+  fontbtnRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingBottom: 5
+  },
+  fontbtnCol: {
+    width: '50%',
+    paddingHorizontal: 10,
+  },
+  fontBtn: {
+    backgroundColor: '#119999',
+    height: 45,
+    alignItems:'center',
+    justifyContent: 'center',
+    borderRadius: 7
   },
 });

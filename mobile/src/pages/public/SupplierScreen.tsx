@@ -3,7 +3,9 @@ import { useNavigation } from '@react-navigation/native';
 import { SearchBar } from 'react-native-elements';
 import { Feather, AntDesign } from '@expo/vector-icons';
 import { View, Text, ImageBackground, TouchableOpacity, Image,
-  StyleSheet, FlatList, TouchableWithoutFeedback, SafeAreaView, ActivityIndicator } from 'react-native';
+  StyleSheet, TouchableWithoutFeedback, SafeAreaView, ActivityIndicator, Alert, FlatList } from 'react-native';
+
+import { API_URL } from '../../../url.json';
 
 function WelcomeHeader(){
   const navigation = useNavigation();
@@ -31,7 +33,7 @@ interface Props {
   searchTerm: string,
 }
 
-const baseURL = 'http://192.168.15.200:8008/v1/companies'
+const baseURL = `${API_URL}/companies`
 
 export default class App extends PureComponent<Props> {
   state = {
@@ -67,7 +69,13 @@ export default class App extends PureComponent<Props> {
     }else{
       this.setState({ loading: true });
       const response = await fetch(`${baseURL}/keywords/${searchTerm}`);
-      if(response.ok) {
+      
+      if(!response.ok) {
+        this.setState({
+          loading: false,
+          searchGreyBar: searchTerm,
+        });
+      }else{
         const repositories = await response.json();
   
         this.setState({
@@ -102,9 +110,14 @@ export default class App extends PureComponent<Props> {
         return;
       }else{
         const response = await fetch(`${baseURL}/keywords/${searchTerm}`);
-        if(response.ok) {
+        if(!response.ok) {
+          this.setState({
+            loading: false,
+            searchGreyBar: searchTerm,
+          });
+        }else{
           const repositories = await response.json();
-
+    
           this.setState({
             data: [...this.state.data, ...repositories],
             loading: false,
@@ -114,7 +127,10 @@ export default class App extends PureComponent<Props> {
         return;
       }
     }catch(err){
-      alert(err);
+      Alert.alert(
+        'Ops!',
+        'Ocorreu um erro, entre em contato com o suporte.'
+      );
     }
   }
 
@@ -136,7 +152,10 @@ export default class App extends PureComponent<Props> {
         searchTerm: searchTerm,
       });
     }catch(err){
-      alert(err);
+      Alert.alert(
+        'Confirmado!',
+        'Seu email foi enviado.'
+      );
     }
   }
 
@@ -171,16 +190,30 @@ export default class App extends PureComponent<Props> {
   }
 
   renderEmpty = () => {
-    return (
-      <View style={styles.titleContainer}>
-        <Text style={styles.emptyText}>Procurando Empresas...</Text>
-      </View>
-    );
+    if(this.state.loading){
+      return (
+        <View style={styles.loading}>
+          <Text style={{textAlign: 'center'}}>
+            <ActivityIndicator color="#fa690a" size="large" />
+          </Text>
+        </View>
+      )
+    }else{
+      return  (
+        <View style={styles.loading}>
+          <View style={styles.notFoundContainer}>
+            <Text style={styles.notFoundTxt}>
+              Nenhum Fornecedor Encontrado...
+            </Text>
+          </View>
+        </View>
+      )
+    }
   }
 
   renderPromo = ({item}:{item:any}) => {
-    if(item.item){
-      return(
+    if(item.item) {
+      return (
         <View style={styles.isPromoContainer}>
           <View style={styles.isPromoRow}>  
             <Text style={styles.isPromoText}>Temos Promoções</Text><Feather name="percent" size={24} color="#FFF" />
@@ -357,4 +390,20 @@ const styles = StyleSheet.create({
       alignSelf: 'center',
       marginVertical: 20,
     },
+
+    notFoundContainer: {
+      backgroundColor: '#fa690a',
+      height: 45,
+      justifyContent: 'center',
+      alignItems: 'center',
+      width: '70%',
+      marginTop: '10%',
+    },
+    notFoundTxt: {
+      color: 'white',
+      justifyContent: 'center',
+      alignItems: 'center',
+      paddingHorizontal: 15,
+      borderRadius: 5
+    }
 });

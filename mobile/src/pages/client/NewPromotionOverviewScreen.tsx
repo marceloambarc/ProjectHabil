@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, Image, StyleSheet, TouchableOpacity, Alert } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import api from '../../services/api';
 
@@ -12,6 +12,7 @@ interface ProductDataRouteParams {
   image: string,
   base: string,
   discount: string,
+  userToken: string,
 }
 
 export default function NewPromotionOverviewScreen(){
@@ -26,6 +27,8 @@ export default function NewPromotionOverviewScreen(){
   const productImage = params.base;
   const productValidate = params.validate;
   const productDiscount = params.discount;
+  const userToken = params.userToken;
+
 
   async function handleCreateProduct(){
     try {
@@ -38,12 +41,23 @@ export default function NewPromotionOverviewScreen(){
         image: productImage,
         validate: productValidate,
         discount: productDiscount,
-        is_active: 0
+        is_active: 0,
+      },{
+        headers: {
+          'Authorization': 'Bearer '+userToken
+        }
       }).then(() => {
         navigation.navigate('Home');
+        Alert.alert(
+          'Sucesso!',
+          'Registro Enviado! Aguarde confirmação do Administrador.',
+        );
       })
     }catch(err){
-      alert(err);
+      Alert.alert(
+        'Ops!',
+        'Tivemos um erro, entre em contato com o suporte.',
+      );
     }
   }
 

@@ -2,8 +2,11 @@ import React from 'react';
 import { StyleSheet, Text, View, FlatList, 
 Image, TouchableOpacity, TouchableWithoutFeedback, Alert, ActivityIndicator } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import {Feather} from '@expo/vector-icons';
+import { Feather, Entypo } from '@expo/vector-icons';
+
 import api from '../../services/api';
+import { API_URL } from '../../../url.json';
+
 
 interface Props{
   navigation: any,
@@ -11,10 +14,11 @@ interface Props{
   companyId: number,
   image: string,
   id: number,
-  route: any
+  route: any,
+  userToken: string,
 }
 
-const baseURL = 'http://192.168.15.200:8008/v1/companies/products/company_id/';
+const baseURL = `${API_URL}/companies/products/company_id`;
 
 function ProductsHeader(){
   const navigation = useNavigation();
@@ -70,6 +74,9 @@ export default class App extends React.Component<Props> {
   }
 
   handleDelete = async({item}:{item:any}) => {
+    const { route } = this.props;
+    const params = route.params as Props
+    const userToken = params.userToken;
     try{
       Alert.alert(
         "Deletar",
@@ -80,18 +87,28 @@ export default class App extends React.Component<Props> {
             style: "cancel"
           },
           { text: "OK", 
-          onPress: async() => await api.delete(`products/${item.id}`).then(this.props.navigation.navigate('Home'))
+          onPress: async() => await api.delete(`products/${item.id}`,{
+            headers: {
+              'Authorization': 'Bearer '+userToken
+            }
+          }).then(this.props.navigation.navigate('Home'))
         }
         ],
         { cancelable: false },
       );
       
     }catch(err){
-      alert(err);
+      Alert.alert(
+        'Ops!',
+        'Tivemos um erro, entre em contato com o suporte.',
+      );
     }
   }
 
   handleEdit = async({item}:{item:any}) => {
+    const { route } = this.props;
+    const params = route.params as Props
+    const userToken = params.userToken;
     this.props.navigation.navigate('EditPromotion',{
       id: item.id,
       name: item.name,
@@ -100,6 +117,7 @@ export default class App extends React.Component<Props> {
       discount: item.discount,
       company_id: item.company_id,
       image: item.image,
+      userToken: userToken,
     });
   }
 
@@ -142,11 +160,23 @@ export default class App extends React.Component<Props> {
   };
 
   renderEmpty = () => {
-    return  (
-      <View style={styles.loading}>
-        <Text style={styles.contentText}>Procurando Seus Produtos...</Text>
-      </View>
-    )
+    if(this.state.loading){
+      return (
+        <View style={styles.loading}>
+          <Text style={{textAlign: 'center'}}>
+            <ActivityIndicator color="#fa690a" size="large" />
+          </Text>
+        </View>
+      )
+    }else{
+      return  (
+        <View style={styles.loading}>
+          <Text style={{textAlign: 'center'}}>
+            Nenhum Produto Encontrado...
+          </Text>
+        </View>
+      )
+    }
   }
 
   render(){

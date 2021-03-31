@@ -1,8 +1,9 @@
-import React, { useState, PureComponent } from 'react';
+import React, { PureComponent } from 'react';
 import { View, Text, SafeAreaView, TouchableOpacity,
-StyleSheet, Image, TouchableWithoutFeedback, FlatList, Linking } from 'react-native';
+StyleSheet, Image, TouchableWithoutFeedback, FlatList, Linking, Alert } from 'react-native';
 import { Feather, Fontisto, Ionicons, MaterialIcons, Entypo, AntDesign } from '@expo/vector-icons';
 import { useNavigation, useRoute } from '@react-navigation/native';
+import { API_URL } from '../../../url.json';
 
 interface Props {
     searchTerm: string,
@@ -38,7 +39,7 @@ function PromotionHeader() {
             source={require("../../../assets/cmatextlogo.png")}
           />
           <TouchableOpacity style={styles.homeButton} onPress={() => navigation.navigate('Welcome')}>
-            <AntDesign name="home" size={24} color="black" />
+            <Ionicons name="home-outline" size={24} color="black" />
           </TouchableOpacity>
           <TouchableOpacity onPress={() => navigation.navigate('Supplier')}>
             <AntDesign style={styles.icon} name="back" size={24} color="#191919" />
@@ -75,7 +76,10 @@ function CompanyCard(){
         ${companyName}, encontrei seu contato pelo aplicativo CompreMaisAqui!
       `)
     }catch(err){
-      alert(err);
+      Alert.alert(
+        'Ops!',
+        'Tivemos um erro, entre em contato com o suporte',
+      );
     }
   }
 
@@ -83,7 +87,10 @@ function CompanyCard(){
     try{
       Linking.openURL(`tel:0${companyPhone}`);
     }catch(err){
-      alert(err);
+      Alert.alert(
+        'Ops!',
+        'Tivemos um erro, entre em contato com o suporte',
+      );
     }
   }
 
@@ -91,7 +98,10 @@ function CompanyCard(){
     try{
       Linking.openURL(`https://www.google.com/maps/dir/?api=1&destination=${companyAddress},${companyDistrict},${companyCity},${companyUf}`)
     }catch(err){
-      alert(err);
+      Alert.alert(
+        'Ops!',
+        'Tivemos um erro, entre em contato com o suporte.'
+      );
     }
   }
 
@@ -99,7 +109,10 @@ function CompanyCard(){
     try{
       Linking.openURL(`https://api.whatsapp.com/send?phone=${companyPhone}&text=%20Olá%20${companyName}%20encontrei%20seu%20contato%20pelo%20aplicativo%20CompreMaisAki%20+`);
     }catch(err){
-      alert(err);
+      Alert.alert(
+        'Ops!',
+        'Tivemos um erro, entre em contato com o suporte.'
+      );
     }
   }
 
@@ -156,9 +169,10 @@ function CompanyCard(){
 interface HandleNextPage {
   navigation: any,
   route: any,
+  res: any,
 }
 
-const baseURL = 'http://192.168.15.200:8008/v1/companies/products/company_id';
+const baseURL = `${API_URL}/companies/products/company_id`;
 
 export default class App extends PureComponent<HandleNextPage> {
   state = {
@@ -185,9 +199,11 @@ export default class App extends PureComponent<HandleNextPage> {
       this.setState({
         data: [...this.state.data, ...repositories],
         loading: false,
-      });
+      })
+
+    }else{
+      return;
     }
-    return;
   }
 
   handlePromotionDetail = async({item}:{item:any}) => {
@@ -217,13 +233,21 @@ export default class App extends PureComponent<HandleNextPage> {
   renderEmpty = () => {
     return (
     <View>
-      <Text style={{textAlign: 'center'}}>Procurando produtos...</Text>
+      <Text style={{textAlign: 'center'}}>
+        <Entypo name="dots-three-horizontal" size={24} color="#ff6600" />
+      </Text>
     </View>
     );
   }
 
-  renderItem = ({ item }:{ item:any }) => (
-     <TouchableWithoutFeedback onPress={() => {}}>
+  renderItem = ({ item }:{ item:any }) => {
+    if(item.is_active === 0){
+      return (
+        <View style={styles.listItem} />
+      )
+    }else{
+    return(
+    <TouchableWithoutFeedback onPress={() => {}}>
       <View style={styles.listItem}>
         <Image
           source={{uri: `data:image/jpeg;base64,${item.image}`}}
@@ -245,7 +269,9 @@ export default class App extends PureComponent<HandleNextPage> {
 
       </View> 
     </TouchableWithoutFeedback>
-  )
+    )
+  }
+}
 
   render() {
     return (
@@ -313,7 +339,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     fontSize: 20,
-    fontWeight: '600'
+    fontWeight: '600',
+    color: '#017895'
   },
   btnRow: {
     flexDirection: 'row',

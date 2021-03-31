@@ -1,13 +1,37 @@
 import * as React from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import { View, Text, StyleSheet, KeyboardAvoidingView,
-TextInput, TouchableOpacity, Animated } from 'react-native';
+TextInput, TouchableOpacity, Animated, ActivityIndicator, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { TextInputMask } from 'react-native-masked-text';
 import api from '../../services/api';
 
 export default function Login(){
+  const [isLoading, setIsLoading] = useState(true);
+  const [userToken, setUserToken] = useState('');
+
+  const params  = new URLSearchParams();
+  params.append('username', 'acr')
+  params.append('password', '123')
+  params.append('grant_type', 'password')
+
+  async function getToken() {
+    const response = await api.post('token',params, {
+      headers: {
+        ['Content-type'] : 'application/x-www-urlencoded'
+      }
+    })
+    setUserToken(response.data.access_token);
+  }
+
+  useEffect(() => {
+    setTimeout(() => {
+      getToken();
+      setIsLoading(false);
+    }, 1000);
+  },[]);
+
   const [cnpj, setCnpj] = useState('');
   const [password, setPassword] = useState('');
 
@@ -16,32 +40,30 @@ export default function Login(){
 
   async function handleAccess(){
     if(!cnpj || !password){
-      alert("Credenciais Inválidas!");
+      Alert.alert(
+        'Erro',
+        'Credenciais Inválidas.',
+      );
       return;
     }
 
     try {
-      await api.post('companies/logon', {
+      await api.post('companies/logon',{
         cnpj: cnpj,
-        password: password,
-      }).then(async res => {
-        if(!res.data.name){
-          alert("Credenciais Inválidas")
-        }else{
-          var id = res.data.id;
-          var name = res.data.name;
-          var image = res.data.image;
-          navigation.navigate('Home',{
-            id: id,
-            name: name,
-            image: image,
-          });
-        }
-      }).catch(err => {
-        alert("Credenciais Inválidas");
-      });
+        password: password
+      },{
+        headers: {'Authorization': 'Bearer '+userToken}
+      }).then(res => navigation.navigate('Home',{
+        id: res.data.id,
+        name: res.data.name,
+        image: res.data.image,
+        userToken: userToken
+      }));
     }catch(err){
-      navigation.navigate('Login');
+      Alert.alert(
+        'Acesso Inválido',
+        'Tente novamento após alguns minutos.',
+      );
     }
   }
 
@@ -50,9 +72,16 @@ export default function Login(){
   }
 
   async function handleForgotPassword(){
-    alert("Ops! Tivemos um Erro, Entre em contato.");
+    navigation.navigate('Forgot');
   }
 
+  if(isLoading){
+    return (
+      <View style={{flex:1, justifyContent:'center',alignItems:'center'}}>
+        <ActivityIndicator size='large' color='#ff6600'/>
+      </View>
+    )
+  }
   return (
     <KeyboardAvoidingView style={styles.background}>
       <View style={styles.containerLogo}>

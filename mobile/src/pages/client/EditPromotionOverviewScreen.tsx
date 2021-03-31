@@ -6,13 +6,14 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 import api from '../../services/api';
 
 interface ProductDataRouteParams {
-  id: string,
+  id: number,
   name: string,
   price: string,
   description: string,
   discount: string,
-  company_id: string,
+  company_id: number,
   image: string;
+  userToken: string,
 }
 
 export default function EditPromotionOverviewScreen(){
@@ -26,28 +27,43 @@ export default function EditPromotionOverviewScreen(){
   const productDescription = params.description;
   const productImage = params.image;
   const productDiscount = params.discount;
+  const userToken = params.userToken;
+  const date = Date.now().toString();
 
   const companyId = params.company_id;
 
   const [modalVisible, setModalVisible] = useState(false);
 
   async function handleEditPromotion(){
+    
     try {
       await api.put(`products/${productId}`,{
+        id: productId,
         name: productName,
         price: productPrice,
         description: productDescription,
-        date: Date.now(),
+        date: date,
         company_id: companyId,
         image: productImage,
-        validate: '0',
+        validate: date,
         discount: productDiscount,
         is_active: 0,
+      },{
+        headers: {
+          'Authorization': 'Bearer '+userToken
+        }
+      }).catch(err => {
+        console.log(err);
+        alert(err)
+      }).then(() => {
+        navigation.navigate('Home');
+        alert("Concluído!");
       })
-      navigation.navigate('Home');
     }catch(err){
+      console.log(err);
       alert(err);
     }
+
   }
 
   return(
@@ -55,13 +71,11 @@ export default function EditPromotionOverviewScreen(){
       <View style={styles.container}>
         <View style={styles.textContainer}>
           <View style={styles.titleContainer}>
-          <Text style={styles.productTitle}>{productId}</Text>
             <Text style={styles.productTitle}>{productName}</Text>
             <Text style={styles.productTitle}>Valor: R$ {productPrice}</Text>
           </View>
           <Text style={styles.productText}>Descrição: {productDescription}</Text>
           <Text style={styles.productText}>Desconto: {productDiscount}%</Text>
-          <Text style={styles.productText}>{companyId}</Text>
         </View>
 
         
@@ -145,8 +159,8 @@ const styles = StyleSheet.create({
     justifyContent:'center',
   },
   productImage: {
-    width: 100,
-    height: 100,
+    width: 160,
+    height: 160,
     borderRadius: 20,
     marginBottom: 32,
   },

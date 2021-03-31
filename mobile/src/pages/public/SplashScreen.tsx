@@ -1,5 +1,5 @@
-import React from 'react';
-import { View, TouchableWithoutFeedback, Text, StyleSheet, Image } from 'react-native';
+import React, { useState } from 'react';
+import { View, TouchableWithoutFeedback, Text, StyleSheet, Image, Button } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 import ImageZoom from 'react-native-image-pan-zoom';
@@ -43,6 +43,8 @@ export default function SplashScreen(){
           <Text style={styles.splashAdvise2}>Se deseja anunciar produtos/serviço entre no menu superior.</Text>
         </View>
       </View>
+
+      
 
     </TouchableWithoutFeedback>
   );
