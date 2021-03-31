@@ -15,21 +15,23 @@ interface Company {
   name: string;
   phone: string;
   email: string;
-  addres: string;
+  address: string;
   district: string;
   city: string;
   uf: string;
   keywords: string;
   password: string;
+  image: string;
   is_active: string;
 }
 
 function Products(){
   const [companies, setCompanies] = useState<Company[]>([]);
   const [active, setActive] = useState('0');
+  const [base] = useState('data:image/png;base64');
 
   useEffect(() => {
-    api.get('companies').then(response => {
+    api.get('companies/all').then(response => {
       setCompanies(response.data);
       console.log(response.data);
     });
@@ -59,7 +61,7 @@ function Products(){
 
   async function handleViewInactive(){
     try{
-      api.get('companies').then(response => {
+      api.get('companies/all').then(response => {
         setCompanies(response.data);
         setActive('0');
       });
@@ -212,11 +214,11 @@ function Products(){
                     <td>{company.cnpj}</td>
                     <td>{company.phone}</td>
                     <td>{company.email}</td>
-                    <td>{company.addres}</td>
+                    <td>{company.address}</td>
                     <td>{company.district}</td>
                     <td>{company.city}</td>
                     <td>{company.uf}</td>
-                    <td>placeholder</td>
+                    <td onClick={() => {}}><img src={base + ',' + company.image} style={{width: '70%'}} className="landingImg" alt="CompreMaisAki" /></td>
                     <td>
                       {renderButton({company})}
                     </td>

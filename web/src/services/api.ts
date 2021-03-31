@@ -4,11 +4,10 @@ const api = axios.create({
   baseURL: 'http://localhost:3000', 
   headers: {
     'Access-Control-Allow-Origin': false,
-
   },
   proxy: {
-    host: '192.168.15.200:8008',
-    port: 8008
+    host: 'http://habil.servehttp.com',
+    port: 5001,
   },
 })
 
