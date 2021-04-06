@@ -21,21 +21,21 @@ export default function Sidebar() {
         
         <div className="button-wrapper">
           <div className="button-block">
-            <label htmlFor="about">Moderadores</label>
+            <label>Moderadores</label>
             <Link to="/moderators" className="enter-path">
               <RiAdminLine size="26" color="white" />
             </Link>
           </div>
 
           <div className="button-block">
-            <label htmlFor="button">Produtos</label>
+            <label>Produtos</label>
             <Link to="/products" className="enter-path">
               <FiArrowRight size="26" color="white" />
             </Link>
           </div>
 
           <div className="button-block">
-            <label htmlFor="about">Empresas</label>
+            <label>Empresas</label>
             <Link to="/companies" className="enter-path">
               <FiArrowRight size="26" color="white" />
             </Link>
@@ -46,7 +46,7 @@ export default function Sidebar() {
 
 
       <footer>
-        <label htmlFor="button">Sair</label>
+        <label>Sair</label>
         <Link to="/" className="enter-path">
           <FiArrowLeft size={24} color="#FFF" />
         </Link>

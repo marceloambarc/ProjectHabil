@@ -10,6 +10,16 @@ import advImg2 from '../../images/content_id.png';
 import logoImg from '../../images/cmatextlogo.png';
 
 function ControlMap(){
+
+  async function handleChangeImage1() {
+    alert('TODO Change Image1 on DATABASE using base64');
+  }
+
+  async function handleChangeImage2(){
+    alert('TODO Change Image2 on DATABASE using base64');
+  }
+
+
   return(
     <div id="page-control-map">
       <Sidebar />
@@ -26,7 +36,7 @@ function ControlMap(){
               <img src={advImg1} className="AdvImage" alt="AdvImage" style={{width: "85%"}}/>
               
               <div className="button-block">
-                <button type="button" onClick={() => {}} className="changeImageButton">
+                <button type="button" onClick={() => handleChangeImage1()} className="changeImageButton">
                   <FaExchangeAlt size="26" color="#fff" />
                 </button>
               </div>
@@ -36,7 +46,7 @@ function ControlMap(){
               <img src={advImg2} className="AdvImage" alt="AdvImage" style={{width: "85%"}} />
               
               <div className="button-block">
-                <button type="button" onClick={() => {}} className="changeImageButton">
+                <button type="button" onClick={() => handleChangeImage2()} className="changeImageButton">
                   <FaExchangeAlt size="26" color="#fff" />
                 </button>
               </div>

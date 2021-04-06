@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { FiAlertOctagon, FiCheck, FiCheckCircle, FiAlertCircle, FiXCircle, FiBook } from 'react-icons/fi';
+import Modal from 'react-modal';
 
 import Sidebar from '../../components/Sidebar'
 import api from '../../services/api';
@@ -7,6 +8,17 @@ import api from '../../services/api';
 import '../../styles/pages/controlmap.css';
 import '../../styles/pages/companies_buttons.css';
 import '../../styles/pages/table.css';
+
+const customStyles = {
+  content : {
+    top                   : '50%',
+    left                  : '50%',
+    right                 : 'auto',
+    bottom                : 'auto',
+    marginRight           : '-50%',
+    transform             : 'translate(-50%, -50%)'
+  }
+};
 
 interface Company {
   id: number;
@@ -29,12 +41,22 @@ function Products(){
   const [companies, setCompanies] = useState<Company[]>([]);
   const [active, setActive] = useState('0');
   const [base] = useState('data:image/png;base64');
+  const [modalIsOpen,setIsOpen] = useState(false);
 
   useEffect(() => {
     api.get('companies/all').then(response => {
       setCompanies(response.data);
     });
   }, []);
+
+  //----EXPAND IMAGE---//
+  async function handleExpandImage(){
+    setIsOpen(true);
+  }
+
+  async function handleCloseImage(){
+    setIsOpen(false);
+  }
 
   //-----VIEWS------//
 
@@ -136,7 +158,7 @@ function Products(){
       <main>
         <div className="control-map">
 
-          <h1>Administração de Empresas</h1>
+          <h1 style={{fontSize:'22px'}}>Administração de Empresas</h1>
 
           <div className="companies-button-wrapper">
 
@@ -196,7 +218,7 @@ function Products(){
                     <td>{company.district}</td>
                     <td>{company.city}</td>
                     <td>{company.uf}</td>
-                    <td onClick={() => {}}><img src={base + ',' + company.image} style={{width: '50%'}} className="landingImg" alt="CompreMaisAki" /></td>
+                    <td onClick={() => handleExpandImage()}><img src={base + ',' + company.image} style={{width: '100%', cursor: 'pointer'}} className="landingImg" alt="CompreMaisAki" /></td>
                     <td>
                       {renderButton({company})}
                     </td>
@@ -208,6 +230,24 @@ function Products(){
             })}
             </tbody>
           </table>
+
+          <Modal
+          isOpen={modalIsOpen}
+          onRequestClose={handleCloseImage}
+          style={customStyles}
+          contentLabel="Example Modal"
+          >
+
+          <button onClick={() => handleCloseImage()}>close</button>
+          <div>I am a modal</div>
+          <form>
+            <input />
+            <button>tab navigation</button>
+            <button>stays</button>
+            <button>inside</button>
+            <button>the modal</button>
+          </form>
+        </Modal>
 
           </div>
         </div>
