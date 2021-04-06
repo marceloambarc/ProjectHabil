@@ -19,9 +19,9 @@ interface Company {
   district: string;
   city: string;
   uf: string;
-  keywords: string;
   password: string;
   image: string;
+  keywords: string;
   is_active: string;
 }
 
@@ -33,90 +33,71 @@ function Products(){
   useEffect(() => {
     api.get('companies/all').then(response => {
       setCompanies(response.data);
-      console.log(response.data);
     });
   }, []);
 
+  //-----VIEWS------//
 
   async function handleViewActive(){
-    try{
-      api.get('companies').then(response => {
-        setCompanies(response.data);
-        setActive('1');
-      });
-    }catch(err){
-      alert(err);
-    }
+    setActive('1')
   }
 
   async function handleViewCanceled(){
-    try{
-      api.get('deleted_companies').then(response => {
-        setCompanies(response.data);
-      })
-    }catch(err){
-      alert(err);
-    }
+    setActive('2')
   }
 
   async function handleViewInactive(){
-    try{
-      api.get('companies/all').then(response => {
-        setCompanies(response.data);
-        setActive('0');
-      });
-    }catch(err){
-      alert(err);
-    }
+    setActive('0')
   }
 
+  //---MANIPULAR EMPRESAS (inserir token no Bearer)---//
   async function handleInactive({company}:{company:any}){
-    try{
-      api.put('companies',{
-        id: company.id,
-        is_active: 0,
-      }).then(() => {
-        api.get('companies').then(response => {
-          setCompanies(response.data);
-        });
+    api.put(`companies/${company.id}`,{
+      // 0 === Empresa INATIVA
+      is_active: 0,
+    }).then(() => {
+      api.get('companies').then(response => {
+        setCompanies(response.data);
       });
-    }catch(err){
-      alert(err);
-    }
+    }).catch(err => {
+      console.log(err);
+    });
   }
 
   async function handleCanceled({company}:{company:any}){
-    try{
-      api.put('companies',{
-        id: company.id,
-        is_active: 2,
-      }).then(() => {
-        api.delete(`companies/${company.id}`).then(() => {
-          api.get('companies').then(response => {
-            setCompanies(response.data);
-          })
+    api.put(`companies/${company.id}`,{
+      // 2 === Empresa CANCELADA
+      is_active: 2,
+    }).then(() => {
+      api.delete(`companies/${company.id}`).then(() => {
+        api.get('companies').then(response => {
+          setCompanies(response.data);
+        }).catch(err => {
+          console.log(err);
         })
+      }).catch(err => {
+        console.log(err);
       })
-    }catch(err){
-      alert(err);
-    }
+    }).catch(err => {
+      console.log(err);
+    });
   }
 
   async function handleActive({company}:{company:any}){
-    try{
-      api.put('companies',{
-        id: company.id,
-        is_active: 1,
-      }).then(() => {
-        api.get('companies').then(response => {
-          setCompanies(response.data);
-        });
+    api.put(`companies/${company.id}`,{
+      // 1 === Empresa ATIVA
+      is_active: 1,
+    }).then(() => {
+      api.get('companies').then(response => {
+        setCompanies(response.data);
       });
-    }catch(err){
+    }).catch(err => {
       alert(err);
-    }
+      console.log(err);
+    });
   }
 
+  // RENDERIZAR BOTOES NA TABELA ATIVAS(1) - INATIVAS(0) - CANCELADAS(2)
   function renderButton({company}:{company:any}){
     if(active == "0"){
       return(
@@ -205,6 +186,7 @@ function Products(){
             </tr>
 
             {companies.map(company => {
+              // ACTIVE MANIPULADO NO USESTATE()
               if(company.is_active == active){
                 return(
                     <tr key={company.id}>
