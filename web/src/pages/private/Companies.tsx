@@ -56,29 +56,25 @@ function Products(){
       // 0 === Empresa INATIVA
       is_active: 0,
     }).then(() => {
-      api.get('companies').then(response => {
+      api.get('companies/all').then(response => {
         setCompanies(response.data);
       });
     }).catch(err => {
+      alert(err);
       console.log(err);
     });
   }
 
   async function handleCanceled({company}:{company:any}){
     api.put(`companies/${company.id}`,{
-      // 2 === Empresa CANCELADA
+      // 1 === Empresa ATIVA
       is_active: 2,
     }).then(() => {
-      api.delete(`companies/${company.id}`).then(() => {
-        api.get('companies').then(response => {
-          setCompanies(response.data);
-        }).catch(err => {
-          console.log(err);
-        })
-      }).catch(err => {
-        console.log(err);
-      })
+      api.get('companies/all').then(response => {
+        setCompanies(response.data);
+      });
     }).catch(err => {
+      alert(err);
       console.log(err);
     });
   }
@@ -88,7 +84,7 @@ function Products(){
       // 1 === Empresa ATIVA
       is_active: 1,
     }).then(() => {
-      api.get('companies').then(response => {
+      api.get('companies/all').then(response => {
         setCompanies(response.data);
       });
     }).catch(err => {
@@ -182,7 +178,7 @@ function Products(){
               <th>Cidade</th>
               <th>UF</th>
               <th>Foto</th>
-              <th className="noWrap">Comandos</th>
+              <th className="noWrap td">Comandos</th>
             </tr>
 
             {companies.map(company => {
@@ -200,7 +196,7 @@ function Products(){
                     <td>{company.district}</td>
                     <td>{company.city}</td>
                     <td>{company.uf}</td>
-                    <td onClick={() => {}}><img src={base + ',' + company.image} style={{width: '70%'}} className="landingImg" alt="CompreMaisAki" /></td>
+                    <td onClick={() => {}}><img src={base + ',' + company.image} style={{width: '50%'}} className="landingImg" alt="CompreMaisAki" /></td>
                     <td>
                       {renderButton({company})}
                     </td>
