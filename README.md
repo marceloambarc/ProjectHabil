@@ -3,14 +3,14 @@ Under Construction.
 
 Web administration - REACT JS.
 Mobile APP - REACT-NATIVE
-Server - NODE JS
+Server - NODE JS - (DEPRECATED)
 Database - MYSQL
 
 
 ## PROTOTYPES.
-Alfa Test 07/12/2020
-Alfa Test 22/03/2021
-APK + Alfa Test 06/04/2021
+<p>Alfa Test 07/12/2020</p>
+<p>Alfa Test 22/03/2021</p>
+<p>APK + Alfa Test 06/04/2021</p>
 
 ## ALPHA CONSTRUCTION
 <p>0.0.2 = 07/01/2021</p>
