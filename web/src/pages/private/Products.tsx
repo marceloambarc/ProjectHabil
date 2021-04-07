@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { FiDollarSign, FiLayers, FiBookOpen, FiArrowDownCircle } from 'react-icons/fi';
+import { FiDollarSign, FiLayers, FiBookOpen, 
+FiArrowDownCircle, FiAlertOctagon, FiCheck } from 'react-icons/fi';
 
 import Sidebar from '../../components/Sidebar'
 import api from '../../services/api';
@@ -21,40 +22,92 @@ interface Product {
   is_active: number;
 }
 
+interface Company {
+  id: number;
+  name: string;
+}
+
 function Products(){
   const [products, setProducts] = useState<Product[]>([]);
+  const [companies, setCompanies] = useState<Company[]>([]);
+  const [validate, setValidate] = useState('');
+  const [base] = useState('data:image/png;base64');
 
   useEffect(() => {
+    api.get('companies/all').then(response => {
+      setCompanies(response.data);
+    })
     api.get('products').then(response => {
       setProducts(response.data);
     });
   }, []);
 
-  async function handleDelete({product}:{product:any}){
-    try{
-      let isDelete = window.confirm(`Deseja Rejeitar ${product.name}?`);
-      if(isDelete){
-        api.delete(`products/${product.id}`).then(() => {
-          api.get('products').then(response => {
-            setProducts(response.data);
-          });
-        });
-      }
-    }catch(err){
+   //----EXPAND IMAGE---//
+   async function handleExpandImage({products}:any){
+    alert(`Ver imagem ${products.image}`);
+  }
+
+  async function handleCanceled({products}:{products:any}){
+    api.delete(`products/${products.id}`).then(() => {
+      api.get('products').then(response => {
+        setProducts(response.data);
+      });
+    }).catch(err => {
       alert(err);
+    });
+  }
+
+  async function handleActive({products}:{products:any}){
+    api.put(`products/${products.id}`,{
+      is_active: 1,
+    }).then(() => {
+      api.get('products').then(response => {
+        setProducts(response.data);
+      });
+    }).catch(err => {
+      alert(err);
+    });
+  }
+
+    // RENDERIZAR BOTOES NA TABELA ATIVAS(1) - INATIVAS(0) - CANCELADAS(2)
+  function renderButton({products}:{products:any}){
+    return(
+      <div className="button-row">
+        <div className="button-col">
+          <button className="cancel" onClick={() => handleCanceled({products})}>
+            <FiAlertOctagon size="13" color="#FFF" />
+          </button>
+        </div>
+            
+        <div className="button-col">
+          <button className="aprove" onClick={() => handleActive({products})}>
+            <FiCheck size="13" color="#FFF" />
+          </button>
+        </div>
+      </div>
+      );
     }
-  }
 
-  async function handleViewPerPrice(){
-    console.log('Price');
-  }
-
+  //-----SORT-----//
   async function handleViewPerDesc(){
-    console.log('DESC');
+    alert('DESC');
+  }
+
+  async function handleViewPerCompany(){
+    alert('Company');
   }
 
   async function handleViewInactive(){
-    console.log('Tester');
+    alert('Tester');
+  }
+
+  async function handleViewPerPrice(){
+    alert('Price');
+  }
+
+  //---CHANGE VALIDATE----//
+  async function handleChange({input}:any){
+    setValidate(input);
   }
 
   return(
@@ -63,7 +116,7 @@ function Products(){
       <main>
         <div className="control-map">
 
-          <h1>Novas Promoções Cadastradas</h1>
+          <h1 style={{fontSize:'22px'}}>Novas Promoções Cadastradas</h1>
 
           <div className="companies-button-wrapper">
 
@@ -76,7 +129,7 @@ function Products(){
 
             <div className="companies-button">
               <label htmlFor="about">Empresas</label>
-              <button onClick={() => {}} id="button">
+              <button onClick={() => handleViewPerCompany()} id="button">
                 <FiBookOpen size="26" />
               </button>
             </div>
@@ -121,9 +174,12 @@ function Products(){
                     <td>{products.description}</td>
                     <td>{products.date}</td>
                     <td>{products.company_id}</td>
-                    <td>{products.validate}</td>
-                    <td>{products.discount}</td>
-                    <td>placeholder</td>
+                    <td><textarea value={validate} onChange={input => handleChange(input)} /></td>
+                    <td>{products.discount} %</td>
+                    <td onClick={() => handleExpandImage({products})}><img src={base + ',' + products.image} style={{width: '20%', cursor: 'pointer'}} className="landingImg" alt="CompreMaisAki" /></td>
+                    <td>
+                      {renderButton({products})}
+                    </td>
                   </tr>
                 );
               }else{
