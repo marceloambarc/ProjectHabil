@@ -1,16 +1,31 @@
 import React, { useState } from 'react';
 import { FiArrowRight } from 'react-icons/fi'
+import api from '../services/api';
 
 import logoImg from '../images/cmatextlogo.png';
 
 import '../styles/pages/landing.css';
+import tokenCredentials from '../services/token.json';
 
 function Landing() {
   const [user, setUser] = useState('');
   const [password, setPassword] = useState('');
 
   async function handleAccess(){
+    const params = new URLSearchParams();
+
+    const username = tokenCredentials.username;
+    const password = tokenCredentials.password;
+    const grant_type = tokenCredentials.grant_type;
+
+    params.append('username', `${username}`)
+    params.append('password', `${password}`)
+    params.append('grant_type', `${grant_type}`)
+
     try {
+      const response = await api.post('token',params);
+      const userToken = response.data.access_token;
+      localStorage.setItem('userToken', userToken);
       window.location.href = '/app';
     }catch(err){
       console.log(err);

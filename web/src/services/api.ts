@@ -9,9 +9,7 @@ const api = axios.create({
     host: 'http://habil.servehttp.com',
     port: 5001,
   },
-})
-
-console.log(api);
+});
 
 export default api;
 

@@ -97,8 +97,8 @@ function Products(){
     alert('Company');
   }
 
-  async function handleViewInactive(){
-    alert('Tester');
+  async function handleViewAlpha(){
+    alert('AZ');
   }
 
   async function handleViewPerPrice(){
@@ -136,7 +136,7 @@ function Products(){
 
             <div className="companies-button">
               <label htmlFor="about">A-Z</label>
-              <button onClick={() => handleViewInactive()} id="button">
+              <button onClick={() => handleViewAlpha()} id="button">
                 <FiArrowDownCircle size="26" />
               </button>
             </div>
@@ -159,7 +159,7 @@ function Products(){
               <th>Descricao</th>
               <th>Data</th>
               <th>Empresa</th>
-              <th>validade</th>
+              <th>Validade</th>
               <th>Desconto</th>
               <th>Imagem</th>
               <th className="noWrap">Comandos</th>
@@ -174,7 +174,7 @@ function Products(){
                     <td>{products.description}</td>
                     <td>{products.date}</td>
                     <td>{products.company_id}</td>
-                    <td><textarea value={validate} onChange={input => handleChange(input)} /></td>
+                    <td><input type="date" value={validate} onChange={input => handleChange(input)} /></td>
                     <td>{products.discount} %</td>
                     <td onClick={() => handleExpandImage({products})}><img src={base + ',' + products.image} style={{width: '20%', cursor: 'pointer'}} className="landingImg" alt="CompreMaisAki" /></td>
                     <td>

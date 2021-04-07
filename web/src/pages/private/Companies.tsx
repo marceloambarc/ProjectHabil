@@ -29,16 +29,22 @@ function Products(){
   const [companies, setCompanies] = useState<Company[]>([]);
   const [active, setActive] = useState('0');
   const [base] = useState('data:image/png;base64');
+  const [userToken, setUserToken] = useState('retrieve from localStorage');
+  const [isLoading, setIsLoading] = useState(false);
 
+  //----INSERIR TELA DE LOADING PARA USUÁRIO ----///
   useEffect(() => {
     api.get('companies/all').then(response => {
       setCompanies(response.data);
     });
+    const getUserToken = localStorage.getItem('userToken');
+    setUserToken(`${getUserToken}`);
+    
   }, []);
 
-  //----EXPAND IMAGE---//
+  //----(PENDENTE) EXPANDIR IMAGE---//
   async function handleExpandImage({company}:any){
-    alert(`Ver imagem ${company.image}`);
+     alert(`${company.image}`);
   }
 
   //-----VIEWS------//
@@ -55,11 +61,13 @@ function Products(){
     setActive('0')
   }
 
-  //---MANIPULAR EMPRESAS (inserir token no Bearer)---//
+  //---MANIPULAR EMPRESAS (INSERIR CARREGAMENTO VISUAL)---//
   async function handleInactive({company}:{company:any}){
     api.put(`companies/${company.id}`,{
       // 0 === Empresa INATIVA
       is_active: 0,
+    },{
+      headers: {'Authorization': 'Bearer '+userToken}
     }).then(() => {
       api.get('companies/all').then(response => {
         setCompanies(response.data);
@@ -71,9 +79,8 @@ function Products(){
   }
 
   async function handleCanceled({company}:{company:any}){
-    api.put(`companies/${company.id}`,{
-      // 1 === Empresa ATIVA
-      is_active: 2,
+    api.delete(`companies/${company.id}`,{
+      headers: {'Authorization': 'Bearer '+userToken}
     }).then(() => {
       api.get('companies/all').then(response => {
         setCompanies(response.data);
@@ -88,6 +95,8 @@ function Products(){
     api.put(`companies/${company.id}`,{
       // 1 === Empresa ATIVA
       is_active: 1,
+    },{
+      headers: {'Authorization': 'Bearer '+userToken}
     }).then(() => {
       api.get('companies/all').then(response => {
         setCompanies(response.data);
