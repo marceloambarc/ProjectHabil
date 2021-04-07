@@ -11,23 +11,23 @@ function Landing() {
   const [user, setUser] = useState('');
   const [password, setPassword] = useState('');
 
+  const tokenUsername = tokenCredentials.username;
+  const tokenPassword = tokenCredentials.password;
+  const tokenGrantType = tokenCredentials.grant_type;
+
   async function handleAccess(){
     const params = new URLSearchParams();
-
-    const username = tokenCredentials.username;
-    const password = tokenCredentials.password;
-    const grant_type = tokenCredentials.grant_type;
-
-    params.append('username', `${username}`)
-    params.append('password', `${password}`)
-    params.append('grant_type', `${grant_type}`)
-
+    params.append('username', tokenUsername)
+    params.append('password', tokenPassword)
+    params.append('grant_type', tokenGrantType)
     try {
       const response = await api.post('token',params);
+      console.log(response);
       const userToken = response.data.access_token;
       localStorage.setItem('userToken', userToken);
       window.location.href = '/app';
     }catch(err){
+      alert(err)
       console.log(err);
     }
   }
@@ -40,6 +40,7 @@ function Landing() {
           <h1>Administração <img src={logoImg} className="landingImg" alt="CompreMaisAki" /></h1>
           <p>verificação de dados App</p>
           <p>AlphaTest 0.0.3</p>
+          <p>{tokenUsername}</p>
 
           <div className="input-block">
             <label htmlFor="about">Usuário:</label>

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { FiAlertOctagon, FiCheck, FiCheckCircle, FiAlertCircle, FiXCircle, FiBook } from 'react-icons/fi';
+import { FiAlertOctagon, FiCheck, FiCheckCircle, 
+FiAlertCircle, FiXCircle, FiBook } from 'react-icons/fi';
 
 import Sidebar from '../../components/Sidebar'
 import api from '../../services/api';
@@ -42,12 +43,15 @@ function Products(){
     
   }, []);
 
-  //----(PENDENTE) EXPANDIR IMAGE---//
+  //----(PENDENTE) EXPAND IMAGE---//
   async function handleExpandImage({company}:any){
      alert(`${company.image}`);
   }
 
   //-----VIEWS------//
+  async function handleViewInactive(){
+    setActive('0')
+  }
 
   async function handleViewActive(){
     setActive('1')
@@ -55,10 +59,6 @@ function Products(){
 
   async function handleViewCanceled(){
     setActive('2')
-  }
-
-  async function handleViewInactive(){
-    setActive('0')
   }
 
   //---MANIPULAR EMPRESAS (INSERIR CARREGAMENTO VISUAL)---//

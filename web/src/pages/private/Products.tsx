@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { FiDollarSign, FiLayers, FiBookOpen, 
-FiArrowDownCircle, FiAlertOctagon, FiCheck } from 'react-icons/fi';
+FiArrowDownCircle, FiAlertOctagon, FiCheck, 
+FiCheckCircle, FiAlertCircle } from 'react-icons/fi';
 
 import Sidebar from '../../components/Sidebar'
 import api from '../../services/api';
@@ -19,7 +20,7 @@ interface Product {
   image: string;
   validate: string;
   discount: string;
-  is_active: number;
+  is_active: string;
 }
 
 interface Company {
@@ -30,6 +31,7 @@ interface Company {
 function Products(){
   const [products, setProducts] = useState<Product[]>([]);
   const [companies, setCompanies] = useState<Company[]>([]);
+  const [active, setActive] = useState('0');
   const [validate, setValidate] = useState('');
   const [base] = useState('data:image/png;base64');
 
@@ -47,6 +49,7 @@ function Products(){
     alert(`Ver imagem ${products.image}`);
   }
 
+  //---CANCEL AND ACTIVE BUTTON FUNCTIONS---//
   async function handleCanceled({products}:{products:any}){
     api.delete(`products/${products.id}`).then(() => {
       api.get('products').then(response => {
@@ -55,6 +58,15 @@ function Products(){
     }).catch(err => {
       alert(err);
     });
+  }
+
+  //----VIEWS----///
+  async function handleViewInactive(){
+    setActive('0')
+  }
+
+  async function handleViewActive(){
+    setActive('1')
   }
 
   async function handleActive({products}:{products:any}){
@@ -149,6 +161,22 @@ function Products(){
             </div>
 
           </div>
+
+          <div className="companies-button-wrapper">
+            <div className="companies-button">
+              <label htmlFor="about">Ativas</label>
+              <button onClick={() => handleViewActive()} id="button">
+                <FiCheckCircle size="26" color="#FFF" />
+              </button>
+            </div>
+
+            <div className="companies-button">
+              <label htmlFor="about">Inativas</label>
+              <button onClick={() => handleViewInactive()} id="button">
+                <FiAlertCircle size="26" color="#FFF" />
+              </button>
+            </div>
+          </div>
           
           <div className="table-container">
            <table id="companies">
@@ -166,7 +194,7 @@ function Products(){
             </tr>
 
             {products.map(products => {
-              if(products){
+              if(products.is_active == active){
                 return(
                     <tr key={products.id}>
                     <td>{products.name}</td>
