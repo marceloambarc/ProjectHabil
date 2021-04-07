@@ -39,8 +39,7 @@ function Landing() {
         <main>
           <h1>Administração <img src={logoImg} className="landingImg" alt="CompreMaisAki" /></h1>
           <p>verificação de dados App</p>
-          <p>AlphaTest 0.0.3</p>
-          <p>{tokenUsername}</p>
+          <p>AlphaTest 1.0.2</p>
 
           <div className="input-block">
             <label htmlFor="about">Usuário:</label>

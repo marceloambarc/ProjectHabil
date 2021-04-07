@@ -33,14 +33,27 @@ function Products(){
   const [userToken, setUserToken] = useState('retrieve from localStorage');
   const [isLoading, setIsLoading] = useState(false);
 
-  //----INSERIR TELA DE LOADING PARA USUÁRIO ----///
+  //----CARREGAMENTO DE DADOS E LOADING INICIAL DE TELA ----///
   useEffect(() => {
+    if(isLoading) return;
+
+    //Iniciar Carregamento
+    setIsLoading(true);
     api.get('companies/all').then(response => {
+
+      //Realocar Resposta para UseState
       setCompanies(response.data);
-    });
-    const getUserToken = localStorage.getItem('userToken');
-    setUserToken(`${getUserToken}`);
-    
+
+      //Realocar Token
+      const getUserToken = localStorage.getItem('userToken');
+      setUserToken(`${getUserToken}`);
+
+      //Finalizar Carregamento
+      setIsLoading(false);
+
+    }).catch(err => {
+      alert('Ops! Tivemos um Erro.');
+    })
   }, []);
 
   //----(PENDENTE) EXPAND IMAGE---//
@@ -144,6 +157,66 @@ function Products(){
     }
   }
 
+  // TABELA EM COMPONENTE
+  function renderTable(){
+    if(isLoading){
+      return (
+        <div>
+          <h1>CARREGANDO...</h1>
+        </div>
+      );
+    }else{
+      return (
+        <table id="companies">
+        <tbody>
+        <tr>
+          <th>ID</th>
+          <th>Empresa</th>
+          <th>Ramo</th>
+          <th>Palavras-Chaves</th>
+          <th>cnpj</th>
+          <th>Telefone</th>
+          <th>Email</th>
+          <th>Endereço</th>
+          <th>Bairro</th>
+          <th>Cidade</th>
+          <th>UF</th>
+          <th>Foto</th>
+          <th className="noWrap td">Comandos</th>
+        </tr>
+
+        {companies.map(company => {
+          // ACTIVE MANIPULADO NO USESTATE()
+          if(company.is_active == active){
+            return(
+                <tr key={company.id}>
+                <td>{company.id}</td>
+                <td>{company.name}</td>
+                <td>{company.business}</td>
+                <td>{company.keywords}</td>
+                <td>{company.cnpj}</td>
+                <td>{company.phone}</td>
+                <td>{company.email}</td>
+                <td>{company.address}</td>
+                <td>{company.district}</td>
+                <td>{company.city}</td>
+                <td>{company.uf}</td>
+                <td onClick={() => handleExpandImage({company})}><img src={base + ',' + company.image} style={{width: '100%', cursor: 'pointer'}} className="landingImg" alt="CompreMaisAki" /></td>
+                <td>
+                  {renderButton({company})}
+                </td>
+              </tr>
+            );
+          }else{
+            return;
+          }
+        })}
+        </tbody>
+      </table>
+      );
+    }
+  }
+
   return(
     <div id="page-control-map">
       <Sidebar />
@@ -178,50 +251,8 @@ function Products(){
           </div>
           
           <div className="table-container">
-           <table id="companies">
-            <tbody>
-            <tr>
-              <th>Empresa</th>
-              <th>Ramo</th>
-              <th>Palavras-Chaves</th>
-              <th>cnpj</th>
-              <th>Telefone</th>
-              <th>Email</th>
-              <th>Endereço</th>
-              <th>Bairro</th>
-              <th>Cidade</th>
-              <th>UF</th>
-              <th>Foto</th>
-              <th className="noWrap td">Comandos</th>
-            </tr>
 
-            {companies.map(company => {
-              // ACTIVE MANIPULADO NO USESTATE()
-              if(company.is_active == active){
-                return(
-                    <tr key={company.id}>
-                    <td>{company.name}</td>
-                    <td>{company.business}</td>
-                    <td>{company.keywords}</td>
-                    <td>{company.cnpj}</td>
-                    <td>{company.phone}</td>
-                    <td>{company.email}</td>
-                    <td>{company.address}</td>
-                    <td>{company.district}</td>
-                    <td>{company.city}</td>
-                    <td>{company.uf}</td>
-                    <td onClick={() => handleExpandImage({company})}><img src={base + ',' + company.image} style={{width: '100%', cursor: 'pointer'}} className="landingImg" alt="CompreMaisAki" /></td>
-                    <td>
-                      {renderButton({company})}
-                    </td>
-                  </tr>
-                );
-              }else{
-                return;
-              }
-            })}
-            </tbody>
-          </table>
+          {renderTable()}
 
           </div>
         </div>

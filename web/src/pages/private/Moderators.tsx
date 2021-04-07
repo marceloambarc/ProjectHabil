@@ -1,35 +1,92 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { GiConfirmed } from 'react-icons/gi';
-
 
 import Sidebar from '../../components/Sidebar';
 import '../../styles/pages/controlmap.css';
 import '../../styles/pages/home.css';
 
+import api from '../../services/api';
+
 import logoImg from '../../images/cmatextlogo.png';
 
 interface Admin {
   id: number,
-  name: string,
-  is_active: string,
+  user: string,
+  role: string,
 }
 
 function Moderators(){
+    //Realocar Token
+    const getUserToken = localStorage.getItem('userToken');
+
     const [admins, setAdmins] = useState<Admin[]>([]);
     const [user, setUser] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
+    const [userToken] = useState(`${getUserToken}`)
+    const [isLoading, setIsLoading] = useState(false);
+
+    useEffect(() => {
+      if(isLoading) return;
+
+      //Iniciar Carregamento
+      setIsLoading(true);
+
+      //Carregamento dos ADMINS
+      api.get('admin',{
+        headers: {'Authorization': 'Bearer '+userToken}
+      }).then(adm => {
+        setAdmins(adm.data);
+        //Finalizar Carregamento
+        setIsLoading(false);
+      }).catch(err => {
+        alert('Ops! Tivemos um erro.');
+      })
+    }, []);
 
     async function handleCreateNewModerator(){
-        try{
-            if(password == confirmPassword){
-                console.log("certo");
-            }else{
-                alert("senha nao confere");
-            }
-        }catch(err){
-            console.log(err);
-        }
+        
+      if(password == confirmPassword){
+         console.log("certo");
+      }else{
+        alert("senha nao confere");
+      }
+    }
+
+    // TABELA EM COMPONENT
+    function renderTable(){
+      if(isLoading){
+        return (
+          <div>
+            <h1>CARREGANDO...</h1>
+          </div>
+        );
+      }else{
+        return (
+          <table id="companies">
+            <tbody>
+            <tr>
+              <th>Admin</th>
+              <th>Função</th>
+              <th className="noWrap">Comandos</th>
+            </tr>
+
+            {admins.map(admin => {
+              
+                return(
+                    <tr key={admin.id}>
+                    <td>{admin.user}</td>
+                    <td>{admin.role}</td>
+                    <td>
+                      <p>placeholder</p>
+                    </td>
+                  </tr>
+                );
+            })}
+            </tbody>
+          </table>
+        );
+      }
     }
 
   return(
@@ -58,13 +115,13 @@ function Moderators(){
             <label htmlFor="name">Senha:</label>
             <input 
               type="password"
-              id="name" 
+              id="password" 
               value={password} 
               onChange={event => setPassword(event.target.value)} />
             <label htmlFor="name">Confirme a Senha:</label>
             <input 
               type="password"
-              id="name" 
+              id="confirmPassword" 
               value={confirmPassword} 
               onChange={event => setConfirmPassword(event.target.value)} />
           </div>
@@ -81,28 +138,7 @@ function Moderators(){
 
         <div className="control-map">
         <div className="table-container">
-           <table id="companies">
-            <tbody>
-            <tr>
-              <th>Admin</th>
-              <th>Função</th>
-              <th className="noWrap">Comandos</th>
-            </tr>
-
-            {admins.map(admin => {
-              
-                return(
-                    <tr key={admin.id}>
-                    <td>{admin.name}</td>
-                    <td>{admin.is_active}</td>
-                    <td>
-                      <p>placehols</p>
-                    </td>
-                  </tr>
-                );
-            })}
-            </tbody>
-          </table>
+          {renderTable()}
         </div>
         </div>
       </main>

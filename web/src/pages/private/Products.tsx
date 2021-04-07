@@ -34,24 +34,50 @@ function Products(){
   const [active, setActive] = useState('0');
   const [validate, setValidate] = useState('');
   const [base] = useState('data:image/png;base64');
+  const [userToken, setUserToken] = useState('retrieve from localStorage');
+  const [isLoading, setIsLoading] = useState(false);
 
+  //----CARREGAMENTO DE DADOS E LOADING INICIAL DE TELA ----///
   useEffect(() => {
-    api.get('companies/all').then(response => {
-      setCompanies(response.data);
+    if(isLoading) return;
+
+    //Iniciar Carregamento
+    setIsLoading(true);
+
+    //Carregamento de empresas
+    api.get('products').then(products => {
+
+      //Realocar Resposta para UseState
+      setProducts(products.data);
+
+      //Carregar empresas para nomeclatura na coluna "EMPRESA"
+      api.get('companies/all').then(companies => {
+        setCompanies(companies.data)
+      }).catch(err => {
+        alert('Ops! Tivemos um erro.');
+      });
+
+      //Realocar Token
+      const getUserToken = localStorage.getItem('userToken');
+      setUserToken(`${getUserToken}`);
+
+      //Finalizar Carregamento
+      setIsLoading(false);
+    }).catch(err => {
+      alert("Ops! Tivemos um erro");
     })
-    api.get('products').then(response => {
-      setProducts(response.data);
-    });
   }, []);
 
-   //----EXPAND IMAGE---//
+   //----(PENDENT)EXPAND IMAGE---//
    async function handleExpandImage({products}:any){
     alert(`Ver imagem ${products.image}`);
   }
 
   //---CANCEL AND ACTIVE BUTTON FUNCTIONS---//
   async function handleCanceled({products}:{products:any}){
-    api.delete(`products/${products.id}`).then(() => {
+    api.delete(`products/${products.id}`,{
+      headers: {'Authorization': 'Bearer '+userToken}
+    }).then(() => {
       api.get('products').then(response => {
         setProducts(response.data);
       });
@@ -81,7 +107,7 @@ function Products(){
     });
   }
 
-    // RENDERIZAR BOTOES NA TABELA ATIVAS(1) - INATIVAS(0) - CANCELADAS(2)
+  // RENDERIZAR BOTOES NA TABELA ATIVAS(1) - INATIVAS(0) - CANCELADAS(2)
   function renderButton({products}:{products:any}){
     return(
       <div className="button-row">
