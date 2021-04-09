@@ -100,7 +100,7 @@ function Products(){
         setProducts(response.data);
       });
     }).catch(err => {
-      alert(err);
+      alert('Tivemos um erro, entre em contato com o Suporte');
     });
   }
 
@@ -111,12 +111,11 @@ function Products(){
     },{
       headers: {'Authorization': 'Bearer '+userToken}
     }).then(res => {
-      console.log(res);
       api.get('products/all').then(response => {
         setProducts(response.data);
       });
     }).catch(err => {
-      alert(err);
+      alert('Tivemos um erro, entre em contato com o Suporte');
     });
   }
 
@@ -130,7 +129,7 @@ function Products(){
         setProducts(response.data);
       });
     }).catch(err => {
-      alert(err);
+      alert('Tivemos um erro, entre em contato com o Suporte');
     });
   }
 
@@ -190,7 +189,7 @@ function Products(){
         setProducts(response.data);
       });
     }).catch(err => {
-      alert(err);
+      alert('Tivemos um erro, entre em contato com o Suporte');
     })
   }
 

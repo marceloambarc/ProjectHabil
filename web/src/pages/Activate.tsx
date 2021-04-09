@@ -1,13 +1,13 @@
 import React, {  useState } from 'react';
-import { FiArrowRight } from 'react-icons/fi'
+import { FiSend } from 'react-icons/fi'
 import api from '../services/api';
 
-import logoImg from '../images/cmatextlogo.png';
+import '../styles/pages/confirm.css';
 
-import '../styles/pages/landing.css';
+import logoImg from '../images/cmatextlogo.png';
 import tokenCredentials from '../services/token.json';
 
-
+//---CRIAR USEEFFECT PARA RETURN(<P>LOADING...<P>);
 function Landing(props:any) {
   const [company, setCompany] = useState('');
   const [password, setPassword] = useState('');
@@ -24,29 +24,48 @@ function Landing(props:any) {
 
     const response = await api.post('token',params);
     const userToken = response.data.access_token;
-    console.log(userToken);
+
+    if(company == '' || company == ' ' || company == undefined){
+      alert('CNPJ INVÁLIDO');
+      return;
+    }
+
+    if(password == '' || password == ' ' || password == undefined){
+      alert('SENHA INVÁLIDA');
+      return;
+    }
     
-      api.post('companies/logon',{
-        cnpj:company,
-        pasword: password,
+      api.post('companies/logon/inativo',{
+        cnpj: company,
+        password: password
       },{
         headers: {'Authorization': 'Bearer '+userToken}
       }).then(() => {
-        alert("sucesso")
+        api.put(`companies/${props.match.params.id}`,{
+          is_active: 1
+        },{
+          headers: {'Authorization': 'Bearer '+userToken}
+        }).then(() => {
+          alert("Sucesso! Aguarde a confirmacão do Administrador para acessar o Aplicativo e cadastrar suas promoções");
+          window.location.href = '/';
+        }).catch(err => {
+          alert("Ops! Tivemos um Erro de Servidor, entre em contato com o Suporte.");
+          return;
+        })
       }).catch(err => {
-        alert(err);
+        alert("Ops! Tivemos um Erro de Servidor, entre em Contato com o Suporte.");
+        return;
       })
       
       
   }
 
   return (
-    <div id="page-landing">
+    <div id="confirm-container">
       <div className="content-wrapper">
 
         <main>
-          <h1>Confirme seu</h1>
-          <h1>E-mail</h1>
+          <h1>Confirme seu Email</h1>
           <p><img src={logoImg} className="landingImg" alt="CompreMaisAki" /></p>
 
           <div className="input-block">
@@ -67,16 +86,11 @@ function Landing(props:any) {
               onChange={event => setPassword(event.target.value)} /> 
           </div>
 
+          <button type="button" onClick={() => handleConfirm()} className="confirm-app">
+            <FiSend size="26" color="#fff" />
+          </button>
+
         </main>
-
-        <div className="location">
-          <strong>Nova Santa Rita</strong>
-          <span>Rio Grande do Sul</span>
-        </div>
-
-        <button type="button" onClick={() => handleConfirm()} className="enter-app">
-          <FiArrowRight size="26" color="#fff" />
-        </button>
       </div>
     </div>
   ); 

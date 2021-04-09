@@ -17,7 +17,7 @@ function Welcome() {
     try {
       window.location.href = '/login';
     }catch(err){
-      console.log(err);
+      alert('Tivemos um erro');
     }
   }
 
@@ -25,7 +25,7 @@ function Welcome() {
     try {
       window.location.href = '/client';
     }catch(err){
-      console.log(err);
+      alert('Tivemos um erro');
     }
   }
 
@@ -62,12 +62,15 @@ function Welcome() {
         </div>
 
         <div className="enter-app-container">
+          
+          {/*----------ROTA ESCONDIDA PARA HOMOLOGACAO
+          
           <div className="enter-app-col1">
             <p className="enter-text">Entrar</p>
             <button type="button" onClick={() => handleClient()} className="enter-app">
               <FiArrowRight size="26" color="#FFF" />
             </button>
-          </div>
+          </div>*/}
           <div className="enter-app-col2">
             <button type="button" onClick={() => handleLogin()} className="enter-app">
               <GrUserAdmin size="26" color="#fff" />

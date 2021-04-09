@@ -103,8 +103,7 @@ function Products(){
         setCompanies(response.data);
       });
     }).catch(err => {
-      alert(err);
-      console.log(err);
+      alert('Tivemos um erro, entre em contato com o Suporte');
     });
   }
 
@@ -116,8 +115,7 @@ function Products(){
         setCompanies(response.data);
       });
     }).catch(err => {
-      alert(err);
-      console.log(err);
+      alert('Tivemos um erro, entre em contato com o Suporte');
     });
   }
 
@@ -132,8 +130,7 @@ function Products(){
         setCompanies(response.data);
       });
     }).catch(err => {
-      alert(err);
-      console.log(err);
+      alert('Tivemos um erro, entre em contato com o Suporte');
     });
   }
 

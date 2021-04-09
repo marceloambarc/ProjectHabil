@@ -63,7 +63,7 @@ function Moderators(){
           alert("Usuário Cadastrado!");
           loadAdmins();
         }).catch(err => {
-          alert(err);
+          alert('Tivemos um erro, entre em contato com o Suporte');
         })
       }else{
         alert("Senha não confere.");
@@ -190,16 +190,17 @@ function Moderators(){
                   id="confirmPassword" 
                   value={confirmPassword} 
                   onChange={event => setConfirmPassword(event.target.value)} />
+
+                {/*<label for="cars">Choose a car:</label>
+
+                  <select name="cars" id="cars">
+                    <option value="volvo">Volvo</option>
+                    <option value="saab">Saab</option>
+                    <option value="mercedes">Mercedes</option>
+                    <option value="audi">Audi</option>
+                  </select>*/}
+
               </div>
-            </div>
-
-            <div className="advCol">
-
-              <label className="switch">
-                <input type="checkbox" />
-                <span className="slider"></span>
-              </label>
-
             </div>
           </div>
 

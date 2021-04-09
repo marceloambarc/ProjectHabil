@@ -21,6 +21,8 @@ function Routes() {
         <Route path="/companie/:id" component={Companie} />
 
         <Route path="/login" component={Landing} />
+        
+        {/*fazer token para rota*/}
         <Route path="/activate/:id" component={Activate} />
         <Route path="/app" component={ControlMap} />
 

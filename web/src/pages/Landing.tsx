@@ -22,13 +22,11 @@ function Landing() {
     params.append('grant_type', tokenGrantType)
     try {
       const response = await api.post('token',params);
-      console.log(response);
       const userToken = response.data.access_token;
       localStorage.setItem('userToken', userToken);
       window.location.href = '/app';
     }catch(err){
-      alert(err)
-      console.log(err);
+      alert('Tivemos um erro, entre em contato com Suporte');
     }
   }
 

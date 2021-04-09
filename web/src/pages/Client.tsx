@@ -32,22 +32,22 @@ function Client(){
   }
 
   async function handleViewPerPrice(){
-    console.log('Price');
+    alert('Price');
   }
 
   async function handleViewPerDesc(){
-    console.log('DESC');
+    alert('DESC');
   }
 
   async function handleViewInactive(){
-    console.log('Tester');
+    alert('Tester');
   }
 
   async function handleCloseApp(){
       try{
         window.location.href = '/';
       }catch(err){
-          console.log(err);
+          alert('Tivemos um erro');
       }
   }
 
