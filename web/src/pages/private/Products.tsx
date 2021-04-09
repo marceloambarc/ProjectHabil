@@ -10,6 +10,12 @@ import '../../styles/pages/controlmap.css';
 import '../../styles/pages/card.css';
 import '../../styles/pages/card-columns.css';
 
+{/* 
+  --- TO DO LIST
+  Modificar o número da empresa para Nome 'string'
+  Ordenar com os botos os produtos
+*/}
+
 interface Product {
   id: number;
   name: string;
@@ -34,7 +40,6 @@ interface Validate {
 
 function Products(){
   const [products, setProducts] = useState<Product[]>([]);
-  const [product, setProduct] = useState('');
   const [companies, setCompanies] = useState<Company[]>([]);
   const [active, setActive] = useState('0');
   const [validate, setValidate] = useState('');

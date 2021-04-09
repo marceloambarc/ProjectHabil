@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { FiArrowRight } from 'react-icons/fi';
 import { GrUserAdmin } from 'react-icons/gr';
 
 import logoImg from '../images/cmatextlogo.png';
@@ -20,14 +19,14 @@ function Welcome() {
       alert('Tivemos um erro');
     }
   }
-
-  async function handleClient(){
+//-----path escondido para homologacao
+  {/*async function handleClient(){
     try {
       window.location.href = '/client';
     }catch(err){
       alert('Tivemos um erro');
     }
-  }
+  }*/}
 
   return (
     <div id="page-welcome">

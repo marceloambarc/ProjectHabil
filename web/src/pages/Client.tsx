@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { FiDollarSign, FiLayers, FiBookOpen, FiArrowDownCircle, FiSearch } from 'react-icons/fi';
 import { IoCloseCircleOutline } from 'react-icons/io5';
 
