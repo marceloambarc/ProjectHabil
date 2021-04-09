@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { FiDollarSign, FiLayers, FiBookOpen, 
 FiArrowDownCircle, FiAlertOctagon, FiCheck, 
-FiCheckCircle, FiAlertCircle } from 'react-icons/fi';
+FiCheckCircle, FiAlertCircle, FiBook } from 'react-icons/fi';
 
 import Sidebar from '../../components/Sidebar'
 import api from '../../services/api';
@@ -45,7 +45,7 @@ function Products(){
     setIsLoading(true);
 
     //Carregamento de empresas
-    api.get('products').then(products => {
+    api.get('products/all').then(products => {
 
       //Realocar Resposta para UseState
       setProducts(products.data);
@@ -68,14 +68,55 @@ function Products(){
     })
   }, []);
 
+    //----RENDERIZAR TÍTULO DA TABELA
+    function renderTitle(){
+      if(active == '0'){
+        return(
+          <h1 style={{fontSize:'22px'}}>Promoções Inativas</h1>
+        )
+      }else{
+        return(
+          <h1 style={{fontSize:'22px'}}>Promoções Ativas</h1>  
+        )
+      }
+    }
+
    //----(PENDENT)EXPAND IMAGE---//
-   async function handleExpandImage({products}:any){
-    alert(`Ver imagem ${products.image}`);
+   async function handleExpandImage({product}:{product:Product}){
+    alert(`Ver imagem ${product.image}`);
   }
 
-  //---CANCEL AND ACTIVE BUTTON FUNCTIONS---//
-  async function handleCanceled({products}:{products:any}){
-    api.delete(`products/${products.id}`,{
+  //---CANCEL/ACTIVE/INACTIVE BUTTON FUNCTIONS---//
+  async function handleCanceled({product}:{product:Product}){
+    api.delete(`products/${product.id}`,{
+      headers: {'Authorization': 'Bearer '+userToken}
+    }).then(() => {
+      api.get('products').then(response => {
+        setProducts(response.data);
+      });
+    }).catch(err => {
+      alert(err);
+    });
+  }
+
+  async function handleActive({product}:{product:Product}){
+    api.put(`products/${product.id}`,{
+      is_active: 1,
+    },{
+      headers: {'Authorization': 'Bearer '+userToken}
+    }).then(() => {
+      api.get('products').then(response => {
+        setProducts(response.data);
+      });
+    }).catch(err => {
+      alert(err);
+    });
+  }
+
+  async function handleInactive({product}:{product:Product}){
+    api.put(`products/${product.id}`,{
+      is_active: 0,
+    },{
       headers: {'Authorization': 'Bearer '+userToken}
     }).then(() => {
       api.get('products').then(response => {
@@ -95,38 +136,57 @@ function Products(){
     setActive('1')
   }
 
-  async function handleActive({products}:{products:any}){
-    api.put(`products/${products.id}`,{
-      is_active: 1,
-    }).then(() => {
-      api.get('products').then(response => {
-        setProducts(response.data);
-      });
-    }).catch(err => {
-      alert(err);
-    });
-  }
-
-  // RENDERIZAR BOTOES NA TABELA ATIVAS(1) - INATIVAS(0) - CANCELADAS(2)
-  function renderButton({products}:{products:any}){
-    return(
-      <div className="button-row">
-        <div className="button-col">
-          <button className="cancel" onClick={() => handleCanceled({products})}>
-            <FiAlertOctagon size="13" color="#FFF" />
-          </button>
+  // RENDERIZAR BOTOES NA TABELA ATIVAS(1) - INATIVAS(0) - NAO POSSUI CANCELADAS
+  function renderButton({product}:{product:Product}){
+    if(active == '0'){
+      return(
+        <div className="button-row">
+          <div className="button-col">
+            <button className="cancel" onClick={() => handleCanceled({product})}>
+              <FiAlertOctagon size="13" color="#FFF" />
+            </button>
+          </div>
+              
+          <div className="button-col">
+            <button className="aprove" onClick={() => handleActive({product})}>
+              <FiCheck size="13" color="#FFF" />
+            </button>
+          </div>
         </div>
-            
-        <div className="button-col">
-          <button className="aprove" onClick={() => handleActive({products})}>
-            <FiCheck size="13" color="#FFF" />
-          </button>
+      );
+    }else if(active == '1'){
+      return(
+        <div className="button-row">
+          <div className="button-col">
+            <button className="cancel" onClick={() => handleCanceled({product})}>
+              <FiAlertOctagon size="13" color="#FFF" />
+            </button>
+          </div>
+              
+          <div className="button-col">
+            <button className="inactive" onClick={() => handleInactive({product})}>
+              <FiBook size="13" color="#FFF" />
+            </button>
+          </div>
         </div>
-      </div>
       );
     }
+  }
 
-  //-----SORT-----//
+    // RENDERIZAR INPUT DE DATA INVÁLIDOS - RETORNAR VALOR DA DATA PARA VÁLIDOS 
+    function renderValidate({product}:{product:Product}){
+      if(active == '0'){
+        return (
+          <input type="date" value={validate} onChange={input => handleChange(input)} />
+        );
+      }else{
+        return (
+          <p>{product.validate}</p>
+        );
+      }
+    }
+
+  //-----(PENDENT)SORT-----//
   async function handleViewPerDesc(){
     alert('DESC');
   }
@@ -205,6 +265,7 @@ function Products(){
           </div>
           
           <div className="table-container">
+            {renderTitle()}
            <table id="companies">
             <tbody>
             <tr>
@@ -219,20 +280,22 @@ function Products(){
               <th className="noWrap">Comandos</th>
             </tr>
 
-            {products.map(products => {
-              if(products.is_active == active){
+            {products.map(product => {
+              if(product.is_active == active){
                 return(
-                    <tr key={products.id}>
-                    <td>{products.name}</td>
-                    <td>{products.price}</td>
-                    <td>{products.description}</td>
-                    <td>{products.date}</td>
-                    <td>{products.company_id}</td>
-                    <td><input type="date" value={validate} onChange={input => handleChange(input)} /></td>
-                    <td>{products.discount} %</td>
-                    <td onClick={() => handleExpandImage({products})}><img src={base + ',' + products.image} style={{width: '20%', cursor: 'pointer'}} className="landingImg" alt="CompreMaisAki" /></td>
+                    <tr key={product.id}>
+                    <td>{product.name}</td>
+                    <td>R$ {product.price}</td>
+                    <td>{product.description}</td>
+                    <td>{product.date}</td>
+                    <td>{product.company_id}</td>
                     <td>
-                      {renderButton({products})}
+                      {renderValidate({product})}
+                    </td>
+                    <td>{product.discount} %</td>
+                    <td onClick={() => handleExpandImage({product})}><img src={base + ',' + product.image} style={{width: '30%', cursor: 'pointer'}} className="landingImg" alt="CompreMaisAki" /></td>
+                    <td>
+                      {renderButton({product})}
                     </td>
                   </tr>
                 );

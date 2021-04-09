@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { GiConfirmed } from 'react-icons/gi';
+import { FiAlertOctagon } from 'react-icons/fi';
+import { GiArmorUpgrade, GiArmorDowngrade } from 'react-icons/gi';
 
 import Sidebar from '../../components/Sidebar';
 import '../../styles/pages/controlmap.css';
 import '../../styles/pages/home.css';
+import '../../styles/pages/switch.css';
 
 import api from '../../services/api';
 
@@ -26,30 +29,93 @@ function Moderators(){
     const [userToken] = useState(`${getUserToken}`)
     const [isLoading, setIsLoading] = useState(false);
 
+    async function loadAdmins(){
+      api.get('admin',{
+        headers: {'Authorization': 'Bearer '+userToken}
+      }).then(adm => {
+        setAdmins(adm.data);
+      }).catch(err => {
+        alert('Ops! Tivemos um erro.');
+      });
+    }
+
     useEffect(() => {
       if(isLoading) return;
 
       //Iniciar Carregamento
       setIsLoading(true);
-
       //Carregamento dos ADMINS
-      api.get('admin',{
-        headers: {'Authorization': 'Bearer '+userToken}
-      }).then(adm => {
-        setAdmins(adm.data);
-        //Finalizar Carregamento
-        setIsLoading(false);
-      }).catch(err => {
-        alert('Ops! Tivemos um erro.');
-      })
+      loadAdmins();
+      //Finalizar Carregamento
+      setIsLoading(false);
     }, []);
 
     async function handleCreateNewModerator(){
         
       if(password == confirmPassword){
-         console.log("certo");
+        api.post('admin',{
+          user,
+          password,
+          role: 'adm'
+        },{
+          headers: {'Authorization': 'Bearer '+userToken}
+        }).then(res => {
+          alert("Usuário Cadastrado!");
+          loadAdmins();
+        }).catch(err => {
+          alert(err);
+        })
       }else{
-        alert("senha nao confere");
+        alert("Senha não confere.");
+      }
+    }
+
+    async function handleCanceled({admin}:{admin:Admin}){
+      alert('Cancelado!');
+    }
+
+    async function handlePromote({admin}:{admin:Admin}){
+      alert('Promovido!')
+    }
+
+    async function handleRelegate({admin}:{admin:Admin}){
+      alert('Depreciado!')
+    }
+
+    //---RENDERIZAR BOTOES---//
+    function renderButtons({admin}:{admin:Admin}){
+      if(admin.role == 'guest'){
+        return(
+          <div className="button-row">
+            <div className="button-col">
+              <button className="cancel" onClick={() => handleCanceled({admin})}>
+                <FiAlertOctagon size="13" color="#FFF" />
+              </button>
+            </div>
+            
+            <div className="button-col">
+              <button className="aprove" onClick={() => handlePromote({admin})}>
+                <GiArmorUpgrade size="13" color="#FFF" />
+              </button>
+            </div>
+          </div>
+        );
+      }else{
+        return(
+          <div className="button-row">
+            <div className="button-col">
+              <button className="cancel" onClick={() => handleCanceled({admin})}>
+                <FiAlertOctagon size="13" color="#FFF" />
+              </button>
+            </div>
+            
+            <div className="button-col">
+              <button className="aprove" onClick={() => handleRelegate({admin})}>
+                <GiArmorDowngrade size="13" color="#FFF" />
+              </button>
+            </div>
+          </div>
+        );
       }
     }
 
@@ -78,7 +144,7 @@ function Moderators(){
                     <td>{admin.user}</td>
                     <td>{admin.role}</td>
                     <td>
-                      <p>placeholder</p>
+                      {renderButtons({admin})}
                     </td>
                   </tr>
                 );
@@ -99,45 +165,55 @@ function Moderators(){
             <h1>Moderadores</h1>
           </div>
             <h2 className="imagesText"><img src={logoImg} className="landingImg" alt="CompreMaisAki" /></h2>
+            <h1 style={{fontSize:'20px', color:'#8fa7b3'}}>Adicionar Moderador</h1>
           <div className="advRow">
             <div className="advCol">
-              <label>Adicionar Moderador</label>
               <div className="input-block">
-            <label htmlFor="about">Usuário:</label>
-            <input 
-              id="user" 
-              maxLength={300}
-              value={user}
-              onChange={event => setUser(event.target.value)} />
-          </div>
+                <label htmlFor="about">Usuário:</label>
+                <input 
+                  id="user" 
+                  maxLength={300}
+                  value={user}
+                  onChange={event => setUser(event.target.value)} />
+              </div>
 
-          <div className="input-block">
-            <label htmlFor="name">Senha:</label>
-            <input 
-              type="password"
-              id="password" 
-              value={password} 
-              onChange={event => setPassword(event.target.value)} />
-            <label htmlFor="name">Confirme a Senha:</label>
-            <input 
-              type="password"
-              id="confirmPassword" 
-              value={confirmPassword} 
-              onChange={event => setConfirmPassword(event.target.value)} />
-          </div>
-              
-              <div className="button-block">
-                <button type="button" onClick={() => handleCreateNewModerator()} className="changeImageButton">
-                  <GiConfirmed size="26" color="#fff" />
-                </button>
+              <div className="input-block">
+                <label htmlFor="name">Senha:</label>
+                <input 
+                  type="password"
+                  id="password" 
+                  value={password} 
+                  onChange={event => setPassword(event.target.value)} />
+                <label htmlFor="name">Confirme a Senha:</label>
+                <input 
+                  type="password"
+                  id="confirmPassword" 
+                  value={confirmPassword} 
+                  onChange={event => setConfirmPassword(event.target.value)} />
               </div>
             </div>
+
+            <div className="advCol">
+
+              <label className="switch">
+                <input type="checkbox" />
+                <span className="slider"></span>
+              </label>
+
+            </div>
           </div>
+
+          <div className="button-block">
+              <button type="button" onClick={() => handleCreateNewModerator()} className="createModeratorButton">
+                <GiConfirmed size="26" color="#fff" />
+              </button>
+            </div>
 
         </div>
 
         <div className="control-map">
         <div className="table-container">
+          <h1>Moderadores Cadastrados</h1>
           {renderTable()}
         </div>
         </div>

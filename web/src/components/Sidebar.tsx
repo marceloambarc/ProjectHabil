@@ -28,7 +28,7 @@ export default function Sidebar() {
           </div>
 
           <div className="button-block">
-            <label>Produtos</label>
+            <label>Promoções</label>
             <Link to="/products" className="enter-path">
               <FiArrowRight size="26" color="white" />
             </Link>

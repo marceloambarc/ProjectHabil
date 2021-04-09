@@ -56,8 +56,25 @@ function Products(){
     })
   }, []);
 
+  //----RENDERIZAR TÍTULO DA TABELA
+  function renderTitle(){
+    if(active == '0'){
+      return(
+        <h1 style={{fontSize:'22px'}}>Empresas Inativas</h1>
+      );
+    }else if(active == '1'){
+      return(
+        <h1 style={{fontSize:'22px'}}>Empresas Ativas</h1>  
+      );
+    }else{
+      return(
+        <h1 style={{fontSize:'22px'}}>Empresas Canceladas</h1>
+      );
+    }
+  }
+
   //----(PENDENTE) EXPAND IMAGE---//
-  async function handleExpandImage({company}:any){
+  async function handleExpandImage({company}:{company:Company}){
      alert(`${company.image}`);
   }
 
@@ -75,7 +92,7 @@ function Products(){
   }
 
   //---MANIPULAR EMPRESAS (INSERIR CARREGAMENTO VISUAL)---//
-  async function handleInactive({company}:{company:any}){
+  async function handleInactive({company}:{company:Company}){
     api.put(`companies/${company.id}`,{
       // 0 === Empresa INATIVA
       is_active: 0,
@@ -91,7 +108,7 @@ function Products(){
     });
   }
 
-  async function handleCanceled({company}:{company:any}){
+  async function handleCanceled({company}:{company:Company}){
     api.delete(`companies/${company.id}`,{
       headers: {'Authorization': 'Bearer '+userToken}
     }).then(() => {
@@ -104,7 +121,7 @@ function Products(){
     });
   }
 
-  async function handleActive({company}:{company:any}){
+  async function handleActive({company}:{company:Company}){
     api.put(`companies/${company.id}`,{
       // 1 === Empresa ATIVA
       is_active: 1,
@@ -121,7 +138,7 @@ function Products(){
   }
 
   // RENDERIZAR BOTOES NA TABELA ATIVAS(1) - INATIVAS(0) - CANCELADAS(2)
-  function renderButton({company}:{company:any}){
+  function renderButton({company}:{company:Company}){
     if(active == "0"){
       return(
         <div className="button-row">
@@ -251,7 +268,7 @@ function Products(){
           </div>
           
           <div className="table-container">
-
+          {renderTitle()}
           {renderTable()}
 
           </div>
