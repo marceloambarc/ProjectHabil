@@ -5,6 +5,7 @@ import Client from './pages/Client';
 import Landing from './pages/Landing';
 
 import Companie from './pages/Companie';
+import Activate from './pages/Activate'
 
 import ControlMap from './pages/private/ControlMap';
 import Companies from './pages/private/Companies';
@@ -20,6 +21,7 @@ function Routes() {
         <Route path="/companie/:id" component={Companie} />
 
         <Route path="/login" component={Landing} />
+        <Route path="/activate/:id" component={Activate} />
         <Route path="/app" component={ControlMap} />
 
         <Route path="/products" component={Products} />
