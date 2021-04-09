@@ -18,7 +18,7 @@ interface Product {
   date: string;
   company_id: number;
   image: string;
-  validate: string;
+  validade: string;
   discount: string;
   is_active: string;
 }
@@ -28,8 +28,13 @@ interface Company {
   name: string;
 }
 
+interface Validate {
+  test: any
+}
+
 function Products(){
   const [products, setProducts] = useState<Product[]>([]);
+  const [product, setProduct] = useState('');
   const [companies, setCompanies] = useState<Company[]>([]);
   const [active, setActive] = useState('0');
   const [validate, setValidate] = useState('');
@@ -91,7 +96,7 @@ function Products(){
     api.delete(`products/${product.id}`,{
       headers: {'Authorization': 'Bearer '+userToken}
     }).then(() => {
-      api.get('products').then(response => {
+      api.get('products/all').then(response => {
         setProducts(response.data);
       });
     }).catch(err => {
@@ -102,10 +107,12 @@ function Products(){
   async function handleActive({product}:{product:Product}){
     api.put(`products/${product.id}`,{
       is_active: 1,
+      validate: validate
     },{
       headers: {'Authorization': 'Bearer '+userToken}
-    }).then(() => {
-      api.get('products').then(response => {
+    }).then(res => {
+      console.log(res);
+      api.get('products/all').then(response => {
         setProducts(response.data);
       });
     }).catch(err => {
@@ -119,7 +126,7 @@ function Products(){
     },{
       headers: {'Authorization': 'Bearer '+userToken}
     }).then(() => {
-      api.get('products').then(response => {
+      api.get('products/all').then(response => {
         setProducts(response.data);
       });
     }).catch(err => {
@@ -173,18 +180,36 @@ function Products(){
     }
   }
 
+  async function handleSetValidate(product:Product, event:string){
+    api.put(`products/${product.id}`,{
+      validade: event
+    },{
+      headers: {'Authorization': 'Bearer '+userToken}
+    }).then(() => {
+      api.get('products/all').then(response => {
+        setProducts(response.data);
+      });
+    }).catch(err => {
+      alert(err);
+    })
+  }
+
     // RENDERIZAR INPUT DE DATA INVÁLIDOS - RETORNAR VALOR DA DATA PARA VÁLIDOS 
-    function renderValidate({product}:{product:Product}){
-      if(active == '0'){
-        return (
-          <input type="date" value={validate} onChange={input => handleChange(input)} />
-        );
-      }else{
-        return (
-          <p>{product.validate}</p>
-        );
-      }
+  function renderValidate({product}:{product:Product}){
+    if(active == '0' && product.validade == ""){
+      return (
+        <input type="date" value={validate} onChange={event => handleSetValidate(product, event.target.value)} />
+      );
+    }else if(active == '0' && product.validade != ""){
+      return (
+        <input type="date" value={product.validade} min={Date.now()} onChange={event => handleSetValidate(product, event.target.value)} />
+      );
+    }else{
+      return (
+        <p>{product.validade}</p>
+      );
     }
+  }
 
   //-----(PENDENT)SORT-----//
   async function handleViewPerDesc(){
@@ -201,11 +226,6 @@ function Products(){
 
   async function handleViewPerPrice(){
     alert('Price');
-  }
-
-  //---CHANGE VALIDATE----//
-  async function handleChange({input}:any){
-    setValidate(input);
   }
 
   return(
@@ -269,6 +289,7 @@ function Products(){
            <table id="companies">
             <tbody>
             <tr>
+              <th>ID</th>
               <th>Produto</th>
               <th>Preco</th>
               <th>Descricao</th>
@@ -284,6 +305,7 @@ function Products(){
               if(product.is_active == active){
                 return(
                     <tr key={product.id}>
+                    <td>{product.id}</td>
                     <td>{product.name}</td>
                     <td>R$ {product.price}</td>
                     <td>{product.description}</td>
@@ -314,3 +336,7 @@ function Products(){
 }
 
 export default Products;
+
+function usePrevious(validate: string) {
+  throw new Error('Function not implemented.');
+}
