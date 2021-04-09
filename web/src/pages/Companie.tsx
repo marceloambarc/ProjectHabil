@@ -1,6 +1,6 @@
 interface Companie {
-    id: number,
-  }
+  id: number,
+}
 
 function Companie(props:any) {
     return <h1>Hello {props.match.params.id}!</h1>;
