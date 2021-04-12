@@ -39,7 +39,7 @@ function Landing(props:any) {
         cnpj: company,
         password: password
       },{
-        headers: {'Authorization': 'Bearer '+userToken}
+        headers: {'Authorization': 'Bearer '+userToken} 
       }).then(() => {
         api.put(`companies/${props.match.params.id}`,{
           is_active: 1
