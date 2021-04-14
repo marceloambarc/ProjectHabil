@@ -11,8 +11,9 @@ import applestore from '../images/appstore.png';
 import googleplay from '../images/googleplay.png';
 import smartphone from '../images/smartphone.png';
 
-function Welcome() {
 
+//---TELA INICIAL // BOTAO CLIENT INATIVO PARA HOMOLOGACAO
+function Welcome() {
   return (
     <div id="page-welcome">
       <div className="welcome-wrapper">

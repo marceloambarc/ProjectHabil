@@ -8,6 +8,8 @@ import logoImg from '../images/cmatextlogo.png';
 import '../styles/pages/landing.css';
 import tokenCredentials from '../services/token.json';
 
+//CORRIGIR button para MODELO REACT-ROUTER-DOM; Verificar utilizacao de funcoes
+
 function Landing() {
   const [user, setUser] = useState('');
   const [password, setPassword] = useState('');
@@ -18,8 +20,8 @@ function Landing() {
 
   async function handleAccess(){
     const params = new URLSearchParams();
-    params.append('username', tokenUsername)
-    params.append('password', tokenPassword)
+    params.append('username', user)
+    params.append('password', password)
     params.append('grant_type', tokenGrantType)
     try {
       const response = await api.post('token',params);

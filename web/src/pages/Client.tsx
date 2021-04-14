@@ -21,6 +21,7 @@ interface Companies {
   companie: any,
 }
 
+//CLIENT SIDE - TODO
 function Client(){
   const [companies, setCompanies] = useState<Companies[]>([]);
   const [searchTerm, setSearchTerm] = useState('');

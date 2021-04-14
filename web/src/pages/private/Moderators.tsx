@@ -18,6 +18,7 @@ interface Admin {
   role: string,
 }
 
+//Esconder do SIDEBAR Para Moderadores
 function Moderators(){
     //Realocar Token
     const getUserToken = localStorage.getItem('userToken');

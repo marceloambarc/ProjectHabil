@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, createRef } from 'react';
 import { FaExchangeAlt } from 'react-icons/fa'
 
 import Sidebar from '../../components/Sidebar';
@@ -11,12 +11,12 @@ import advImg1  from '../../images/content_id.png';
 import advImg2 from '../../images/content_id.png';
 import logoImg from '../../images/cmatextlogo.png';
 
+//SOLICITAR ROTA DE ALTERACAO DE IMAGEM PARA CARREGAMENTO NO APP
 function ControlMap(){
   const [img1, setImg1] = useState('');
   const [img2, setImg2] = useState('');
   const [isLoading, setIsLoading] = useState(true);
-
-
+  const fileInput = createRef<any>();
 
   useEffect(() => {
     if(!isLoading) return;
@@ -25,8 +25,15 @@ function ControlMap(){
     setIsLoading(false);
   },[]);
 
-  async function handleChangeImage1() {
-    alert('TODO Change Image1 on DATABASE using base64');
+  function handleChangeImage1(e:any) {
+    e.preventDefault();
+    const file = fileInput.current.files[0];
+    const reader = new FileReader();
+
+    if(file){
+      const res = reader.readAsBinaryString(file)
+      console.log(res);
+    }
   }
 
   async function handleChangeImage2(){
@@ -74,9 +81,7 @@ function ControlMap(){
               {renderImg1()}
               
               <div className="button-block">
-                <button type="button" onClick={() => handleChangeImage1()} className="changeImageButton">
-                  <FaExchangeAlt size="26" color="#fff" />
-                </button>
+              <input type='file' ref={fileInput} className='changeImageButton' onChange={e => handleChangeImage1(e)} />
               </div>
             </div>
             <div className="advCol">

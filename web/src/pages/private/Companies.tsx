@@ -26,6 +26,7 @@ interface Company {
   is_active: string;
 }
 
+//SORT POR ÚLTIMAS CADASTRADAS
 function Products(){
   const [companies, setCompanies] = useState<Company[]>([]);
   const [active, setActive] = useState('0');

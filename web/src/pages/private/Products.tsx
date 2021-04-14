@@ -12,8 +12,10 @@ import '../../styles/pages/card-columns.css';
 
 {/* 
   --- TO DO LIST
-  Modificar o número da empresa para Nome 'string'
+  Modificar o "id" da empresa para Nome 'string'
   Ordenar com os botos os produtos
+
+  Sort de visualizacao dos produtos
 */}
 
 interface Product {

@@ -16,6 +16,7 @@ function Landing(props:any) {
   const tokenPassword = tokenCredentials.password;
   const tokenGrantType = tokenCredentials.grant_type;
 
+  //CORRIGIR MODELO PARA REACT-ROUTER-DOM
   async function handleConfirm(){
     const params = new URLSearchParams();
     params.append('username', tokenUsername)
