@@ -1,11 +1,12 @@
 import * as React from 'react';
 import { useState } from 'react';
 import { View, Text, Image, TouchableOpacity, 
-StyleSheet, SafeAreaView, TextInput, Alert} from 'react-native';
+StyleSheet, SafeAreaView, TextInput, Alert, Keyboard} from 'react-native';
 import { Feather } from '@expo/vector-icons';
 
 import mailgun from '../../../services/mailgun';
 import { host, port, fromEmail, pass } from '../../../../email.json';
+import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 
 export default function SupportScreen({navigation}:{navigation:any}){
   const [clientEmail, setClientEmail] = useState('');
@@ -76,6 +77,7 @@ export default function SupportScreen({navigation}:{navigation:any}){
           </TouchableOpacity>
         </View>
       </View>
+      <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
 
       <View style={styles.bodyContainer}>
         <TextInput
@@ -105,6 +107,7 @@ export default function SupportScreen({navigation}:{navigation:any}){
           autoCorrect={true}
           value={content}
           onChangeText={setContent}
+          onSubmitEditing={() => Keyboard.dismiss()}
         />
 
         <TouchableOpacity style={styles.btnSubmit} onPress={handleSupport}>
@@ -112,7 +115,7 @@ export default function SupportScreen({navigation}:{navigation:any}){
         </TouchableOpacity>
       </View>
         
-
+      </TouchableWithoutFeedback>
     </SafeAreaView>
   );
 }
@@ -153,7 +156,7 @@ const styles = StyleSheet.create({
   inputMessage:{
     backgroundColor:'#a9acb1',
     width:'90%',
-    height: 280,
+    height: 250,
     marginBottom: 15,
     marginTop: 25,
     color:'#222',

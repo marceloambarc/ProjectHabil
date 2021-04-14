@@ -145,7 +145,7 @@ export default function PromotionDetailsScreen(){
             
           </ImageZoom>
           </View>
-          <View style={styles.productDescription}>
+          <ScrollView contentContainerStyle={styles.productDescription}>
             <View style={{flexDirection: 'row', justifyContent: 'space-around'}}>
               <View style={{flexDirection: 'column', paddingHorizontal: 20}}>
                   <Text style={styles.productTextPriceTitle}>
@@ -172,7 +172,7 @@ export default function PromotionDetailsScreen(){
             <ScrollView style={{maxHeight: '90%', maxWidth: '90%', marginTop: '16%'}}>
               <Text style={styles.productTextDescription}>{productDescription}</Text>
             </ScrollView>
-          </View>
+          </ScrollView>
         </View>
 
         {/*TERM MODAL*/}
@@ -356,7 +356,7 @@ const styles = StyleSheet.create({
     productDescription: {
       paddingTop: 2,
       paddingHorizontal: '2%',
-      maxWidth: '70%',
+      maxWidth: '90%',
       alignItems: 'center'
     },
     productTextPrice: {
@@ -383,7 +383,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#ff6600',
     alignItems: 'center',
     borderRadius: 7,
-    padding: 7
+    padding: 7,
+    marginRight: 30,
   },
   moreCol: {
     flexDirection: 'column',
@@ -460,7 +461,7 @@ const styles = StyleSheet.create({
   },
   btnSupplierContact:{
     borderRadius: 40,
-    height: 50,
+    height: 40,
     width: '30%',
     justifyContent: 'center',
     alignItems: 'center',
@@ -468,7 +469,7 @@ const styles = StyleSheet.create({
   },
   btnSupplierContact1:{
     borderRadius: 40,
-    height: 50,
+    height: 40,
     width: '30%',
     justifyContent: 'center',
     alignItems: 'center',
@@ -476,7 +477,7 @@ const styles = StyleSheet.create({
   },
   btnSupplierContact4:{
     borderRadius: 40,
-    height: 50,
+    height: 40,
     width: '30%',
     justifyContent: 'center',
     alignItems: 'center',

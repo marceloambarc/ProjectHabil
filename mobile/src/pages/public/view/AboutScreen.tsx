@@ -55,9 +55,9 @@ export default function About({navigation}:{navigation:any}) {
               </View>
   
             </View>
-            <TouchableWithoutFeedback onPress={handleHabilSite}>
+            <TouchableOpacity onPress={handleHabilSite}>
               <Text style={styles.visitText}>Visite nosso Site <Entypo name="controller-next" size={24} color="black" /></Text>
-            </TouchableWithoutFeedback>
+            </TouchableOpacity>
           </View>
         </View>
       </SafeAreaView>
@@ -105,14 +105,10 @@ const styles = StyleSheet.create({
     marginTop: 70,
     flex: 1
   },
-  aboutText: {
-    fontSize: 18,
-    color: "grey"
-  },
   visitText: {
     marginTop: 70,
     fontSize: 25,
-    color: '#191919'
+    color: 'black'
   },
   habilContactRow: {
     flexDirection: 'row',
