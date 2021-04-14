@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { GrUserAdmin } from 'react-icons/gr';
+import { NavLink } from 'react-router-dom';
 
 import logoImg from '../images/cmatextlogo.png';
 
@@ -11,22 +12,6 @@ import googleplay from '../images/googleplay.png';
 import smartphone from '../images/smartphone.png';
 
 function Welcome() {
-
-  async function handleLogin(){
-    try {
-      window.location.href = '/login';
-    }catch(err){
-      alert('Tivemos um erro');
-    }
-  }
-//-----path escondido para homologacao
-  {/*async function handleClient(){
-    try {
-      window.location.href = '/client';
-    }catch(err){
-      alert('Tivemos um erro');
-    }
-  }*/}
 
   return (
     <div id="page-welcome">
@@ -66,14 +51,14 @@ function Welcome() {
           
           <div className="enter-app-col1">
             <p className="enter-text">Entrar</p>
-            <button type="button" onClick={() => handleClient()} className="enter-app">
+            <NavLink to="/client" className="enter-app">
               <FiArrowRight size="26" color="#FFF" />
-            </button>
+            </NavLink>
           </div>*/}
           <div className="enter-app-col2">
-            <button type="button" onClick={() => handleLogin()} className="enter-app">
+            <NavLink to="/login" className="enter-app">
               <GrUserAdmin size="26" color="#fff" />
-            </button>
+            </NavLink>
           </div>
         </div>
       </div>

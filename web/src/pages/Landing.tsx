@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { FiArrowRight } from 'react-icons/fi'
 import api from '../services/api';
+import { withRouter } from 'react-router-dom'; 
 
 import logoImg from '../images/cmatextlogo.png';
 
@@ -73,4 +74,4 @@ function Landing() {
   ); 
 }
 
-export default Landing;
+export default withRouter(Landing);
