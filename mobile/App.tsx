@@ -14,14 +14,14 @@ Notifications.setNotificationHandler({
 
 export default function App(){
 
+  const trigger = new Date(Date.now() + 60 * 60 * 1000);
+  trigger.setMinutes(0);
+  trigger.setSeconds(0);
   Notifications.scheduleNotificationAsync({
     content: {
       title: 'Confira as novidade no CompreMaisAki!',
     },
-    trigger: {
-      seconds: 60 * 240,
-      repeats: false
-    },
+    trigger: trigger,
   });
 
   return(

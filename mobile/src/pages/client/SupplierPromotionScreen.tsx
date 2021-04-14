@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, View, FlatList, 
 Image, TouchableOpacity, TouchableWithoutFeedback, Alert, ActivityIndicator } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { Feather, Entypo } from '@expo/vector-icons';
+import { Feather } from '@expo/vector-icons';
 
 import api from '../../services/api';
 import { API_URL } from '../../../url.json';
@@ -44,20 +44,26 @@ export default class App extends React.Component<Props> {
   }
 
   loadRepositories = async () => {
+    if (this.state.loading) return;
+
     const { route } = this.props;
     const params = route.params as Props
     const id = params.companyId;
 
-    if (this.state.loading) return;
-
     this.setState({ loading: true });
 
     const response = await fetch(`${baseURL}/${id}`);
-    const repositories = await response.json();
-    this.setState({ 
-      data: [...this.state.data, ...repositories],
-      loading: false,
-    });
+    if(response.ok){
+      const repositories = await response.json();
+
+      this.setState({ 
+        data: [...this.state.data, ...repositories],
+        loading: false,
+      });
+    }else{
+      this.setState({loading: false});
+      return;
+    }
   }
 
   handleView = async({item}:{item:any}) => {
@@ -149,15 +155,6 @@ export default class App extends React.Component<Props> {
       </TouchableWithoutFeedback>
     
   )
-  
-  renderFooter = () => {
-    if (!this.state.loading) return null;
-    return (
-      <View style={styles.loading}>
-        <ActivityIndicator />
-      </View>
-    );
-  };
 
   renderEmpty = () => {
     if(this.state.loading){
@@ -172,12 +169,21 @@ export default class App extends React.Component<Props> {
       return  (
         <View style={styles.loading}>
           <Text style={{textAlign: 'center'}}>
-            Nenhum Produto Encontrado...
+            Nenhum Produto Cadastrado...
           </Text>
         </View>
       )
     }
   }
+
+  renderFooter = () => {
+    if (!this.state.loading) return null;
+    return (
+      <View style={styles.loading}>
+        <ActivityIndicator />
+      </View>
+    );
+  };
 
   render(){
     return (

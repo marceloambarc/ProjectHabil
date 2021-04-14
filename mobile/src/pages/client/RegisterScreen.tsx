@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 import { View, Text, ScrollView, TextInput, 
 Image, TouchableOpacity, StyleSheet,
@@ -9,8 +9,10 @@ ActivityIndicator} from 'react-native';
 
 import { TextInputMask } from 'react-native-masked-text';
 import { useNavigation } from '@react-navigation/native';
+
 import api from '../../services/api';
 import mailgun from '../../services/mailgun';
+import tokenCredentials from '../../services/token.json'
 import { host, port, fromEmail, pass } from '../../../email.json';
 
 import * as ImagePicker from 'expo-image-picker';
@@ -23,9 +25,13 @@ export default function Register(){
   const [userToken, setUserToken] = useState('');
 
   const params  = new URLSearchParams();
-  params.append('username', 'acr')
-  params.append('password', '123')
-  params.append('grant_type', 'password')
+  const username = tokenCredentials.username;
+  const tokenPassword = tokenCredentials.password;
+  const grant_type = tokenCredentials.grant_type;
+
+  params.append('username', `${username}`)
+  params.append('password', `${tokenPassword}`)
+  params.append('grant_type', `${grant_type}`)
 
   async function getToken() {
     const response = await api.post('token',params, {
@@ -44,19 +50,41 @@ export default function Register(){
   },[]);
 
   const [business, setBusiness] = useState('');
-  const [cnpj, setCnpj] = useState('');
-  const [name, setName] = useState('');
-  const [phone, setPhone] = useState('');
-  const [email, setEmail] = useState('');
-  const [address, setAddress] = useState('');
-  const [district, setDistrict] = useState('');
-  const [city, setCity] = useState('');
-  const [uf, setUf] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [keywords, setKeywords] = useState('');
-  const [base, setBase] = useState('');
+  let ref_business = useRef<TextInput>(null);
 
+  const [cnpj, setCnpj] = useState('');
+  let ref_cnpj = React.createRef<any>();
+
+  const [name, setName] = useState('');
+  let ref_name = useRef<TextInput>(null);
+
+  const [phone, setPhone] = useState('');
+  let ref_phone = React.createRef<any>();
+
+  const [email, setEmail] = useState('');
+  let ref_email = useRef<TextInput>(null);
+
+  const [address, setAddress] = useState('');
+  let ref_address = useRef<TextInput>(null);
+
+  const [district, setDistrict] = useState('');
+  let ref_district = useRef<TextInput>(null);
+
+  const [city, setCity] = useState('Nova Santa Rita');
+  let ref_city = useRef<TextInput>(null);
+
+  const [uf, setUf] = useState('RS');
+  let ref_uf = useRef<TextInput>(null);
+
+  const [password, setPassword] = useState('');
+  let ref_password = useRef<TextInput>(null);
+  const [confirmPassword, setConfirmPassword] = useState('');
+  let ref_confirmPassword = useRef<TextInput>(null);
+
+  const [keywords, setKeywords] = useState('');
+  let ref_keywords = useRef<TextInput>(null);
+
+  const [base, setBase] = useState('');
   const [image, setImage] = useState('');
 
   const [term_is_true, setTermIsTrue] = useState(false);
@@ -69,11 +97,30 @@ export default function Register(){
   const navigation = useNavigation();
 
   async function handleCreateCompany() {
+    if(password.length <= 3){
+      Alert.alert(
+        'Erro',
+        'Senha deve ser maior que 3 caracteres'
+      );
+      setPassword('');
+      setConfirmPassword('');
+      const wrongPass = () => {
+        ref_password.current?.focus();
+      }
+      wrongPass();
+      return;
+    }
     if(password !== confirmPassword){
       Alert.alert(
         'Erro',
-        'Credenciais inválidas.'
+        'Senha não confere.'
       );
+      setPassword('');
+      setConfirmPassword('');
+      const wrongPass = () => {
+        ref_password.current?.focus();
+      }
+      wrongPass();
       return;
     }
 
@@ -90,12 +137,18 @@ export default function Register(){
         'Erro',
         'Ramo Inválido.',
       );
+      setBusiness('');
+      const wrongBusiness = () => {
+        ref_business.current?.focus();
+      }
+      wrongBusiness();
       return;
     }else if(business === undefined){
       Alert.alert(
         'Erro',
         'Ramo Inválido.',
       );
+      setBusiness('');
       return;
     }
 
@@ -104,12 +157,22 @@ export default function Register(){
         'Erro',
         'Nome Inválido.',
       );
+      setName('');
+      const wrongName = () => {
+        ref_name.current?.focus();
+      }
+      wrongName();
       return;
     }else if(name === undefined){
       Alert.alert(
         'Erro',
         'Nome Inválido.',
       );
+      setName('');
+      const wrongName = () => {
+        ref_name.current?.focus();
+      }
+      wrongName();
       return;
     }
 
@@ -118,6 +181,11 @@ export default function Register(){
         'Erro',
         'CNPJ Inválido.',
       );
+      setCnpj('');
+      const wrongCnpj = () => {
+        ref_cnpj.current?._inputElement.focus();
+      }
+      wrongCnpj();
       return;
     }
 
@@ -126,6 +194,11 @@ export default function Register(){
         'Erro',
         'Telefone Inválido.',
       );
+      setPhone('');
+      const wrongPhone = () => {
+        ref_phone.current?._inputElement.focus();
+      }
+      wrongPhone();
       return;
     }
 
@@ -134,6 +207,11 @@ export default function Register(){
         'Erro',
         'E-mail Inválido.',
       );
+      setEmail('');
+      const wrongEmail = () => {
+        ref_email.current?.focus();
+      }
+      wrongEmail();
       return;
     }
 
@@ -142,12 +220,22 @@ export default function Register(){
         'Erro',
         'Endereço Incorreto.',
       );
+      setAddress('');
+      const wrongAddress = () => {
+        ref_address.current?.focus();
+      }
+      wrongAddress();
       return;
     }else if(address === undefined){
       Alert.alert(
         'Erro',
         'Endereço Incorreto.',
       );
+      setAddress('');
+      const wrongAddress = () => {
+        ref_address.current?.focus();
+      }
+      wrongAddress();
       return;
     }
 
@@ -156,24 +244,44 @@ export default function Register(){
         'Erro',
         'Bairro Inválido.',
       );
+      setDistrict('');
+      const wrongDistrict = () => {
+        ref_district.current?.focus();
+      }
+      wrongDistrict();
       return;
     }else if(district === undefined){
       Alert.alert(
         'Erro',
         'Bairro Inválido.',
       );
+      setDistrict('');
+      const wrongDistrict = () => {
+        ref_district.current?.focus();
+      }
+      wrongDistrict();
       return;
     }else if(city.length < 3){
       Alert.alert(
         'Erro',
         'Cidade Incorreta.',
       );
+      setCity('');
+      const wrongCity = () => {
+        ref_city.current?.focus();
+      }
+      wrongCity();
       return;
     }else if(uf.length < 2){
       Alert.alert(
         'Erro',
         'Unidade Federal Incorreta.',
       );
+      setUf('');
+      const wrongUf = () => {
+        ref_uf.current?.focus();
+      }
+      wrongUf();
       return;
     }
 
@@ -182,19 +290,35 @@ export default function Register(){
         'Erro',
         'Inserir Palavras-Chaves.',
       );
+      setKeywords('');
+      const wrongKeywords = () => {
+        ref_keywords.current?.focus();
+      }
+      wrongKeywords();
       return;
     }else if(keywords === undefined){
       Alert.alert(
         'Erro',
         'Inserir Palavras-Chaves Válidas',
       );
+      setKeywords('');
+      const wrongKeywords = () => {
+        ref_keywords.current?.focus();
+      }
+      wrongKeywords();
       return;
     }
 
-    
+    if(!image){
+      Alert.alert(
+        'Erro',
+        'Inserir Imagem para sua empresa',
+      );
+
+    }
 
     try {
-      await mailgun.post('/',{
+      await mailgun.post('mailgun',{
         host: host,
         port: port,
         fromEmail: fromEmail,
@@ -229,13 +353,27 @@ export default function Register(){
             "Sucesso!",
             "Confirme seu E-mail (Verifique a sua caixa de Spam) e aguarde a confirmação do Administrador."
           );
+          setBusiness('');
+          setCnpj('');
+          setName('');
+          setPhone('');
+          setEmail('');
+          setAddress('');
+          setDistrict('');
+          setCity('');
+          setUf('');
+          setPassword('');
+          setImage('');
+          setBase('');
+          setKeywords('');
           navigation.navigate("Início");
         })
       }).catch(err => {
         Alert.alert(
           "Ops!",
           "Tivemos um Erro, entre em contato com o Suporte.",
-        )
+        );
+        console.log(err);
       })
     }catch(err){
       Alert.alert(
@@ -305,6 +443,9 @@ export default function Register(){
         autoCorrect={false}
         value={name}
         onChangeText={setName}
+        ref={ref_name}
+        returnKeyType='next'
+        onSubmitEditing={() => ref_cnpj.current?._inputElement.focus()}
         />
 
         <TextInputMask
@@ -314,6 +455,9 @@ export default function Register(){
         autoCorrect={false}
         value={cnpj}
         onChangeText={setCnpj}
+        ref={ref_cnpj}
+        returnKeyType='next'
+        onSubmitEditing={() => ref_business.current?.focus()}
         />
 
         <TextInput
@@ -322,6 +466,9 @@ export default function Register(){
         autoCorrect={false}
         value={business}
         onChangeText={setBusiness}
+        ref={ref_business}
+        returnKeyType='next'
+        onSubmitEditing={() => ref_phone.current?._inputElement.focus()}
         />
 
         <TextInputMask
@@ -335,6 +482,9 @@ export default function Register(){
         autoCorrect={false}
         value={phone}
         onChangeText={setPhone}
+        ref={ref_phone}
+        returnKeyType='next'
+        onSubmitEditing={() => ref_email.current?.focus()}
         />
 
         <TextInput
@@ -345,6 +495,9 @@ export default function Register(){
         autoCompleteType="email"
         value={email}
         onChangeText={setEmail}
+        ref={ref_email}
+        returnKeyType='next'
+        onSubmitEditing={() => ref_address.current?.focus()}
         />
 
         <TextInput
@@ -353,6 +506,9 @@ export default function Register(){
         autoCorrect={false}
         value={address}
         onChangeText={setAddress}
+        ref={ref_address}
+        returnKeyType='next'
+        onSubmitEditing={() => ref_district.current?.focus()}
         />
 
         <TextInput
@@ -361,6 +517,9 @@ export default function Register(){
         autoCorrect={false}
         value={district}
         onChangeText={setDistrict}
+        ref={ref_district}
+        returnKeyType='next'
+        onSubmitEditing={() => ref_city.current?.focus()}
         />
 
         <TextInput
@@ -369,6 +528,9 @@ export default function Register(){
         autoCorrect={false}
         value={city}
         onChangeText={setCity}
+        ref={ref_city}
+        returnKeyType='next'
+        onSubmitEditing={() => ref_uf.current?.focus()}
         />
 
         <TextInput
@@ -377,6 +539,9 @@ export default function Register(){
         autoCorrect={false}
         value={uf}
         onChangeText={setUf}
+        ref={ref_uf}
+        returnKeyType='next'
+        onSubmitEditing={() => ref_keywords.current?.focus()}
         />
 
         <View style={styles.keywordsContainer}>
@@ -387,8 +552,9 @@ export default function Register(){
           onChangeText={setKeywords}
           autoCorrect={true}
           placeholder="Palavras-Chaves"
-          multiline
-          numberOfLines={4}
+          ref={ref_keywords}
+          returnKeyType='next'
+          onSubmitEditing={() => ref_password.current?.focus()}
         />
         </View>
 
@@ -400,7 +566,10 @@ export default function Register(){
           autoCorrect={false}
           value={password}
           caretHidden={true}
-          onChangeText={setPassword} 
+          onChangeText={setPassword}
+          ref={ref_password}
+          returnKeyType='next'
+          onSubmitEditing={() => ref_confirmPassword.current?.focus()}
           />
 
           <TextInput
@@ -411,6 +580,8 @@ export default function Register(){
           caretHidden={true}
           value={confirmPassword}
           onChangeText={setConfirmPassword}
+          ref={ref_confirmPassword}
+          returnKeyType='send'
           />
         </View>
 
@@ -666,3 +837,7 @@ const styles = StyleSheet.create({
   },
 
 });
+
+function useFocus(): [any, any] {
+  throw new Error('Function not implemented.');
+}

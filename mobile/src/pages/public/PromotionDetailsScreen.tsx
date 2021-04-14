@@ -59,7 +59,7 @@ interface handlePromotionDetailParams {
 export default function PromotionDetailsScreen(){
   const [font, setFont] = useState(0);
   async function handleIncreaseFont(){
-    setFont(3);
+    setFont(7);
   }
 
   async function handleDecreaseFont(){
@@ -111,8 +111,10 @@ export default function PromotionDetailsScreen(){
   }
   
   async function handleSendProductWhatsapp(){
+    let companyPhoneSplit = companyPhone.split('(51) 9').join('5551');
+    let companyWhatsapp = companyPhoneSplit.split('-').join('');
     try{
-      Linking.openURL(`https://api.whatsapp.com/send?phone=${companyPhone}&text=%20Mensagem%20vinda%20do%20App%20CompreMaisAki:%20Produto:%20${productName}%20;%20Preço%20sem%20Desconto:%20${productPrice};%20Validade%20Promoção:%20Validade;%20Desconto:%20${productDiscount}%20por%20cento;%20Com%20essa%20mensagem%20pelo%20Aplicativo%20CompreMaisAki%20,%20ganhe%20deconto%20de%20:%20${productDiscount}%20por%20cento+`);
+      Linking.openURL(`https://api.whatsapp.com/send?phone=${companyWhatsapp}&text=%20Mensagem%20vinda%20do%20App%20CompreMaisAki:%20Produto:%20${productName}%20;%20Preço%20sem%20Desconto:%20${productPrice};%20Validade%20Promoção:%20Validade;%20Desconto:%20${productDiscount}%20por%20cento;%20Com%20essa%20mensagem%20pelo%20Aplicativo%20CompreMaisAki%20,%20ganhe%20Desconto%20de%20:%20${productDiscount}%20por%20cento+`);
     }catch(err){
       Alert.alert(
         'Ops!',
@@ -354,6 +356,7 @@ const styles = StyleSheet.create({
     productDescription: {
       paddingTop: 2,
       paddingHorizontal: '2%',
+      maxWidth: '70%',
       alignItems: 'center'
     },
     productTextPrice: {

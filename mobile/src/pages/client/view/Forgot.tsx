@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useState } from 'react';
 import { View, Text, SafeAreaView, 
 StyleSheet, Image, TouchableOpacity,
 TextInput, Alert } from 'react-native';
@@ -11,12 +12,12 @@ import api from '../../../services/api';
 
 export default function Forgot({navigation}:{navigation:any}){
 
-  const [cnpj, setCnpj] = React.useState('');
-  const [toEmail, setToEmail] = React.useState('');
+  const [cnpj, setCnpj] = useState('');
+  const [toEmail, setToEmail] = useState('');
   
   const title = "Recuperar Senha"; 
   const message = "Recuperar Senha";
-  const content = "Troque sua senha neste link: <a href=\"http:\/\/www.habilinformatica.com.br\/\">CompreMaisAki<\/a>";
+  const content = "Teste de troca de senha - link: <a href=\"http:\/\/www.habilinformatica.com.br\/\">CompreMaisAki<\/a>";
 
   async function handleForgot(){
     if(!cnpj){
@@ -33,7 +34,7 @@ export default function Forgot({navigation}:{navigation:any}){
         );
       }
       try {
-        const response = await mailgun.post('mailgun',{
+        await mailgun.post('mailgun',{
           host: host, 
           port: port,
           fromEmail: fromEmail, 
@@ -42,11 +43,25 @@ export default function Forgot({navigation}:{navigation:any}){
           title: title,
           message: message,
           content: content,
+        }).then(() => {
+          Alert.alert(
+            "Alerta",
+            "Sua senha é importante para nós, enviamos um e-mail(verifique sua caixa de spam)."
+          );
+          navigation.navigate('Início');
+        }).catch(err => {
+          Alert.alert(
+            "Ops!",
+            "Tivemos um erro."
+          );
+          console.log(err);
+          navigation.navigate('Início');
         });
-
-        console.log(response);
       }catch(err){
-        console.log(err);
+        Alert.alert(
+          "Ops!",
+          "Tivemos um erro, entre em contato com Suporte."
+        )
       }
     }
   }

@@ -8,6 +8,7 @@ interface CompanyDataRouteParams {
   name: string,
   id: number,
   image: string,
+  cnpj: string,
   userToken: string,
 }
 
@@ -19,19 +20,54 @@ export default function HomeScreen(){
   const companyName = params.name;
   const companyId = params.id;
   const companyImage = params.image;
+  const companyCnpj = params.cnpj;
   const userToken = params.userToken;
+
+  async function handleEditCompanyNavigation(){
+    api.post('companies/cnpj',{
+      cnpj: companyCnpj
+    },{
+      headers: {'Authorization': 'Bearer '+userToken}
+    }).then(res => {
+      navigation.navigate('EditCompany',{
+        id: companyId,
+        name: res.data.name,
+        image: res.data.image,
+        cnpj: companyCnpj,
+        business: res.data.business,
+        phone: res.data.phone,
+        email: res.data.email,
+        address: res.data.address,
+        district: res.data.district,
+        city: res.data.city,
+        uf: res.data.uf,
+        userToken: userToken
+      })
+    }).catch(err => {
+      Alert.alert(
+        'Ops!',
+        'Tivemos um erro, entre em contato com o Suporte.'
+      );
+    });
+  }
 
   async function handleCancelSecondStep(){
     api.put(`companies/${companyId}`,{
-      is_active: 0
+      is_active: 2
     },{
       headers: {'Authorization': 'Bearer '+userToken}
     }).then(() => {
-      alert('Sua conta foi inativada com sucesso!');
+      Alert.alert(
+        'Obrigado',
+        'Sua conta foi cancelada com sucesso! Esperamos que breve volte para o CompreMaisAki.'
+      );
       navigation.navigate('Home');
     }).catch(err => {
-      alert(err);
-      console.log(err);
+      Alert.alert(
+        'Ops!',
+        'Tivemos um erro, entre em contato com o Suporte'
+      );
+      navigation.navigate('Home');
     })
   }
 
@@ -68,6 +104,10 @@ export default function HomeScreen(){
           
         </View>
 
+        <TouchableOpacity style={styles.btnSubmitEdit} onPress={handleEditCompanyNavigation}>
+          <Text style={styles.submitText}>Editar Empresa</Text>
+        </TouchableOpacity>
+
         <TouchableOpacity style={styles.btnSubmit} onPress={() => navigation.navigate('SupplierPromotion',{
           companyId,
           userToken
@@ -87,7 +127,7 @@ export default function HomeScreen(){
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.btnCancelAccount} onPress={handleCancelAccount}>
-          <Text style={styles.cancelText}>Desativar Conta</Text>
+          <Text style={styles.cancelText}>Cancelar Conta</Text>
         </TouchableOpacity>
 
       </View>
@@ -137,6 +177,15 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     borderRadius: 7,
     marginBottom: 20
+  },
+  btnSubmitEdit:{
+    backgroundColor: '#35AAFF',
+    width: '90%',
+    height: 45,
+    alignItems:'center',
+    justifyContent: 'center',
+    borderRadius: 7,
+    marginBottom: 40,
   },
   submitText:{
     color: '#FFF',

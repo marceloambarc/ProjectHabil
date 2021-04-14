@@ -7,7 +7,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 export default function Userterm() {
   const [font, setFont] = useState(0);
   async function handleIncreaseFont(){
-    setFont(3);
+    setFont(7);
   }
 
   async function handleDecreaseFont(){

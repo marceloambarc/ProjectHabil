@@ -2,19 +2,26 @@ import * as React from 'react';
 import { useState, useEffect } from 'react';
 
 import { View, Text, StyleSheet, KeyboardAvoidingView,
-TextInput, TouchableOpacity, Animated, ActivityIndicator, Alert } from 'react-native';
+TextInput, TouchableOpacity, Animated, ActivityIndicator, Alert, Keyboard } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { TextInputMask } from 'react-native-masked-text';
+
 import api from '../../services/api';
+import tokenCredentials from '../../services/token.json';
 
 export default function Login(){
   const [isLoading, setIsLoading] = useState(true);
   const [userToken, setUserToken] = useState('');
 
   const params  = new URLSearchParams();
-  params.append('username', 'acr')
-  params.append('password', '123')
-  params.append('grant_type', 'password')
+
+  const username = tokenCredentials.username;
+  const tokenPassword = tokenCredentials.password;
+  const grant_type = tokenCredentials.grant_type;
+
+  params.append('username', `${username}`)
+  params.append('password', `${tokenPassword}`)
+  params.append('grant_type', `${grant_type}`)
 
   async function getToken() {
     const response = await api.post('token',params, {
@@ -33,7 +40,10 @@ export default function Login(){
   },[]);
 
   const [cnpj, setCnpj] = useState('');
+  let ref_cnpj = React.createRef<any>();
+
   const [password, setPassword] = useState('');
+  let ref_password = React.useRef<TextInput>(null);
 
   const navigation = useNavigation();
   const [logo] = useState(new Animated.ValueXY({ x: 90, y: 90 }));
@@ -57,6 +67,7 @@ export default function Login(){
         id: res.data.id,
         name: res.data.name,
         image: res.data.image,
+        cnpj: cnpj,
         userToken: userToken
       }));
     }catch(err){
@@ -102,6 +113,9 @@ export default function Login(){
           autoCorrect={false}
           value={cnpj}
           onChangeText={setCnpj}
+          ref={ref_cnpj}
+          returnKeyType='next'
+          onSubmitEditing={() => ref_password.current?.focus()}
           />
 
           <TextInput
@@ -113,6 +127,8 @@ export default function Login(){
           caretHidden={true}
           value={password}
           onChangeText={setPassword}
+          ref={ref_password}
+          onSubmitEditing={() => Keyboard.dismiss()}
           />
   
           <TouchableOpacity style={styles.btnSubmit} onPress={handleAccess}>

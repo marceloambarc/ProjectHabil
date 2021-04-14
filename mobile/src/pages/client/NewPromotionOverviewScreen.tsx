@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { View, Text, Image, StyleSheet, TouchableOpacity, Alert } from 'react-native';
+import { useEffect, useState } from 'react';
+import { View, Text, Image, StyleSheet, TouchableOpacity, Alert, ActivityIndicator } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import api from '../../services/api';
 
@@ -8,7 +9,6 @@ interface ProductDataRouteParams {
   price: string,
   description: string,
   company_id: string,
-  validate: string,
   image: string,
   base: string,
   discount: string,
@@ -16,6 +16,7 @@ interface ProductDataRouteParams {
 }
 
 export default function NewPromotionOverviewScreen(){
+  const [isLoading, setIsLoading] = useState(true);
   const navigation = useNavigation();
   const route = useRoute();
   const params = route.params as ProductDataRouteParams;
@@ -25,18 +26,34 @@ export default function NewPromotionOverviewScreen(){
   const productDescription = params.description;
   const companyId = params.company_id;
   const productImage = params.base;
-  const productValidate = params.validate;
+  const productValidate = '';
   const productDiscount = params.discount;
   const userToken = params.userToken;
+  const [date, setDate] = useState('');
 
+  async function getDate(){
+    var data = new Date(),
+      dia  = data.getDate().toString().padStart(2, '0'),
+      mes  = (data.getMonth()+1).toString().padStart(2, '0'), //+1 pois no getMonth Janeiro começa com zero.
+      ano  = data.getFullYear();
+      const dateBrPattern = `${dia}/${mes}/${ano}`;
+      setDate(dateBrPattern);
+  }
+
+  useEffect(() => {
+    setTimeout(() => {
+      getDate();
+      setIsLoading(false);
+    }, 1000);
+  },[])
 
   async function handleCreateProduct(){
-    try {
-      await api.post('products',{
+    try{
+      api.post('products',{
         name: productName,
         price: productPrice,
         description: productDescription,
-        date: "teste3",
+        date: date,
         company_id: companyId,
         image: productImage,
         validate: productValidate,
@@ -52,15 +69,21 @@ export default function NewPromotionOverviewScreen(){
           'Sucesso!',
           'Registro Enviado! Aguarde confirmação do Administrador.',
         );
+      }).catch(err => {
+        alert(err);
       })
     }catch(err){
-      Alert.alert(
-        'Ops!',
-        'Tivemos um erro, entre em contato com o suporte.',
-      );
+      alert(err);
     }
   }
 
+  if(isLoading){
+    return (
+      <View style={{flex:1, justifyContent:'center',alignItems:'center'}}>
+        <ActivityIndicator size='large' color='#ff6600'/>
+      </View>
+    ) 
+  }
   return(
     <View style={styles.background}>
       <View style={styles.container}>

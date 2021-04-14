@@ -106,8 +106,10 @@ function CompanyCard(){
   }
 
   async function handleWhatsapp(){
+      let companyPhoneSplit = companyPhone.split('(51) 9').join('5551');
+      let companyWhatsapp = companyPhoneSplit.split('-').join('');
     try{
-      Linking.openURL(`https://api.whatsapp.com/send?phone=${companyPhone}&text=%20Olá%20${companyName}%20encontrei%20seu%20contato%20pelo%20aplicativo%20CompreMaisAki%20+`);
+      Linking.openURL(`https://api.whatsapp.com/send?phone=${companyWhatsapp}&text=%20Olá%20${companyName}%20encontrei%20seu%20contato%20pelo%20aplicativo%20CompreMaisAki%20+`);
     }catch(err){
       Alert.alert(
         'Ops!',
@@ -195,7 +197,7 @@ export default class App extends PureComponent<HandleNextPage> {
     const response = await fetch(`${baseURL}/${companyId}`);
     if(response.ok) {
       const repositories = await response.json();
-
+      
       this.setState({
         data: [...this.state.data, ...repositories],
         loading: false,

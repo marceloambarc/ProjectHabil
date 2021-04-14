@@ -8,7 +8,7 @@ function handleWhatsLucas() {
   Linking.openURL(`https://api.whatsapp.com/send?phone=555196215684&text=Olá%20Lucas!%20Venho%20Através%20do%20Aplicativo%20CompreMaisAki`)
 }
 
-function handleWhtasMarcio() {
+function handleWhatsMarcio() {
   Linking.openURL(`https://api.whatsapp.com/send?phone=555196156020&text=Olá%20Márcio!%20Venho%20Através%20do%20Aplicativo%20CompreMaisAki`)
 }
 
@@ -49,7 +49,7 @@ export default function About({navigation}:{navigation:any}) {
               
               <View style={styles.habilContactCol}>
                 <Text style={styles.contactName}>Márcio</Text>
-                <TouchableOpacity style={styles.btnSupplierContact} onPress={handleWhtasMarcio}>
+                <TouchableOpacity style={styles.btnSupplierContact} onPress={handleWhatsMarcio}>
                   <Ionicons name="logo-whatsapp" size={30} color="#FFF" />
                 </TouchableOpacity>
               </View>

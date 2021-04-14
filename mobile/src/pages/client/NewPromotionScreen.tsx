@@ -36,7 +36,6 @@ export default function NewPromotionScreen(){
       description,
       company_id,
       base,
-      validate: '',
       discount,
       userToken,
     });
