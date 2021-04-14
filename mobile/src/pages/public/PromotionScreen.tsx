@@ -4,6 +4,7 @@ StyleSheet, Image, TouchableWithoutFeedback, FlatList, Linking, Alert } from 're
 import { Feather, Fontisto, Ionicons, MaterialIcons, Entypo, AntDesign } from '@expo/vector-icons';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { API_URL } from '../../../url.json';
+import { ScrollView } from 'react-native-gesture-handler';
 
 interface Props {
     searchTerm: string,
@@ -120,7 +121,7 @@ function CompanyCard(){
 
   return(
     <View style={styles.background}>
-      <View style={styles.companyContainer}>
+      <ScrollView style={styles.companyContainer}>
         <View style={styles.imageContainer}>
           <Image 
             source={{ uri: `data:image/jpeg;base64,${companyImage}`}}
@@ -163,7 +164,7 @@ function CompanyCard(){
           </TouchableOpacity>
 
         </View>
-      </View>
+      </ScrollView>
     </View>
   );
 }

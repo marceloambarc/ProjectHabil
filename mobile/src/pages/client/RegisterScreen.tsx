@@ -19,6 +19,7 @@ import * as ImagePicker from 'expo-image-picker';
 import * as ImageManipulator from 'expo-image-manipulator';
 
 import Userterm from '../../components/Userterm';
+import { TouchableNativeFeedback } from 'react-native-gesture-handler';
 
 export default function Register(){
   const [isLoading, setIsLoading] = useState(false);
@@ -420,6 +421,10 @@ export default function Register(){
     setImage('');
   }
 
+  async function handleHomeNavigation(){
+    navigation.navigate('Início');
+  }
+
   if(isLoading){
     return (
       <View style={{flex:1, justifyContent:'center',alignItems:'center'}}>
@@ -432,10 +437,12 @@ export default function Register(){
 
     <View style={styles.background}>
       <View style={styles.container}>
+        <TouchableWithoutFeedback onPress={handleHomeNavigation}>
         <Image 
           source={require('../../../assets/cmalogo.png')}
           style={styles.headImage}
         />
+        </TouchableWithoutFeedback>
 
         <TextInput
         style={styles.input}

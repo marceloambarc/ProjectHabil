@@ -2,7 +2,8 @@ import * as React from 'react';
 import { useState, useEffect } from 'react';
 
 import { View, Text, StyleSheet, KeyboardAvoidingView,
-TextInput, TouchableOpacity, Animated, ActivityIndicator, Alert, Keyboard } from 'react-native';
+TextInput, TouchableOpacity, Animated, ActivityIndicator, Alert, 
+Keyboard, TouchableWithoutFeedback } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { TextInputMask } from 'react-native-masked-text';
 
@@ -86,6 +87,10 @@ export default function Login(){
     navigation.navigate('Forgot');
   }
 
+  async function handleHomeNavigation(){
+    navigation.navigate('Início');
+  }
+
   if(isLoading){
     return (
       <View style={{flex:1, justifyContent:'center',alignItems:'center'}}>
@@ -94,55 +99,59 @@ export default function Login(){
     )
   }
   return (
-    <KeyboardAvoidingView style={styles.background}>
-      <View style={styles.containerLogo}>
-        <Animated.Image
-         style={{
-           width: logo.x,
-           height: logo.y
-         }}
-         source={require('../../../assets/adaptive-icon.png')}
-          />
+    <KeyboardAvoidingView keyboardVerticalOffset = {25} // adjust the value here if you need more padding
+    style={styles.background}
+    behavior = "padding"  >
+        <View style={styles.containerLogo}>
+        <TouchableWithoutFeedback onPress={handleHomeNavigation}>
+          <Animated.Image
+          style={{
+            width: logo.x,
+            height: logo.y
+          }}
+          source={require('../../../assets/adaptive-icon.png')}
+            />
+            </TouchableWithoutFeedback>
         </View>
-  
-        <View style={styles.container}>
-          <TextInputMask
-          type={'cnpj'}
-          style={styles.input}
-          placeholder="Cnpj"
-          autoCorrect={false}
-          value={cnpj}
-          onChangeText={setCnpj}
-          ref={ref_cnpj}
-          returnKeyType='next'
-          onSubmitEditing={() => ref_password.current?.focus()}
-          />
+    
+          <View style={styles.container}>
+            <TextInputMask
+            type={'cnpj'}
+            style={styles.input}
+            placeholder="Cnpj"
+            autoCorrect={false}
+            value={cnpj}
+            onChangeText={setCnpj}
+            ref={ref_cnpj}
+            returnKeyType='next'
+            onSubmitEditing={() => Keyboard.dismiss()}
+            />
 
-          <TextInput
-          secureTextEntry={true}
-          style={styles.input}
-          placeholder="Senha"
-          autoCorrect={false}
-          autoCompleteType="password"
-          caretHidden={true}
-          value={password}
-          onChangeText={setPassword}
-          ref={ref_password}
-          onSubmitEditing={() => Keyboard.dismiss()}
-          />
-  
-          <TouchableOpacity style={styles.btnSubmit} onPress={handleAccess}>
-            <Text style={styles.submitText}>Acessar</Text>
-          </TouchableOpacity>
-  
-          <TouchableOpacity style={styles.btnRegister} onPress={handleRegister}>
-            <Text style={styles.registerText}>Criar conta Gratuita</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.btnRegister} onPress={handleForgotPassword}>
-            <Text style={styles.forgetText}>Esqueci minha Senha.</Text>
-          </TouchableOpacity>
+            <TextInput
+            secureTextEntry={true}
+            style={styles.input}
+            placeholder="Senha"
+            autoCorrect={false}
+            autoCompleteType="password"
+            caretHidden={true}
+            value={password}
+            onChangeText={setPassword}
+            ref={ref_password}
+            onSubmitEditing={() => Keyboard.dismiss()}
+            />
+    
+            <TouchableOpacity style={styles.btnSubmit} onPress={handleAccess}>
+              <Text style={styles.submitText}>Acessar</Text>
+            </TouchableOpacity>
+    
+            <TouchableOpacity style={styles.btnRegister} onPress={handleRegister}>
+              <Text style={styles.registerText}>Criar conta Gratuita</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.btnRegister} onPress={handleForgotPassword}>
+              <Text style={styles.forgetText}>Esqueci minha Senha.</Text>
+            </TouchableOpacity>
         </View>
-    </KeyboardAvoidingView>
+      </KeyboardAvoidingView>
   );
 }
 
