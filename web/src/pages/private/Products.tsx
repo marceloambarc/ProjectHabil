@@ -231,7 +231,7 @@ function Products(){
   }
 
   async function handleViewPerPrice(){
-    alert('Price');
+   alert('Price');
   }
 
   return(

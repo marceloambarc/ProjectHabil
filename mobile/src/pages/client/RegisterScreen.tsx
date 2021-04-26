@@ -13,13 +13,11 @@ import { useNavigation } from '@react-navigation/native';
 import api from '../../services/api';
 import mailgun from '../../services/mailgun';
 import tokenCredentials from '../../services/token.json'
-import { host, port, fromEmail, pass } from '../../../email.json';
 
 import * as ImagePicker from 'expo-image-picker';
 import * as ImageManipulator from 'expo-image-manipulator';
 
 import Userterm from '../../components/Userterm';
-import { TouchableNativeFeedback } from 'react-native-gesture-handler';
 
 export default function Register(){
   const [isLoading, setIsLoading] = useState(false);
@@ -90,10 +88,6 @@ export default function Register(){
 
   const [term_is_true, setTermIsTrue] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
-
-  const title = "Confirmar E-mail"; 
-  const message = "Confirmar E-mail";
-  const content = "Teste para verificar E-mail: <a href=\"http:\/\/www.habilinformatica.com.br\/\">CompreMaisAki<\/a>";
 
   const navigation = useNavigation();
 
@@ -319,63 +313,47 @@ export default function Register(){
     }
 
     try {
-      await mailgun.post('mailgun',{
-        host: host,
-        port: port,
-        fromEmail: fromEmail,
-        pass: pass,
-        toEmail: email,
-        title: title,
-        message: message,
-        content: content
+      await api.post('companies',{
+        business: business,
+        cnpj: cnpj,
+        name: name,
+        phone: phone,
+        email: email,
+        address: address,
+        district: district,
+        city: city,
+        uf: uf,
+        password: password,
+        image: base,
+        keywords: keywords,
+        is_active: 0
       },{
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      }).then(res => {
-        api.post('companies',{
-          business: business,
-          cnpj: cnpj,
-          name: name,
-          phone: phone,
-          email: email,
-          address: address,
-          district: district,
-          city: city,
-          uf: uf,
-          password: password,
-          image: base,
-          keywords: keywords,
-          is_active: 0
-        },{
           headers: {'Authorization': 'Bearer '+userToken}
-        }).then(() => {
-          Alert.alert(
-            "Sucesso!",
-            "Confirme seu E-mail (Verifique a sua caixa de Spam) e aguarde a confirmação do Administrador."
-          );
-          setBusiness('');
-          setCnpj('');
-          setName('');
-          setPhone('');
-          setEmail('');
-          setAddress('');
-          setDistrict('');
-          setCity('');
-          setUf('');
-          setPassword('');
-          setImage('');
-          setBase('');
-          setKeywords('');
-          navigation.navigate("Início");
-        })
-      }).catch(err => {
+      }).then(() => {
         Alert.alert(
-          "Ops!",
-          "Tivemos um Erro, entre em contato com o Suporte.",
+          "Sucesso!",
+          "Aguarde a confirmação do Administrador."
         );
-        console.log(err);
-      })
+        setBusiness('');
+        setCnpj('');
+        setName('');
+        setPhone('');
+        setEmail('');
+        setAddress('');
+        setDistrict('');
+        setCity('');
+        setUf('');
+        setPassword('');
+        setImage('');
+        setBase('');
+        setKeywords('');
+        navigation.navigate("Início");
+       }).catch(err => {
+         Alert.alert(
+           'Ops!',
+           'Tivemos um erro de servidor, entre em contato com o suporte.'
+         );
+       })
     }catch(err){
       Alert.alert(
         'Ops!',

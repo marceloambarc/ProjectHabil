@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { FiArrowLeft, FiArrowRight, FiHome } from 'react-icons/fi';
+import { FaKey } from 'react-icons/fa';
+import { FiArrowLeft, FiArrowRight, FiHome, FiUser } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
 
 import Img from '../images/adaptive-icon.png';
@@ -22,7 +23,7 @@ export default function Sidebar() {
         <div className="button-block">
           <label>Moderadores</label>
           <Link to="/Moderators" className="enter-path">
-            <FiArrowRight size="26" color="white" />
+            <FiUser size="26" color="white" />
           </Link>
         </div>
       );
@@ -59,7 +60,7 @@ export default function Sidebar() {
           <div className="button-block">
             <label>Senhas</label>
             <Link to="/forgot" className="enter-path">
-              <FiArrowRight size="26" color="white" />
+              <FaKey size="26" color="white" />
             </Link>
           </div>
 

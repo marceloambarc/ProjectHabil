@@ -18,7 +18,7 @@ function ControlMap(){
   const fileInput = createRef<any>();
 
   async function getImages(){
-    api.get('backgrounds/9').then(response => {
+    await api.get('backgrounds/9').then(response => {
       setImg1(response.data.background_image1);
       setImg2(response.data.background_image2);
     })
@@ -69,7 +69,6 @@ function ControlMap(){
       );
     }
   }
-
   return(
     <div id="page-control-map">
       <Sidebar />
