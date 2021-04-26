@@ -39,11 +39,7 @@ function Forgot(){
   const [isLoading, setIsLoading] = useState(false);
 
   //----CARREGAMENTO DE DADOS E LOADING INICIAL DE TELA ----///
-  useEffect(() => {
-    if(isLoading) return;
-
-    //Iniciar Carregamento
-    setIsLoading(true);
+  function getForgot(){
     api.get('companies/all').then(response => {
 
       //Realocar Resposta para UseState
@@ -58,7 +54,15 @@ function Forgot(){
 
     }).catch(err => {
       alert('Ops! Tivemos um Erro.');
-    })
+    });
+  }
+
+  useEffect(() => {
+    if(isLoading) return;
+
+    //Iniciar Carregamento
+    setIsLoading(true);
+    getForgot();
   }, []);
 
   async function handleSubmitPassword({company}:{company:Company}){
@@ -67,7 +71,8 @@ function Forgot(){
     const finalKey = encryptedKey.substring(1,9);
 
     const activateResetPassword = await api.put(`companies/${company.id}`,{
-      reset_password: finalKey
+      reset_password: finalKey,
+      is_active: 1
     },{
       headers: {'Authorization': 'Bearer '+userToken}
     });
@@ -88,6 +93,7 @@ function Forgot(){
       })
     }).then(res => {
       alert('Sucesso!');
+      getForgot();
     }).catch(err => {
       alert('Erro no envio de recuperação da senha, Entre em contato com o suporte')
     })
