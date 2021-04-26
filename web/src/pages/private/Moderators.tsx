@@ -72,15 +72,40 @@ function Moderators(){
     }
 
     async function handleCanceled({admin}:{admin:Admin}){
-      alert('Cancelado!');
+      api.delete(`admin/${admin.id}`,{
+        headers: {'Authorization': 'Bearer '+userToken}
+      }).then(res => {
+        alert("Usuário Deletado");
+        loadAdmins();
+      }).catch(err => {
+        alert("Tivemos um Erro.");
+      })
     }
 
     async function handlePromote({admin}:{admin:Admin}){
-      alert('Promovido!')
+      api.put(`admin/${admin.id}`,{
+        role: "adm"
+      },{
+        headers: {'Authorization': 'Bearer '+userToken}
+      }).then(res => {
+        alert("Usuário Promovido");
+        loadAdmins();
+      }).catch(err => {
+        alert("Tivemos um Erro.")
+      })
     }
 
     async function handleRelegate({admin}:{admin:Admin}){
-      alert('Depreciado!')
+      api.put(`admin/${admin.id}`,{
+        role: "guest"
+      },{
+        headers: {'Authorization': 'Bearer '+userToken}
+      }).then(res => {
+        alert("Usuário Depreciado");
+        loadAdmins();
+      }).catch(err => {
+        alert("Tivemos um Erro.")
+      })
     }
 
     //---RENDERIZAR BOTOES---//

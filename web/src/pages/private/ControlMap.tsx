@@ -2,6 +2,7 @@ import React, { useEffect, useState, createRef } from 'react';
 import { FaExchangeAlt } from 'react-icons/fa'
 
 import Sidebar from '../../components/Sidebar';
+import api from '../../services/api';
 import '../../styles/pages/controlmap.css';
 import '../../styles/pages/home.css';
 
@@ -11,17 +12,34 @@ import advImg1  from '../../images/content_id.png';
 import advImg2 from '../../images/content_id.png';
 import logoImg from '../../images/cmatextlogo.png';
 
+interface BackgroundImage1Props {
+  id: number;
+  background_image1: string;
+}
+
+interface BackgroundImage2Props {
+  id: number;
+  background_image2: string;
+}
+
 //SOLICITAR ROTA DE ALTERACAO DE IMAGEM PARA CARREGAMENTO NO APP
 function ControlMap(){
   const [img1, setImg1] = useState('');
   const [img2, setImg2] = useState('');
+  const [base] = useState('data:image/jpeg;base64');
   const [isLoading, setIsLoading] = useState(true);
   const fileInput = createRef<any>();
 
+  async function getImage1(){
+    api.get('backgrounds/9').then(response => {
+      setImg1(response.data.background_image1);
+    })
+  }
+
   useEffect(() => {
     if(!isLoading) return;
-    setImg1(advImg1);
     setImg2(advImg2);
+    getImage1();
     setIsLoading(false);
   },[]);
 
@@ -48,7 +66,7 @@ function ControlMap(){
       );
     }else{
       return(
-        <img src={img2} className="AdvImage" alt="AdvImage" style={{width: "85%"}}/>
+        <img src={base + ',' + img1} className="AdvImage" alt="AdvImage" style={{width: "85%"}}/>
       );
     }
   }
@@ -60,7 +78,7 @@ function ControlMap(){
       );
     }else{
       return (
-        <img src={img1} className="AdvImage" alt="AdvImage" style={{width: "85%"}}/>
+        <img src={img2} className="AdvImage" alt="AdvImage" style={{width: "85%"}}/>
       );
     }
   }
