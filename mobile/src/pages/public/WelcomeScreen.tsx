@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Text, View, TouchableOpacity, StyleSheet, Image, 
 Linking, TouchableHighlight, Alert } from 'react-native';
 import { SearchBar } from 'react-native-elements';
@@ -6,6 +6,7 @@ import { Feather } from '@expo/vector-icons';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import ImageZoom from 'react-native-image-pan-zoom';
+import api from '../../services/api';
 
 import MainPath from '../../../src/pages/client/routes';
 
@@ -16,7 +17,26 @@ import About from './view/AboutScreen';
 const welcomeBackgroundImage = "../../../assets/content_id.png";
 
 function WelcomeScreen({ navigation }:{ navigation:any }){
+  const [isLoading, setIsLoading] = useState(false);
   const [search, setSearch] = useState('');
+  const [base] = useState('data:image/png;base64');
+  const [img2, setImage2] = useState('');
+
+  useEffect(() => {
+    if(isLoading) return;
+    setIsLoading(true);
+
+    api.get('backgrounds/9').then(response => {
+      setImage2(response.data.background_image2);
+      setIsLoading(false);
+    }).catch(err => {
+      Alert.alert(
+        'Ops!',
+        'Tivemos um erro ao carregar a Imagem'
+      );
+    });
+
+  },[])
 
   async function handleSearchTerm(){
     try{
@@ -73,7 +93,8 @@ function WelcomeScreen({ navigation }:{ navigation:any }){
                         imageHeight={390}>
                 <Image 
                   style={styles.companyImage}
-                  source={require(welcomeBackgroundImage)}
+                  source={{ uri: `${base},${img2}` }}
+                  resizeMode='contain'
                 />       
               </ImageZoom>
             </TouchableHighlight>

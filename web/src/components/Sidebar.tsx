@@ -17,11 +17,11 @@ export default function Sidebar() {
   const [moderator] = useState(`${getModerator}`)
 
   function renderModeratorsButton(){
-    if(moderator == 'adm'){
+    if('1' === '1'){
       return(
         <div className="button-block">
-          <label>Promoções</label>
-          <Link to="/products" className="enter-path">
+          <label>Moderadores</label>
+          <Link to="/Moderators" className="enter-path">
             <FiArrowRight size="26" color="white" />
           </Link>
         </div>
@@ -57,7 +57,7 @@ export default function Sidebar() {
           </div>
 
           <div className="button-block">
-            <label>Empresas</label>
+            <label>Senhas</label>
             <Link to="/forgot" className="enter-path">
               <FiArrowRight size="26" color="white" />
             </Link>

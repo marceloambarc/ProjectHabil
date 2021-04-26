@@ -1,13 +1,34 @@
-import React, { useState } from 'react';
-import { View, TouchableWithoutFeedback, Text, StyleSheet, Image, Button } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, TouchableWithoutFeedback, Text, StyleSheet, Image, Button, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 import ImageZoom from 'react-native-image-pan-zoom';
+import api from '../../services/api';
 
 const splashBackgroundImage = '../../../assets/content_id.png';
 
 export default function SplashScreen(){
+  const [isLoading, setIsLoading] = useState(false);
+  const [img1, setImage1] = useState('');
+  const [base] = useState('data:image/png;base64');
   const navigation = useNavigation();
+
+  useEffect(() => {
+    if(isLoading) return;
+    setIsLoading(true);
+
+    api.get('backgrounds/9').then(response => {
+      setImage1(response.data.background_image1);
+      setIsLoading(false);
+    }).catch(err => {
+      Alert.alert(
+        'Ops!',
+        'Tivemos um erro ao carregar a Imagem'
+      );
+    });
+
+  },[]);
+
   return (
     <TouchableWithoutFeedback style={styles.background} onPress={() => navigation.navigate('Welcome')}>
       <View style={styles.container}>
@@ -19,7 +40,8 @@ export default function SplashScreen(){
                    imageHeight={390}>
           <Image 
             style={styles.companyImage}
-            source={require(splashBackgroundImage)}
+            source={{ uri: `${base},${img1}` }}
+            resizeMode='contain'
           />       
         </ImageZoom>
         </View>
