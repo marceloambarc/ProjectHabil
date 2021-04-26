@@ -28,12 +28,14 @@ interface Company {
   image: string;
   keywords: string;
   is_active: string;
+  reset_password: string;
 }
 
 //SORT POR ÚLTIMAS CADASTRADAS
 function Forgot(){
   const [companies, setCompanies] = useState<Company[]>([]);
   const [active] = useState('1');
+  const [userToken, setUserToken] = useState('retrieve from localStorage');
   const [isLoading, setIsLoading] = useState(false);
 
   //----CARREGAMENTO DE DADOS E LOADING INICIAL DE TELA ----///
@@ -46,6 +48,10 @@ function Forgot(){
 
       //Realocar Resposta para UseState
       setCompanies(response.data);
+
+      //Realocar Token
+      const getUserToken = localStorage.getItem('userToken');
+      setUserToken(`${getUserToken}`);
 
       //Finalizar Carregamento
       setIsLoading(false);
@@ -61,7 +67,9 @@ function Forgot(){
     const finalKey = encryptedKey.substring(1,9);
 
     const activateResetPassword = await api.put(`companies/${company.id}`,{
-
+      reset_password: finalKey
+    },{
+      headers: {'Authorization': 'Bearer '+userToken}
     });
 
     fetch("http://habil.servehttp.com:5003/mailgun",{
@@ -121,7 +129,7 @@ function Forgot(){
 
         {companies.map(company => {
           // ACTIVE MANIPULADO NO USESTATE()
-          if(company.is_active == active){
+          if(company.is_active == active && company.reset_password == '00000001'){
             return(
                 <tr key={company.id}>
                 <td>{company.id}</td>

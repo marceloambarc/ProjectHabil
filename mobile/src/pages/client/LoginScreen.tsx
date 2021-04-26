@@ -99,7 +99,7 @@ export default function Login(){
     )
   }
   return (
-    <KeyboardAvoidingView keyboardVerticalOffset = {25} // adjust the value here if you need more padding
+    <KeyboardAvoidingView keyboardVerticalOffset = {7} // adjust the value here if you need more padding
     style={styles.background}
     behavior = "padding"  >
         <View style={styles.containerLogo}>

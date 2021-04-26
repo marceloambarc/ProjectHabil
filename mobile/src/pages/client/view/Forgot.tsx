@@ -1,23 +1,45 @@
 import * as React from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { View, Text, SafeAreaView, 
 StyleSheet, Image, TouchableOpacity,
-TextInput, Alert } from 'react-native';
+TextInput, Alert, ActivityIndicator } from 'react-native';
 import { TextInputMask } from 'react-native-masked-text';
 import { Feather } from '@expo/vector-icons';
 
-import { host, port, fromEmail, pass } from '../../../../email.json';
-import mailgun from '../../../services/mailgun';
 import api from '../../../services/api';
+import tokenCredentials from '../../../services/token.json';
 
 export default function Forgot({navigation}:{navigation:any}){
 
   const [cnpj, setCnpj] = useState('');
   const [toEmail, setToEmail] = useState('');
-  
-  const title = "Recuperar Senha"; 
-  const message = "Recuperar Senha";
-  const content = "Teste de troca de senha - link: <a href=\"http:\/\/www.habilinformatica.com.br\/\">CompreMaisAki<\/a>";
+  const [isLoading, setIsLoading] = useState(false);
+  const [userToken, setUserToken] = useState('');
+
+  const params  = new URLSearchParams();
+  const username = tokenCredentials.username;
+  const tokenPassword = tokenCredentials.password;
+  const grant_type = tokenCredentials.grant_type;
+
+  params.append('username', `${username}`)
+  params.append('password', `${tokenPassword}`)
+  params.append('grant_type', `${grant_type}`)
+
+  async function getToken() {
+    const response = await api.post('token',params, {
+      headers: {
+        ['Content-type'] : 'application/x-www-urlencoded'
+      }
+    })
+    setUserToken(response.data.access_token);
+  }
+
+  useEffect(() => {
+    setTimeout(() => {
+      getToken();
+      setIsLoading(false);
+    }, 1000);
+  },[]);
 
   async function handleForgot(){
     if(!cnpj){
@@ -26,46 +48,42 @@ export default function Forgot({navigation}:{navigation:any}){
         "Insira seu CNPJ cadastrado",
       );
     }else{
-      const registeredCompany = true;//await api.get(`companies/${cnpj}`);
+      const registeredCompany = await api.post(`companies/cnpj`,{
+        cnpj: `${cnpj}`
+      },{
+        headers: {'Authorization': 'Bearer '+userToken}
+      });
+      
       if (!registeredCompany){
         Alert.alert(
           "Erro",
           "Empresa fora do cadastro ou Inativa, entre em contato com o Suporte.",
         );
-      }
-      try {
-        await mailgun.post('mailgun',{
-          host: host, 
-          port: port,
-          fromEmail: fromEmail, 
-          pass: pass, 
-          toEmail: toEmail, 
-          title: title,
-          message: message,
-          content: content,
-        }).then(() => {
-          Alert.alert(
-            "Alerta",
-            "Sua senha é importante para nós, enviamos um e-mail(verifique sua caixa de spam)."
-          );
+      }else {
+        const passwordReset = await api.put(`companies/${registeredCompany.data.id}`,{
+          reset_password: '00000001',
+          is_active: 1
+        },{
+          headers: {'Authorization': 'Bearer '+userToken}
+        }).then(res => {
           navigation.navigate('Início');
         }).catch(err => {
           Alert.alert(
-            "Ops!",
-            "Tivemos um erro."
-          );
-          console.log(err);
-          navigation.navigate('Início');
+            'Ops!',
+            'Tivemos um erro, entre em contato com Suporte.'
+          )
         });
-      }catch(err){
-        Alert.alert(
-          "Ops!",
-          "Tivemos um erro, entre em contato com Suporte."
-        )
       }
     }
   }
 
+  if(isLoading){
+    return (
+      <View style={{flex:1, justifyContent:'center',alignItems:'center'}}>
+        <ActivityIndicator size='large' color='#ff6600'/>
+      </View>
+    )
+  }
   return (
     <SafeAreaView>
       <View style={styles.headerBackground}>
