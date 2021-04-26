@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { FiArrowRight } from 'react-icons/fi'
 import api from '../services/api';
-import { withRouter } from 'react-router-dom'; 
+import { withRouter, useHistory } from 'react-router-dom'; 
 
 import logoImg from '../images/cmatextlogo.png';
 
@@ -13,6 +13,7 @@ import tokenCredentials from '../services/token.json';
 function Landing() {
   const [user, setUser] = useState('');
   const [password, setPassword] = useState('');
+  const history = useHistory();
 
   const tokenUsername = tokenCredentials.username;
   const tokenPassword = tokenCredentials.password;
@@ -27,7 +28,7 @@ function Landing() {
       const response = await api.post('token',params);
       const userToken = response.data.access_token;
       localStorage.setItem('userToken', userToken);
-      window.location.href = '/app';
+      history.push("/app")
     }catch(err){
       alert('Tivemos um erro, entre em contato com Suporte');
     }
