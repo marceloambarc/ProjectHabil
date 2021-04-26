@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { FiDollarSign, FiLayers, FiBookOpen, 
 FiArrowDownCircle, FiAlertOctagon, FiCheck, 
 FiCheckCircle, FiAlertCircle, FiBook } from 'react-icons/fi';
+import Modal from 'react-modal';
 
 import Sidebar from '../../components/Sidebar'
 import api from '../../services/api';
@@ -49,6 +50,10 @@ function Products(){
   const [userToken, setUserToken] = useState('retrieve from localStorage');
   const [isLoading, setIsLoading] = useState(false);
 
+  const [modalIsOpen, setIsOpen] = useState(false);
+  const [viewImage, setViewImage] = useState('');
+  const [viewName, setViewName] = useState('');
+
   //----CARREGAMENTO DE DADOS E LOADING INICIAL DE TELA ----///
   useEffect(() => {
     if(isLoading) return;
@@ -80,6 +85,18 @@ function Products(){
     })
   }, []);
 
+  function openModal({product}:{product:Product}) {
+    setIsOpen(true);
+    setViewImage(`${product.image}`);
+    setViewName(`${product.name}`);
+  }
+
+  function closeModal(){
+    setIsOpen(false);
+    setViewImage('');
+    setViewName('');
+  }
+
     //----RENDERIZAR TÍTULO DA TABELA
     function renderTitle(){
       if(active == '0'){
@@ -95,7 +112,7 @@ function Products(){
 
    //----(PENDENT)EXPAND IMAGE---//
    async function handleExpandImage({product}:{product:Product}){
-    alert(`Ver imagem ${product.image}`);
+    openModal({product});
   }
 
   //---CANCEL/ACTIVE/INACTIVE BUTTON FUNCTIONS---//
@@ -291,6 +308,19 @@ function Products(){
           </div>
           
           <div className="table-container">
+            <Modal
+              isOpen={modalIsOpen}
+              onRequestClose={closeModal}
+              className="Modal"
+              contentLabel="Example Modal"
+              overlayClassName="Overlay"
+            >
+              <h2>Promoção {viewName}</h2>
+              <img src={base + ',' + viewImage} style={{width: '100%'}} />
+              <div>
+                <button className="modalButton" onClick={closeModal}>FECHAR</button>
+              </div>
+            </Modal>
             {renderTitle()}
            <table id="companies">
             <tbody>

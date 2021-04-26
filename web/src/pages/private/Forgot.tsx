@@ -60,6 +60,10 @@ function Forgot(){
     const encryptedKey = md5(key);
     const finalKey = encryptedKey.substring(1,9);
 
+    const activateResetPassword = await api.put(`companies/${company.id}`,{
+
+    });
+
     fetch("http://habil.servehttp.com:5003/mailgun",{
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -71,7 +75,8 @@ function Forgot(){
         toEmail: company.email,
         title: 'Recuperação de Senha',
         message: 'Mensagem enviada pelo Aplicativo CompreMaisAki',
-        content: `Segue seu acesso temporário para a troca de Senha: ${finalKey}`
+        content: `Segue sua senha temporária para a troca de acessar o Aplicativo: 
+        ${finalKey}`
       })
     }).then(res => {
       alert('Sucesso!');

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { FiAlertOctagon, FiCheck, FiCheckCircle, 
 FiAlertCircle, FiXCircle, FiBook } from 'react-icons/fi';
+import Modal from 'react-modal';
 
 import Sidebar from '../../components/Sidebar'
 import api from '../../services/api';
@@ -26,6 +27,8 @@ interface Company {
   is_active: string;
 }
 
+Modal.setAppElement('#root')
+
 //SORT POR ÚLTIMAS CADASTRADAS
 function Products(){
   const [companies, setCompanies] = useState<Company[]>([]);
@@ -33,6 +36,10 @@ function Products(){
   const [base] = useState('data:image/png;base64');
   const [userToken, setUserToken] = useState('retrieve from localStorage');
   const [isLoading, setIsLoading] = useState(false);
+
+  const [modalIsOpen, setIsOpen] = useState(false);
+  const [viewImage, setViewImage] = useState('');
+  const [viewName, setViewName] = useState('');
 
   //----CARREGAMENTO DE DADOS E LOADING INICIAL DE TELA ----///
   useEffect(() => {
@@ -57,6 +64,18 @@ function Products(){
     })
   }, []);
 
+  function openModal({company}:{company:Company}) {
+    setIsOpen(true);
+    setViewImage(`${company.image}`);
+    setViewName(`${company.name}`);
+  }
+
+  function closeModal(){
+    setIsOpen(false);
+    setViewImage('');
+    setViewName('');
+  }
+
   //----RENDERIZAR TÍTULO DA TABELA
   function renderTitle(){
     if(active == '0'){
@@ -76,7 +95,7 @@ function Products(){
 
   //----(PENDENTE) EXPAND IMAGE---//
   async function handleExpandImage({company}:{company:Company}){
-     alert(`${company.image}`);
+    openModal({company});
   }
 
   //-----VIEWS------//
@@ -266,6 +285,19 @@ function Products(){
           </div>
           
           <div className="table-container">
+          <Modal
+            isOpen={modalIsOpen}
+            onRequestClose={closeModal}
+            className="Modal"
+            contentLabel="Example Modal"
+            overlayClassName="Overlay"
+          >
+            <h2>Empresa {viewName}</h2>
+            <img src={base + ',' + viewImage} style={{width: '100%'}} />
+            <div>
+              <button className="modalButton" onClick={closeModal}>FECHAR</button>
+            </div>
+          </Modal>
           {renderTitle()}
           {renderTable()}
 

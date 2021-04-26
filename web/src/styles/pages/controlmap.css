@@ -24,3 +24,27 @@
    padding: 5;
 }
 
+.Modal {
+   position: absolute;
+   top: 50px;
+   left: 30%;
+   right: 30%;
+   bottom: 700px;
+   background-color: papayawhip;
+ }
+
+ .Overlay {
+   position: fixed;
+   top: 0;
+   left: 0;
+   right: 0;
+   bottom: 0;
+   background-color: rgb(151, 151, 151);
+ }
+
+ .modalButton {
+   background-color: black!important;
+   color: '#FFF'!important;
+   padding: 20px!important;
+   width: 100%!important;
+ }
