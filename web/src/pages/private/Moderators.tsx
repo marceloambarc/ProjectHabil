@@ -79,7 +79,7 @@ function Moderators(){
         loadAdmins();
       }).catch(err => {
         alert("Tivemos um Erro.");
-      })
+      });
     }
 
     async function handlePromote({admin}:{admin:Admin}){
@@ -92,7 +92,7 @@ function Moderators(){
         loadAdmins();
       }).catch(err => {
         alert("Tivemos um Erro.")
-      })
+      });
     }
 
     async function handleRelegate({admin}:{admin:Admin}){
@@ -105,7 +105,7 @@ function Moderators(){
         loadAdmins();
       }).catch(err => {
         alert("Tivemos um Erro.")
-      })
+      });
     }
 
     //---RENDERIZAR BOTOES---//
