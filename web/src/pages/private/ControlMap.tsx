@@ -12,16 +12,6 @@ import advImg1  from '../../images/content_id.png';
 import advImg2 from '../../images/content_id.png';
 import logoImg from '../../images/cmatextlogo.png';
 
-interface BackgroundImage1Props {
-  id: number;
-  background_image1: string;
-}
-
-interface BackgroundImage2Props {
-  id: number;
-  background_image2: string;
-}
-
 //SOLICITAR ROTA DE ALTERACAO DE IMAGEM PARA CARREGAMENTO NO APP
 function ControlMap(){
   const [img1, setImg1] = useState('');
@@ -30,16 +20,16 @@ function ControlMap(){
   const [isLoading, setIsLoading] = useState(true);
   const fileInput = createRef<any>();
 
-  async function getImage1(){
+  async function getImages(){
     api.get('backgrounds/9').then(response => {
       setImg1(response.data.background_image1);
+      setImg2(response.data.background_image2);
     })
   }
 
   useEffect(() => {
     if(!isLoading) return;
-    setImg2(advImg2);
-    getImage1();
+    getImages();
     setIsLoading(false);
   },[]);
 
@@ -78,7 +68,7 @@ function ControlMap(){
       );
     }else{
       return (
-        <img src={img2} className="AdvImage" alt="AdvImage" style={{width: "85%"}}/>
+        <img src={base + ',' + img2} className="AdvImage" alt="AdvImage" style={{width: "85%"}}/>
       );
     }
   }
