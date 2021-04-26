@@ -7,9 +7,6 @@ import '../../styles/pages/controlmap.css';
 import '../../styles/pages/home.css';
 
 import loadingImg from '../../images/loading.gif';
-
-import advImg1  from '../../images/content_id.png';
-import advImg2 from '../../images/content_id.png';
 import logoImg from '../../images/cmatextlogo.png';
 
 //SOLICITAR ROTA DE ALTERACAO DE IMAGEM PARA CARREGAMENTO NO APP
