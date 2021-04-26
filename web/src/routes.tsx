@@ -11,6 +11,7 @@ import ControlMap from './pages/private/ControlMap';
 import Companies from './pages/private/Companies';
 import Products from './pages/private/Products';
 import Moderators from './pages/private/Moderators';
+import Forgot from './pages/private/Forgot';
 
 function Routes() {
   return (
@@ -28,8 +29,8 @@ function Routes() {
 
         <Route path="/products" component={Products} />
         <Route path="/companies" component={Companies} />
-
         <Route path="/moderators" component={Moderators} />
+        <Route path="/forgot" component={Forgot} />
         
       </Switch>
     </BrowserRouter>

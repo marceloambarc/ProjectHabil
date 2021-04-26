@@ -56,6 +56,12 @@ export default function Sidebar() {
             </Link>
           </div>
 
+          <div className="button-block">
+            <label>Empresas</label>
+            <Link to="/forgot" className="enter-path">
+              <FiArrowRight size="26" color="white" />
+            </Link>
+          </div>
 
         </div>
 
