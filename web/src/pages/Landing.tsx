@@ -31,7 +31,11 @@ function Landing() {
 
       localStorage.setItem('9084100', moderator);
       localStorage.setItem('userToken', userToken);
-      history.push("/app");
+      history.push("/app",{
+        params: {
+          user: user,
+        }
+      });
     }catch(err){
       alert('Tivemos um erro, entre em contato com Suporte');
     }

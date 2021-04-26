@@ -33,9 +33,7 @@ interface Company {
 //SORT POR ÚLTIMAS CADASTRADAS
 function Forgot(){
   const [companies, setCompanies] = useState<Company[]>([]);
-  const [active, setActive] = useState('1');
-  const [base] = useState('data:image/png;base64');
-  const [userToken, setUserToken] = useState('retrieve from localStorage');
+  const [active] = useState('1');
   const [isLoading, setIsLoading] = useState(false);
 
   //----CARREGAMENTO DE DADOS E LOADING INICIAL DE TELA ----///
@@ -49,10 +47,6 @@ function Forgot(){
       //Realocar Resposta para UseState
       setCompanies(response.data);
 
-      //Realocar Token
-      const getUserToken = localStorage.getItem('userToken');
-      setUserToken(`${getUserToken}`);
-
       //Finalizar Carregamento
       setIsLoading(false);
 
@@ -62,10 +56,11 @@ function Forgot(){
   }, []);
 
   async function handleSubmitPassword({company}:{company:Company}){
-    const firstStep = randomWords()
-    const secondStep = md5(firstStep);
-    console.log(secondStep);
-    /*fetch("http://habil.servehttp.com:5003/mailgun",{
+    const key = randomWords()
+    const encryptedKey = md5(key);
+    const finalKey = encryptedKey.substring(1,9);
+
+    fetch("http://habil.servehttp.com:5003/mailgun",{
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({       
@@ -74,15 +69,15 @@ function Forgot(){
         fromEmail: fromEmail,
         pass: pass,
         toEmail: company.email,
-        title: 'TESTE DE RECUPERACAO DE SENHA1',
-        message: 'TESTE DE RECUPERACAO DE SENHA1',
-        content: 'TESTE DE RECUPERACAO DE SENHA1'
+        title: 'Recuperação de Senha',
+        message: 'Mensagem enviada pelo Aplicativo CompreMaisAki',
+        content: `Segue seu acesso temporário para a troca de Senha: ${finalKey}`
       })
     }).then(res => {
       alert('Sucesso!');
     }).catch(err => {
       alert('Erro no envio de recuperação da senha, Entre em contato com o suporte')
-    })*/
+    })
   }
 
 

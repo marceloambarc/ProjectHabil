@@ -218,21 +218,21 @@ function Products(){
   }
 
   //-----(PENDENT)SORT-----//
-  async function handleViewPerDesc(){
-    alert('DESC');
-  }
+  //async function handleViewPerDesc(){
+  //  alert('DESC');
+  //}
 
-  async function handleViewPerCompany(){
-    alert('Company');
-  }
+  //async function handleViewPerCompany(){
+  //  alert('Company');
+  //}
 
-  async function handleViewAlpha(){
-    alert('AZ');
-  }
+  //async function handleViewAlpha(){
+  //  alert('AZ');
+  //}
 
-  async function handleViewPerPrice(){
-   alert('Price');
-  }
+  //async function handleViewPerPrice(){
+  // alert('Price');
+  //}
 
   return(
     <div id="page-control-map">
@@ -242,37 +242,37 @@ function Products(){
 
           <h1 style={{fontSize:'22px'}}>Novas Promoções Cadastradas</h1>
 
-          <div className="companies-button-wrapper">
+          {/*<div className="companies-button-wrapper">
 
             <div className="companies-button">
               <label htmlFor="about">Últimas</label>
-              <button onClick={() => handleViewPerDesc()} id="button">
+              <button onClick={() => {}} id="button">
                 <FiLayers size="26" />
               </button>
             </div>
 
             <div className="companies-button">
               <label htmlFor="about">Empresas</label>
-              <button onClick={() => handleViewPerCompany()} id="button">
+              <button onClick={() => {}} id="button">
                 <FiBookOpen size="26" />
               </button>
             </div>
 
             <div className="companies-button">
               <label htmlFor="about">A-Z</label>
-              <button onClick={() => handleViewAlpha()} id="button">
+              <button onClick={() => {}} id="button">
                 <FiArrowDownCircle size="26" />
               </button>
             </div>
 
             <div className="companies-button">
               <label htmlFor="about">Preço</label>
-              <button onClick={() => handleViewPerPrice()} id="button">
+              <button onClick={() => {}} id="button">
                 <FiDollarSign size="26" />
               </button>
             </div>
 
-          </div>
+          </div>*/}
 
           <div className="companies-button-wrapper">
             <div className="companies-button">
