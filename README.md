@@ -1,10 +1,10 @@
 # ProjectHabil
 Under Construction.
 
-Web administration - REACT JS.
-Mobile APP - REACT-NATIVE
-Server - NODE JS - (DEPRECATED)
-Database - MYSQL
+<p>Web administration - REACT JS.</p>
+<p>Mobile APP - REACT-NATIVE</p>
+<p>Server - NODE JS - (DEPRECATED)</p>
+<p>Database - MYSQL</p>
 
 
 ## PROTOTYPES.
