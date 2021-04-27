@@ -15,7 +15,9 @@ function ControlMap(){
   const [img2, setImg2] = useState('');
   const [base] = useState('data:image/jpeg;base64');
   const [isLoading, setIsLoading] = useState(true);
-  const fileInput = createRef<any>();
+  
+  const fileInput1 = createRef<any>();
+  const fileInput2 = createRef<any>();
 
   async function getImages(){
     await api.get('backgrounds/9').then(response => {
