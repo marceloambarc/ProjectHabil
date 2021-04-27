@@ -64,3 +64,19 @@
     width: 100%;
     padding: 5px;
 }
+
+.image-handle{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+ }
+
+ .send-image-button {
+    background-color: #28a745;
+    width: 25%;
+ }
+
+ .loading-image-button {
+     background-color: #bdc6cf;
+     width: 25%;
+ }

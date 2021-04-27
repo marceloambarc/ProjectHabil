@@ -25,11 +25,7 @@ aside.app-sidebar img {
     display: flex;
     align-items: center;
     flex-direction: column;
-    justify-content: space-between;
-}
-
-.button-wrapper .button-block {
-    margin-bottom: 10px;
+    justify-content: space-around;
 }
 
 .button-block .enter-path {
@@ -40,7 +36,6 @@ aside.app-sidebar img {
     font-size: 14px;
     display: flex;
     color: #017895;
-    margin-bottom: 8px;
 }
 
 
