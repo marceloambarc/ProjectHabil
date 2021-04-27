@@ -29,20 +29,50 @@ function ControlMap(){
     getImages();
     setIsLoading(false);
   },[]);
+  
+    const getBase64 = (file:any) => {
+    return new Promise(resolve => {
+      let fileInfo;
+      let baseURL:any = "";
 
-  function handleChangeImage1(e:any) {
-    e.preventDefault();
-    const file = fileInput.current.files[0];
-    const reader = new FileReader();
+      //MAKE NEW FILEREADER
+      let reader = new FileReader();
 
-    if(file){
-      const res = reader.readAsBinaryString(file)
-      console.log(res);
-    }
+      //CONVERT THE FILE TO BASE64 TEXT
+      reader.readAsDataURL(file);
+      
+      //ON READER LOAD SMTHING
+      reader.onload = () => {
+        //TREAT RADER.RESULT TO STRING
+        const base64String = reader.result;
+        baseURL = base64String;
+        resolve(baseURL);
+      };
+      console.log(fileInfo);
+    });
   }
 
-  async function handleChangeImage2(){
-    alert('TODO Change Image2 on DATABASE using base64');
+  //TAKE THE FILEINPUT
+  async function handleChangeImage1(e:any) {
+    e.preventDefault();
+    const file = fileInput1.current?.files[0];
+
+    getBase64(file).then(result => {
+      file["base64"] = result;
+      let fileAdapted = file.base64;
+      setImg1(fileAdapted);
+    })
+  }
+
+  async function handleChangeImage2(e:any){
+    e.preventDefault();
+    const file = fileInput2.current.files[0];
+    
+    getBase64(file).then(result => {
+      file["base64"] = result;
+      let fileAdapted = file.base64;
+      setImg2(fileAdapted);
+    })
   }
 
   //---REFATORAR CÓDIGOS--- "i++""
@@ -85,7 +115,7 @@ function ControlMap(){
               {renderImg1()}
               
               <div className="button-block">
-              <input type='file' ref={fileInput} className='changeImageButton' onChange={e => handleChangeImage1(e)} />
+                <input type='file' name='file' ref={fileInput1} className='changeImageButton' onChange={e => handleChangeImage1(e)} />
               </div>
             </div>
             <div className="advCol">
@@ -93,9 +123,7 @@ function ControlMap(){
               {renderImg2()}
               
               <div className="button-block">
-                <button type="button" onClick={() => handleChangeImage2()} className="changeImageButton">
-                  <FaExchangeAlt size="26" color="#fff" />
-                </button>
+                <input type='file' name='file' ref={fileInput2} className='changeImageButton' onChange={e => handleChangeImage2(e)} />
               </div>
             </div>
           </div>
