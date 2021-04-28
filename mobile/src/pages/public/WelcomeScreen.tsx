@@ -5,6 +5,7 @@ import { SearchBar } from 'react-native-elements';
 import { Feather } from '@expo/vector-icons';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { createDrawerNavigator } from '@react-navigation/drawer';
+import { useRoute } from '@react-navigation/native';
 import ImageZoom from 'react-native-image-pan-zoom';
 import api from '../../services/api';
 
@@ -22,11 +23,8 @@ function WelcomeScreen({ navigation }:{ navigation:any }){
   const [base] = useState('data:image/png;base64');
   const [img2, setImage2] = useState('');
 
-  useEffect(() => {
-    if(isLoading) return;
-    setIsLoading(true);
-
-    api.get('backgrounds/9').then(response => {
+  async function getBackgroundImage(){
+    await api.get('backgrounds/9').then(response => {
       setImage2(response.data.background_image2);
       setIsLoading(false);
     }).catch(err => {
@@ -35,7 +33,13 @@ function WelcomeScreen({ navigation }:{ navigation:any }){
         'Tivemos um erro ao carregar a Imagem'
       );
     });
+  }
 
+  useEffect(() => {
+    if(isLoading) return;
+    setIsLoading(true);
+
+    getBackgroundImage();
   },[])
 
   async function handleSearchTerm(){

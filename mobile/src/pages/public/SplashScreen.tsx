@@ -7,26 +7,49 @@ import api from '../../services/api';
 
 const splashBackgroundImage = '../../../assets/content_id.png';
 
+import tokenCredentials from '../../services/token.json';
+
 export default function SplashScreen(){
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [img1, setImage1] = useState('');
-  const [base] = useState('data:image/png;base64');
+  const [userToken, setUserToken] = useState('');
   const navigation = useNavigation();
 
-  useEffect(() => {
-    if(isLoading) return;
-    setIsLoading(true);
+  const params  = new URLSearchParams();
 
-    api.get('backgrounds/9').then(response => {
+  const username = tokenCredentials.username;
+  const tokenPassword = tokenCredentials.password;
+  const grant_type = tokenCredentials.grant_type;
+
+  params.append('username', `${username}`)
+  params.append('password', `${tokenPassword}`)
+  params.append('grant_type', `${grant_type}`)
+
+  async function getToken() {
+    const response = await api.post('token',params, {
+      headers: {
+        ['Content-type'] : 'application/x-www-urlencoded'
+      }
+    })
+    setUserToken(response.data.access_token);
+  }
+
+  async function getBackgroundImage(){
+    await api.get('backgrounds/9').then(response => {
       setImage1(response.data.background_image1);
       setIsLoading(false);
     }).catch(err => {
       Alert.alert(
         'Ops!',
-        'Tivemos um erro ao carregar a Imagem'
+        'Tivemos um Erro ao Carregar a Imagem.'
       );
     });
+  }
 
+  useEffect(() => {
+    if(!isLoading) return;
+    getToken();
+    getBackgroundImage();
   },[]);
 
   return (
@@ -40,7 +63,7 @@ export default function SplashScreen(){
                    imageHeight={390}>
           <Image 
             style={styles.companyImage}
-            source={{ uri: `${base},${img1}` }}
+            source={{ uri: `data:image/jpeg;base64,${img1}`}}
             resizeMode='contain'
           />       
         </ImageZoom>

@@ -25,9 +25,7 @@ function ControlMap(){
   const fileInput2 = createRef<any>();
 
   async function getImages(){
-    await api.get('backgrounds/9',{
-      headers: {'Authorization': 'Bearer '+userToken}
-    }).then(response => {
+    await api.get('backgrounds/9').then(response => {
       setImg1(response.data.background_image1);
       setImg2(response.data.background_image2);
     })
