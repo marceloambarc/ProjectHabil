@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 
 import { View, Text, StyleSheet, KeyboardAvoidingView,
 TextInput, TouchableOpacity, Animated, ActivityIndicator, Alert, 
-Keyboard, TouchableWithoutFeedback } from 'react-native';
+Keyboard, TouchableWithoutFeedback, Platform } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { TextInputMask } from 'react-native-masked-text';
 
@@ -99,9 +99,9 @@ export default function Login(){
     )
   }
   return (
-    <KeyboardAvoidingView keyboardVerticalOffset = {7} // adjust the value here if you need more padding
-    style={styles.background}
-    behavior = "padding"  >
+    <KeyboardAvoidingView
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      style={styles.background}>
         <View style={styles.containerLogo}>
         <TouchableWithoutFeedback onPress={handleHomeNavigation}>
           <Animated.Image
