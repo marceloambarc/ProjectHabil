@@ -34,7 +34,7 @@ function ControlMap(){
   }
 
   async function getRoles(){
-    api.get('admin/tk',{
+    await api.get('admin/tk',{
       headers: {'Authorization': 'Bearer '+userToken}
     }).then(res => {
       setRole(res.data.role);
@@ -49,31 +49,9 @@ function ControlMap(){
     getRoles();
     setIsLoading(false);
   },[]);
-  
-    /*const getBase64 = (file:any) => {
-    return new Promise(resolve => {
-      let fileInfo;
-      let baseURL:any = "";
-
-      //MAKE NEW FILEREADER
-      let reader = new FileReader();
-
-      //CONVERT THE FILE TO BASE64 TEXT
-      reader.readAsDataURL(file);
-      
-      //ON READER LOAD SMTHING
-      reader.onload = () => {
-        //TREAT RADER.RESULT TO STRING
-        const base64String = reader.result;
-        baseURL = base64String;
-        resolve(baseURL);
-      };
-      console.log(fileInfo);
-      });
-    }*/
 
     const resizeFile = (file:any) =>
-    new Promise((resolve) => {
+    new Promise((resolve:any) => {
       Resizer.imageFileResizer(
         file,
         300,
@@ -90,31 +68,19 @@ function ControlMap(){
 
   //TAKE THE FILEINPUT
   async function handleChangeImage1(e:any) {
+    setIsLoading(true);
     e.preventDefault();
     const file = fileInput1.current?.files[0];
+    setIsLoadingImage(true);
     const image = await resizeFile(file);
-    console.log(image);
-    /*getBase64(file).then(result => {
-      file["base64"] = result;
-      let fileAdapted = file.base64;
-      let fileAdaptedRender = fileAdapted.split(`,`).pop();
-      setImg1(fileAdaptedRender);
-      console.log(fileAdaptedRender);
-      setIsImageLoaded(false);
-    })*/
+    const fileAdaptedRender = String(image).split(',').pop();
+    setImg1(fileAdaptedRender? fileAdaptedRender: '');
+    setIsLoadingImage(false);
+    setIsLoading(false);
   }
 
   async function handleChangeImage2(e:any){
-    e.preventDefault();
-    const file = fileInput2.current?.files[0];
-    
-    /*getBase64(file).then(result => {
-      file["base64"] = result;
-      let fileAdapted = file.base64;
-      let fileAdaptedRender = fileAdapted.split(',').pop();
-      setImg2(fileAdaptedRender);
-      setIsImageLoaded(false);
-    })*/
+    alert('constru')
   }
 
   async function handleSendImage1(){

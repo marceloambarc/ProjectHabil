@@ -74,7 +74,7 @@ export default function Login(){
     }catch(err){
       Alert.alert(
         'Acesso Inválido',
-        'Tente novamento após alguns minutos.',
+        'Tente novamente após alguns minutos.',
       );
     }
   }
