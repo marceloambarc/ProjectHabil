@@ -88,7 +88,7 @@ function ControlMap(){
 
   async function handleChangeImage2(e:any){
     e.preventDefault();
-    const file = fileInput2.current.files[0];
+    const file = fileInput2.current?.files[0];
     
     getBase64(file).then(result => {
       file["base64"] = result;
