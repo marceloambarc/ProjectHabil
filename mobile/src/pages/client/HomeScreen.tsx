@@ -89,6 +89,14 @@ export default function HomeScreen(){
     );
   }
 
+  async function handleChangePassword(){
+    navigation.navigate('ChangePassword',{
+      userToken,
+      companyCnpj,
+      companyId
+    });
+  }
+
   return(
     <View style={styles.background}>
       <View style={styles.container}>
@@ -106,6 +114,10 @@ export default function HomeScreen(){
 
         <TouchableOpacity style={styles.btnSubmitEdit} onPress={handleEditCompanyNavigation}>
           <Text style={styles.submitText}>Editar Empresa</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.btnSubmitEdit} onPress={handleChangePassword}>
+          <Text style={styles.submitText}>Mudar Senha</Text>
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.btnSubmit} onPress={() => navigation.navigate('SupplierPromotion',{

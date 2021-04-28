@@ -13,6 +13,7 @@ import EditPromotionScreen from './EditPromotionScreen';
 import EditPromotionOverviewScreen from './EditPromotionOverviewScreen';
 
 import Forgot from './view/Forgot';
+import ChangePassword from './view/ChangePassword';
 
 const Stack = createStackNavigator();
 
@@ -23,6 +24,7 @@ export default function Root(){
 
       <Stack.Screen name="Login" component={ LoginScreen } />
       <Stack.Screen name="Forgot" component={Forgot} />
+      <Stack.Screen name="ChangePassword" component={ChangePassword} />
       <Stack.Screen name="Register" component={ RegisterScreen } />
       <Stack.Screen name="Home" component={ HomeScreen } />
       <Stack.Screen name="EditCompany" component={ EditCompanyScreen } />

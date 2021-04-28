@@ -98,11 +98,20 @@ function Forgot(){
         ${finalKey}`
       })
     }).then(res => {
-      alert('Sucesso!');
+      api.put(`companies/${company.id}`,{
+        password: finalKey,
+        is_active: 1
+      },{
+        headers: {'Authorization': 'Bearer '+userToken}
+      }).then(res => {
+        alert('Sucesso');
+      }).catch(err => {
+        alert('erro na emissao de nova chave.')
+      });
       getForgot();
     }).catch(err => {
       alert('Erro no envio de recuperação da senha, Entre em contato com o suporte')
-    })
+    });
   }
 
 

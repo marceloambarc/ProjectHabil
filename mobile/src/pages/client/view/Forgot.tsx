@@ -2,7 +2,7 @@ import * as React from 'react';
 import { useState, useEffect } from 'react';
 import { View, Text, SafeAreaView, 
 StyleSheet, Image, TouchableOpacity,
-TextInput, Alert, ActivityIndicator } from 'react-native';
+TextInput, Alert, ActivityIndicator, Keyboard } from 'react-native';
 import { TextInputMask } from 'react-native-masked-text';
 import { Feather } from '@expo/vector-icons';
 
@@ -66,6 +66,11 @@ export default function Forgot({navigation}:{navigation:any}){
         },{
           headers: {'Authorization': 'Bearer '+userToken}
         }).then(res => {
+          Alert.alert(
+            'Aguarde',
+            'Enviaremos um E-mail para recuperação da sua senha.'
+          );
+          Keyboard.dismiss;
           navigation.navigate('Início');
         }).catch(err => {
           Alert.alert(
@@ -99,6 +104,9 @@ export default function Forgot({navigation}:{navigation:any}){
       </View>
 
       <View style={styles.bodyContainer}>
+        <Text style={styles.forgotText}>
+          Ao Enviar a Solicitação, sua senha será redefinida.
+        </Text>
         <TextInputMask
           type={'cnpj'}
           style={styles.input}
@@ -179,5 +187,10 @@ const styles = StyleSheet.create({
     color: '#FFF',
     fontSize: 18
   },
+  forgotText: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingVertical: 70,
+  }
 
 });

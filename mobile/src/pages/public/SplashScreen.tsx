@@ -12,27 +12,7 @@ import tokenCredentials from '../../services/token.json';
 export default function SplashScreen(){
   const [isLoading, setIsLoading] = useState(true);
   const [img1, setImage1] = useState('');
-  const [userToken, setUserToken] = useState('');
   const navigation = useNavigation();
-
-  const params  = new URLSearchParams();
-
-  const username = tokenCredentials.username;
-  const tokenPassword = tokenCredentials.password;
-  const grant_type = tokenCredentials.grant_type;
-
-  params.append('username', `${username}`)
-  params.append('password', `${tokenPassword}`)
-  params.append('grant_type', `${grant_type}`)
-
-  async function getToken() {
-    const response = await api.post('token',params, {
-      headers: {
-        ['Content-type'] : 'application/x-www-urlencoded'
-      }
-    })
-    setUserToken(response.data.access_token);
-  }
 
   async function getBackgroundImage(){
     await api.get('backgrounds/9').then(response => {
@@ -48,7 +28,6 @@ export default function SplashScreen(){
 
   useEffect(() => {
     if(!isLoading) return;
-    getToken();
     getBackgroundImage();
   },[]);
 
@@ -103,7 +82,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     height: '100%',
-    backgroundColor: 'whitesmoke',
+    backgroundColor: 'white',
     flex: 1
   },
   logoContainer: {
