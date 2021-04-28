@@ -11,7 +11,6 @@ import { TextInputMask } from 'react-native-masked-text';
 import { useNavigation } from '@react-navigation/native';
 
 import api from '../../services/api';
-import mailgun from '../../services/mailgun';
 import tokenCredentials from '../../services/token.json'
 
 import * as ImagePicker from 'expo-image-picker';

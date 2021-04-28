@@ -56,7 +56,7 @@ function ControlMap(){
         file,
         300,
         300,
-        "JPEG",
+        "PNG",
         100,
         0,
         (uri) => {
@@ -75,12 +75,24 @@ function ControlMap(){
     const image = await resizeFile(file);
     const fileAdaptedRender = String(image).split(',').pop();
     setImg1(fileAdaptedRender? fileAdaptedRender: '');
+
     setIsLoadingImage(false);
     setIsLoading(false);
+    setIsImageLoaded(false);
   }
 
   async function handleChangeImage2(e:any){
-    alert('constru')
+    setIsLoading(true);
+    e.preventDefault();
+    const file = fileInput2.current?.files[0];
+    setIsLoadingImage(true);
+    const image = await resizeFile(file);
+    const fileAdaptedRender = String(image).split(',').pop();
+    setImg2(fileAdaptedRender? fileAdaptedRender: '');
+    
+    setIsLoadingImage(false);
+    setIsLoading(false);
+    setIsImageLoaded(false);
   }
 
   async function handleSendImage1(){
