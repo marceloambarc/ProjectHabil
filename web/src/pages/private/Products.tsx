@@ -10,6 +10,7 @@ import api from '../../services/api';
 import '../../styles/pages/controlmap.css';
 import '../../styles/pages/card.css';
 import '../../styles/pages/card-columns.css';
+import { getRoles } from '@testing-library/dom';
 
 {/* 
   --- TO DO LIST
@@ -48,18 +49,26 @@ function Products(){
   const [validate, setValidate] = useState('');
   const [base] = useState('data:image/png;base64');
   const [userToken, setUserToken] = useState('retrieve from localStorage');
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [role, setRole] = useState('');
 
   const [modalIsOpen, setIsOpen] = useState(false);
   const [viewImage, setViewImage] = useState('');
   const [viewName, setViewName] = useState('');
 
   //----CARREGAMENTO DE DADOS E LOADING INICIAL DE TELA ----///
-  useEffect(() => {
-    if(isLoading) return;
+  async function getRoles(){
+    api.get('admin/tk',{
+      headers: {'Authorization': 'Bearer '+userToken}
+    }).then(res => {
+      setRole(res.data.role);
+    }).catch(err => {
+      setRole('guest');
+    });
+  }
 
-    //Iniciar Carregamento
-    setIsLoading(true);
+  useEffect(() => {
+    if(!isLoading) return;
 
     //Carregamento de empresas
     api.get('products/all').then(products => {
@@ -77,6 +86,8 @@ function Products(){
       //Realocar Token
       const getUserToken = localStorage.getItem('userToken');
       setUserToken(`${getUserToken}`);
+
+      getRoles();
 
       //Finalizar Carregamento
       setIsLoading(false);
@@ -253,7 +264,7 @@ function Products(){
 
   return(
     <div id="page-control-map">
-      <Sidebar />
+      <Sidebar role={role} />
       <main>
         <div className="control-map">
 

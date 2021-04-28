@@ -17,6 +17,7 @@ function ControlMap(){
   const [img2, setImg2] = useState('');
   const [base] = useState('data:image/jpeg;base64');
   const [isLoading, setIsLoading] = useState(true);
+  const [role, setRole] = useState('');
 
   const [isLoadingImage, setIsLoadingImage] = useState(false);
   const [isImageLoaded, setIsImageLoaded] = useState(true);
@@ -31,9 +32,20 @@ function ControlMap(){
     })
   }
 
+  async function getRoles(){
+    api.get('admin/tk',{
+      headers: {'Authorization': 'Bearer '+userToken}
+    }).then(res => {
+      setRole(res.data.role);
+    }).catch(res => {
+      setRole('guest');
+    });
+  }
+
   useEffect(() => {
     if(!isLoading) return;
     getImages();
+    getRoles();
     setIsLoading(false);
   },[]);
   
@@ -185,7 +197,7 @@ function ControlMap(){
   }
   return(
     <div id="page-control-map">
-      <Sidebar />
+      <Sidebar role={role} />
       <main>
         <div className="control-map">
 

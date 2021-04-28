@@ -28,7 +28,8 @@ function Moderators(){
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [userToken] = useState(`${getUserToken}`)
-    const [isLoading, setIsLoading] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
+    const [role, setRole] = useState('');
 
     async function loadAdmins(){
       api.get('admin',{
@@ -40,13 +41,21 @@ function Moderators(){
       });
     }
 
-    useEffect(() => {
-      if(isLoading) return;
+    async function getRoles(){
+      api.get('admin/tk',{
+        headers: {'Authorization': 'Bearer '+userToken}
+      }).then(res => {
+        setRole(res.data.role);
+      }).catch(err => {
+        setRole('guest');
+      });
+    }
 
-      //Iniciar Carregamento
-      setIsLoading(true);
+    useEffect(() => {
+      if(!isLoading) return;
       //Carregamento dos ADMINS
       loadAdmins();
+      getRoles();
       //Finalizar Carregamento
       setIsLoading(false);
     }, []);
@@ -183,7 +192,7 @@ function Moderators(){
 
   return(
     <div id="page-control-map">
-      <Sidebar />
+      <Sidebar role={role} />
       <main>
         <div className="control-map">
 

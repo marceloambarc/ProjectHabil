@@ -9,6 +9,7 @@ import api from '../../services/api';
 import '../../styles/pages/controlmap.css';
 import '../../styles/pages/companies_buttons.css';
 import '../../styles/pages/table.css';
+import { getRoles } from '@testing-library/dom';
 
 interface Company {
   id: number;
@@ -35,18 +36,27 @@ function Products(){
   const [active, setActive] = useState('0');
   const [base] = useState('data:image/png;base64');
   const [userToken, setUserToken] = useState('retrieve from localStorage');
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [role, setRole] = useState('');
 
   const [modalIsOpen, setIsOpen] = useState(false);
   const [viewImage, setViewImage] = useState('');
   const [viewName, setViewName] = useState('');
 
   //----CARREGAMENTO DE DADOS E LOADING INICIAL DE TELA ----///
+  async function getRoles(){
+    api.get('admin/tk',{
+      headers: {'Authorization': 'Bearer '+userToken}
+    }).then(res => {
+      setRole(res.data.role);
+    }).catch(err => {
+      setRole('guest');
+    });
+  }
+  
   useEffect(() => {
-    if(isLoading) return;
+    if(!isLoading) return;
 
-    //Iniciar Carregamento
-    setIsLoading(true);
     api.get('companies/all').then(response => {
 
       //Realocar Resposta para UseState
@@ -55,6 +65,8 @@ function Products(){
       //Realocar Token
       const getUserToken = localStorage.getItem('userToken');
       setUserToken(`${getUserToken}`);
+
+      getRoles();
 
       //Finalizar Carregamento
       setIsLoading(false);
@@ -253,7 +265,7 @@ function Products(){
 
   return(
     <div id="page-control-map">
-      <Sidebar />
+      <Sidebar role={role} />
       <main>
         <div className="control-map">
 

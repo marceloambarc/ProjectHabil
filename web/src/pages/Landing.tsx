@@ -27,9 +27,7 @@ function Landing() {
     try {
       const response = await api.post('token',params);
       const userToken = response.data.access_token;
-      const moderator = response.data.role;
 
-      localStorage.setItem('9084100', moderator);
       localStorage.setItem('userToken', userToken);
       history.push("/app",{
         params: {

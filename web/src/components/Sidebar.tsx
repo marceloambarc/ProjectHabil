@@ -7,18 +7,13 @@ import Img from '../images/adaptive-icon.png';
 import '../styles/components/sidebar.css';
 
 interface Moderator {
-  id: number;
-  user: string;
-  role: string;
+  role: any;
 }
 
-export default function Sidebar() {
-  const [isLoading, setIsLoading] = useState(false);
-  const getModerator = localStorage.getItem('9084100');
-  const [moderator] = useState(`${getModerator}`)
+export default function Sidebar({role} : Moderator) {
 
   function renderModeratorsButton(){
-    if('1' === '1'){
+    if(role === 'adm'){
       return(
         <div className="button-block">
           <label>Moderadores</label>

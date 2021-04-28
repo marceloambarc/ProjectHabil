@@ -11,6 +11,7 @@ import '../../styles/pages/companies_buttons.css';
 import '../../styles/pages/table.css';
 
 import { host, port, fromEmail, pass } from '../../services/email.json';
+import { getRoles } from '@testing-library/dom';
 
 
 interface Company {
@@ -36,9 +37,11 @@ function Forgot(){
   const [companies, setCompanies] = useState<Company[]>([]);
   const [active] = useState('1');
   const [userToken, setUserToken] = useState('retrieve from localStorage');
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [role, setRole] = useState('');
 
   //----CARREGAMENTO DE DADOS E LOADING INICIAL DE TELA ----///
+
   function getForgot(){
     api.get('companies/all').then(response => {
 
@@ -49,20 +52,26 @@ function Forgot(){
       const getUserToken = localStorage.getItem('userToken');
       setUserToken(`${getUserToken}`);
 
-      //Finalizar Carregamento
-      setIsLoading(false);
-
     }).catch(err => {
       alert('Ops! Tivemos um Erro.');
     });
   }
 
-  useEffect(() => {
-    if(isLoading) return;
+  async function getRoles(){
+    api.get('admin/tk',{
+      headers: {'Authorization': 'Bearer '+userToken}
+    }).then(res => {
+      setRole(res.data.role);
+    }).catch(err => {
+      setRole('guest');
+    });
+  }
 
-    //Iniciar Carregamento
-    setIsLoading(true);
+  useEffect(() => {
+    if(!isLoading) return;
     getForgot();
+    getRoles();
+    setIsLoading(false);
   }, []);
 
   async function handleSubmitPassword({company}:{company:Company}){
@@ -159,7 +168,7 @@ function Forgot(){
 
   return(
     <div id="page-control-map">
-      <Sidebar />
+      <Sidebar role={role} />
       <main>
         <div className="control-map">
 
