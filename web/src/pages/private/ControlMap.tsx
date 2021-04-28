@@ -71,6 +71,7 @@ function ControlMap(){
       let fileAdapted = file.base64;
       let fileAdaptedRender = fileAdapted.split(`,`).pop();
       setImg1(fileAdaptedRender);
+      console.log(fileAdaptedRender);
       setIsImageLoaded(false);
     })
   }
@@ -91,8 +92,6 @@ function ControlMap(){
   async function handleSendImage1(){
     if(!isImageLoaded){
       setIsLoadingImage(true);
-
-      //CHANGE TO FETCH()
       api.put('backgrounds/9',{
         background_image1: `${img1}`
       },{
@@ -100,9 +99,10 @@ function ControlMap(){
       }).then(res => {
         setIsLoadingImage(false);
         setIsImageLoaded(true);
+        alert('Imagem Alterada com Sucesso!')
       }).catch(err => {
-        alert(err);
         setIsLoadingImage(false);
+        alert('Tivemos um Erro inesperado.');
       });
     }else{
       alert('Altere a Imagem para Fazer Upload.');
@@ -119,7 +119,9 @@ function ControlMap(){
       }).then(res => {
         setIsLoadingImage(false);
         setIsImageLoaded(true);
+        alert('Imagem Alterada com Sucesso!')
       }).catch(err => {
+        setIsLoadingImage(false);
         alert('Tivemos um Erro inesperado.');
       });
     }else{
