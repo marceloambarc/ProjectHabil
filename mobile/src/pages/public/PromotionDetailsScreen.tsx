@@ -84,7 +84,7 @@ export default function PromotionDetailsScreen(){
       Linking.openURL(`mailto:${ companyEmail }?subject=Mensagem vinda do App CompreMaisAki&body=
       Produto: ${ productName };
       Preço sem Desconto: R$ ${ productPrice };
-      Validade da Promoção: Validade;
+      Validade da Promoção: ;
       Desconto: ${ productDiscount } por cento;
 
       Com essa mensagem pelo Aplicativo 

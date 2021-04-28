@@ -34,9 +34,10 @@ interface Company {
 
 //SORT POR ÚLTIMAS CADASTRADAS
 function Forgot(){
+  const getUserToken = localStorage.getItem('userToken');
+  const [userToken] = useState(`${getUserToken}`)
   const [companies, setCompanies] = useState<Company[]>([]);
   const [active] = useState('1');
-  const [userToken, setUserToken] = useState('retrieve from localStorage');
   const [isLoading, setIsLoading] = useState(true);
   const [role, setRole] = useState('');
 
@@ -47,10 +48,6 @@ function Forgot(){
 
       //Realocar Resposta para UseState
       setCompanies(response.data);
-
-      //Realocar Token
-      const getUserToken = localStorage.getItem('userToken');
-      setUserToken(`${getUserToken}`);
 
     }).catch(err => {
       alert('Ops! Tivemos um Erro.');

@@ -43,12 +43,13 @@ interface Validate {
 }
 
 function Products(){
+  const getUserToken = localStorage.getItem('userToken');
+  const [userToken] = useState(`${getUserToken}`)
   const [products, setProducts] = useState<Product[]>([]);
   const [companies, setCompanies] = useState<Company[]>([]);
   const [active, setActive] = useState('0');
   const [validate, setValidate] = useState('');
   const [base] = useState('data:image/png;base64');
-  const [userToken, setUserToken] = useState('retrieve from localStorage');
   const [isLoading, setIsLoading] = useState(true);
   const [role, setRole] = useState('');
 
@@ -82,10 +83,6 @@ function Products(){
       }).catch(err => {
         alert('Ops! Tivemos um erro.');
       });
-
-      //Realocar Token
-      const getUserToken = localStorage.getItem('userToken');
-      setUserToken(`${getUserToken}`);
 
       getRoles();
 

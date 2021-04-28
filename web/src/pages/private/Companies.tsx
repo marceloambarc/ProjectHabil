@@ -32,10 +32,11 @@ Modal.setAppElement('#root')
 
 //SORT POR ÚLTIMAS CADASTRADAS
 function Products(){
+  const getUserToken = localStorage.getItem('userToken');
+  const [userToken] = useState(`${getUserToken}`)
   const [companies, setCompanies] = useState<Company[]>([]);
   const [active, setActive] = useState('0');
   const [base] = useState('data:image/png;base64');
-  const [userToken, setUserToken] = useState('retrieve from localStorage');
   const [isLoading, setIsLoading] = useState(true);
   const [role, setRole] = useState('');
 
@@ -61,10 +62,6 @@ function Products(){
 
       //Realocar Resposta para UseState
       setCompanies(response.data);
-
-      //Realocar Token
-      const getUserToken = localStorage.getItem('userToken');
-      setUserToken(`${getUserToken}`);
 
       getRoles();
 

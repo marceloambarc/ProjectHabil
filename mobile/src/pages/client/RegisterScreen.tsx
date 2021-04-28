@@ -326,7 +326,7 @@ export default function Register(){
         password: password,
         image: base,
         keywords: keywords,
-        is_active: 0
+        is_active: 0,
       },{
           headers: {'Authorization': 'Bearer '+userToken}
       }).then(() => {
