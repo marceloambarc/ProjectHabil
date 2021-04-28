@@ -1,4 +1,5 @@
 import React, { useEffect, useState, createRef } from 'react';
+import Resizer from "react-image-file-resizer";
 
 import Sidebar from '../../components/Sidebar';
 import api from '../../services/api';
@@ -49,7 +50,7 @@ function ControlMap(){
     setIsLoading(false);
   },[]);
   
-    const getBase64 = (file:any) => {
+    /*const getBase64 = (file:any) => {
     return new Promise(resolve => {
       let fileInfo;
       let baseURL:any = "";
@@ -68,35 +69,52 @@ function ControlMap(){
         resolve(baseURL);
       };
       console.log(fileInfo);
+      });
+    }*/
+
+    const resizeFile = (file:any) =>
+    new Promise((resolve) => {
+      Resizer.imageFileResizer(
+        file,
+        300,
+        300,
+        "JPEG",
+        100,
+        0,
+        (uri) => {
+          resolve(uri);
+        },
+        "base64"
+      );
     });
-  }
 
   //TAKE THE FILEINPUT
   async function handleChangeImage1(e:any) {
     e.preventDefault();
     const file = fileInput1.current?.files[0];
-
-    getBase64(file).then(result => {
+    const image = await resizeFile(file);
+    console.log(image);
+    /*getBase64(file).then(result => {
       file["base64"] = result;
       let fileAdapted = file.base64;
       let fileAdaptedRender = fileAdapted.split(`,`).pop();
       setImg1(fileAdaptedRender);
       console.log(fileAdaptedRender);
       setIsImageLoaded(false);
-    })
+    })*/
   }
 
   async function handleChangeImage2(e:any){
     e.preventDefault();
     const file = fileInput2.current?.files[0];
     
-    getBase64(file).then(result => {
+    /*getBase64(file).then(result => {
       file["base64"] = result;
       let fileAdapted = file.base64;
       let fileAdaptedRender = fileAdapted.split(',').pop();
       setImg2(fileAdaptedRender);
       setIsImageLoaded(false);
-    })
+    })*/
   }
 
   async function handleSendImage1(){
