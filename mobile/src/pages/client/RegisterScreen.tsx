@@ -154,6 +154,12 @@ export default function Register(){
     }
 
     if(name.length <= 3){
+      if(name.length > 24){
+        Alert.alert(
+          'Erro',
+          'Nome muito extenso.'
+        )
+      }
       Alert.alert(
         'Erro',
         'Nome Inválido.',
@@ -217,6 +223,12 @@ export default function Register(){
     }
 
     if(address.length < 3){
+      if(address.length > 24){
+        Alert.alert(
+          'Erro',
+          'Endereço muito extenso'
+        );
+      }
       Alert.alert(
         'Erro',
         'Endereço Incorreto.',
@@ -241,6 +253,12 @@ export default function Register(){
     }
 
     if(district.length < 2){
+      if(district.length > 24){
+        Alert.alert(
+          'Erro',
+          'Bairro muito extenso'
+        );
+      }
       Alert.alert(
         'Erro',
         'Bairro Inválido.',
@@ -287,6 +305,12 @@ export default function Register(){
     }
 
     if(keywords.length <= 0){
+      if(keywords.length > 255){
+        Alert.alert(
+          'Erro',
+          'Palavras-chaves muito extensas'
+        );
+      }
       Alert.alert(
         'Erro',
         'Inserir Palavras-Chaves.',

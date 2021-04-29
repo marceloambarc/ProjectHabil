@@ -226,6 +226,7 @@ export default class App extends PureComponent<HandleNextPage> {
       description: item.description,
       date: item.date,
       discount: item.discount,
+      validade: item.validade,
       companyName: companyName,
       companyEmail: companyEmail,
       companyPhone: companyPhone,
@@ -282,7 +283,7 @@ export default class App extends PureComponent<HandleNextPage> {
       <PromotionHeader />
       <CompanyCard />
       <FlatList 
-        style={{ flex: 1, backgroundColor: '#bdc6cf', marginTop: -140, paddingTop: 10, marginBottom: 10}}
+        style={{ flex: 1, backgroundColor: '#bdc6cf', marginTop: Dimensions.get('window').height * -.2, paddingTop: Dimensions.get('window').height * .01, marginBottom: Dimensions.get('window').height * .01}}
         data={this.state.data}
         renderItem={this.renderItem}
         keyExtractor={(_item, index) => index.toString()}

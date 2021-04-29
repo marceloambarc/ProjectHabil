@@ -50,6 +50,7 @@ interface handlePromotionDetailParams {
   discount: any,
   image: any,
   description: any,
+  validade: any,
 
   companyName: any,
   companyEmail: any,
@@ -72,6 +73,7 @@ export default function PromotionDetailsScreen(){
   const productName = params.name;
   const productPrice = params.price;
   const productDiscount = params.discount;
+  const productValidade = params.validade;
   const productImage = params.image;
   const productDescription = params.description;
 
@@ -81,16 +83,28 @@ export default function PromotionDetailsScreen(){
 
   async function handleSendProductEmail(){
     try{
-      Linking.openURL(`mailto:${ companyEmail }?subject=Mensagem vinda do App CompreMaisAki&body=
-      Produto: ${ productName };
-      Preço sem Desconto: R$ ${ productPrice };
-      Validade da Promoção: ;
-      Desconto: ${ productDiscount } por cento;
+      if(productDiscount > 0){
+        Linking.openURL(`mailto:${ companyEmail }?subject=Mensagem vinda do App CompreMaisAki&body=
+        Produto: ${ productName };
+        Preço sem Desconto: R$ ${ productPrice };
+        Validade da Promoção: ${ productValidade };
+        Desconto: ${ productDiscount } por cento;
 
-      Com essa mensagem pelo Aplicativo 
-      CompreMaisAki, 
-      ganhe desconto de: ${ productDiscount } por cento.
-    `)
+        Com essa mensagem pelo Aplicativo 
+        CompreMaisAki, 
+        ganhe desconto de: ${ productDiscount } por cento.
+      `)
+      }else{
+        Linking.openURL(`mailto:${ companyEmail }?subject=Mensagem vinda do App CompreMaisAki&body=
+        Produto: ${ productName };
+        Preço sem Desconto: R$ ${ productPrice };
+        Validade da Promoção: ${ productValidade };
+
+        Com essa mensagem pelo Aplicativo 
+        CompreMaisAki, 
+        ganhe desconto de: ${ productDiscount } por cento.
+      `)
+      }
     }catch(err){
       Alert.alert(
         'Ops!',
@@ -123,6 +137,14 @@ export default function PromotionDetailsScreen(){
     }
   }
 
+  function loadDiscountText(){
+    if(productDiscount < 0){
+      return (
+        <Text style={styles.moreText}>Desconto: { productDiscount }%</Text>
+      );
+    }
+  }
+
   const [modalVisible, setModalVisible] = useState(false);
   return (
     <SafeAreaView style={{flex:1}}>
@@ -132,14 +154,14 @@ export default function PromotionDetailsScreen(){
           <View>
 
           <ImageZoom 
-            cropWidth={350}
-            cropHeight={370}
-            imageWidth={330}
-            imageHeight={350}
+            cropWidth={Dimensions.get('window').width * .8}
+            cropHeight={Dimensions.get('window').width * .9}
+            imageWidth={Dimensions.get('window').width * .8}
+            imageHeight={Dimensions.get('window').width * .9}
           >
             
             <Image
-              style={{width:Dimensions.get('window').width * .8, height:Dimensions.get('window').height * .43, borderRadius: 20}}
+              style={{width:Dimensions.get('screen').width * .8, height:Dimensions.get('window').height * .43, borderRadius: 20}}
               source={{ uri: `data:image/jpeg;base64,${productImage}` }}
             />
             
@@ -147,7 +169,7 @@ export default function PromotionDetailsScreen(){
           </View>
           <ScrollView contentContainerStyle={styles.productDescription}>
             <View style={{flexDirection: 'row', justifyContent: 'space-around'}}>
-              <View style={{flexDirection: 'column', paddingHorizontal: 20}}>
+              <View style={{flexDirection: 'column', paddingHorizontal: Dimensions.get('window').width * 0.05}}>
                   <Text style={styles.productTextPriceTitle}>
                     Preço sem Desconto:
                   </Text>
@@ -156,25 +178,26 @@ export default function PromotionDetailsScreen(){
                   </Text>
                   <Text style={styles.productTextName}>{productName}</Text>
               </View>
-              <View style={{flexDirection: 'column', paddingHorizontal: 20}}>
+              <View style={{flexDirection: 'column', paddingHorizontal: Dimensions.get('window').width * 0.05}}>
                 <TouchableOpacity style={styles.moreContainer} onPress={() => {
                     setModalVisible(true);
                   }}>
                     <View style={styles.moreCol}>
                       <Text style={styles.moreText}>Saiba Mais </Text>
                       <Text style={styles.moreText}>Como Solicitar</Text>
-                      <Text style={styles.moreText}>Desconto: { productDiscount }%</Text>
+                      {loadDiscountText()}
                     </View>
                   </TouchableOpacity>
               </View>
             </View>
             
-            <ScrollView style={{maxHeight: '90%', maxWidth: '90%', marginTop: '16%'}}>
+            <ScrollView style={{height: Dimensions.get('window').height * .20 ,maxWidth: '90%', marginTop: Dimensions.get('window').height * 0.02}}>
               <Text style={styles.productTextDescription}>{productDescription}</Text>
             </ScrollView>
           </ScrollView>
         </View>
-
+        
+        
         {/*TERM MODAL*/}
         <Modal
           animationType="slide"
@@ -186,7 +209,6 @@ export default function PromotionDetailsScreen(){
           <View style={styles.modalView}>
 
             {/* MODAL CONTENT */}
-            <Text style={styles.modalTitle}>Como Solicitar o Desconto</Text>
             <ScrollView style={styles.tcContainer}>
                   
               <Text style={[styles.tcP, {fontSize: 12 + font}]}>
@@ -226,7 +248,8 @@ export default function PromotionDetailsScreen(){
                 </TouchableOpacity>
               </View>
 
-              </ScrollView>
+            </ScrollView>
+            
               <View style={styles.fontbtnRow}>
                 <View style={styles.fontbtnCol}>
                   <TouchableOpacity style={styles.fontBtn} onPress={handleDecreaseFont} >
@@ -354,27 +377,28 @@ const styles = StyleSheet.create({
 
     /*PRODUCT*/
     productDescription: {
-      paddingTop: 2,
-      paddingHorizontal: '2%',
-      maxWidth: '90%',
+      paddingTop: Dimensions.get('window').height * .003,
+      paddingHorizontal: Dimensions.get('window').width * .05,
+      maxWidth: '100%',
       alignItems: 'center'
     },
     productTextPrice: {
-      fontSize: 26,
-      marginBottom: 4,
+      fontSize: Dimensions.get('window').width * 0.06,
       textAlign: 'left'
     },
     productTextPriceTitle: {
-      fontSize: 10,
+      fontSize: Dimensions.get('window').width * 0.04,
       marginBottom: 4,
     },
     productTextName: {
-      fontSize: 26,
-      marginBottom: 4,
+      fontSize: Dimensions.get('window').width * 0.06,
+      marginBottom: Dimensions.get('window').height * 0.001,
     },
     productTextDescription: {
+      backgroundColor: 'green',
       fontSize: 16,
       marginBottom: 4,
+      height: '100%',
       textAlign: 'center'
     },
 
@@ -383,7 +407,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#ff6600',
     alignItems: 'center',
     borderRadius: 7,
-    padding: 7,
+    padding: Dimensions.get('window').height * 0.01,
     marginRight: 30,
   },
   moreCol: {
