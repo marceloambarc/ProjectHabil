@@ -287,6 +287,7 @@ const styles = StyleSheet.create({
     height: 200,
   },
   titleContainer :{
+    borderRadius: 20,
     marginTop: 20,
     alignItems: 'center',
     maxWidth: '65%',

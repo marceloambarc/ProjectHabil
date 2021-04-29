@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View ,Image ,TextInput, ScrollView, StyleSheet, Text } from 'react-native';
+import { View ,Image ,TextInput, ScrollView, StyleSheet, Text, Dimensions } from 'react-native';
 import { useRoute } from '@react-navigation/native';
 
 interface Props {
@@ -47,20 +47,20 @@ export default function SupplierAboutScreen(){
 
           <View style={styles.header}>
             <View style={styles.headerCol1}>
+              <Text>Voltar</Text>
+            </View>
+            <View style={styles.headerCol2}>
               <Image
                 style={styles.cmaLogo}
                 source={require("../../../assets/cmatextlogo.png")}
               />
-            </View>
-            <View>
-              <Text>Voltar</Text>
             </View>
 
         </View>
            
           <Image
             source={{ uri: `data:image/jpeg;base64,${companyImage}` }}
-            style={{width: 250, height: 170, marginBottom: 7, borderRadius: 20}}
+            style={{width: Dimensions.get('window').width * 0.5, height: Dimensions.get('window').height * 0.2, marginBottom: Dimensions.get('window').height * 0.025, borderRadius: 20}}
           />
 
           <TextInput
@@ -162,9 +162,13 @@ const styles = StyleSheet.create({
     padding:10
   },
   header: {
-
+    flexDirection: 'row'
   },
   headerCol1: {
-
+    alignItems: 'flex-start',
+    justifyContent: 'flex-start'
+  },
+  headerCol2: {
+    
   }
 });
