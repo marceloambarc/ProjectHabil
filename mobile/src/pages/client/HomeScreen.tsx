@@ -116,7 +116,7 @@ export default function HomeScreen(){
           <Text style={styles.submitText}>Editar Empresa</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.btnSubmitEdit} onPress={handleChangePassword}>
+        <TouchableOpacity style={styles.btnChange} onPress={handleChangePassword}>
           <Text style={styles.submitText}>Mudar Senha</Text>
         </TouchableOpacity>
 
@@ -197,6 +197,15 @@ const styles = StyleSheet.create({
     alignItems:'center',
     justifyContent: 'center',
     borderRadius: 7,
+    marginBottom: 20,
+  },
+  btnChange: {
+    backgroundColor: '#fa690a',
+    width: '90%',
+    height: 45,
+    alignItems:'center',
+    justifyContent: 'center',
+    borderRadius: 7,
     marginBottom: 40,
   },
   submitText:{
@@ -210,7 +219,7 @@ const styles = StyleSheet.create({
     alignItems:'center',
     justifyContent: 'center',
     borderRadius: 7,
-    marginBottom: 70
+    marginBottom: 50
   },
   btnLogout:{
     backgroundColor: '#f1f1f1',
@@ -233,7 +242,7 @@ const styles = StyleSheet.create({
     alignItems:'center',
     justifyContent: 'center',
     borderRadius: 7,
-    marginBottom: 70
+    marginBottom: 20
   },
   cancelText: {
     color: 'white'

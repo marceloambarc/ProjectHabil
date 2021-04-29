@@ -100,7 +100,6 @@ export default function Login(){
   }
   return (
     <KeyboardAvoidingView
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={styles.background}>
         <View style={styles.containerLogo}>
         <TouchableWithoutFeedback onPress={handleHomeNavigation}>
@@ -124,7 +123,7 @@ export default function Login(){
             onChangeText={setCnpj}
             ref={ref_cnpj}
             returnKeyType='next'
-            onSubmitEditing={() => Keyboard.dismiss()}
+            onSubmitEditing={() => ref_password.current?.focus()}
             />
 
             <TextInput

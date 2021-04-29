@@ -46,41 +46,42 @@ export default function ChangePassword({navigation}:{navigation:any}){
       );
     }
 
-    if(password != confirmNewPassword){
-      Alert.alert(
-        'Ops!',
-        'As Senhas não Coincidem'
-      );
-    }
-
-    api.post('companies/logon',{
-      cnpj: companyCnpj,
-      password: password
-    },{
-      headers: {'Authorization': 'Bearer '+userToken}
-    }).then(res => {
-      api.put(`companies/${companyId}`,{
+    if(newPassword === confirmNewPassword){
+      api.post('companies/logon',{
+        cnpj: companyCnpj,
         password: password
       },{
         headers: {'Authorization': 'Bearer '+userToken}
       }).then(res => {
-        Alert.alert(
-          'Ok',
-          'Senha Alterada com Sucesso!'
-        );
-        navigation.navigate('Home');
+        api.put(`companies/${companyId}`,{
+          password: newPassword,
+          is_active: 1
+        },{
+          headers: {'Authorization': 'Bearer '+userToken} 
+        }).then(res => {
+          Alert.alert(
+            'Ok',
+            'Sua Senha foi Alterada com Sucesso.'
+          )
+          navigation.navigate('Login');
+        }).catch(err => {
+          Alert.alert(
+            'Ops!',
+            'Tivemos Erro ao alterar sua senha, entre em contato com o Suporte.'
+          )
+        })
       }).catch(err => {
         Alert.alert(
           'Ops!',
-          'Tivemos um erro na Alteração da Senha'
-        );
-      });
-    }).catch(err => {
+          'Senha Anterior Inválida'
+        )
+      })
+    }else{
       Alert.alert(
         'Ops!',
-        'Senha Inválida'
-      );
-    })
+        'As Senhas não coincidem'
+      )
+    }
   }
   
   return (
@@ -105,6 +106,7 @@ export default function ChangePassword({navigation}:{navigation:any}){
           value={password}
           onChangeText={setPassword}
           caretHidden={true}
+          secureTextEntry={true}
         />
 
         <TextInput 
@@ -113,6 +115,7 @@ export default function ChangePassword({navigation}:{navigation:any}){
           value={newPassword}
           onChangeText={setNewPassword}
           caretHidden={true}
+          secureTextEntry={true}
         />
 
         <TextInput
@@ -121,6 +124,7 @@ export default function ChangePassword({navigation}:{navigation:any}){
           value={confirmNewPassword}
           onChangeText={setConfirmNewPassword}
           caretHidden={true}
+          secureTextEntry={true}
         />
 
         <TouchableOpacity style={styles.btnSubmit} onPress={handleChangePassword}>
@@ -162,11 +166,11 @@ const styles = StyleSheet.create({
   input: {
     backgroundColor:'#a9acb1',
     width:'90%',
-    marginBottom: 15,
+    marginBottom: 40,
     color:'#222',
     fontSize: 17,
     borderRadius:7,
-    padding:10
+    padding: 10
   },
   newInput: {
     backgroundColor:'#a9acb1',

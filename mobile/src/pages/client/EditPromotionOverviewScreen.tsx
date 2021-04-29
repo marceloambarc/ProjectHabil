@@ -35,9 +35,7 @@ export default function EditPromotionOverviewScreen(){
   const [modalVisible, setModalVisible] = useState(false);
 
   async function handleEditPromotion(){
-    
-    try {
-      await api.put(`products/${productId}`,{
+      api.put(`products/${productId}`,{
         id: productId,
         name: productName,
         price: productPrice,
@@ -58,12 +56,7 @@ export default function EditPromotionOverviewScreen(){
       }).then(() => {
         navigation.navigate('Home');
         alert("Concluído!");
-      })
-    }catch(err){
-      console.log(err);
-      alert(err);
-    }
-
+      });
   }
 
   return(
