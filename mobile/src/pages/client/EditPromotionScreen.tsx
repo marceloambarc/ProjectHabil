@@ -40,7 +40,8 @@ export default function EditProductScreen(){
   const [description, setDescription] = useState(`${editDescription}`);
 
   const [discountPrototype, setDiscountPrototype] = useState(`${editDiscount}`);
-  const discount = +discountPrototype;
+  const discount = parseInt(discountPrototype);
+  const checkIsNan = isNaN(discount);
 
   const [userToken] = useState(`${editUserToken}`);
 
@@ -48,10 +49,58 @@ export default function EditProductScreen(){
   const [base, setBase] = useState(`${editImage}`)
 
   async function handleNextStepProduct() {
-    if(discount < 0 && discount > 100){
+    if(!description){
+      Alert.alert(
+        'Ops!',
+        'Descrição Inválida'
+      );
+    }
+    if(description.length > 100){
+      Alert.alert(
+        'Ops!',
+        'A Descrição não pode ser maior que 100 caracteres'
+      );
+      return;
+    }
+    if(!price){
+      Alert.alert(
+        'Ops!',
+        'É necessário preencher o Valor'
+      );
+      return;
+    }
+    if(price.length > 20){
+      Alert.alert(
+        'Preço',
+        'Valor inválido'
+      );
+      return;
+    }
+    if(!image){
+      Alert.alert(
+        'Image',
+        'Selecione uma Image'
+      );
+      return;
+    }
+    if(discount > 100){
       Alert.alert(
         'Erro',
-        'Disconto Inválido'
+        'Desconto inválido'
+      );
+      return;
+    }
+    if(discount < 0){
+      Alert.alert(
+        'Erro',
+        `${discount}`
+      );
+      return;
+    }
+    if(checkIsNan){
+      Alert.alert(
+        'Erro',
+        'Desconto Inválido'
       );
       return;
     }
