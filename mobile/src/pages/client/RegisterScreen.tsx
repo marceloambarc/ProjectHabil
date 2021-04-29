@@ -92,6 +92,12 @@ export default function Register(){
 
   async function handleCreateCompany() {
     if(password.length <= 3){
+      if(password.length > 24){
+        Alert.alert(
+          'Erro',
+          'Senha não pode ser maior que 24 caracteres'
+        );
+      }
       Alert.alert(
         'Erro',
         'Senha deve ser maior que 3 caracteres'
@@ -127,6 +133,7 @@ export default function Register(){
     }
 
     if(business.length <= 3){
+      if(business.length > 24)
       Alert.alert(
         'Erro',
         'Ramo Inválido.',

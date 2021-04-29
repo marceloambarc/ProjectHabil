@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import { View, Text, SafeAreaView, TouchableOpacity,
-StyleSheet, Image, TouchableWithoutFeedback, FlatList, Linking, Alert } from 'react-native';
+StyleSheet, Image, TouchableWithoutFeedback, FlatList, Linking, Alert, Dimensions } from 'react-native';
 import { Feather, Fontisto, Ionicons, MaterialIcons, Entypo, AntDesign } from '@expo/vector-icons';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { API_URL } from '../../../url.json';
@@ -250,7 +250,7 @@ export default class App extends PureComponent<HandleNextPage> {
       )
     }else{
     return(
-    <TouchableWithoutFeedback onPress={() => {}}>
+    <TouchableWithoutFeedback onPress={() => this.handlePromotionDetail({item})}>
       <View style={styles.listItem}>
         <Image
           source={{uri: `data:image/jpeg;base64,${item.image}`}}
@@ -323,7 +323,7 @@ const styles = StyleSheet.create({
 
   /* COMPANY CARD */
   companyContainer: {
-    paddingTop: 31,
+    paddingTop: Dimensions.get('window').height * .03,
     paddingLeft: 10,
     paddingRight: 10
   },
@@ -334,8 +334,8 @@ const styles = StyleSheet.create({
   companyImage: {
     alignItems: 'center',
     backgroundColor: '#191919',
-    height: 150,
-    width: 250,
+    height: Dimensions.get('window').height * .19,
+    width: Dimensions.get('window').width * .6,
     borderRadius: 20,
   },
   companyName: {

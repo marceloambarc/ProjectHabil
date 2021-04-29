@@ -15,6 +15,7 @@ interface Props {
   district: string,
   city: string,
   uf: string,
+  keywords: string;
   userToken: string,
   navigation: any
 }
@@ -36,6 +37,7 @@ export default function SupplierAboutScreen(){
   const companyDistrict = params.district;
   const companyCity = params.city;
   const companyUf = params.uf;
+  const companyKeywords = params.keywords;
   const userToken = params.userToken;
 
   const [name, setName] = useState(`${companyName}`);
@@ -47,6 +49,7 @@ export default function SupplierAboutScreen(){
   const [district, setDistrict] = useState(`${companyDistrict}`);
   const [city, setCity] = useState(`${companyCity}`);
   const [uf, setUf] = useState(`${companyUf}`);
+  const [keywords, setKeywords] = useState(`${companyKeywords}`)
 
   async function handleConfirmEdit(){
       api.put(`companies/${companyId}`,{
@@ -67,7 +70,10 @@ export default function SupplierAboutScreen(){
         )
         navigation.navigate('Início');
       }).catch(err => {
-        alert(err);
+        Alert.alert(
+          'Ops!',
+          'Erro ao se comunicar com o Servidor, Verifique sua conexão'
+        );
       });
   }
 
@@ -175,6 +181,14 @@ export default function SupplierAboutScreen(){
           autoCorrect={false}
           value={uf}
           onChangeText={setUf}
+          />
+
+          <TextInput
+          style={styles.input}
+          placeholder="Palavras-Chaves"
+          autoCorrect={false}
+          value={keywords}
+          onChangeText={setKeywords}
           />
         </View>
 

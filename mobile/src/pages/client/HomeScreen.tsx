@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Text, Image, StyleSheet, TouchableOpacity, Alert } from 'react-native';
+import { View, Text, Image, StyleSheet, TouchableOpacity, Alert, Dimensions } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import Constants from "expo-constants";
 import api from '../../services/api';
@@ -41,6 +41,7 @@ export default function HomeScreen(){
         district: res.data.district,
         city: res.data.city,
         uf: res.data.uf,
+        keywords: res.data.keywords,
         userToken: userToken
       })
     }).catch(err => {
@@ -153,15 +154,15 @@ const styles = StyleSheet.create({
     flex:1,
     alignItems:'center',
     justifyContent:'center',
-    height: Constants.statusBarHeight + 40
+    height: Constants.statusBarHeight + 20
   },
   companyImageContainer:{
     flex:1,
     justifyContent:'center',
   },
   companyImage: {
-    width: 160,
-    height: 160,
+    width: Dimensions.get('window').width * .47,
+    height: Dimensions.get('window').height * .20,
     borderRadius: 20,
     marginBottom: 32,
   },

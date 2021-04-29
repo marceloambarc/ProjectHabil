@@ -3,7 +3,7 @@ import { useNavigation } from '@react-navigation/native';
 import { SearchBar } from 'react-native-elements';
 import { Feather, AntDesign } from '@expo/vector-icons';
 import { View, Text, ImageBackground, TouchableOpacity, Image,
-  StyleSheet, TouchableWithoutFeedback, SafeAreaView, ActivityIndicator, Alert, FlatList } from 'react-native';
+  StyleSheet, TouchableWithoutFeedback, SafeAreaView, ActivityIndicator, Alert, FlatList, Touchable } from 'react-native';
 
 import { API_URL } from '../../../url.json';
 
@@ -214,11 +214,11 @@ export default class App extends PureComponent<Props> {
   renderPromo = ({item}:{item:any}) => {
     if(item.item) {
       return (
-        <View style={styles.isPromoContainer}>
+        <TouchableOpacity style={styles.isPromoContainer} onPress={() => this.handleGoToPromotion({item})}>
           <View style={styles.isPromoRow}>  
             <Text style={styles.isPromoText}>Temos Promoções</Text><Feather name="percent" size={24} color="#FFF" />
           </View>
-        </View>
+        </TouchableOpacity>
       );
     }else{
       return;
@@ -238,9 +238,9 @@ export default class App extends PureComponent<Props> {
     <TouchableWithoutFeedback onPress={() => this.handleGoToPromotion({item})}>
       <ImageBackground source={{uri: `data:image/jpeg;base64,${item.image}`}} style={styles.imageBackground}>
         { this.renderPromo({item}) }
-        <View style={styles.titleContainer}>
+        <TouchableOpacity style={styles.titleContainer} onPress={() => this.handleGoToPromotion({item})}>
           <Text style={styles.titleText}>{item.name}</Text>
-        </View>
+        </TouchableOpacity>
       </ImageBackground>
     </TouchableWithoutFeedback>
   );

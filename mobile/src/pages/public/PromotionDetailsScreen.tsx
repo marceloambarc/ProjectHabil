@@ -139,7 +139,7 @@ export default function PromotionDetailsScreen(){
           >
             
             <Image
-              style={{width:'100%', height: '100%', borderRadius: 20}}
+              style={{width:Dimensions.get('window').width * .8, height:Dimensions.get('window').height * .43, borderRadius: 20}}
               source={{ uri: `data:image/jpeg;base64,${productImage}` }}
             />
             
@@ -426,7 +426,7 @@ const styles = StyleSheet.create({
 
   tcP:{
     marginTop: 10,
-    marginBottom: 10,
+    marginBottom: 7,
   },
   tcL:{
     marginLeft:10,
@@ -457,7 +457,8 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingRight: 20,
     paddingLeft: 20,
-    marginTop: 20
+    marginTop: 20,
+    paddingBottom: 10
   },
   btnSupplierContact:{
     borderRadius: 40,
@@ -486,7 +487,7 @@ const styles = StyleSheet.create({
   fontbtnRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingBottom: 5
+    paddingBottom: 10,
   },
   fontbtnCol: {
     width: '50%',

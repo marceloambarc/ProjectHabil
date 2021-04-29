@@ -1,6 +1,6 @@
 import React from 'react';
 import { SafeAreaView, View, Text, Image, TouchableOpacity,
-TouchableWithoutFeedback, Linking, StyleSheet } from 'react-native';
+TouchableWithoutFeedback, Linking, StyleSheet, Dimensions } from 'react-native';
 import { Feather, Ionicons, Entypo } from '@expo/vector-icons';
 
 
@@ -107,7 +107,7 @@ const styles = StyleSheet.create({
   },
   visitText: {
     marginTop: 70,
-    fontSize: 25,
+    fontSize: Dimensions.get('window').width * .053,
     color: 'black'
   },
   habilContactRow: {

@@ -30,6 +30,34 @@ export default function NewPromotionScreen(){
   const userToken = params.userToken;
 
   async function handleNextStepProduct() {
+    if(description.length > 100 && description.length < 0){
+      Alert.alert(
+        'Ops!',
+        'A Descrição não pode ser maior que 100 caracteres'
+      );
+      return;
+    }
+    if(!price){
+      Alert.alert(
+        'Ops!',
+        'É necessário preencher o Valor'
+      );
+      return;
+    }
+    if(price.length > 20){
+      Alert.alert(
+        'Preço',
+        'Valor inválido'
+      );
+      return;
+    }
+    if(!image){
+      Alert.alert(
+        'Image',
+        'Selecione uma Image'
+      );
+      return;
+    }
     navigation.navigate('NewPromotionOverview', {
       name,
       price,

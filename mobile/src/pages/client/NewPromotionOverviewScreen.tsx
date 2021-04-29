@@ -70,10 +70,16 @@ export default function NewPromotionOverviewScreen(){
           'Registro Enviado! Aguarde confirmação do Administrador.',
         );
       }).catch(err => {
-        alert(err);
+        Alert.alert(
+          'Ops!',
+          'Erro ao Cadastrar sua Promoção, Entre em contato com o Suporte.'
+        )
       })
     }catch(err){
-      alert(err);
+      Alert.alert(
+        'Ops!',
+        'Tivemos Erro ao acessar o Servidor, Verifique sua Conexão',
+      );
     }
   }
 
@@ -93,7 +99,6 @@ export default function NewPromotionOverviewScreen(){
             <Text style={styles.productTitle}>Valor: R$ {productPrice}</Text>
           </View>
           <Text style={styles.productText}>Descrição: {productDescription}</Text>
-          <Text style={styles.productText}>Validade: {productValidate} </Text>
           <Text style={styles.productText}>Desconto: {productDiscount}% </Text>
         </View>
 
