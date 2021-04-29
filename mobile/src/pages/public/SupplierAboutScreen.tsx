@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View ,Image ,TextInput, ScrollView, StyleSheet } from 'react-native';
+import { View ,Image ,TextInput, ScrollView, StyleSheet, Text } from 'react-native';
 import { useRoute } from '@react-navigation/native';
 
 interface Props {
@@ -44,10 +44,20 @@ export default function SupplierAboutScreen(){
     <ScrollView>
       <View style={styles.background}>
         <View style={styles.container}>
-          <Image
-              style={styles.cmaLogo}
-              source={require("../../../assets/cmatextlogo.png")}
-            />
+
+          <View style={styles.header}>
+            <View style={styles.headerCol1}>
+              <Image
+                style={styles.cmaLogo}
+                source={require("../../../assets/cmatextlogo.png")}
+              />
+            </View>
+            <View>
+              <Text>Voltar</Text>
+            </View>
+
+        </View>
+           
           <Image
             source={{ uri: `data:image/jpeg;base64,${companyImage}` }}
             style={{width: 250, height: 170, marginBottom: 7, borderRadius: 20}}
@@ -151,4 +161,10 @@ const styles = StyleSheet.create({
     borderRadius:7,
     padding:10
   },
+  header: {
+
+  },
+  headerCol1: {
+
+  }
 });

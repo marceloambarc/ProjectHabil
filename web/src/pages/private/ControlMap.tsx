@@ -54,8 +54,8 @@ function ControlMap(){
     new Promise((resolve:any) => {
       Resizer.imageFileResizer(
         file,
-        300,
-        300,
+        150,
+        150,
         "PNG",
         100,
         0,
@@ -88,6 +88,7 @@ function ControlMap(){
     setIsLoadingImage(true);
     const image = await resizeFile(file);
     const fileAdaptedRender = String(image).split(',').pop();
+    console.log(fileAdaptedRender);
     setImg2(fileAdaptedRender? fileAdaptedRender: '');
     
     setIsLoadingImage(false);

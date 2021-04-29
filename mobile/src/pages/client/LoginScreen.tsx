@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 
 import { View, Text, StyleSheet, KeyboardAvoidingView,
 TextInput, TouchableOpacity, Animated, ActivityIndicator, Alert, 
-Keyboard, TouchableWithoutFeedback, Platform } from 'react-native';
+Keyboard, TouchableWithoutFeedback, Platform, Dimensions } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { TextInputMask } from 'react-native-masked-text';
 
@@ -47,7 +47,7 @@ export default function Login(){
   let ref_password = React.useRef<TextInput>(null);
 
   const navigation = useNavigation();
-  const [logo] = useState(new Animated.ValueXY({ x: 90, y: 90 }));
+  const [logo] = useState(new Animated.ValueXY({ x: 100, y: 100 }));
 
   async function handleAccess(){
     if(!cnpj || !password){
@@ -108,7 +108,7 @@ export default function Login(){
             width: logo.x,
             height: logo.y
           }}
-          source={require('../../../assets/adaptive-icon.png')}
+          source={require('../../../assets/icon.png')}
             />
             </TouchableWithoutFeedback>
         </View>
@@ -170,7 +170,7 @@ const styles = StyleSheet.create({
     alignItems:'center',
     justifyContent:'center',
     width: '90%',
-    paddingTop: 50
+    paddingTop: Dimensions.get('window').height * 0.025
   },
   input:{
     backgroundColor:'#a9acb1',

@@ -164,19 +164,19 @@ const styles = StyleSheet.create({
     width: Dimensions.get('window').width * .47,
     height: Dimensions.get('window').height * .20,
     borderRadius: 20,
-    marginBottom: 32,
+    marginBottom: Dimensions.get('window').height * 0.01,
   },
   container:{
     flex:1,
     alignItems:'center',
     justifyContent:'center',
     width: '90%',
-    paddingTop: 20
+    paddingTop: Dimensions.get('window').height * 0.01
   },
   title:{
-    fontSize: 20,
+    fontSize: Dimensions.get('window').height * 0.025,
     color: '#FFF',
-    marginTop: 20
+    marginTop: Dimensions.get('window').height * 0.023
   },
   containerLogo:{
     flex:1,
@@ -185,7 +185,7 @@ const styles = StyleSheet.create({
   btnSubmit:{
     backgroundColor: '#35AAFF',
     width: '90%',
-    height: 45,
+    height: Dimensions.get('window').height * 0.062,
     alignItems:'center',
     justifyContent: 'center',
     borderRadius: 7,
@@ -194,20 +194,20 @@ const styles = StyleSheet.create({
   btnSubmitEdit:{
     backgroundColor: '#35AAFF',
     width: '90%',
-    height: 45,
+    height: Dimensions.get('window').height * 0.062,
     alignItems:'center',
     justifyContent: 'center',
     borderRadius: 7,
-    marginBottom: 20,
+    marginBottom: Dimensions.get('window').height * 0.025,
   },
   btnChange: {
     backgroundColor: '#fa690a',
     width: '90%',
-    height: 45,
+    height: Dimensions.get('window').height * 0.062,
     alignItems:'center',
     justifyContent: 'center',
     borderRadius: 7,
-    marginBottom: 40,
+    marginBottom: Dimensions.get('window').height * 0.027,
   },
   submitText:{
     color: '#FFF',
@@ -216,20 +216,20 @@ const styles = StyleSheet.create({
   btnNew:{
     backgroundColor: '#52D984',
     width: '90%',
-    height: 45,
+    height: Dimensions.get('window').height * 0.062,
     alignItems:'center',
     justifyContent: 'center',
     borderRadius: 7,
-    marginBottom: 50
+    marginBottom: Dimensions.get('window').height * 0.045
   },
   btnLogout:{
     backgroundColor: '#f1f1f1',
     width: '70%',
-    height: 45,
+    height: Dimensions.get('window').height * 0.062,
     alignItems:'center',
     justifyContent: 'center',
     borderRadius: 7,
-    marginBottom: 40
+    marginBottom: Dimensions.get('window').height * 0.022
   },
   outText:{
     color: '#191919'
@@ -239,7 +239,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fa690a',
     color: 'white',
     width: '40%',
-    height: 45,
+    height: Dimensions.get('window').height * 0.062,
     alignItems:'center',
     justifyContent: 'center',
     borderRadius: 7,

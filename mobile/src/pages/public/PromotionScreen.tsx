@@ -283,7 +283,7 @@ export default class App extends PureComponent<HandleNextPage> {
       <PromotionHeader />
       <CompanyCard />
       <FlatList 
-        style={{ flex: 1, backgroundColor: '#bdc6cf', marginTop: Dimensions.get('window').height * -.2, paddingTop: Dimensions.get('window').height * .01, marginBottom: Dimensions.get('window').height * .01}}
+        style={{ flex: 1, backgroundColor: '#bdc6cf', marginTop: Dimensions.get('window').height * -.16, paddingTop: Dimensions.get('window').height * .01, marginBottom: Dimensions.get('window').height * .001}}
         data={this.state.data}
         renderItem={this.renderItem}
         keyExtractor={(_item, index) => index.toString()}
@@ -324,7 +324,7 @@ const styles = StyleSheet.create({
 
   /* COMPANY CARD */
   companyContainer: {
-    paddingTop: Dimensions.get('window').height * .03,
+    paddingTop: Dimensions.get('window').height * .02,
     paddingLeft: 10,
     paddingRight: 10
   },
@@ -402,8 +402,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#F7F7F7',
   },
   listItem:{
-    margin: 2,
-    padding: 7,
+    margin: Dimensions.get('window').height * 0.003,
+    padding: Dimensions.get('window').height * 0.01,
     backgroundColor:'#FFF',
     width:'90%',
     flex:1,
