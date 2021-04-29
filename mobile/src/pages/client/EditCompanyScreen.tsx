@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Text, View ,Image ,TextInput, ScrollView, StyleSheet, TouchableOpacity, Alert } from 'react-native';
 import { useRoute, useNavigation } from '@react-navigation/native';
+import { TextInputMask } from 'react-native-masked-text';
 import api from '../../services/api';
 
 interface Props {
@@ -60,7 +61,8 @@ export default function SupplierAboutScreen(){
         address,
         district,
         city,
-        uf
+        uf,
+        keywords
       },{
         headers: {'Authorization': 'Bearer '+userToken}
       }).then(() => {
@@ -78,6 +80,110 @@ export default function SupplierAboutScreen(){
   }
 
   async function handleSubmitEdit(){
+    if(!name){
+      Alert.alert(
+        'Erro',
+        'Nome Inválido'
+      );
+      return;
+    }
+    if(name.length > 25){
+      Alert.alert(
+        'Ops!',
+        'Nome Muito extenso'
+      );
+      return;
+    }
+    if(!business && business.length > 100){
+      Alert.alert(
+        'Erro',
+        'Ramo Inválido'
+      );
+      return;
+    }
+    if(!phone && phone.length < 13){
+      Alert.alert(
+        'Erro',
+        'Telefone Inválido'
+      );
+      return;
+    }
+    if(!email && email.length < 7 && email.length > 50){
+      Alert.alert(
+        'Erro',
+        'E-mail inválido'
+      );
+      return;
+    }
+    if(address.length < 3){
+      if(address.length > 24){
+        Alert.alert(
+          'Erro',
+          'Endereço muito extenso'
+        );
+      }
+      Alert.alert(
+        'Erro',
+        'Endereço Incorreto.',
+      );
+      return;
+    }else if(address === undefined){
+      Alert.alert(
+        'Erro',
+        'Endereço Incorreto.',
+      );
+      return;
+    }
+    if(district.length < 2){
+      if(district.length > 24){
+        Alert.alert(
+          'Erro',
+          'Bairro muito extenso'
+        );
+      }
+      Alert.alert(
+        'Erro',
+        'Bairro Inválido.',
+      );
+      return;
+    }else if(district === undefined){
+      Alert.alert(
+        'Erro',
+        'Bairro Inválido.',
+      );
+      return;
+    }else if(city.length < 3){
+      Alert.alert(
+        'Erro',
+        'Cidade Incorreta.',
+      );
+      return;
+    }else if(uf.length < 2){
+      Alert.alert(
+        'Erro',
+        'Unidade Federal Incorreta.',
+      );
+      return;
+    }
+    if(keywords.length <= 0){
+      if(keywords.length > 255){
+        Alert.alert(
+          'Erro',
+          'Palavras-chaves muito extensas'
+        );
+      }
+      Alert.alert(
+        'Erro',
+        'Inserir Palavras-Chaves.',
+      );
+      return;
+    }else if(keywords === undefined){
+      Alert.alert(
+        'Erro',
+        'Inserir Palavras-Chaves Válidas',
+      );
+      return;
+    }
     Alert.alert(
       'Editar Empresa',
       'Você realmente deseja editar os Dados? Ao confirmar deverá aguardar a aprovação do Administrador.',
@@ -135,12 +241,18 @@ export default function SupplierAboutScreen(){
           onChangeText={setBusiness}
           />
 
-          <TextInput
+          <TextInputMask
+          type={'cel-phone'}
+          options={{
+            maskType: 'BRL',
+            withDDD: true,
+          }}
           style={styles.input}
-          placeholder="Telefone"
+          placeholder="Adicionar Telefone"
           autoCorrect={false}
           value={phone}
           onChangeText={setPhone}
+          returnKeyType='next'
           />
 
           <TextInput

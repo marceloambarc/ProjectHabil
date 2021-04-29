@@ -16,7 +16,7 @@ interface NewPromotionParams {
 export default function NewPromotionScreen(){
   const [name, setName] = useState('');
   const [price, setPrice] = useState('');
-  const [discount, setDiscount] = useState('');
+  const [discountPrototype, setDiscountPrototype] = useState('');
   const [description, setDescription] = useState('');
 
   const [base, setBase] = useState('');
@@ -28,9 +28,18 @@ export default function NewPromotionScreen(){
 
   const company_id = params.companyId;
   const userToken = params.userToken;
+  const discount = parseInt(discountPrototype);
+
+  const checkIsNan = isNaN(discount);
 
   async function handleNextStepProduct() {
-    if(description.length > 100 && description.length < 0){
+    if(!description){
+      Alert.alert(
+        'Ops!',
+        'Descrição Inválida'
+      );
+    }
+    if(description.length > 100){
       Alert.alert(
         'Ops!',
         'A Descrição não pode ser maior que 100 caracteres'
@@ -55,6 +64,27 @@ export default function NewPromotionScreen(){
       Alert.alert(
         'Image',
         'Selecione uma Image'
+      );
+      return;
+    }
+    if(discount > 100){
+      Alert.alert(
+        'Erro',
+        'Desconto inválido'
+      );
+      return;
+    }
+    if(discount < 0){
+      Alert.alert(
+        'Erro',
+        `${discount}`
+      );
+      return;
+    }
+    if(checkIsNan){
+      Alert.alert(
+        'Erro',
+        'Desconto Inválido'
       );
       return;
     }
@@ -172,7 +202,7 @@ export default function NewPromotionScreen(){
           keyboardType="number-pad"
           placeholder={"Desconto"}
           autoCorrect={false}
-          onChangeText={setDiscount}
+          onChangeText={setDiscountPrototype}
         />
 
         <TextInput

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, SafeAreaView, StyleSheet, Image, TouchableOpacity,
 ScrollView, Modal, Dimensions, Linking, Alert } from 'react-native';
 import { Feather, Fontisto, Ionicons, AntDesign } from '@expo/vector-icons';
@@ -58,14 +58,9 @@ interface handlePromotionDetailParams {
 }
 
 export default function PromotionDetailsScreen(){
+  const [isLoading, setIsLoading] = useState(true);
   const [font, setFont] = useState(0);
-  async function handleIncreaseFont(){
-    setFont(7);
-  }
-
-  async function handleDecreaseFont(){
-    setFont(-1);
-  }
+  const [isDiscount, setIsDiscount] = useState('');
 
   const route = useRoute();
   const params = route.params as handlePromotionDetailParams;
@@ -80,6 +75,26 @@ export default function PromotionDetailsScreen(){
   const companyName = params.companyName;
   const companyEmail = params.companyEmail;
   const companyPhone = params.companyPhone;
+
+  async function getIsDiscount(){
+    if(productDiscount > 0){
+      setIsDiscount('o Desconto');
+    } 
+  }
+
+  useEffect(() => {
+    if(!isLoading) return;
+    getIsDiscount();
+    setIsLoading(false);
+  },[])
+
+  async function handleIncreaseFont(){
+    setFont(7);
+  }
+
+  async function handleDecreaseFont(){
+    setFont(-1);
+  }
 
   async function handleSendProductEmail(){
     try{
@@ -138,7 +153,7 @@ export default function PromotionDetailsScreen(){
   }
 
   function loadDiscountText(){
-    if(productDiscount < 0){
+    if(productDiscount > 0){
       return (
         <Text style={styles.moreText}>Desconto: { productDiscount }%</Text>
       );
@@ -208,6 +223,22 @@ export default function PromotionDetailsScreen(){
             
           <View style={styles.modalView}>
 
+            <Text style={styles.modalTitle}>Como Solicitar {isDiscount}</Text>
+                  
+            <View style={styles.btnRow}>
+              <TouchableOpacity style={styles.btnSupplierContact} onPress={handleSendProductEmail}>
+                <Fontisto name="email" size={25} color="#FFF" />
+              </TouchableOpacity>
+
+              <TouchableOpacity style={styles.btnSupplierContact1} onPress={handleCallProduct}>
+                <Feather name="phone-call" size={27} color="#FFF" />
+              </TouchableOpacity>
+
+              <TouchableOpacity style={styles.btnSupplierContact4} onPress={handleSendProductWhatsapp}>
+                <Ionicons name="logo-whatsapp" size={25} color="#FFF" />
+              </TouchableOpacity>
+            </View>
+
             {/* MODAL CONTENT */}
             <ScrollView style={styles.tcContainer}>
                   
@@ -233,20 +264,6 @@ export default function PromotionDetailsScreen(){
                   ao e-mail 
                   do fornecedor e a negociação será feita diretamente por e-mail.
               </Text>
-
-              <View style={styles.btnRow}>
-                <TouchableOpacity style={styles.btnSupplierContact} onPress={handleSendProductEmail}>
-                  <Fontisto name="email" size={25} color="#FFF" />
-                </TouchableOpacity>
-
-                <TouchableOpacity style={styles.btnSupplierContact1} onPress={handleCallProduct}>
-                  <Feather name="phone-call" size={27} color="#FFF" />
-                </TouchableOpacity>
-
-                <TouchableOpacity style={styles.btnSupplierContact4} onPress={handleSendProductWhatsapp}>
-                  <Ionicons name="logo-whatsapp" size={25} color="#FFF" />
-                </TouchableOpacity>
-              </View>
 
             </ScrollView>
             
@@ -395,7 +412,7 @@ const styles = StyleSheet.create({
       marginBottom: Dimensions.get('window').height * 0.001,
     },
     productTextDescription: {
-      backgroundColor: 'green',
+      marginTop: Dimensions.get('window').height * 0.01,
       fontSize: 16,
       marginBottom: 4,
       height: '100%',
@@ -478,9 +495,7 @@ const styles = StyleSheet.create({
   /*MODAL BUTTONS */
   btnRow: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    paddingRight: 20,
-    paddingLeft: 20,
+    justifyContent: 'space-around',
     marginTop: 20,
     paddingBottom: 10
   },
@@ -490,7 +505,8 @@ const styles = StyleSheet.create({
     width: '30%',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#cb4113'
+    backgroundColor: '#cb4113',
+    paddingHorizontal: 20
   },
   btnSupplierContact1:{
     borderRadius: 40,
@@ -498,7 +514,8 @@ const styles = StyleSheet.create({
     width: '30%',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#099463'
+    backgroundColor: '#099463',
+    paddingHorizontal: 20
   },
   btnSupplierContact4:{
     borderRadius: 40,
@@ -506,7 +523,8 @@ const styles = StyleSheet.create({
     width: '30%',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#25d366'
+    backgroundColor: '#25d366',
+    paddingHorizontal: 20
   },
   fontbtnRow: {
     flexDirection: 'row',

@@ -2,7 +2,7 @@ import * as React from 'react';
 import { useState } from 'react';
 import { View, Text, TextInput, 
 TouchableOpacity, StyleSheet, ScrollView, Image,
-TouchableWithoutFeedback} from 'react-native';
+TouchableWithoutFeedback, Alert} from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { Feather, Ionicons } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
@@ -34,17 +34,27 @@ export default function EditProductScreen(){
 
   const company_id = params.company_id;
 
-  const [id, setId] = useState(`${editId}`);
+  const [id] = useState(`${editId}`);
   const [name, setName] = useState(`${editName}`);
   const [price, setPrice] = useState(`${editPrice}`);
   const [description, setDescription] = useState(`${editDescription}`);
-  const [discount, setDiscount] = useState(`${editDiscount}`);
-  const [userToken, setUserToken] = useState(`${editUserToken}`);
+
+  const [discountPrototype, setDiscountPrototype] = useState(`${editDiscount}`);
+  const discount = +discountPrototype;
+
+  const [userToken] = useState(`${editUserToken}`);
 
   const [image, setImage] = useState('');
   const [base, setBase] = useState(`${editImage}`)
 
   async function handleNextStepProduct() {
+    if(discount < 0 && discount > 100){
+      Alert.alert(
+        'Erro',
+        'Disconto Inválido'
+      );
+      return;
+    }
     navigation.navigate('EditPromotionOverview', {
       id,
       name,
@@ -175,8 +185,8 @@ async function handleTakePicture() {
           placeholder={"Desconto"}
           keyboardType='number-pad'
           autoCorrect={false}
-          value={discount}
-          onChangeText={setDiscount}
+          value={discountPrototype}
+          onChangeText={setDiscountPrototype}
         />
 
           <View style={styles.uploadedImagesContainer}>
