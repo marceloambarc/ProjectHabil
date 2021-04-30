@@ -405,7 +405,7 @@ export default function Register(){
 
     const result = await ImagePicker.launchImageLibraryAsync({
       allowsEditing: true,
-      quality: 0.5,
+      quality: 0.3,
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
     });
 
@@ -417,7 +417,7 @@ export default function Register(){
 
       const manipulatedImage = await ImageManipulator.manipulateAsync(
         image,
-        [{ resize: {width: 251,height: 251} }],
+        [{ resize: {width: 200,height: 200} }],
         { compress: 1, base64: true }
       );
 

@@ -40,7 +40,7 @@ function PromotionHeader() {
             source={require("../../../assets/cmatextlogo.png")}
           />
           <TouchableOpacity style={styles.homeButton} onPress={() => navigation.navigate('Welcome')}>
-            <Ionicons name="home-outline" size={24} color="black" />
+            <Feather name="home" size={24} color="black" />
           </TouchableOpacity>
           <TouchableOpacity onPress={() => navigation.navigate('Supplier')}>
             <AntDesign style={styles.icon} name="back" size={24} color="#191919" />
@@ -196,17 +196,23 @@ export default class App extends PureComponent<HandleNextPage> {
 
     this.setState({ loading: true });
     const response = await fetch(`${baseURL}/${companyId}`);
-    if(response.ok) {
+
+    if(response.ok){
       const repositories = await response.json();
-      
+
       this.setState({
         data: [...this.state.data, ...repositories],
-        loading: false,
-      })
-
-    }else{
+        loading: false
+      });
       return;
     }
+    if(!response.ok){
+      this.setState({
+        loading: false
+      });
+      return;
+    }
+    return;
   }
 
   handlePromotionDetail = async({item}:{item:any}) => {
@@ -237,27 +243,24 @@ export default class App extends PureComponent<HandleNextPage> {
   renderEmpty = () => {
     if(this.state.loading){
       return(
-        <View>
+        <View style={styles.loading}>
           <Text style={{textAlign: 'center'}}>
             <Entypo name="dots-three-horizontal" size={24} color="#ff6600" />
           </Text>
         </View>
-      );
+      )
     }else{
       return (
-        <View style={styles.notFoundContainer}>
-          <Text style={styles.notFoundTxt}>Nenhum Produto Encontrado...</Text>
+        <View style={styles.loading}>
+          <View style={styles.notFoundContainer}>
+            <Text style={styles.notFoundTxt}>Nenhuma Promoção Ativa...</Text>
+          </View>
         </View>
       );
     }
   }
 
   renderItem = ({ item }:{ item:any }) => {
-    if(item.is_active === 0){
-      return (
-        <View style={styles.listItem} />
-      )
-    }else{
     return(
     <TouchableWithoutFeedback onPress={() => this.handlePromotionDetail({item})}>
       <View style={styles.listItem}>
@@ -282,7 +285,6 @@ export default class App extends PureComponent<HandleNextPage> {
       </View> 
     </TouchableWithoutFeedback>
     )
-  }
 }
 
   render() {
@@ -350,19 +352,19 @@ const styles = StyleSheet.create({
   companyName: {
     alignItems: 'center',
     justifyContent: 'center',
-    fontSize: 20,
+    textAlign: 'center',
+    fontSize: Dimensions.get('window').height * 0.024,
     fontWeight: '600',
     color: '#017895'
   },
   btnRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingRight: 40,
-    paddingLeft: 40,
+    paddingHorizontal: Dimensions.get('window').width * 0.10,
   },
   btnSupplierContact:{
     borderRadius: 40,
-    height: 40,
+    height: Dimensions.get('window').height * 0.053,
     width: '17%',
     justifyContent: 'center',
     alignItems: 'center',
@@ -370,7 +372,7 @@ const styles = StyleSheet.create({
   },
   btnSupplierContact1:{
     borderRadius: 40,
-    height: 40,
+    height: Dimensions.get('window').height * 0.053,
     width: '17%',
     justifyContent: 'center',
     alignItems: 'center',
@@ -378,7 +380,7 @@ const styles = StyleSheet.create({
   },
   btnSupplierContact2:{
     borderRadius: 40,
-    height: 40,
+    height: Dimensions.get('window').height * 0.053,
     width: '17%',
     justifyContent: 'center',
     alignItems: 'center',
@@ -386,7 +388,7 @@ const styles = StyleSheet.create({
   },
   btnSupplierContact3:{
     borderRadius: 40,
-    height: 40,
+    height: Dimensions.get('window').height * 0.053,
     width: '17%',
     justifyContent: 'center',
     alignItems: 'center',
@@ -394,7 +396,7 @@ const styles = StyleSheet.create({
   },
   btnSupplierContact4:{
     borderRadius: 40,
-    height: 40,
+    height: Dimensions.get('window').height * 0.053,
     width: '17%',
     justifyContent: 'center',
     alignItems: 'center',
@@ -432,7 +434,7 @@ const styles = StyleSheet.create({
   contentText:{
     fontWeight:'bold',
     marginLeft: 7,
-    textAlign: 'center'
+    textAlign: 'center',
   },
   moreContainer: {
     backgroundColor: '#017895',
@@ -480,12 +482,6 @@ const styles = StyleSheet.create({
     color: '#FFF',
     fontWeight: 'bold'
   },
-  
-    /* FOOTER */
-  loading: {
-    alignSelf: 'center',
-    marginVertical: 20,
-  },
 
   /* FOUND BANNER */
   foundContainer: {
@@ -499,19 +495,25 @@ const styles = StyleSheet.create({
     paddingRight: '20%',
     paddingTop: 2
   },
+
+  /*FOOTER*/
+  loading: {
+    alignSelf: 'center',
+    marginVertical: 20,
+  },
   notFoundContainer: {
     backgroundColor: '#fa690a',
-    height: Dimensions.get('window').height * 0.025,
+    height: Dimensions.get('window').height * 0.034,
     justifyContent: 'center',
     alignItems: 'center',
     width: '70%',
     marginTop: '10%',
+    borderRadius: 10
   },
   notFoundTxt: {
     color: 'white',
     justifyContent: 'center',
     alignItems: 'center',
     paddingHorizontal: Dimensions.get('window').width * 0.025,
-    borderRadius: 5
   }
 });

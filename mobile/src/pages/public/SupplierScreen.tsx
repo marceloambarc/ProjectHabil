@@ -399,6 +399,7 @@ const styles = StyleSheet.create({
       alignItems: 'center',
       width: '70%',
       marginTop: '10%',
+      borderRadius: 10
     },
     notFoundTxt: {
       color: 'white',

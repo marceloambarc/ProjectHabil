@@ -97,35 +97,26 @@ export default function PromotionDetailsScreen(){
   }
 
   async function handleSendProductEmail(){
-    try{
-      if(productDiscount > 0){
+    if(productDiscount > 0){
         Linking.openURL(`mailto:${ companyEmail }?subject=Mensagem vinda do App CompreMaisAki&body=
         Produto: ${ productName };
         Preço sem Desconto: R$ ${ productPrice };
         Validade da Promoção: ${ productValidade };
-        Desconto: ${ productDiscount } por cento;
+        Desconto: ${ productDiscount }%;
 
         Com essa mensagem pelo Aplicativo 
         CompreMaisAki, 
         ganhe desconto de: ${ productDiscount } por cento.
-      `)
-      }else{
+        `);
+        return;
+    }else{
         Linking.openURL(`mailto:${ companyEmail }?subject=Mensagem vinda do App CompreMaisAki&body=
         Produto: ${ productName };
-        Preço sem Desconto: R$ ${ productPrice };
+        Preço: R$ ${ productPrice };
         Validade da Promoção: ${ productValidade };
-
-        Com essa mensagem pelo Aplicativo 
-        CompreMaisAki, 
-        ganhe desconto de: ${ productDiscount } por cento.
-      `)
-      }
-    }catch(err){
-      Alert.alert(
-        'Ops!',
-        'Tivemos um erro, entre em contato com o suporte.',
-      );
-    }
+        `);
+      return;
+    };
   }
   
   async function handleCallProduct(){
@@ -142,13 +133,25 @@ export default function PromotionDetailsScreen(){
   async function handleSendProductWhatsapp(){
     let companyPhoneSplit = companyPhone.split('(51) 9').join('5551');
     let companyWhatsapp = companyPhoneSplit.split('-').join('');
-    try{
-      Linking.openURL(`https://api.whatsapp.com/send?phone=${companyWhatsapp}&text=%20Mensagem%20vinda%20do%20App%20CompreMaisAki:%20Produto:%20${productName}%20;%20Preço%20sem%20Desconto:%20${productPrice};%20Validade%20Promoção:%20Validade;%20Desconto:%20${productDiscount}%20por%20cento;%20Com%20essa%20mensagem%20pelo%20Aplicativo%20CompreMaisAki%20,%20ganhe%20Desconto%20de%20:%20${productDiscount}%20por%20cento+`);
-    }catch(err){
-      Alert.alert(
-        'Ops!',
-        'Tivemos um erro, entre em contato.'
-      );
+
+    if(productDiscount > 0){
+      try{
+        Linking.openURL(`https://api.whatsapp.com/send?phone=${companyWhatsapp}&text=%20Mensagem%20vinda%20do%20App%20CompreMaisAki:%20Produto:%20${productName}%20;%20Preço%20sem%20Desconto:%20${productPrice};%20Validade%20da%20Promoção:%20${productValidade};%20Desconto:%20${productDiscount}%20por%20cento;%20Com%20essa%20mensagem%20pelo%20Aplicativo%20CompreMaisAki%20,%20ganhe%20Desconto%20de%20:%20${productDiscount}%20por%20cento+`);
+      }catch(err){
+        Alert.alert(
+          'Ops!',
+          'Tivemos um erro, entre em contato.'
+        );
+      }
+    }else{
+      try{
+        Linking.openURL(`https://api.whatsapp.com/send?phone=${companyWhatsapp}&text=%20Mensagem%20vinda%20do%20App%20CompreMaisAki:%20Produto:%20${productName}%20;%20Preço%20:%20${productPrice};%20Validade%20Promoção:%20${productValidade};%20`);
+      }catch(err){
+        Alert.alert(
+          'Ops!',
+          'Tivemos um erro, entre em contato.'
+        );
+      }
     }
   }
 
