@@ -235,13 +235,21 @@ export default class App extends PureComponent<HandleNextPage> {
   }
 
   renderEmpty = () => {
-    return (
-    <View>
-      <Text style={{textAlign: 'center'}}>
-        <Entypo name="dots-three-horizontal" size={24} color="#ff6600" />
-      </Text>
-    </View>
-    );
+    if(this.state.loading){
+      return(
+        <View>
+          <Text style={{textAlign: 'center'}}>
+            <Entypo name="dots-three-horizontal" size={24} color="#ff6600" />
+          </Text>
+        </View>
+      );
+    }else{
+      return (
+        <View style={styles.notFoundContainer}>
+          <Text style={styles.notFoundTxt}>Nenhum Produto Encontrado...</Text>
+        </View>
+      );
+    }
   }
 
   renderItem = ({ item }:{ item:any }) => {
@@ -491,4 +499,19 @@ const styles = StyleSheet.create({
     paddingRight: '20%',
     paddingTop: 2
   },
+  notFoundContainer: {
+    backgroundColor: '#fa690a',
+    height: Dimensions.get('window').height * 0.025,
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '70%',
+    marginTop: '10%',
+  },
+  notFoundTxt: {
+    color: 'white',
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingHorizontal: Dimensions.get('window').width * 0.025,
+    borderRadius: 5
+  }
 });

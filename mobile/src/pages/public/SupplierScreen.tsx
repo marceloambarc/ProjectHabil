@@ -3,7 +3,7 @@ import { useNavigation } from '@react-navigation/native';
 import { SearchBar } from 'react-native-elements';
 import { Feather, AntDesign } from '@expo/vector-icons';
 import { View, Text, ImageBackground, TouchableOpacity, Image,
-  StyleSheet, TouchableWithoutFeedback, SafeAreaView, ActivityIndicator, Alert, FlatList, Touchable } from 'react-native';
+  StyleSheet, TouchableWithoutFeedback, SafeAreaView, ActivityIndicator, Alert, FlatList } from 'react-native';
 
 import { API_URL } from '../../../url.json';
 

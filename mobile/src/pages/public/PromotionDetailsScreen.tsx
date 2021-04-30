@@ -4,7 +4,7 @@ ScrollView, Modal, Dimensions, Linking, Alert } from 'react-native';
 import { Feather, Fontisto, Ionicons, AntDesign } from '@expo/vector-icons';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import ImageZoom from 'react-native-image-pan-zoom';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { FontAwesome } from '@expo/vector-icons';
 
 interface handleCompanyParams {
   companyName: any,
@@ -270,12 +270,12 @@ export default function PromotionDetailsScreen(){
               <View style={styles.fontbtnRow}>
                 <View style={styles.fontbtnCol}>
                   <TouchableOpacity style={styles.fontBtn} onPress={handleDecreaseFont} >
-                    <MaterialCommunityIcons name="format-font-size-decrease" size={24} color="white" />
+                    <FontAwesome name="search-minus" size={24} color="white" />
                   </TouchableOpacity>
                 </View>
                 <View style={styles.fontbtnCol}>
                   <TouchableOpacity style={styles.fontBtn} onPress={handleIncreaseFont}>
-                    <MaterialCommunityIcons name="format-font-size-increase" size={24} color="white" />
+                    <FontAwesome name="search-plus" size={24} color="white" />
                   </TouchableOpacity>
                 </View>
               </View>
