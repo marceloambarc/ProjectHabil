@@ -26,6 +26,7 @@ interface Company {
   image: string;
   keywords: string;
   is_active: string;
+  max_prom: number;
 }
 
 Modal.setAppElement('#root')
@@ -200,6 +201,17 @@ function Products(){
     }
   }
 
+  async function handleSetMaxProm(company:Company, event:string){
+    const maxProm = parseInt(event);
+    alert(maxProm)
+  }
+
+  function renderMaxProm({company}:{company:Company}){
+    return(
+      <input type="number" value={company.max_prom} onChange={event => handleSetMaxProm(company, event.target.value)} />
+    );
+  }
+
   // TABELA EM COMPONENTE
   function renderTable(){
     if(isLoading){
@@ -219,6 +231,7 @@ function Products(){
           <th>Palavras-Chaves</th>
           <th>cnpj</th>
           <th>Telefone</th>
+          <th>Nº de Promoções</th>
           <th>Email</th>
           <th>Endereço</th>
           <th>Bairro</th>
@@ -239,6 +252,9 @@ function Products(){
                 <td>{company.keywords}</td>
                 <td>{company.cnpj}</td>
                 <td>{company.phone}</td>
+                <td>
+                  {renderMaxProm({company})}
+                </td>
                 <td>{company.email}</td>
                 <td>{company.address}</td>
                 <td>{company.district}</td>

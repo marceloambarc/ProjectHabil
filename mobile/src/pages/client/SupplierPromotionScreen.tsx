@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, View, FlatList, 
-Image, TouchableOpacity, TouchableWithoutFeedback, Alert, ActivityIndicator } from 'react-native';
+Image, TouchableOpacity, TouchableWithoutFeedback, Alert, ActivityIndicator, Dimensions } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Feather } from '@expo/vector-icons';
 
@@ -16,6 +16,7 @@ interface Props{
   id: number,
   route: any,
   userToken: string,
+  max_prom: number,
 }
 
 const baseURL = `${API_URL}/companies/products/company_id`;
@@ -39,6 +40,7 @@ export default class App extends React.Component<Props> {
   state = {
     data:[],
     loading: false,
+    renderProm: ''
   };
 
   componentDidMount() {
@@ -51,19 +53,22 @@ export default class App extends React.Component<Props> {
     const { route } = this.props;
     const params = route.params as Props
     const id = params.companyId;
+    const max_prom = params.max_prom;
 
-    this.setState({ loading: true });
+    this.setState({ loading: true, renderProm: max_prom });
 
     const response = await fetch(`${baseURL}/${id}`);
     if(response.ok){
       const repositories = await response.json();
 
-      this.setState({ 
+      this.setState({
         data: [...this.state.data, ...repositories],
         loading: false,
       });
     }else{
-      this.setState({loading: false});
+      this.setState({
+        loading: false,
+      });
       return;
     }
   }
@@ -200,6 +205,10 @@ export default class App extends React.Component<Props> {
           ListEmptyComponent={this.renderEmpty}
           keyExtractor={item => item.id.toString()}
         />
+        <View style={styles.footerContainer}>
+          <Text style={styles.footerContainerText}>Máximo de Promoções</Text>
+          <Text style={styles.footerContainerText}>{this.state.data.length}/{this.state.renderProm}</Text>
+        </View>
       </View>
     );
   }
@@ -282,4 +291,14 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     marginVertical: 20,
   },
+
+  /*FOOTER*/
+  footerContainer: {
+    alignItems: 'center',
+    paddingBottom: Dimensions.get('window').height * 0.015
+  },
+  footerContainerText: {
+    fontSize: Dimensions.get('window').height * 0.017,
+    fontWeight: 'bold'
+  }
 });

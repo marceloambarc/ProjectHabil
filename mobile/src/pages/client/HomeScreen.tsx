@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useEffect, useState } from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity, Alert, Dimensions } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import Constants from "expo-constants";
@@ -23,32 +24,85 @@ export default function HomeScreen(){
   const companyCnpj = params.cnpj;
   const userToken = params.userToken;
 
-  async function handleEditCompanyNavigation(){
+  const [isLoading, setIsLoading] = useState(true);
+  const [name, setName] = useState('');
+  const [image, setImage] = useState('');
+  const [business, setBusiness] = useState('');
+  const [phone, setPhone] = useState('');
+  const [email, setEmail] = useState('');
+  const [address, setAddress] = useState('');
+  const [district, setDistrict] = useState('');
+  const [city, setCity] = useState('');
+  const [uf, setUf] = useState('');
+  const [keywords, setKeywords] = useState('');
+  const [max_prom, setMax_prom] = useState('');
+
+
+  async function getParams(){
     api.post('companies/cnpj',{
       cnpj: companyCnpj
     },{
       headers: {'Authorization': 'Bearer '+userToken}
     }).then(res => {
-      navigation.navigate('EditCompany',{
-        id: companyId,
-        name: res.data.name,
-        image: res.data.image,
-        cnpj: companyCnpj,
-        business: res.data.business,
-        phone: res.data.phone,
-        email: res.data.email,
-        address: res.data.address,
-        district: res.data.district,
-        city: res.data.city,
-        uf: res.data.uf,
-        keywords: res.data.keywords,
-        userToken: userToken
-      })
+      setName(res.data.name)
+      setImage(res.data.image)
+      setBusiness(res.data.business)
+      setPhone(res.data.phone)
+      setEmail(res.data.email)
+      setAddress(res.data.address)
+      setDistrict(res.data.district)
+      setCity(res.data.city)
+      setUf(res.data.uf)
+      setKeywords(res.data.keywords)
+      setMax_prom(res.data.max_prom)
     }).catch(err => {
       Alert.alert(
         'Ops!',
-        'Tivemos um erro, entre em contato com o Suporte.'
+        'Erro ao acessar sua conta, tente novamente.'
       );
+      navigation.navigate('Início');
+    })
+  }
+
+  useEffect(() => {
+    if(!isLoading) return;
+    getParams();
+    setIsLoading(false);
+  },[]);
+
+  async function handleNewPromotion(){
+    navigation.navigate('NewPromotion',{
+      companyId,
+      userToken
+    })
+  }
+
+  async function handleViewSupplierPromotion(){
+    navigation.navigate('SupplierPromotion',{
+      companyName,
+      companyId,
+      companyImage,
+      userToken,
+      max_prom
+    });
+  }
+
+  async function handleEditCompanyNavigation(){
+    navigation.navigate('EditCompany',{
+      id: companyId,
+      name: name,
+      image: image,
+      cnpj: companyCnpj,
+      business: business,
+      phone: phone,
+      email: email,
+      address: address,
+      district: district,
+      city: city,
+      uf: uf,
+      keywords: keywords,
+      max_prom: max_prom,
+      userToken: userToken
     });
   }
 
@@ -113,17 +167,11 @@ export default function HomeScreen(){
           
         </View>
 
-        <TouchableOpacity style={styles.btnSubmit} onPress={() => navigation.navigate('SupplierPromotion',{
-          companyId,
-          userToken
-        })}>
+        <TouchableOpacity style={styles.btnSubmit} onPress={handleViewSupplierPromotion}>
           <Text style={styles.submitText}>Visualizar minhas promoções</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.btnNew} onPress={() => navigation.navigate('NewPromotion', {
-          companyId,
-          userToken
-        })}>
+        <TouchableOpacity style={styles.btnNew} onPress={handleNewPromotion}>
           <Text style={styles.submitText}>Cadastrar promoção</Text>
         </TouchableOpacity>
 
