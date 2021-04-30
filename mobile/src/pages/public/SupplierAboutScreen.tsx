@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
-import { View ,Image ,TextInput, ScrollView, StyleSheet, Text, Dimensions } from 'react-native';
+import { View ,Image ,TextInput, ScrollView, 
+StyleSheet, Text, Dimensions, TouchableOpacity } from 'react-native';
 import { useRoute } from '@react-navigation/native';
+import { Feather } from '@expo/vector-icons';
 
 interface Props {
   name: any,
@@ -16,7 +18,7 @@ interface Props {
   navigation: any
 }
 
-export default function SupplierAboutScreen(){
+export default function SupplierAboutScreen({navigation}:{navigation:any}){
   const route = useRoute();
   const params = route.params as Props;
 
@@ -42,21 +44,21 @@ export default function SupplierAboutScreen(){
   const [uf] = useState(`${companyUf}`);
   return (
     <ScrollView>
+      <View style={styles.headerBackground}>
+        <View style={styles.header}>
+          <TouchableOpacity onPress={() => navigation.navigate('Promotions')}>
+            <Feather style={styles.icon} name='arrow-left' size={28} color="#191919" />
+          </TouchableOpacity>
+          <Image
+            style={styles.cmaLogo}
+            source={require("../../../assets/cmatextlogo.png")}
+          />
+        </View>
+      </View>
       <View style={styles.background}>
         <View style={styles.container}>
 
-          <View style={styles.header}>
-            <View style={styles.headerCol1}>
-              <Text>Voltar</Text>
-            </View>
-            <View style={styles.headerCol2}>
-              <Image
-                style={styles.cmaLogo}
-                source={require("../../../assets/cmatextlogo.png")}
-              />
-            </View>
 
-        </View>
            
           <Image
             source={{ uri: `data:image/jpeg;base64,${companyImage}` }}
@@ -146,11 +148,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     width: '90%'
   },
-  cmaLogo: {
-    height: 25,
-    width: 150,
-    marginVertical: 7
-  },
   input:{
     backgroundColor:'#a9acb1',
     textAlign: 'center',
@@ -161,14 +158,25 @@ const styles = StyleSheet.create({
     borderRadius:7,
     padding:10
   },
+
+  headerBackground: {
+    backgroundColor: '#FFF'
+  },
   header: {
-    flexDirection: 'row'
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingTop: Dimensions.get('window').height * 0.035,
+    paddingBottom: 10,
+    paddingLeft: 10,
+    paddingRight: 10
   },
-  headerCol1: {
-    alignItems: 'flex-start',
-    justifyContent: 'flex-start'
+  icon: {
+    marginLeft: Dimensions.get('window').width * 0.025,
+    paddingBottom: 5
   },
-  headerCol2: {
-    
-  }
+  cmaLogo: {
+    height: Dimensions.get('window').height * 0.027,
+    width: Dimensions.get('window').width * 0.4,
+    marginRight: Dimensions.get('window').width * 0.27,
+  },
 });

@@ -113,14 +113,6 @@ export default function HomeScreen(){
           
         </View>
 
-        <TouchableOpacity style={styles.btnSubmitEdit} onPress={handleEditCompanyNavigation}>
-          <Text style={styles.submitText}>Editar Empresa</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity style={styles.btnChange} onPress={handleChangePassword}>
-          <Text style={styles.submitText}>Mudar Senha</Text>
-        </TouchableOpacity>
-
         <TouchableOpacity style={styles.btnSubmit} onPress={() => navigation.navigate('SupplierPromotion',{
           companyId,
           userToken
@@ -133,6 +125,14 @@ export default function HomeScreen(){
           userToken
         })}>
           <Text style={styles.submitText}>Cadastrar promoção</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.btnSubmitEdit} onPress={handleEditCompanyNavigation}>
+          <Text style={styles.submitText}>Editar Empresa</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.btnChange} onPress={handleChangePassword}>
+          <Text style={styles.submitText}>Mudar Senha</Text>
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.btnLogout} onPress={() => navigation.navigate('Login')}>

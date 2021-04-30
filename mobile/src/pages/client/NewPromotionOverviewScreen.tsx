@@ -22,7 +22,10 @@ export default function NewPromotionOverviewScreen(){
   const params = route.params as ProductDataRouteParams;
 
   const productName = params.name;
+
   const productPrice = params.price;
+  const [finalPrice, setFinalPrice] = useState('');
+
   const productDescription = params.description;
   const companyId = params.company_id;
   const productImage = params.base;
@@ -40,6 +43,11 @@ export default function NewPromotionOverviewScreen(){
       setDate(dateBrPattern);
   }
 
+  async function getFinalPrice(){
+    var unmaskeredPrice = productPrice.replace('R$', '')
+    setFinalPrice(unmaskeredPrice);
+  }
+
   useEffect(() => {
     setTimeout(() => {
       getDate();
@@ -48,10 +56,11 @@ export default function NewPromotionOverviewScreen(){
   },[])
 
   async function handleCreateProduct(){
+    getFinalPrice();
     try{
       api.post('products',{
         name: productName,
-        price: productPrice,
+        price: finalPrice,
         description: productDescription,
         date: date,
         company_id: companyId,
@@ -96,7 +105,7 @@ export default function NewPromotionOverviewScreen(){
         <View style={styles.textContainer}>
           <View style={styles.titleContainer}>
             <Text style={styles.productTitle}>{productName}</Text>
-            <Text style={styles.productTitle}>Valor: R$ {productPrice}</Text>
+            <Text style={styles.productTitle}>Valor: {productPrice}</Text>
           </View>
           <Text style={styles.productText}>Descrição: {productDescription}</Text>
           <Text style={styles.productText}>Desconto: {productDiscount}% </Text>

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Text, View ,Image ,TextInput, ScrollView, StyleSheet, TouchableOpacity, Alert } from 'react-native';
+import { Text, View ,Image ,TextInput, ScrollView, StyleSheet, TouchableOpacity, Alert, Dimensions } from 'react-native';
 import { useRoute, useNavigation } from '@react-navigation/native';
 import { TextInputMask } from 'react-native-masked-text';
 import api from '../../services/api';
@@ -305,9 +305,18 @@ export default function SupplierAboutScreen(){
         </View>
 
         <View style={styles.btnContainer}>
-          <TouchableOpacity style={styles.btnSubmit} onPress={handleSubmitEdit}>
-            <Text style={styles.submitText}>Confirmar</Text>
-          </TouchableOpacity>
+
+          <View style={styles.btnCol}>
+            <TouchableOpacity style={styles.btnSubmit1} onPress={() => navigation.navigate('Home')}>
+              <Text style={styles.submitText}>Cancelar</Text>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.btnCol}>
+           <TouchableOpacity style={styles.btnSubmit} onPress={handleSubmitEdit}>
+              <Text style={styles.submitText}>Confirmar</Text>
+            </TouchableOpacity>
+          </View>
+
         </View>
 
       </View>
@@ -366,14 +375,25 @@ const styles = StyleSheet.create({
 
   btnSubmit:{
     backgroundColor: '#35AAFF',
-    width:'90%',
-    marginBottom: 30,
+    width: Dimensions.get('window').width * 0.32,
+    marginBottom: Dimensions.get('window').height * 0.05,
     color:'#222',
     fontSize: 17,
     alignItems:'center',
     justifyContent: 'center',
-    borderRadius:7,
-    padding:10
+    borderRadius: 7,
+    padding: Dimensions.get('window').width * 0.025
+  },
+  btnSubmit1: {
+    backgroundColor: '#fa690a',
+    width: Dimensions.get('window').width * 0.32,
+    marginBottom: Dimensions.get('window').height * 0.05,
+    color:'#222',
+    fontSize: 17,
+    alignItems:'center',
+    justifyContent: 'center',
+    borderRadius: 7,
+    padding: Dimensions.get('window').width * 0.025
   },
   submitText:{
     color: '#FFF',
@@ -381,9 +401,12 @@ const styles = StyleSheet.create({
   },
   btnContainer:{
     width: '100%',
+    flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 30,
-    marginBottom: 0
+    marginTop: Dimensions.get('window').height * 0.027,
   },
+  btnCol: {
+    width: Dimensions.get('window').width * .35
+  }
 });

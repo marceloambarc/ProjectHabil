@@ -88,13 +88,13 @@ export default function ChangePassword({navigation}:{navigation:any}){
     <SafeAreaView>
       <View style={styles.headerBackground}>
         <View style={styles.headerContainer}>
+          <TouchableOpacity onPress={() => navigation.navigate('Home')}>
+            <Feather style={styles.icon} name='arrow-left' size={28} color="#191919" />
+          </TouchableOpacity>
           <Image
             style={styles.cmaLogo}
             source={require("../../../../assets/cmatextlogo.png")}
           />
-          <TouchableOpacity onPress={() => navigation.openDrawer()}>
-            <Feather style={styles.icon} name="menu" size={28} color="#191919" />
-          </TouchableOpacity>
         </View>
       </View>
 
@@ -151,11 +151,11 @@ const styles = StyleSheet.create({
   cmaLogo: {
     height: 20,
     width: 100,
-    marginLeft: 10,
+    marginRight: '37%',
     marginTop: 5,
   },
   icon: {
-    marginRight: 10,
+    marginLeft: 10,
     paddingBottom: 5
   },
   bodyContainer: {

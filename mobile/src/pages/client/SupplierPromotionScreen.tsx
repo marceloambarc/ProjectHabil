@@ -25,10 +25,12 @@ function ProductsHeader(){
 
   return(
     <View style={styles.header}>
-      <TouchableOpacity style={styles.backBtn} onPress={() => navigation.navigate('Home')}>
-          <Feather name="arrow-left" size={28} color="#e82041" />
-      </TouchableOpacity>
-      <Text style={styles.headerTitle}>Minhas Promoções</Text>
+      <View style={styles.headerContainer}>
+        <TouchableOpacity onPress={() => navigation.navigate('Home')}>
+            <Feather style={styles.backBtn} name="arrow-left" size={28} color="#e82041" />
+        </TouchableOpacity>
+        <Text style={styles.headerTitle}>Minhas Promoções</Text>
+      </View>
     </View>
   );
 }
@@ -250,21 +252,25 @@ const styles = StyleSheet.create({
 
   /*HEADER*/
   header: {
+    backgroundColor: '#FFF'
+  },
+  headerContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center',
-    width: '67%'
+    paddingTop: 12,
+    paddingBottom: 10,
+    paddingLeft: 10,
+    paddingRight: 10
   },
   headerTitle: {
     fontWeight: 'bold',
     fontSize: 18,
-    justifyContent: 'center'
+    justifyContent: 'center',
+    marginRight: '25%'
   },
   backBtn:{
-    marginTop:20,
-    marginLeft:23,
-    flex:1,
-    padding:10
+    marginLeft: 10,
+    paddingBottom: 5
   },
   description: {
     color: '#5c8599',

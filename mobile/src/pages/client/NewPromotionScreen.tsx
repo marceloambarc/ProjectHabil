@@ -1,12 +1,13 @@
 import * as React from 'react';
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { View, Text, TextInput, 
-TouchableOpacity, StyleSheet, ScrollView, Image, Alert } from 'react-native';
+TouchableOpacity, StyleSheet, ScrollView, Image, Alert, Keyboard } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 
 import { Feather, Ionicons } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
 import * as ImageManipulator from 'expo-image-manipulator';
+import { TextInputMask } from 'react-native-masked-text';
 
 interface NewPromotionParams {
   companyId: string,
@@ -15,9 +16,16 @@ interface NewPromotionParams {
 
 export default function NewPromotionScreen(){
   const [name, setName] = useState('');
+  let ref_name = useRef<TextInput>(null);
+
   const [price, setPrice] = useState('');
+  let ref_price = React.useRef<any>();
+
   const [discountPrototype, setDiscountPrototype] = useState('');
+  let ref_discount = useRef<TextInput>(null);
+
   const [description, setDescription] = useState('');
+  let ref_discription = useRef<TextInput>(null)
 
   const [base, setBase] = useState('');
   const [image, setImage] = useState('');
@@ -188,13 +196,20 @@ export default function NewPromotionScreen(){
           placeholder="Produto"
           autoCorrect={false}
           onChangeText={setName}
+          returnKeyType='next'
+          onSubmitEditing={() => ref_price.current?._inputElement.focus()}
         />
 
-        <TextInput
+        <TextInputMask
+          type={'money'}
           style={styles.input}
-          placeholder={"Valor"}
+          placeholder="Preço"
+          value={price}
           autoCorrect={false}
           onChangeText={setPrice}
+          ref={ref_price}
+          returnKeyType='next'
+          onSubmitEditing={() => ref_discount.current?.focus()}
         />
 
         <TextInput
@@ -202,7 +217,10 @@ export default function NewPromotionScreen(){
           keyboardType="number-pad"
           placeholder={"Desconto"}
           autoCorrect={false}
+          ref={ref_discount}
           onChangeText={setDiscountPrototype}
+          returnKeyType='next'
+          onSubmitEditing={() => ref_discription.current?.focus()}
         />
 
         <TextInput
@@ -213,6 +231,9 @@ export default function NewPromotionScreen(){
           placeholder="Descrição"
           autoCorrect={false}
           onChangeText={setDescription}
+          ref={ref_discription}
+          returnKeyType='next'
+          onSubmitEditing={() => Keyboard.dismiss()}
         />
 
         <View style={styles.uploadedImagesContainer}>

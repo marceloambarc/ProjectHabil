@@ -417,7 +417,7 @@ export default function Register(){
 
       const manipulatedImage = await ImageManipulator.manipulateAsync(
         image,
-        [{ resize: {width: 200,height: 200} }],
+        [{ resize: {width: 150,height: 150} }],
         { compress: 1, base64: true }
       );
 

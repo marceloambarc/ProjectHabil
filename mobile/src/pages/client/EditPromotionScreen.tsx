@@ -7,6 +7,7 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 import { Feather, Ionicons } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
 import * as ImageManipulator from 'expo-image-manipulator';
+import { TextInputMask } from 'react-native-masked-text';
 
 interface EditPromotionParams {
   id: number,
@@ -170,7 +171,7 @@ async function handleTakePicture() {
 
   const result = await ImagePicker.launchCameraAsync({
     allowsEditing: true,
-    quality: 0.5,
+    quality: 0.4,
     mediaTypes: ImagePicker.MediaTypeOptions.Images,
     aspect: [1, 1],
   });
@@ -183,7 +184,7 @@ async function handleTakePicture() {
 
     const manipulatedImage = await ImageManipulator.manipulateAsync(
       image,
-      [{ resize: {width: 251,height: 251} }],
+      [{ resize: {width: 150,height: 150} }],
       { compress: 1, base64: true }
     );
 
@@ -209,7 +210,8 @@ async function handleTakePicture() {
           onChangeText={setName}
         />
 
-        <TextInput
+        <TextInputMask
+          type={'money'}
           style={styles.input}
           placeholder="Preço"
           autoCorrect={false}

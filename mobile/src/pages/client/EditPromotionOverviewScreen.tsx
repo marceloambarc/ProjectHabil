@@ -23,7 +23,10 @@ export default function EditPromotionOverviewScreen(){
 
   const productId = params.id;
   const productName = params.name;
+
   const productPrice = params.price;
+  const [finalPrice, setFinalPrice] = useState('');
+
   const productDescription = params.description;
   const productImage = params.image;
   const productDiscount = params.discount;
@@ -34,11 +37,17 @@ export default function EditPromotionOverviewScreen(){
 
   const [modalVisible, setModalVisible] = useState(false);
 
+  async function getFinalPrice(){
+    var unmaskeredPrice = productPrice.replace('R$', '')
+    setFinalPrice(unmaskeredPrice);
+  }
+
   async function handleEditPromotion(){
+    getFinalPrice();
       api.put(`products/${productId}`,{
         id: productId,
         name: productName,
-        price: productPrice,
+        price: finalPrice,
         description: productDescription,
         date: date,
         company_id: companyId,
@@ -65,7 +74,7 @@ export default function EditPromotionOverviewScreen(){
         <View style={styles.textContainer}>
           <View style={styles.titleContainer}>
             <Text style={styles.productTitle}>{productName}</Text>
-            <Text style={styles.productTitle}>Valor: R$ {productPrice}</Text>
+            <Text style={styles.productTitle}>Valor: {productPrice}</Text>
           </View>
           <Text style={styles.productText}>Descrição: {productDescription}</Text>
           <Text style={styles.productText}>Desconto: {productDiscount}%</Text>
