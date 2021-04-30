@@ -18,7 +18,6 @@ interface NewPromotionParams {
 
 export default function NewPromotionScreen(){
   const [name, setName] = useState('');
-  let ref_name = useRef<TextInput>(null);
 
   const [price, setPrice] = useState('');
   let ref_price = React.useRef<any>();
@@ -223,7 +222,6 @@ export default function NewPromotionScreen(){
           autoCorrect={false}
           onChangeText={setName}
           returnKeyType='next'
-          onSubmitEditing={() => ref_price.current?._inputElement.focus()}
         />
 
         <TextInputMask
@@ -233,9 +231,7 @@ export default function NewPromotionScreen(){
           value={price}
           autoCorrect={false}
           onChangeText={setPrice}
-          ref={ref_price}
           returnKeyType='next'
-          onSubmitEditing={() => ref_discount.current?.focus()}
         />
 
         <TextInput
@@ -243,10 +239,8 @@ export default function NewPromotionScreen(){
           keyboardType="number-pad"
           placeholder={"Desconto"}
           autoCorrect={false}
-          ref={ref_discount}
           onChangeText={setDiscountPrototype}
           returnKeyType='next'
-          onSubmitEditing={() => ref_discription.current?.focus()}
         />
 
         <TextInput
@@ -257,9 +251,7 @@ export default function NewPromotionScreen(){
           placeholder="Descrição"
           autoCorrect={false}
           onChangeText={setDescription}
-          ref={ref_discription}
           returnKeyType='next'
-          onSubmitEditing={() => Keyboard.dismiss()}
         />
 
         <View style={styles.uploadedImagesContainer}>
