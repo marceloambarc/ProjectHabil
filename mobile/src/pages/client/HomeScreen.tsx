@@ -73,7 +73,8 @@ export default function HomeScreen(){
   async function handleNewPromotion(){
     navigation.navigate('NewPromotion',{
       companyId,
-      userToken
+      userToken,
+      max_prom
     })
   }
 

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { View, Text, TextInput, 
 TouchableOpacity, StyleSheet, ScrollView, Image, Alert, Keyboard } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
@@ -8,10 +8,12 @@ import { Feather, Ionicons } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
 import * as ImageManipulator from 'expo-image-manipulator';
 import { TextInputMask } from 'react-native-masked-text';
+import api from '../../services/api';
 
 interface NewPromotionParams {
   companyId: string,
   userToken: string,
+  max_prom: number;
 }
 
 export default function NewPromotionScreen(){
@@ -29,6 +31,7 @@ export default function NewPromotionScreen(){
 
   const [base, setBase] = useState('');
   const [image, setImage] = useState('');
+  const [productsLength, setProductsLength] = useState(0);
 
   const navigation = useNavigation();
   const route = useRoute();
@@ -36,9 +39,25 @@ export default function NewPromotionScreen(){
 
   const company_id = params.companyId;
   const userToken = params.userToken;
+  const max_prom = params.max_prom;
   const discount = parseInt(discountPrototype);
 
   const checkIsNan = isNaN(discount);
+
+  async function getProductsLength(){
+    api.get(`companies/products/company_id/${company_id}`).then(res => {
+      setProductsLength(res.data.length);
+    }).catch(err => {
+      Alert.alert(
+        'Ops!',
+        'Erro de Conexão, Por favor, tente novamente mais tarde.'
+      )
+    })
+  }
+
+  useEffect(() => {
+    getProductsLength();
+  },[])
 
   async function handleNextStepProduct() {
     if(!description){
@@ -93,6 +112,13 @@ export default function NewPromotionScreen(){
       Alert.alert(
         'Erro',
         'Desconto Inválido'
+      );
+      return;
+    }
+    if(productsLength >= max_prom){
+      Alert.alert(
+        'Ops!',
+        'Você alcançou o máximo de Promoções, Contate o Administrador pela página de Suporte na barra lateral inicial.'
       );
       return;
     }
