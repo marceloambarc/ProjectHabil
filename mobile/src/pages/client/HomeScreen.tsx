@@ -78,13 +78,13 @@ export default function HomeScreen(){
       "Voce deseja realmente inativar sua conta CompreMaisAki?",
       [
         {
+          text: "OK",
+          onPress: () => handleCancelSecondStep()
+        },
+        {
           text: "Cancelar",
           onPress: () => {},
           style: "cancel"
-        },
-        {
-          text: "OK",
-          onPress: () => handleCancelSecondStep()
         }
       ]
     );
@@ -131,16 +131,22 @@ export default function HomeScreen(){
           <Text style={styles.submitText}>Editar Empresa</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.btnChange} onPress={handleChangePassword}>
-          <Text style={styles.submitText}>Mudar Senha</Text>
-        </TouchableOpacity>
+        <View style={styles.dangerRowBtn}>
+          <View style={styles.dangerRowBtnCol}>
+            <TouchableOpacity style={styles.btnCancelAccount} onPress={handleCancelAccount}>
+              <Text style={styles.cancelText}>Cancelar Conta</Text>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.dangerRowBtnCol}>
+            <TouchableOpacity style={styles.btnChange} onPress={handleChangePassword}>
+              <Text style={styles.submitText}>Mudar Senha</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+
 
         <TouchableOpacity style={styles.btnLogout} onPress={() => navigation.navigate('Login')}>
           <Text style={styles.outText}>Sair</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity style={styles.btnCancelAccount} onPress={handleCancelAccount}>
-          <Text style={styles.cancelText}>Cancelar Conta</Text>
         </TouchableOpacity>
 
       </View>
@@ -157,14 +163,13 @@ const styles = StyleSheet.create({
     height: Constants.statusBarHeight + 20
   },
   companyImageContainer:{
-    flex:1,
+    flex: 1,
     justifyContent:'center',
   },
   companyImage: {
     width: Dimensions.get('window').width * .47,
     height: Dimensions.get('window').height * .20,
     borderRadius: 20,
-    marginBottom: Dimensions.get('window').height * 0.01,
   },
   container:{
     flex:1,
@@ -176,7 +181,8 @@ const styles = StyleSheet.create({
   title:{
     fontSize: Dimensions.get('window').height * 0.025,
     color: '#FFF',
-    marginTop: Dimensions.get('window').height * 0.023
+    marginTop: Dimensions.get('window').height * 0.023,
+    textAlign: 'center'
   },
   containerLogo:{
     flex:1,
@@ -199,15 +205,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     borderRadius: 7,
     marginBottom: Dimensions.get('window').height * 0.025,
-  },
-  btnChange: {
-    backgroundColor: '#fa690a',
-    width: '90%',
-    height: Dimensions.get('window').height * 0.062,
-    alignItems:'center',
-    justifyContent: 'center',
-    borderRadius: 7,
-    marginBottom: Dimensions.get('window').height * 0.027,
   },
   submitText:{
     color: '#FFF',
@@ -235,17 +232,33 @@ const styles = StyleSheet.create({
     color: '#191919'
   },
 
+  dangerRowBtn: {
+    flexDirection: 'row',
+  },
+  dangerRowBtnCol: {
+    width: '45%'
+  },
   btnCancelAccount:{
     backgroundColor: '#fa690a',
     color: 'white',
-    width: '40%',
+    width: '50%',
     height: Dimensions.get('window').height * 0.062,
     alignItems:'center',
     justifyContent: 'center',
     borderRadius: 7,
-    marginBottom: 20
+    marginBottom: Dimensions.get('window').height * 0.02,
+  },
+  btnChange: {
+    backgroundColor: '#fa690a',
+    width: Dimensions.get('window').width * .4,
+    height: Dimensions.get('window').height * 0.062,
+    alignItems:'center',
+    justifyContent: 'center',
+    borderRadius: 7,
+    marginBottom: Dimensions.get('window').height * 0.027,
   },
   cancelText: {
-    color: 'white'
+    color: 'white',
+    textAlign: 'center'
   },
 });

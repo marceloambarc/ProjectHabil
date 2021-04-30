@@ -47,7 +47,7 @@ export default function Login(){
   let ref_password = React.useRef<TextInput>(null);
 
   const navigation = useNavigation();
-  const [logo] = useState(new Animated.ValueXY({ x: 100, y: 100 }));
+  const [logo] = useState(new Animated.ValueXY({ x: 130, y: 130 }));
 
   async function handleAccess(){
     if(!cnpj || !password){
@@ -102,15 +102,15 @@ export default function Login(){
     <KeyboardAvoidingView
       style={styles.background}>
         <View style={styles.containerLogo}>
-        <TouchableWithoutFeedback onPress={handleHomeNavigation}>
-          <Animated.Image
-          style={{
-            width: logo.x,
-            height: logo.y
-          }}
-          source={require('../../../assets/icon.png')}
-            />
-            </TouchableWithoutFeedback>
+          <TouchableWithoutFeedback onPress={handleHomeNavigation}>
+            <Animated.Image
+            style={{
+              width: logo.x,
+              height: logo.y
+            }}
+            source={require('../../../assets/icon.png')}
+              />
+          </TouchableWithoutFeedback>
         </View>
     
           <View style={styles.container}>

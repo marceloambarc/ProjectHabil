@@ -24,8 +24,6 @@ export default function NewPromotionOverviewScreen(){
   const productName = params.name;
 
   const productPrice = params.price;
-  const [finalPrice, setFinalPrice] = useState('');
-
   const productDescription = params.description;
   const companyId = params.company_id;
   const productImage = params.base;
@@ -43,11 +41,6 @@ export default function NewPromotionOverviewScreen(){
       setDate(dateBrPattern);
   }
 
-  async function getFinalPrice(){
-    var unmaskeredPrice = productPrice.replace('R$', '')
-    setFinalPrice(unmaskeredPrice);
-  }
-
   useEffect(() => {
     setTimeout(() => {
       getDate();
@@ -56,7 +49,7 @@ export default function NewPromotionOverviewScreen(){
   },[])
 
   async function handleCreateProduct(){
-    getFinalPrice();
+    var finalPrice = productPrice.replace('R$', '');
     try{
       api.post('products',{
         name: productName,

@@ -169,13 +169,14 @@ export default function PromotionDetailsScreen(){
       <PromotionDetailsHeader />
       <View style={styles.container}>
         <View style={styles.borderContainer}>
+        <ScrollView contentContainerStyle={styles.productDescription}>
           <View>
 
           <ImageZoom 
             cropWidth={Dimensions.get('window').width * .8}
-            cropHeight={Dimensions.get('window').width * .9}
+            cropHeight={Dimensions.get('window').width * .899}
             imageWidth={Dimensions.get('window').width * .8}
-            imageHeight={Dimensions.get('window').width * .9}
+            imageHeight={Dimensions.get('window').width * .899}
           >
             
             <Image
@@ -185,7 +186,6 @@ export default function PromotionDetailsScreen(){
             
           </ImageZoom>
           </View>
-          <ScrollView contentContainerStyle={styles.productDescription}>
             <View style={{flexDirection: 'row', justifyContent: 'space-around'}}>
               <View style={{flexDirection: 'column', paddingHorizontal: Dimensions.get('window').width * 0.05}}>
                   <Text style={styles.productTextPriceTitle}>
