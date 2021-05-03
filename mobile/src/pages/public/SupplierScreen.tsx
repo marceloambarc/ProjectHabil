@@ -34,6 +34,7 @@ interface Props {
 }
 
 const baseURL = `${API_URL}/companies`
+const baseURLProduct = `${API_URL}/products`
 
 export default class App extends PureComponent<Props> {
   state = {
@@ -71,10 +72,22 @@ export default class App extends PureComponent<Props> {
       const response = await fetch(`${baseURL}/keywords/${searchTerm}`);
       
       if(!response.ok) {
-        this.setState({
-          loading: false,
-          searchGreyBar: searchTerm,
-        });
+        const response = await fetch(`${baseURLProduct}/keywords/${searchTerm}`);
+
+        if(!response.ok){
+          this.setState({
+            loading: false,
+            searchGreyBar: searchTerm,
+          });
+        }else{
+          const respositories = await response.json();
+
+          this.setState({
+            data: [...this.state.data, ...respositories],
+            loading: false,
+            searchTerm: searchTerm,
+          });
+        }
       }else{
         const repositories = await response.json();
   

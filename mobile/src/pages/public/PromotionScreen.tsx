@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import { View, Text, SafeAreaView, TouchableOpacity,
 StyleSheet, Image, TouchableWithoutFeedback, FlatList, Linking, Alert, Dimensions } from 'react-native';
+import ImageZoom from 'react-native-image-pan-zoom';
 import { Feather, Fontisto, Ionicons, MaterialIcons, Entypo, AntDesign } from '@expo/vector-icons';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { API_URL } from '../../../url.json';
@@ -123,11 +124,19 @@ function CompanyCard(){
     <View style={styles.background}>
       <ScrollView style={styles.companyContainer}>
         <View style={styles.imageContainer}>
+        <ImageZoom  
+          cropWidth={Dimensions.get('window').width * .6}
+          cropHeight={Dimensions.get('window').height * .19}
+          imageWidth={Dimensions.get('window').width * .6}
+          imageHeight={Dimensions.get('window').height * .19}
+        >
           <Image 
             source={{ uri: `data:image/jpeg;base64,${companyImage}`}}
             style={styles.companyImage}
             key={companyId}
           />
+
+        </ImageZoom>
           <Text style={styles.companyName}>{ companyName }</Text>
         </View>
         <View style={styles.btnRow}>

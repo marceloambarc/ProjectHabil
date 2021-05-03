@@ -11,7 +11,6 @@ import api from '../../services/api';
 import '../../styles/pages/controlmap.css';
 import '../../styles/pages/card.css';
 import '../../styles/pages/card-columns.css';
-import { getRoles } from '@testing-library/dom';
 
 {/* 
   --- TO DO LIST
@@ -212,37 +211,6 @@ function Products(){
     }
   }
 
-  async function handleSetValidate(product:Product, event:string){
-    api.put(`products/${product.id}`,{
-      validade: event
-    },{
-      headers: {'Authorization': 'Bearer '+userToken}
-    }).then(() => {
-      api.get('products/all').then(response => {
-        setProducts(response.data);
-      });
-    }).catch(err => {
-      alert('Tivemos um erro, entre em contato com o Suporte');
-    })
-  }
-
-    // RENDERIZAR INPUT DE DATA INVÁLIDOS - RETORNAR VALOR DA DATA PARA VÁLIDOS 
-  function renderValidate({product}:{product:Product}){
-    if(active == '0' && product.validade == ""){
-      return (
-        <input type="date" value={validate} onChange={event => handleSetValidate(product, event.target.value)} />
-      );
-    }else if(active == '0' && product.validade != ""){
-      return (
-        <input type="date" value={product.validade} min={Date.now()} onChange={event => handleSetValidate(product, event.target.value)} />
-      );
-    }else{
-      return (
-        <p>{product.validade}</p>
-      );
-    }
-  }
-
   //-----(PENDENT)SORT-----//
   //async function handleViewPerDesc(){
   //  alert('DESC');
@@ -355,7 +323,7 @@ function Products(){
                     <td>{product.date}</td>
                     <td>{product.company_id}</td>
                     <td>
-                      <Validation validate={product.validade} promoName={product.name} productId={product.id} userToken={userToken} />
+                      <Validation active={active} validate={product.validade} promoName={product.name} productId={product.id} userToken={userToken} />
                     </td>
                     <td>{product.discount} %</td>
                     <td onClick={() => handleExpandImage({product})}><img src={base + ',' + product.image} style={{width: '30%', cursor: 'pointer'}} className="landingImg" alt="CompreMaisAki" /></td>
