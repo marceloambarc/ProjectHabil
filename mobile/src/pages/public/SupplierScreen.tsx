@@ -124,10 +124,23 @@ export default class App extends PureComponent<Props> {
       }else{
         const response = await fetch(`${baseURL}/keywords/${searchTerm}`);
         if(!response.ok) {
-          this.setState({
-            loading: false,
-            searchGreyBar: searchTerm,
-          });
+          const response = await fetch(`${baseURLProduct}/keywords/${searchTerm}`);
+
+          if(!response.ok){
+            this.setState({
+              loading: false,
+              searchGreyBar: searchTerm,
+            });
+          }else{
+            const respositories = await response.json();
+
+            this.setState({
+              data: [...this.state.data, ...respositories],
+              loading: false,
+              searchTerm: searchTerm,
+            });
+          }
+
         }else{
           const repositories = await response.json();
     
@@ -166,8 +179,8 @@ export default class App extends PureComponent<Props> {
       });
     }catch(err){
       Alert.alert(
-        'Confirmado!',
-        'Seu email foi enviado.'
+        'Ops',
+        'Erro de navegação, confirme se sua conexão está ativa.'
       );
     }
   }
