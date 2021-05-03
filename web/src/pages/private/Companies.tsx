@@ -10,6 +10,7 @@ import '../../styles/pages/controlmap.css';
 import '../../styles/pages/companies_buttons.css';
 import '../../styles/pages/table.css';
 import { getRoles } from '@testing-library/dom';
+import PromoInput from '../../components/PromoInput';
 
 interface Company {
   id: number;
@@ -40,6 +41,7 @@ function Products(){
   const [base] = useState('data:image/png;base64');
   const [isLoading, setIsLoading] = useState(true);
   const [role, setRole] = useState('');
+  const [maxPromProto, setMaxPromProto] = useState(5);
 
   const [modalIsOpen, setIsOpen] = useState(false);
   const [viewImage, setViewImage] = useState('');
@@ -201,17 +203,6 @@ function Products(){
     }
   }
 
-  async function handleSetMaxProm(company:Company, event:string){
-    const maxProm = parseInt(event);
-    alert(maxProm)
-  }
-
-  function renderMaxProm({company}:{company:Company}){
-    return(
-      <input type="number" value={company.max_prom} onChange={event => handleSetMaxProm(company, event.target.value)} />
-    );
-  }
-
   // TABELA EM COMPONENTE
   function renderTable(){
     if(isLoading){
@@ -225,7 +216,6 @@ function Products(){
         <table id="companies">
         <tbody>
         <tr>
-          <th>ID</th>
           <th>Empresa</th>
           <th>Ramo</th>
           <th>Palavras-Chaves</th>
@@ -246,14 +236,13 @@ function Products(){
           if(company.is_active == active){
             return(
                 <tr key={company.id}>
-                <td>{company.id}</td>
                 <td>{company.name}</td>
                 <td>{company.business}</td>
                 <td>{company.keywords}</td>
                 <td>{company.cnpj}</td>
                 <td>{company.phone}</td>
                 <td>
-                  {renderMaxProm({company})}
+                  <PromoInput maxProm={company.max_prom} companyId={company.id} companyName={company.name} userToken={userToken} />
                 </td>
                 <td>{company.email}</td>
                 <td>{company.address}</td>

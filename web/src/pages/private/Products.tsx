@@ -4,7 +4,8 @@ FiArrowDownCircle, FiAlertOctagon, FiCheck,
 FiCheckCircle, FiAlertCircle, FiBook } from 'react-icons/fi';
 import Modal from 'react-modal';
 
-import Sidebar from '../../components/Sidebar'
+import Sidebar from '../../components/Sidebar';
+import Validation from '../../components/Validation';
 import api from '../../services/api';
 
 import '../../styles/pages/controlmap.css';
@@ -333,7 +334,6 @@ function Products(){
            <table id="companies">
             <tbody>
             <tr>
-              <th>ID</th>
               <th>Produto</th>
               <th>Preco</th>
               <th>Descricao</th>
@@ -349,14 +349,13 @@ function Products(){
               if(product.is_active == active){
                 return(
                     <tr key={product.id}>
-                    <td>{product.id}</td>
                     <td>{product.name}</td>
                     <td>R$ {product.price}</td>
                     <td>{product.description}</td>
                     <td>{product.date}</td>
                     <td>{product.company_id}</td>
                     <td>
-                      {renderValidate({product})}
+                      <Validation validate={product.validade} promoName={product.name} productId={product.id} userToken={userToken} />
                     </td>
                     <td>{product.discount} %</td>
                     <td onClick={() => handleExpandImage({product})}><img src={base + ',' + product.image} style={{width: '30%', cursor: 'pointer'}} className="landingImg" alt="CompreMaisAki" /></td>

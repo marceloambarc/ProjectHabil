@@ -357,7 +357,7 @@ export default function Register(){
         image: base,
         keywords: keywords,
         is_active: 0,
-        max_prom: 0
+        max_prom: 5
       },{
           headers: {'Authorization': 'Bearer '+userToken}
       }).then(() => {

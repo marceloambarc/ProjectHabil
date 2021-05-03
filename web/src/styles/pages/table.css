@@ -10,7 +10,7 @@
     margin: auto;
     margin-bottom: 34px;
     margin-top: 20px;
-    width: 90%;
+    width: 100%;
 }
 
 #companies th {
@@ -30,6 +30,7 @@
     padding: 4px;
 
     font-size: 12px;
+    max-width: 170PX;
 }
 
 #noWrap {
@@ -96,4 +97,22 @@ button:hover {
   
 .inactive {
     background-color: #994311;
+}
+
+.max-promo-input{
+    width: 40px;
+}
+
+.max-promo-row{
+    flex-direction: row;
+}
+.max-promo-row{
+    flex-direction: column;
+    width: 50%;
+}
+
+.validate-input{ 
+    width: 120px;
+    font-size: small;
+    margin-right: 5px;
 }
