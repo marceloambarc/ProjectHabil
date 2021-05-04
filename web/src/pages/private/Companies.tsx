@@ -9,7 +9,7 @@ import api from '../../services/api';
 import '../../styles/pages/controlmap.css';
 import '../../styles/pages/companies_buttons.css';
 import '../../styles/pages/table.css';
-import { getRoles } from '@testing-library/dom';
+import { host, port, fromEmail, pass } from '../../services/email.json';
 import PromoInput from '../../components/PromoInput';
 
 interface Company {
@@ -26,7 +26,7 @@ interface Company {
   password: string;
   image: string;
   keywords: string;
-  is_active: string;
+  is_active: number;
   max_prom: number;
 }
 
@@ -37,7 +37,7 @@ function Products(){
   const getUserToken = localStorage.getItem('userToken');
   const [userToken] = useState(`${getUserToken}`)
   const [companies, setCompanies] = useState<Company[]>([]);
-  const [active, setActive] = useState('0');
+  const [active, setActive] = useState(0);
   const [base] = useState('data:image/png;base64');
   const [isLoading, setIsLoading] = useState(true);
   const [role, setRole] = useState('');
@@ -90,11 +90,11 @@ function Products(){
 
   //----RENDERIZAR TÍTULO DA TABELA
   function renderTitle(){
-    if(active == '0'){
+    if(active === 0){
       return(
         <h1 style={{fontSize:'22px'}}>Empresas Inativas</h1>
       );
-    }else if(active == '1'){
+    }else if(active === 1){
       return(
         <h1 style={{fontSize:'22px'}}>Empresas Ativas</h1>  
       );
@@ -112,15 +112,15 @@ function Products(){
 
   //-----VIEWS------//
   async function handleViewInactive(){
-    setActive('0')
+    setActive(0)
   }
 
   async function handleViewActive(){
-    setActive('1')
+    setActive(1)
   }
 
   async function handleViewCanceled(){
-    setActive('2')
+    setActive(2)
   }
 
   //---MANIPULAR EMPRESAS (INSERIR CARREGAMENTO VISUAL)---//
@@ -131,9 +131,28 @@ function Products(){
     },{
       headers: {'Authorization': 'Bearer '+userToken}
     }).then(() => {
-      api.get('companies/all').then(response => {
-        setCompanies(response.data);
-      });
+      fetch('http://habil.servehttp.com:5003/mailgun',{
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          host: host,
+          port: port,
+          fromEmail: fromEmail,
+          pass: pass,
+          toEmail: company.email,
+          title: 'Empresa Inativada',
+          message: 'Sua empresa Foi Inativada Pelo Administrador. Entre em contato com o Suporte pelo Aplicativo para mais informações.',
+          content: 'Sua empresa Foi Inativada Pelo Administrador. Entre em contato com o Suporte pelo Aplicativo para mais informações.'
+        })
+      }).then(() => {
+        api.get('companies/all').then(response => {
+          setCompanies(response.data);
+        }).catch(() => {
+          alert('Tivemos um erro ao acessar as Empresas.');
+        })
+      }).catch(err => {
+        alert('Tivemos um Erro para Enviar o E-mail de Informação.');
+      })
     }).catch(err => {
       alert('Tivemos um erro, entre em contato com o Suporte');
     });
@@ -143,9 +162,30 @@ function Products(){
     api.delete(`companies/${company.id}`,{
       headers: {'Authorization': 'Bearer '+userToken}
     }).then(() => {
-      api.get('companies/all').then(response => {
-        setCompanies(response.data);
-      });
+      fetch('http://habil.servehttp.com:5003/mailgun',{
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          host: host,
+          port: port,
+          fromEmail: fromEmail,
+          pass: pass,
+          toEmail: company.email,
+          title: 'Cancelamento de Empresa',
+          message: 'Sua empresa Foi cancelada Pelo Administrador. Entre em contato com o Suporte pelo Aplicativo para mais informações.',
+          content: 'Sua empresa Foi cancelada Pelo Administrador. Entre em contato com o Suporte pelo Aplicativo para mais informações.'
+        })
+      }).then(() => {
+        api.get('companies/all').then(response => {
+          setCompanies(response.data);
+        }).then(() => {
+          alert('Empresa excluída com Sucesso.');
+        }).catch(err => {
+          alert('Erro ao encaminhar Email de Cancelamento. Entre em contato com o suporte.');
+        });
+      }).catch(err => {
+        alert('Erro com a conexão com encaminhador de Email. Entre em contato com o suporte.');
+      })
     }).catch(err => {
       alert('Tivemos um erro, entre em contato com o Suporte');
     });
@@ -158,9 +198,28 @@ function Products(){
     },{
       headers: {'Authorization': 'Bearer '+userToken}
     }).then(() => {
-      api.get('companies/all').then(response => {
-        setCompanies(response.data);
-      });
+      fetch('http://habil.servehttp.com:5003/mailgun',{
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          host: host,
+          port: port,
+          fromEmail: fromEmail,
+          pass: pass,
+          toEmail: company.email,
+          title: 'Empresa Ativada',
+          message: 'Sua empresa Foi Ativada Pelo Administrador. Entre em contato com o Suporte pelo Aplicativo para mais informações.',
+          content: 'Sua empresa Foi Ativada Pelo Administrador. Entre em contato com o Suporte pelo Aplicativo para mais informações.'
+        })
+      }).then(() => {
+        api.get('companies/all').then(response => {
+          setCompanies(response.data);
+        }).catch(() => {
+          alert('Erro ao acessar as Empresas, verifique sua Conexão.')
+        })
+      }).catch(() => {
+        alert('Aconteceu um Erro ao enviar E-mail para Confirmação. Entre em contato com o Suporte.')
+      })
     }).catch(err => {
       alert('Tivemos um erro, entre em contato com o Suporte');
     });
@@ -168,7 +227,7 @@ function Products(){
 
   // RENDERIZAR BOTOES NA TABELA ATIVAS(1) - INATIVAS(0) - CANCELADAS(2)
   function renderButton({company}:{company:Company}){
-    if(active == "0"){
+    if(active === 0){
       return(
         <div className="button-row">
           <div className="button-col">
@@ -184,7 +243,7 @@ function Products(){
           </div>
         </div>
       );
-    }else if(active == "1"){
+    }else if(active === 1){
       return (
         <div className="button-row">
           <div className="button-col">

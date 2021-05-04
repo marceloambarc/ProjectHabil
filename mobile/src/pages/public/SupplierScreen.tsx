@@ -317,7 +317,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
     alignItems: 'center',
     maxWidth: '65%',
-    backgroundColor: 'rgba(1, 120, 149, 0.8)'
+    backgroundColor: 'rgb(1, 120, 149)'
   },
   titleText: {
     paddingHorizontal: 20,

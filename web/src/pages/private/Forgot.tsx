@@ -11,8 +11,6 @@ import '../../styles/pages/companies_buttons.css';
 import '../../styles/pages/table.css';
 
 import { host, port, fromEmail, pass } from '../../services/email.json';
-import { getRoles } from '@testing-library/dom';
-
 
 interface Company {
   id: number;

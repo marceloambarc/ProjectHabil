@@ -2,6 +2,7 @@ import * as React from 'react';
 import { useEffect, useState } from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity, Alert, Dimensions } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
+import ImageZoom from 'react-native-image-pan-zoom';
 import Constants from "expo-constants";
 import api from '../../services/api';
 
@@ -160,11 +161,19 @@ export default function HomeScreen(){
 
         <View style={styles.companyImageContainer}>
 
-            
-              <Image
-                style={styles.companyImage}
-                source={{uri: `data:image/jpeg;base64,${companyImage}`}}
-              />
+        <ImageZoom  
+          cropWidth={Dimensions.get('window').width * .47}
+          cropHeight={Dimensions.get('window').height * .20}
+          imageWidth={Dimensions.get('window').width * .47}
+          imageHeight={Dimensions.get('window').height * .20}
+        >
+        
+          <Image
+            style={styles.companyImage}
+            source={{uri: `data:image/jpeg;base64,${companyImage}`}}
+          />
+
+        </ImageZoom>
           
         </View>
 

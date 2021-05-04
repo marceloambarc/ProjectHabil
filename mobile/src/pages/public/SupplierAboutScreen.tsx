@@ -3,6 +3,7 @@ import { View ,Image ,TextInput, ScrollView,
 StyleSheet, Text, Dimensions, TouchableOpacity } from 'react-native';
 import { useRoute } from '@react-navigation/native';
 import { Feather } from '@expo/vector-icons';
+import ImageZoom from 'react-native-image-pan-zoom';
 
 interface Props {
   name: any,
@@ -58,12 +59,18 @@ export default function SupplierAboutScreen({navigation}:{navigation:any}){
       <View style={styles.background}>
         <View style={styles.container}>
 
-
+          <ImageZoom  
+            cropWidth={Dimensions.get('window').width * 0.5}
+            cropHeight={Dimensions.get('window').height * 0.2}
+            imageWidth={Dimensions.get('window').width * 0.5}
+            imageHeight={Dimensions.get('window').height * 0.2}
+          >
            
-          <Image
-            source={{ uri: `data:image/jpeg;base64,${companyImage}` }}
-            style={{width: Dimensions.get('window').width * 0.5, height: Dimensions.get('window').height * 0.2, marginBottom: Dimensions.get('window').height * 0.025, borderRadius: 20}}
-          />
+            <Image
+              source={{ uri: `data:image/jpeg;base64,${companyImage}` }}
+              style={{width: Dimensions.get('window').width * 0.5, height: Dimensions.get('window').height * 0.2, marginBottom: Dimensions.get('window').height * 0.025, borderRadius: 20}}
+            />
+          </ImageZoom>
 
           <TextInput
           style={styles.input}

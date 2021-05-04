@@ -1,24 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { FiDollarSign, FiLayers, FiBookOpen, 
-FiArrowDownCircle, FiAlertOctagon, FiCheck, 
+import { FiAlertOctagon, FiCheck, 
 FiCheckCircle, FiAlertCircle, FiBook } from 'react-icons/fi';
 import Modal from 'react-modal';
 
 import Sidebar from '../../components/Sidebar';
 import Validation from '../../components/Validation';
 import api from '../../services/api';
+import { host, port, fromEmail, pass } from '../../services/email.json';
 
 import '../../styles/pages/controlmap.css';
 import '../../styles/pages/card.css';
 import '../../styles/pages/card-columns.css';
-
-{/* 
-  --- TO DO LIST
-  Modificar o "id" da empresa para Nome 'string'
-  Ordenar com os botos os produtos
-
-  Sort de visualizacao dos produtos
-*/}
 
 interface Product {
   id: number;
@@ -30,25 +22,14 @@ interface Product {
   image: string;
   validade: string;
   discount: string;
-  is_active: string;
-}
-
-interface Company {
-  id: number;
-  name: string;
-}
-
-interface Validate {
-  test: any
+  is_active: number;
 }
 
 function Products(){
-  const getUserToken = localStorage.getItem('userToken');
-  const [userToken] = useState(`${getUserToken}`)
+  const userToken = localStorage.getItem('userToken');
   const [products, setProducts] = useState<Product[]>([]);
-  const [companies, setCompanies] = useState<Company[]>([]);
-  const [active, setActive] = useState('0');
-  const [validate, setValidate] = useState('');
+  const [active, setActive] = useState(0);
+  const [validate] = useState('');
   const [base] = useState('data:image/png;base64');
   const [isLoading, setIsLoading] = useState(true);
   const [role, setRole] = useState('');
@@ -57,40 +38,24 @@ function Products(){
   const [viewImage, setViewImage] = useState('');
   const [viewName, setViewName] = useState('');
 
-  //----CARREGAMENTO DE DADOS E LOADING INICIAL DE TELA ----///
-  async function getRoles(){
-    api.get('admin/tk',{
-      headers: {'Authorization': 'Bearer '+userToken}
-    }).then(res => {
-      setRole(res.data.role);
-    }).catch(err => {
-      setRole('guest');
-    });
-  }
-
   useEffect(() => {
     if(!isLoading) return;
 
-    //Carregamento de empresas
     api.get('products/all').then(products => {
-
-      //Realocar Resposta para UseState
       setProducts(products.data);
-
-      //Carregar empresas para nomeclatura na coluna "EMPRESA"
-      api.get('companies/all').then(companies => {
-        setCompanies(companies.data)
+      api.get('admin/tk',{
+        headers: {'Authorization': 'Bearer '+userToken}
+      }).then(res => {
+        setRole(res.data.role);
+        setIsLoading(false);
       }).catch(err => {
-        alert('Ops! Tivemos um erro.');
+        setRole('guest');
+        setIsLoading(false);
       });
-
-      getRoles();
-
-      //Finalizar Carregamento
-      setIsLoading(false);
     }).catch(err => {
       alert("Ops! Tivemos um erro");
-    })
+      setIsLoading(false);
+    });
   }, []);
 
   function openModal({product}:{product:Product}) {
@@ -107,7 +72,7 @@ function Products(){
 
     //----RENDERIZAR TÍTULO DA TABELA
     function renderTitle(){
-      if(active == '0'){
+      if(active === 0){
         return(
           <h1 style={{fontSize:'22px'}}>Promoções Inativas</h1>
         )
@@ -128,9 +93,26 @@ function Products(){
     api.delete(`products/${product.id}`,{
       headers: {'Authorization': 'Bearer '+userToken}
     }).then(() => {
-      api.get('products/all').then(response => {
-        setProducts(response.data);
-      });
+      fetch('http://habil.servehttp.com:5003/mailgun',{
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          host: host,
+          port: port,
+          fromEmail: fromEmail,
+          pass: pass,
+          toEmail: /*WE NEED TO INSEERT HERE*/'',
+          title: 'Produto Cancelado',
+          message: `O produto ${product.name} Foi Inativada Pelo Administrador. Entre em contato com o Suporte pelo Aplicativo para mais informações.`,
+          content: `O produto ${product.name} Foi Inativada Pelo Administrador. Entre em contato com o Suporte pelo Aplicativo para mais informações.`
+        })
+      }).then(() => {
+        api.get('products/all').then(response => {
+          setProducts(response.data);
+        });
+      }).catch(err => {
+        alert('Aconteceu um Erro ao acessar os Produtos. Entre em contato com o Suporte.')
+      })
     }).catch(err => {
       alert('Tivemos um erro, entre em contato com o Suporte');
     });
@@ -167,16 +149,16 @@ function Products(){
 
   //----VIEWS----///
   async function handleViewInactive(){
-    setActive('0')
+    setActive(0)
   }
 
   async function handleViewActive(){
-    setActive('1')
+    setActive(1)
   }
 
   // RENDERIZAR BOTOES NA TABELA ATIVAS(1) - INATIVAS(0) - NAO POSSUI CANCELADAS
   function renderButton({product}:{product:Product}){
-    if(active == '0'){
+    if(active === 0){
       return(
         <div className="button-row">
           <div className="button-col">
@@ -192,7 +174,7 @@ function Products(){
           </div>
         </div>
       );
-    }else if(active == '1'){
+    }else if(active === 1){
       return(
         <div className="button-row">
           <div className="button-col">
@@ -293,7 +275,7 @@ function Products(){
               overlayClassName="Overlay"
             >
               <h2>Promoção {viewName}</h2>
-              <img src={base + ',' + viewImage} style={{width: '100%'}} />
+              <img src={base + ',' + viewImage} style={{width: '100%'}} alt="CompreMaisAki" />
               <div>
                 <button className="modalButton" onClick={closeModal}>FECHAR</button>
               </div>
@@ -314,26 +296,33 @@ function Products(){
             </tr>
 
             {products.map(product => {
-              if(product.is_active == active){
+              if(product.is_active === active){
                 return(
                     <tr key={product.id}>
                     <td>{product.name}</td>
                     <td>R$ {product.price}</td>
                     <td>{product.description}</td>
                     <td>{product.date}</td>
-                    <td>{product.company_id}</td>
+                    <td>
+                      {product.company_id}
+                    </td>
                     <td>
                       <Validation active={active} validate={product.validade} promoName={product.name} productId={product.id} userToken={userToken} />
                     </td>
                     <td>{product.discount} %</td>
-                    <td onClick={() => handleExpandImage({product})}><img src={base + ',' + product.image} style={{width: '30%', cursor: 'pointer'}} className="landingImg" alt="CompreMaisAki" /></td>
+                    <td onClick={() => handleExpandImage({product})}>
+                      <img 
+                        src={base + ',' + product.image} 
+                        style={{display: 'flex', justifyContent: 'center', width: '30px', cursor: 'pointer'}} 
+                        className="landingImg" 
+                        alt="CompreMaisAki"
+                      />
+                    </td>
                     <td>
                       {renderButton({product})}
                     </td>
                   </tr>
                 );
-              }else{
-                return;
               }
             })}
             </tbody>
@@ -347,7 +336,3 @@ function Products(){
 }
 
 export default Products;
-
-function usePrevious(validate: string) {
-  throw new Error('Function not implemented.');
-}
