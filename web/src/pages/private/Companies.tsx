@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { FiAlertOctagon, FiCheck, FiCheckCircle, 
 FiAlertCircle, FiXCircle, FiBook, FiSearch } from 'react-icons/fi';
 import Modal from 'react-modal';
+import { confirmAlert } from 'react-confirm-alert';
+import 'react-confirm-alert/src/react-confirm-alert.css';
 
 import Sidebar from '../../components/Sidebar'
 import api from '../../services/api';
@@ -123,8 +125,9 @@ function Products(){
     setActive(2)
   }
 
-  //---MANIPULAR EMPRESAS (INSERIR CARREGAMENTO VISUAL)---//
-  async function handleInactive({company}:{company:Company}){
+  // FUNÇÕES DE BOTOES
+
+  async function handleConfirmInactive({company}:{company:Company}){
     api.put(`companies/${company.id}`,{
       // 0 === Empresa INATIVA
       is_active: 0,
@@ -158,7 +161,25 @@ function Products(){
     });
   }
 
-  async function handleCanceled({company}:{company:Company}){
+  //---MANIPULAR EMPRESAS (INSERIR CARREGAMENTO VISUAL)---//
+  async function handleInactive({company}:{company:Company}){
+    confirmAlert({
+      title: `Inativar ${company.name}?`,
+      message: `Você tem certeza que deseja inativar a empresa "${company.name}"?`,
+      buttons: [
+        {
+          label: 'Sim',
+          onClick: ()  => handleConfirmInactive({company})
+        },
+        {
+          label: 'Não',
+          onClick: () => {}
+        }
+      ]
+    })
+  }
+
+  async function handleConfirmCanceled({company}:{company:Company}){
     api.delete(`companies/${company.id}`,{
       headers: {'Authorization': 'Bearer '+userToken}
     }).then(() => {
@@ -191,7 +212,24 @@ function Products(){
     });
   }
 
-  async function handleActive({company}:{company:Company}){
+  async function handleCanceled({company}:{company:Company}){
+    confirmAlert({
+      title: `Deletar a Empresa ${company.name}`,
+      message: `Você tem certeza que deseja Deletar "${company.name}"?`,
+      buttons: [
+        {
+          label: 'Sim',
+          onClick: ()  => handleConfirmCanceled({company})
+        },
+        {
+          label: 'Não',
+          onClick: () => {}
+        }
+      ]
+    });
+  }
+
+  async function handleConfirmActive({company}:{company:Company}){
     api.put(`companies/${company.id}`,{
       // 1 === Empresa ATIVA
       is_active: 1,
@@ -222,6 +260,23 @@ function Products(){
       })
     }).catch(err => {
       alert('Tivemos um erro, entre em contato com o Suporte');
+    });
+  }
+
+  async function handleActive({company}:{company:Company}){
+    confirmAlert({
+      title: `Ativar Empresa ${company.name}?`,
+      message: `Você tem certeza que deseja Ativar a Empresa ${company.name}?`,
+      buttons: [
+        {
+          label: 'Sim',
+          onClick: ()  => handleConfirmActive({company})
+        },
+        {
+          label: 'Não',
+          onClick: () => alert('NO')
+        }
+      ]
     });
   }
 

@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { FiAlertOctagon, FiCheck, 
 FiCheckCircle, FiAlertCircle, FiBook } from 'react-icons/fi';
 import Modal from 'react-modal';
+import { confirmAlert } from 'react-confirm-alert';
+import 'react-confirm-alert/src/react-confirm-alert.css';
 
 import Sidebar from '../../components/Sidebar';
 import Validation from '../../components/Validation';
@@ -25,9 +27,28 @@ interface Product {
   is_active: number;
 }
 
+interface Company {
+  id: number;
+  business: string;
+  cnpj: string;
+  name: string;
+  phone: string;
+  email: string;
+  address: string;
+  district: string;
+  city: string;
+  uf: string;
+  password: string;
+  image: string;
+  keywords: string;
+  is_active: number;
+  max_prom: number;
+}
+
 function Products(){
   const userToken = localStorage.getItem('userToken');
   const [products, setProducts] = useState<Product[]>([]);
+  const [companies, setCompanies] = useState<Company[]>([]);
   const [active, setActive] = useState(0);
   const [validate] = useState('');
   const [base] = useState('data:image/png;base64');
@@ -47,7 +68,12 @@ function Products(){
         headers: {'Authorization': 'Bearer '+userToken}
       }).then(res => {
         setRole(res.data.role);
-        setIsLoading(false);
+        api.get('companies').then(res => {
+          setCompanies(res.data);
+          setIsLoading(false);
+        }).catch(err => {
+          alert('Erro ao Acessar as Empresas, verifique sua conexão');
+        })
       }).catch(err => {
         setRole('guest');
         setIsLoading(false);
@@ -71,25 +97,30 @@ function Products(){
   }
 
     //----RENDERIZAR TÍTULO DA TABELA
-    function renderTitle(){
-      if(active === 0){
-        return(
-          <h1 style={{fontSize:'22px'}}>Promoções Inativas</h1>
-        )
-      }else{
-        return(
-          <h1 style={{fontSize:'22px'}}>Promoções Ativas</h1>  
-        )
-      }
+  function renderTitle(){
+    if(active === 0){
+      return(
+        <h1 style={{fontSize:'22px'}}>Promoções Inativas</h1>
+      )
+    }else{
+      return(
+        <h1 style={{fontSize:'22px'}}>Promoções Ativas</h1>  
+      )
     }
+  }
 
-   //----(PENDENT)EXPAND IMAGE---//
-   async function handleExpandImage({product}:{product:Product}){
+  
+  async function handleExpandImage({product}:{product:Product}){
     openModal({product});
   }
 
-  //---CANCEL/ACTIVE/INACTIVE BUTTON FUNCTIONS---//
-  async function handleCanceled({product}:{product:Product}){
+  async function handleConfirmCanceled({product}:{product:Product}){
+    const email = companies.map(company => {
+      if(product.company_id === company.id){
+        return company.email
+      }
+    });
+    console.log(email);
     api.delete(`products/${product.id}`,{
       headers: {'Authorization': 'Bearer '+userToken}
     }).then(() => {
@@ -103,8 +134,8 @@ function Products(){
           pass: pass,
           toEmail: /*WE NEED TO INSEERT HERE*/'',
           title: 'Produto Cancelado',
-          message: `O produto ${product.name} Foi Inativada Pelo Administrador. Entre em contato com o Suporte pelo Aplicativo para mais informações.`,
-          content: `O produto ${product.name} Foi Inativada Pelo Administrador. Entre em contato com o Suporte pelo Aplicativo para mais informações.`
+          message: `A Promoção ${product.name} Foi Inativada Pelo Administrador. Entre em contato com o Suporte pelo Aplicativo para mais informações.`,
+          content: `A Promoção ${product.name} Foi Inativada Pelo Administrador. Entre em contato com o Suporte pelo Aplicativo para mais informações.`
         })
       }).then(() => {
         api.get('products/all').then(response => {
@@ -118,32 +149,130 @@ function Products(){
     });
   }
 
-  async function handleActive({product}:{product:Product}){
+  //---CANCEL/ACTIVE/INACTIVE BUTTON FUNCTIONS---//
+  async function handleCanceled({product}:{product:Product}){
+    confirmAlert({
+      title: `Deletar ${product.name}`,
+      message: `Você tem certeza que deseja Deletar a Promoção ${product.name}`,
+      buttons: [
+        {
+          label: 'Não',
+          onClick: ()  => handleConfirmCanceled({product})
+        },
+        {
+          label: 'No',
+          onClick: () => {}
+        }
+      ]
+    });
+  }
+
+  async function handleConfirmActive({product}:{product:Product}){
+    const email = companies.map(company => {
+      if(product.company_id === company.id){
+        return company.email
+      }
+    });
     api.put(`products/${product.id}`,{
       is_active: 1,
       validate: validate
     },{
       headers: {'Authorization': 'Bearer '+userToken}
     }).then(res => {
-      api.get('products/all').then(response => {
-        setProducts(response.data);
-      });
+      fetch('http://habil.servehttp.com:5003/mailgun',{
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          host: host,
+          port: port,
+          fromEmail: fromEmail,
+          pass: pass,
+          toEmail: email,
+          title: 'Produto Ativado',
+          message: `A Promoção ${product.name} Foi Ativado Pelo Administrador. Entre em contato com o Suporte pelo Aplicativo para mais informações.`,
+          content: `A Promoção ${product.name} Foi Ativado Pelo Administrador. Entre em contato com o Suporte pelo Aplicativo para mais informações.`
+        })
+      }).then(() => {
+        api.get('products/all').then(response => {
+          setProducts(response.data);
+        });
+      }).catch(() => {
+        alert('Erro ao carregar os produtos, verifique sua conexão.');
+      })
+    }).catch(err => {
+      alert('Tivemos um erro, entre em contato com o Suporte');
+    });
+  }
+
+  async function handleActive({product}:{product:Product}){
+    confirmAlert({
+      title: `Ativar a Promoção ${product.name}`,
+      message: `Deseja Ativar a Promoção ${product.name}?`,
+      buttons: [
+        {
+          label: 'Não',
+          onClick: ()  => handleConfirmActive({product})
+        },
+        {
+          label: 'No',
+          onClick: () => {}
+        }
+      ]
+    });
+  }
+
+  async function handleConfirmInactive({product}:{product:Product}){
+    const email = companies.map(company => {
+      if(product.company_id === company.id){
+        return company.email
+      }
+    });
+    api.put(`products/${product.id}`,{
+      is_active: 0,
+    },{
+      headers: {'Authorization': 'Bearer '+userToken}
+    }).then(() => {
+      fetch('http://habil.servehttp.com:5003/mailgun',{
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          host: host,
+          port: port,
+          fromEmail: fromEmail,
+          pass: pass,
+          toEmail: email,
+          title: 'Promoção Desativada',
+          message: `A Promoção ${product.name} Foi Desativada Pelo Administrador. Entre em contato com o Suporte pelo Aplicativo para mais informações.`,
+          content: `A Promoção ${product.name} Foi Desativada Pelo Administrador. Entre em contato com o Suporte pelo Aplicativo para mais informações.`
+        })
+      }).then(() => {
+        api.get('products/all').then(response => {
+          setProducts(response.data);
+        }).catch(() => {
+          alert('Tivemos um problema de Carregar as Promoções, entre em contato com o Suporte.');
+        })
+      }).catch(() => {
+        alert('Erro ao Encaminhar o email de informação.');
+      })
     }).catch(err => {
       alert('Tivemos um erro, entre em contato com o Suporte');
     });
   }
 
   async function handleInactive({product}:{product:Product}){
-    api.put(`products/${product.id}`,{
-      is_active: 0,
-    },{
-      headers: {'Authorization': 'Bearer '+userToken}
-    }).then(() => {
-      api.get('products/all').then(response => {
-        setProducts(response.data);
-      });
-    }).catch(err => {
-      alert('Tivemos um erro, entre em contato com o Suporte');
+    confirmAlert({
+      title: `Desativar a Promoção ${product.name}`,
+      message: `Deseja Desativar a Promoção ${product.name}?`,
+      buttons: [
+        {
+          label: 'Não',
+          onClick: ()  => handleConfirmInactive({product})
+        },
+        {
+          label: 'No',
+          onClick: () => {}
+        }
+      ]
     });
   }
 
