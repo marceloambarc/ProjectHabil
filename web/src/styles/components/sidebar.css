@@ -79,3 +79,9 @@ aside.app-sidebar .home-button a:hover,
 aside.app-sidebar .home-button button:hover {
     background: #17D6EB;
 }
+
+@media only screen and (max-width: 1110px){
+    aside.app-sidebar {
+        display: none
+    }
+}

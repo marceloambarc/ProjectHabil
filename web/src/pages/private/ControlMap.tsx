@@ -20,8 +20,11 @@ function ControlMap(){
   const [isLoading, setIsLoading] = useState(true);
   const [role, setRole] = useState('');
 
-  const [isLoadingImage, setIsLoadingImage] = useState(false);
-  const [isImageLoaded, setIsImageLoaded] = useState(true);
+  const [isLoadingImage1, setIsLoadingImage1] = useState(false);
+  const [isLoadingImage2, setIsLoadingImage2] = useState(false);
+
+  const [isImage1Loaded, setIsImage1Loaded] = useState(true);
+  const [isImage2Loaded, setIsImage2Loaded] = useState(true);
   
   const fileInput1 = createRef<any>();
   const fileInput2 = createRef<any>();
@@ -54,15 +57,17 @@ function ControlMap(){
     new Promise((resolve:any) => {
       Resizer.imageFileResizer(
         file,
-        150,
-        150,
+        200,
+        200,
         "PNG",
         100,
         0,
         (uri) => {
           resolve(uri);
         },
-        "base64"
+        "base64",
+        200,
+        200,
       );
     });
 
@@ -71,44 +76,44 @@ function ControlMap(){
     setIsLoading(true);
     e.preventDefault();
     const file = fileInput1.current?.files[0];
-    setIsLoadingImage(true);
+    setIsLoadingImage1(true);
     const image = await resizeFile(file);
     const fileAdaptedRender = String(image).split(',').pop();
     setImg1(fileAdaptedRender? fileAdaptedRender: '');
 
-    setIsLoadingImage(false);
+    setIsLoadingImage1(false);
     setIsLoading(false);
-    setIsImageLoaded(false);
+    setIsImage1Loaded(false);
   }
 
   async function handleChangeImage2(e:any){
     setIsLoading(true);
     e.preventDefault();
     const file = fileInput2.current?.files[0];
-    setIsLoadingImage(true);
+    setIsLoadingImage2(true);
     const image = await resizeFile(file);
     const fileAdaptedRender = String(image).split(',').pop();
     console.log(fileAdaptedRender);
     setImg2(fileAdaptedRender? fileAdaptedRender: '');
     
-    setIsLoadingImage(false);
+    setIsLoadingImage2(false);
     setIsLoading(false);
-    setIsImageLoaded(false);
+    setIsImage2Loaded(false);
   }
 
   async function handleSendImage1(){
-    if(!isImageLoaded){
-      setIsLoadingImage(true);
+    if(!isImage1Loaded){
+      setIsLoadingImage1(true);
       api.put('backgrounds/9',{
         background_image1: `${img1}`
       },{
         headers: {'Authorization': 'Bearer '+userToken}
       }).then(res => {
-        setIsLoadingImage(false);
-        setIsImageLoaded(true);
+        setIsLoadingImage1(false);
+        setIsImage1Loaded(true);
         alert('Imagem Alterada com Sucesso!')
       }).catch(err => {
-        setIsLoadingImage(false);
+        setIsLoadingImage1(false);
         alert('Tivemos um Erro inesperado.');
       });
     }else{
@@ -117,18 +122,18 @@ function ControlMap(){
   }
 
   async function handleSendImage2(){
-    if(!isImageLoaded){
-      setIsLoadingImage(true);
+    if(!isImage2Loaded){
+      setIsLoadingImage2(true);
       api.put('backgrounds/9',{
         background_image2: `${img2}`
       },{
         headers: {'Authorization': 'Bearer '+userToken}
       }).then(res => {
-        setIsLoadingImage(false);
-        setIsImageLoaded(true);
+        setIsLoadingImage2(false);
+        setIsImage2Loaded(true);
         alert('Imagem Alterada com Sucesso!')
       }).catch(err => {
-        setIsLoadingImage(false);
+        setIsLoadingImage2(false);
         alert('Tivemos um Erro inesperado.');
       });
     }else{
@@ -162,7 +167,7 @@ function ControlMap(){
   }
 
   function renderUploadButton1(){
-    if(isLoadingImage){
+    if(isLoadingImage1){
       return (
         <button className="loading-image-button">
           Carregando...
@@ -178,7 +183,7 @@ function ControlMap(){
   }
 
   function renderUploadButton2(){
-    if(isLoadingImage){
+    if(isLoadingImage2){
       return (
         <button className="loading-image-button">
           Carregando...
