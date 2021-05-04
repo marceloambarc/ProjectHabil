@@ -89,7 +89,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   companyImage: {
-    height: 420,
+    height: 320,
     width: '100%',
   },
   textImageLogo: {

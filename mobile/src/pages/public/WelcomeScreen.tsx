@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Text, View, TouchableOpacity, StyleSheet, Image, 
-Linking, TouchableHighlight, Alert } from 'react-native';
+Linking, TouchableHighlight, Alert, Dimensions } from 'react-native';
 import { SearchBar } from 'react-native-elements';
 import { Feather } from '@expo/vector-icons';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { createDrawerNavigator } from '@react-navigation/drawer';
-import { useRoute } from '@react-navigation/native';
 import ImageZoom from 'react-native-image-pan-zoom';
 import api from '../../services/api';
 
@@ -14,6 +13,7 @@ import MainPath from '../../../src/pages/client/routes';
 import RegisterScreen from '../client/RegisterScreen';
 import SuportScreen from './view/SupportScreen';
 import About from './view/AboutScreen';
+import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 
 const welcomeBackgroundImage = "../../../assets/content_id.png";
 
@@ -56,12 +56,12 @@ function WelcomeScreen({ navigation }:{ navigation:any }){
     }
   }
 
-  return (
-    <SafeAreaView>
+  function WelcomeHeader(){
+    return(
       <View style={styles.headerBackground}>
         <View style={styles.headerContainer}>
           <Image
-            style={styles.cmaLogo}
+          style={styles.cmaLogo}
             source={require("../../../assets/cmatextlogo.png")}
           />
           <TouchableOpacity onPress={() => navigation.openDrawer()}>
@@ -69,6 +69,11 @@ function WelcomeScreen({ navigation }:{ navigation:any }){
           </TouchableOpacity>
         </View>
       </View>
+    );
+  }
+
+  function SearchRow(){
+    return (
       <View style={styles.searchRow}>
         <View style={styles.searchBarContainer}>
           <SearchBar 
@@ -88,9 +93,16 @@ function WelcomeScreen({ navigation }:{ navigation:any }){
           </TouchableOpacity>
         </View>
       </View>
+    );
+  }
+
+  return (
+    <SafeAreaView>
+      <WelcomeHeader />
+      <SearchRow />
       <View style={styles.background}>
         <View style={styles.container}>
-            <TouchableHighlight style={styles.companyImageContainer} onPress={() => Linking.openURL("https://www.google.com/search?rlz=1C1CHBF_enBR866BR866&sxsrf=ALeKk030DPJvg9DthHm-93J6dOGCTrPIKg%3A1612875174528&ei=poUiYIfVH6Kf5OUPtu-0sAU&q=Compre+mais+Aki&oq=Compre+mais+Aki&gs_lcp=CgZwc3ktYWIQAzIICAAQCBANEB4yCAgAEA0QBRAeMggIABAIEA0QHjIKCAAQCBANEAoQHjoECCMQJzoFCAAQkQI6AggAOggILhDHARCjAjoECAAQQzoCCC46BAgAEAo6BQgAEMsBOgsILhDHARCvARDLAToHCAAQChDLAToNCC4QxwEQrwEQChDLAToFCCEQoAE6BAghEBVQ-KABWOTAAWCtyQFoAXAAeACAAc0CiAGQGJIBCDAuMTMuMy4xmAEAoAEBqgEHZ3dzLXdpesABAQ&sclient=psy-ab&ved=0ahUKEwiHwOCe7NzuAhWiD7kGHbY3DVYQ4dUDCA0&uact=5")}>
+            <TouchableWithoutFeedback style={styles.companyImageContainer} onPress={() => Linking.openURL("https://www.google.com/search?rlz=1C1CHBF_enBR866BR866&sxsrf=ALeKk030DPJvg9DthHm-93J6dOGCTrPIKg%3A1612875174528&ei=poUiYIfVH6Kf5OUPtu-0sAU&q=Compre+mais+Aki&oq=Compre+mais+Aki&gs_lcp=CgZwc3ktYWIQAzIICAAQCBANEB4yCAgAEA0QBRAeMggIABAIEA0QHjIKCAAQCBANEAoQHjoECCMQJzoFCAAQkQI6AggAOggILhDHARCjAjoECAAQQzoCCC46BAgAEAo6BQgAEMsBOgsILhDHARCvARDLAToHCAAQChDLAToNCC4QxwEQrwEQChDLAToFCCEQoAE6BAghEBVQ-KABWOTAAWCtyQFoAXAAeACAAc0CiAGQGJIBCDAuMTMuMy4xmAEAoAEBqgEHZ3dzLXdpesABAQ&sclient=psy-ab&ved=0ahUKEwiHwOCe7NzuAhWiD7kGHbY3DVYQ4dUDCA0&uact=5")}>
               <ImageZoom cropWidth={420}
                         cropHeight={390}
                         imageWidth={420}
@@ -101,7 +113,7 @@ function WelcomeScreen({ navigation }:{ navigation:any }){
                   resizeMode='contain'
                 />       
               </ImageZoom>
-            </TouchableHighlight>
+            </TouchableWithoutFeedback>
           </View>
         </View>
     </SafeAreaView>
@@ -178,7 +190,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   container: {
-    marginTop: '25%',
+    marginBottom: Dimensions.get('window').height * .7,
+    height: Dimensions.get('window').height * 1,
     alignItems: 'center',
     justifyContent: 'center'
   },
@@ -187,7 +200,7 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   companyImage: {
-    height: 420,
+    height: Dimensions.get('window').height * 0.4,
     width: '100%',
   },
 });
