@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from 'react';
+import { confirmAlert } from 'react-confirm-alert';
+import 'react-confirm-alert/src/react-confirm-alert.css';
 import { GiConfirmed } from 'react-icons/gi';
 import { FiAlertOctagon } from 'react-icons/fi';
 import { GiArmorUpgrade, GiArmorDowngrade } from 'react-icons/gi';
@@ -80,7 +82,7 @@ function Moderators(){
       }
     }
 
-    async function handleCanceled({admin}:{admin:Admin}){
+    async function handleConfirmCanceled({admin}:{admin:Admin}){
       api.delete(`admin/${admin.id}`,{
         headers: {'Authorization': 'Bearer '+userToken}
       }).then(res => {
@@ -91,7 +93,24 @@ function Moderators(){
       });
     }
 
-    async function handlePromote({admin}:{admin:Admin}){
+    async function handleCanceled({admin}:{admin:Admin}){
+      confirmAlert({
+        title: `Deletar o usuário ${admin.user}?`,
+        message: `Você tem certeza que deseja deletar o usuário "${admin.user}"?`,
+        buttons: [
+          {
+            label: 'Sim',
+            onClick: ()  => handleConfirmCanceled({admin})
+          },
+          {
+            label: 'Não',
+            onClick: () => {}
+          }
+        ]
+      });
+    }
+
+    async function handleConfirmPromote({admin}:{admin:Admin}){
       api.put(`admin/${admin.id}`,{
         role: "adm"
       },{
@@ -104,7 +123,24 @@ function Moderators(){
       });
     }
 
-    async function handleRelegate({admin}:{admin:Admin}){
+    async function handlePromote({admin}:{admin:Admin}){
+      confirmAlert({
+        title: `Promover o usuário ${admin.user}?`,
+        message: `Você tem certeza que deseja promover o usuário "${admin.user}"?`,
+        buttons: [
+          {
+            label: 'Sim',
+            onClick: ()  => handleConfirmPromote({admin})
+          },
+          {
+            label: 'Não',
+            onClick: () => {}
+          }
+        ]
+      });
+    }
+
+    async function handleConfirmRelegate({admin}:{admin:Admin}){
       api.put(`admin/${admin.id}`,{
         role: "guest"
       },{
@@ -117,19 +153,36 @@ function Moderators(){
       });
     }
 
+    async function handleRelegate({admin}:{admin:Admin}){
+      confirmAlert({
+        title: `Relegar o usuário ${admin.user}?`,
+        message: `Você tem certeza que deseja relegar o usuário "${admin.user}"?`,
+        buttons: [
+          {
+            label: 'Sim',
+            onClick: ()  => handleConfirmRelegate({admin})
+          },
+          {
+            label: 'Não',
+            onClick: () => {}
+          }
+        ]
+      });
+    }
+
     //---RENDERIZAR BOTOES---//
     function renderButtons({admin}:{admin:Admin}){
       if(admin.role == 'guest'){
         return(
           <div className="button-row">
             <div className="button-col">
-              <button className="cancel" onClick={() => handleCanceled({admin})}>
+              <button className="moderator-cancel" onClick={() => handleCanceled({admin})}>
                 <FiAlertOctagon size="13" color="#FFF" />
               </button>
             </div>
             
             <div className="button-col">
-              <button className="aprove" onClick={() => handlePromote({admin})}>
+              <button className="moderator-promote" onClick={() => handlePromote({admin})}>
                 <GiArmorUpgrade size="13" color="#FFF" />
               </button>
             </div>
@@ -139,13 +192,13 @@ function Moderators(){
         return(
           <div className="button-row">
             <div className="button-col">
-              <button className="cancel" onClick={() => handleCanceled({admin})}>
+              <button className="moderator-cancel" onClick={() => handleCanceled({admin})}>
                 <FiAlertOctagon size="13" color="#FFF" />
               </button>
             </div>
             
             <div className="button-col">
-              <button className="aprove" onClick={() => handleRelegate({admin})}>
+              <button className="moderator-relegate" onClick={() => handleRelegate({admin})}>
                 <GiArmorDowngrade size="13" color="#FFF" />
               </button>
             </div>
@@ -164,7 +217,7 @@ function Moderators(){
         );
       }else{
         return (
-          <table id="companies">
+          <table id="moderators">
             <tbody>
             <tr>
               <th>Admin</th>

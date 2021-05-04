@@ -48,3 +48,32 @@
    padding: 20px!important;
    width: 100%!important;
 }
+
+.button-row{
+   padding: 0px!important;
+   margin: 0%!important;
+   flex-direction: row;
+   margin-right: 0px;
+   justify-content: center;
+   align-items: center;
+}
+
+.button-col{
+   width: 49%;
+   margin-left: 0px;
+}
+
+.moderator-cancel {
+   background-color: #DE2121;
+   width: 100px
+}  
+
+.moderator-promote {
+   background-color:  #199;
+   width: 100px;
+ }
+ 
+ .moderator-relegate {
+   background-color: #994311;
+   width: 100px;
+ }
