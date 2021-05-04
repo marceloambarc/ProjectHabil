@@ -10,7 +10,7 @@ export default function PromoInput({maxProm, companyId, companyName,userToken}:a
   function handleSetMaxProm(maxProm:any, event:string){
     setMaxPromProto(event);
   }
-  function handleSend(){
+  async function handleSend(){
     api.put(`companies/${company_id}`,{
       max_prom: maxPromProto,
       is_active: 1,

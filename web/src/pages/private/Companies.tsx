@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { FiAlertOctagon, FiCheck, FiCheckCircle, 
-FiAlertCircle, FiXCircle, FiBook } from 'react-icons/fi';
+FiAlertCircle, FiXCircle, FiBook, FiSearch } from 'react-icons/fi';
 import Modal from 'react-modal';
 
 import Sidebar from '../../components/Sidebar'
@@ -41,7 +41,7 @@ function Products(){
   const [base] = useState('data:image/png;base64');
   const [isLoading, setIsLoading] = useState(true);
   const [role, setRole] = useState('');
-  const [maxPromProto, setMaxPromProto] = useState(5);
+  const [searchCnpj, setSearchCnpj] = useState('');
 
   const [modalIsOpen, setIsOpen] = useState(false);
   const [viewImage, setViewImage] = useState('');
@@ -203,6 +203,21 @@ function Products(){
     }
   }
 
+  function handleSetSearchCnpj(event:string){
+    setSearchCnpj(event);
+  }
+
+  function renderSearch(){
+    return (
+      <div className="search-button-row">
+        <input className="search-input" type="text" placeholder="Procure CNPJ" value={searchCnpj} onChange={event => handleSetSearchCnpj(event?.target.value)} />
+        <button className="aprove" onClick={() => {}}>
+          <FiSearch size="13" color="#FFF" />
+        </button>
+      </div>
+    )
+  }
+
   // TABELA EM COMPONENTE
   function renderTable(){
     if(isLoading){
@@ -242,14 +257,25 @@ function Products(){
                 <td>{company.cnpj}</td>
                 <td>{company.phone}</td>
                 <td>
-                  <PromoInput maxProm={company.max_prom} companyId={company.id} companyName={company.name} userToken={userToken} />
+                  <PromoInput 
+                    maxProm={company.max_prom} 
+                    companyId={company.id} 
+                    companyName={company.name} 
+                    userToken={userToken}
+                  />
                 </td>
-                <td>{company.email}</td>
+                <td className="email-column">{company.email}</td>
                 <td>{company.address}</td>
                 <td>{company.district}</td>
                 <td>{company.city}</td>
                 <td>{company.uf}</td>
-                <td onClick={() => handleExpandImage({company})}><img src={base + ',' + company.image} style={{width: '100%', cursor: 'pointer'}} className="landingImg" alt="CompreMaisAki" /></td>
+                <td onClick={() => handleExpandImage({company})}>
+                  <img 
+                    src={base + ',' + company.image} 
+                    style={{width: '30px',display: 'flex',justifyContent: 'center', cursor: 'pointer'}} 
+                    className="landingImg" alt="CompreMaisAki" 
+                  />
+                </td>
                 <td>
                   {renderButton({company})}
                 </td>
@@ -312,6 +338,7 @@ function Products(){
               <button className="modalButton" onClick={closeModal}>FECHAR</button>
             </div>
           </Modal>
+          {renderSearch()}
           {renderTitle()}
           {renderTable()}
 

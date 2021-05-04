@@ -2,6 +2,10 @@
     width: 100%;
 }
 
+.email-column{
+    text-overflow: ellipsis;
+}
+
 #companies {
     border-collapse: separate;
     border: solid white .8px;
@@ -20,7 +24,7 @@
     padding-left: 2px;
     padding-right: 2px;
 
-    font-size: 12px;
+    font-size: 11px;
     color: white;
 }
 
@@ -29,8 +33,9 @@
     color: black;
     padding: 4px;
 
-    font-size: 12px;
+    font-size: 11px;
     max-width: 170PX;
+    overflow: hidden;
 }
 
 #noWrap {
@@ -115,4 +120,18 @@ button:hover {
     width: 120px;
     font-size: small;
     margin-right: 5px;
+}
+
+.search-button-row{
+    align-items: center;
+    justify-content: center;
+    margin: auto;
+    width: 100%;
+    display: flex;
+}
+
+.search-input {
+    justify-content: center;
+    align-items: center;
+    margin-right: 10px;
 }
