@@ -62,5 +62,5 @@
     "react-router-dom": "^5.2.0",
     "typescript": "^4.1.3"
   },
-  "proxy": "http://habil.servehttp.com:5001/v1"
+  "proxy": "http://177.10.0.125:5001/v1"
 }

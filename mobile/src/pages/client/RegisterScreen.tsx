@@ -360,11 +360,8 @@ export default function Register(){
         max_prom: 5
       },{
           headers: {'Authorization': 'Bearer '+userToken}
-      }).then(() => {
-        Alert.alert(
-          "Sucesso!",
-          "Aguarde a confirmação do Administrador."
-        );
+      }).then(res => {
+        alert(res.data.id);
         setBusiness('');
         setCnpj('');
         setName('');
@@ -380,16 +377,10 @@ export default function Register(){
         setKeywords('');
         navigation.navigate("Início");
        }).catch(err => {
-         Alert.alert(
-           'Ops!',
-           'Tivemos um erro de servidor, entre em contato com o suporte.'
-         );
+         alert(err);
        })
     }catch(err){
-      Alert.alert(
-        'Ops!',
-        'Tivemos um erro de servidor, entre em contato com o suporte.'
-      );
+      alert(err);
       console.log(err);
       return;
     }
@@ -406,7 +397,7 @@ export default function Register(){
 
     const result = await ImagePicker.launchImageLibraryAsync({
       allowsEditing: true,
-      quality: 0.3,
+      quality: 1,
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
     });
 
@@ -418,7 +409,7 @@ export default function Register(){
 
       const manipulatedImage = await ImageManipulator.manipulateAsync(
         image,
-        [{ resize: {width: 150,height: 150} }],
+        [{ resize: {width: 250} }],
         { compress: 1, base64: true }
       );
 

@@ -11,6 +11,13 @@ import tokenCredentials from '../services/token.json';
 //CORRIGIR button para MODELO REACT-ROUTER-DOM; Verificar utilizacao de funcoes
 
 function Landing() {
+  function getHeaders(){
+    api.get('companies',{
+      headers: {'Access-Control-Allow-Origin': "*"}
+    }).then(res => {
+      console.log(res.headers);
+    });
+  }
   const [user, setUser] = useState('');
   const [password, setPassword] = useState('');
   const history = useHistory();
@@ -74,9 +81,13 @@ function Landing() {
           <span>Rio Grande do Sul</span>
         </div>
 
-        <button type="button" onClick={() => handleAccess()} className="enter-app">
+        {/*<button type="button" onClick={() => handleAccess()} className="enter-app">
+          <FiArrowRight size="26" color="#fff" />
+  </button>*/}
+        <button type="button" onClick={() => getHeaders()} className="enter-app">
           <FiArrowRight size="26" color="#fff" />
         </button>
+        
       </div>
     </div>
   ); 

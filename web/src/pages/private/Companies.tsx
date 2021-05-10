@@ -274,7 +274,7 @@ function Products(){
         },
         {
           label: 'Não',
-          onClick: () => alert('NO')
+          onClick: () => {}
         }
       ]
     });
