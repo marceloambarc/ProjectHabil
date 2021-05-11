@@ -7,30 +7,13 @@ import 'react-confirm-alert/src/react-confirm-alert.css';
 
 import Sidebar from '../../components/Sidebar'
 import api from '../../services/api';
+import { Company } from '../../libs/companyProps';
 
 import '../../styles/pages/controlmap.css';
 import '../../styles/pages/companies_buttons.css';
 import '../../styles/pages/table.css';
 import { host, port, fromEmail, pass } from '../../services/email.json';
 import PromoInput from '../../components/PromoInput';
-
-interface Company {
-  id: number;
-  business: string;
-  cnpj: string;
-  name: string;
-  phone: string;
-  email: string;
-  address: string;
-  district: string;
-  city: string;
-  uf: string;
-  password: string;
-  image: string;
-  keywords: string;
-  is_active: number;
-  max_prom: number;
-}
 
 Modal.setAppElement('#root')
 

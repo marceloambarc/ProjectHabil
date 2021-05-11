@@ -6,6 +6,7 @@ TextInput, TouchableOpacity, Animated, ActivityIndicator, Alert,
 Keyboard, TouchableWithoutFeedback, Platform, Dimensions } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { TextInputMask } from 'react-native-masked-text';
+import { Feather } from '@expo/vector-icons'
 
 import api from '../../services/api';
 import tokenCredentials from '../../services/token.json';
@@ -13,6 +14,7 @@ import tokenCredentials from '../../services/token.json';
 export default function Login(){
   const [isLoading, setIsLoading] = useState(true);
   const [userToken, setUserToken] = useState('');
+  const [isSecure, setIsSecure] = useState(true);
 
   const params  = new URLSearchParams();
 
@@ -91,6 +93,22 @@ export default function Login(){
     navigation.navigate('Início');
   }
 
+  function eyeView(){
+    if(isSecure){
+      return (
+        <TouchableOpacity style={styles.passwordView} onPress={() => setIsSecure(false)}>
+          <Feather name="eye" size={24} color="black" />
+        </TouchableOpacity>
+      )
+    }else{
+      return(
+        <TouchableOpacity style={styles.passwordView} onPress={() => setIsSecure(true)}>
+          <Feather name="eye-off" size={24} color="black" />
+        </TouchableOpacity>
+      );
+    }
+  }
+
   if(isLoading){
     return (
       <View style={{flex:1, justifyContent:'center',alignItems:'center'}}>
@@ -126,18 +144,25 @@ export default function Login(){
             onSubmitEditing={() => ref_password.current?.focus()}
             />
 
-            <TextInput
-            secureTextEntry={true}
-            style={styles.input}
-            placeholder="Senha"
-            autoCorrect={false}
-            autoCompleteType="password"
-            caretHidden={true}
-            value={password}
-            onChangeText={setPassword}
-            ref={ref_password}
-            onSubmitEditing={() => Keyboard.dismiss()}
-            />
+          <View style={styles.passwordContainer}>
+          <View style={styles.passwordCol1}>
+          <TextInput
+          secureTextEntry={isSecure}
+          style={styles.passwordInput}
+          placeholder="Senha"
+          autoCorrect={false}
+          autoCompleteType="password"
+          value={password}
+          onChangeText={setPassword}
+          ref={ref_password}
+          onSubmitEditing={() => Keyboard.dismiss()}
+          />
+        </View>
+
+        <View style={styles.passwordCol2}>
+          {eyeView()}
+        </View>
+      </View>
     
             <TouchableOpacity style={styles.btnSubmit} onPress={handleAccess}>
               <Text style={styles.submitText}>Acessar</Text>
@@ -181,6 +206,34 @@ const styles = StyleSheet.create({
     borderRadius:7,
     padding:10
   },
+
+  passwordContainer: {
+    flexDirection: 'row',
+    width: '90%',
+    justifyContent: 'space-between',
+    alignItems: 'center'
+  },
+  passwordInput: {
+    backgroundColor:'#a9acb1',
+    width:'100%',
+    marginBottom: 15,
+    color:'#222',
+    fontSize: 17,
+    borderRadius:7,
+    padding:10
+  },
+  passwordView: {
+    padding: Dimensions.get('window').width * 0.001
+  },
+  passwordCol1: {
+    width: '85%',
+  },
+  passwordCol2: {
+    width: '12%',
+    marginLeft: Dimensions.get('window').width * .01,
+    padding: Dimensions.get('window').width * 0.001
+  },
+
   btnSubmit:{
     backgroundColor: '#35AAFF',
     width: '90%',

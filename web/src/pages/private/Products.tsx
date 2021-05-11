@@ -435,8 +435,7 @@ function Products(){
                     <td>{product.date}</td>
                     <td>
                       <CompanyName
-                        data={companies} 
-                        //companyId={product.company_id} 
+                        companyProto={companies}
                       />
                     </td>
                     <td>
