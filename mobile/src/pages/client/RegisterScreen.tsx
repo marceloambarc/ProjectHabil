@@ -498,7 +498,7 @@ export default function Register(){
           withDDD: true,
         }}
         style={styles.input}
-        placeholder="Adicionar Telefone"
+        placeholder="Adicionar Telefone / Whatsapp"
         autoCorrect={false}
         value={phone}
         onChangeText={setPhone}
