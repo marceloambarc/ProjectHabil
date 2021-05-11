@@ -339,11 +339,21 @@ export default function Register(){
         'Erro',
         'Inserir Imagem para sua empresa',
       );
-
     }
 
-    try {
-      await api.post('companies',{
+    api.post('companies/cnpj',{
+      cnpj: cnpj
+    },{
+      headers: {'Authorization': 'Bearer '+userToken}
+    }).then(res => {
+      Alert.alert(
+        'Erro',
+        'Empresa já Cadastrada'
+      );
+    }).catch(err => {
+
+      
+      api.post('companies',{
         business: business,
         cnpj: cnpj,
         name: name,
@@ -379,21 +389,15 @@ export default function Register(){
         setBase('');
         setKeywords('');
         navigation.navigate("Início");
-       }).catch(err => {
+      }).catch(err => {
         Alert.alert(
           'Ops!',
           'Tivemos um Erro, entre em contato com o Suporte.'
           );
-       })
-    }catch(err){
-      Alert.alert(
-        'Ops!',
-        'Tivemos um Erro, entre em contato com o Suporte.'
-        );
-      console.log(err);
-      return;
-    }
+      });
 
+
+    });
   }
 
   async function handleSelectImage() {
