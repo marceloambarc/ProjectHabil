@@ -168,7 +168,7 @@ export default function NewPromotionScreen(){
 
       const manipulatedImage = await ImageManipulator.manipulateAsync(
         image,
-        [{ resize: {width: 251,height: 251} }],
+        [{ resize: {width: 200} }],
         { compress: 1, base64: true }
       );
 

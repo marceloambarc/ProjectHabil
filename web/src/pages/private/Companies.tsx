@@ -144,8 +144,10 @@ function Products(){
           pass: pass,
           toEmail: company.email,
           title: 'Empresa Inativada',
-          message: 'Sua empresa Foi Inativada Pelo Administrador. Entre em contato com o Suporte pelo Aplicativo para mais informações.',
-          content: 'Sua empresa Foi Inativada Pelo Administrador. Entre em contato com o Suporte pelo Aplicativo para mais informações.'
+          message: `Sua empresa Foi Inativada Pelo Administrador do Sistema <a href="https://www.compremaisaki.com.br">COMPREMAISAKI</a>. 
+                    Entre em contato com o Suporte pelo Aplicativo para mais informações.`,
+          content: `Sua empresa Foi Inativada Pelo Administrador do Sistema <a href="https://www.compremaisaki.com.br">COMPREMAISAKI</a>. 
+                    Entre em contato com o Suporte pelo Aplicativo para mais informações.`
         })
       }).then(() => {
         api.get('companies/all').then(response => {

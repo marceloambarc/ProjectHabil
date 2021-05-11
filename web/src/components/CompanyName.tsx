@@ -1,6 +1,4 @@
-import React, { useState, useEffect } from 'react';
-
-import api from '../services/api';
+import React from 'react';
 
 interface Company {
   id: number;
@@ -16,43 +14,12 @@ interface Company {
   password: string;
   image: string;
   keywords: string;
-  is_active: string;
+  is_active: number;
   max_prom: number;
 }
 
-export default function CompanyName({companyId}:any){
-  const [isLoading, setIsLoading] = useState(true);
-  const [companies, setCompanies] = useState<Company[]>([]);
-  const [companyName, setCompanyName] = useState('');
-
-  async function getCompanies(){
-    const repositories = await api.get('companies/all');
-    setCompanies(repositories.data);
-  }
-
-  async function getCompanyName(){
-    companies.map(company => {
-      if(company.id == companyId){
-        setCompanyName(company.name);
-      }
-    })
-  }
-
-  useEffect(() => {
-    if(!isLoading) return;
-    getCompanies();
-    getCompanyName();
-    setIsLoading(false);
-  },[]);
-
-  if(isLoading){
-    return(
-      <h1>Hello World!</h1>
-    )
-  }
-  return(
-    <>
-      {companyName}
-    </>
+export default function CompanyName(data){
+  return (
+    <p>{data.id}</p>
   );
 }

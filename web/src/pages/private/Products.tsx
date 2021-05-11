@@ -7,6 +7,7 @@ import 'react-confirm-alert/src/react-confirm-alert.css';
 
 import Sidebar from '../../components/Sidebar';
 import Validation from '../../components/Validation';
+import CompanyName from '../../components/CompanyName';
 import api from '../../services/api';
 import { host, port, fromEmail, pass } from '../../services/email.json';
 
@@ -433,10 +434,19 @@ function Products(){
                     <td>{product.description}</td>
                     <td>{product.date}</td>
                     <td>
-                      {product.company_id}
+                      <CompanyName
+                        data={companies} 
+                        //companyId={product.company_id} 
+                      />
                     </td>
                     <td>
-                      <Validation active={active} validate={product.validade} promoName={product.name} productId={product.id} userToken={userToken} />
+                      <Validation 
+                        active={active} 
+                        validate={product.validade} 
+                        promoName={product.name} 
+                        productId={product.id} 
+                        userToken={userToken} 
+                      />
                     </td>
                     <td>{product.discount} %</td>
                     <td onClick={() => handleExpandImage({product})}>
