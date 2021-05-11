@@ -5,6 +5,7 @@ import { Feather, Fontisto, Ionicons, AntDesign } from '@expo/vector-icons';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import ImageZoom from 'react-native-image-pan-zoom';
 import { FontAwesome } from '@expo/vector-icons';
+import EditProductScreen from '../client/EditPromotionScreen';
 
 interface handleCompanyParams {
   companyName: any,
@@ -136,7 +137,7 @@ export default function PromotionDetailsScreen(){
 
     if(productDiscount > 0){
       try{
-        Linking.openURL(`https://api.whatsapp.com/send?phone=${companyWhatsapp}&text=%20Mensagem%20vinda%20do%20App%20CompreMaisAki:%0A%Produto:%20${productName}%20;%20Preço%20sem%20Desconto:%20${productPrice};%20Validade%20da%20Promoção:%20${productValidade};%20Desconto:%20${productDiscount}%25%0A%20Com%20essa%20mensagem%20pelo%20Aplicativo%20CompreMaisAki%20%0A%20ganhe%20Desconto%20de%20:%20${productDiscount}%25+`);
+        Linking.openURL(`https://api.whatsapp.com/send?phone=${companyWhatsapp}&text=Mensagem%20vinda%20do%20Aplicativo%20CompreMaisAki%3A%0APromo%C3%A7%C3%A3o%3A%20${productName}%0APre%C3%A7o%20sem%20Desconto%3A%20${productPrice}%0AValidade%20da%20Promo%C3%A7%C3%A3o%3A%20${productValidade}%0ADesconto%3A%20${productDiscount}%25%0ACom%20essa%20mensagem%20pelo%20App%20CompreMaisAki%20ganhe%20desconto%20de%3A%20${productDiscount}%25%0A%0A`);
       }catch(err){
         Alert.alert(
           'Ops!',
@@ -145,7 +146,7 @@ export default function PromotionDetailsScreen(){
       }
     }else{
       try{
-        Linking.openURL(`https://api.whatsapp.com/send?phone=${companyWhatsapp}&text=%20Mensagem%20vinda%20do%20App%20CompreMaisAki:%20Produto:%20${productName}%20;%20Preço%20:%20${productPrice};%20Validade%20Promoção:%20${productValidade};%20`);
+        Linking.openURL(`https://api.whatsapp.com/send?phone=${companyWhatsapp}&text=Mensagem%20vinda%20do%20Aplicativo%20CompreMaisAki%0APromo%C3%A7%C3%A3o%3A%20${productName}%0APre%C3%A7o%3A%20${productPrice}%0AValidade%20da%20Promo%C3%A7%C3%A3o%3A%20${productValidade}%0A`);
       }catch(err){
         Alert.alert(
           'Ops!',
