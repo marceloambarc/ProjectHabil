@@ -361,7 +361,10 @@ export default function Register(){
       },{
           headers: {'Authorization': 'Bearer '+userToken}
       }).then(res => {
-        alert(res.data.id);
+        Alert.alert(
+          'Sucesso',
+          'Aguarde a confirmação do Administrador'
+        );
         setBusiness('');
         setCnpj('');
         setName('');
@@ -377,10 +380,16 @@ export default function Register(){
         setKeywords('');
         navigation.navigate("Início");
        }).catch(err => {
-         alert(err);
+        Alert.alert(
+          'Ops!',
+          'Tivemos um Erro, entre em contato com o Suporte.'
+          );
        })
     }catch(err){
-      alert(err);
+      Alert.alert(
+        'Ops!',
+        'Tivemos um Erro, entre em contato com o Suporte.'
+        );
       console.log(err);
       return;
     }

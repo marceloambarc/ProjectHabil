@@ -136,7 +136,7 @@ export default function PromotionDetailsScreen(){
 
     if(productDiscount > 0){
       try{
-        Linking.openURL(`https://api.whatsapp.com/send?phone=${companyWhatsapp}&text=%20Mensagem%20vinda%20do%20App%20CompreMaisAki:%20Produto:%20${productName}%20;%20Preço%20sem%20Desconto:%20${productPrice};%20Validade%20da%20Promoção:%20${productValidade};%20Desconto:%20${productDiscount}%20por%20cento;%20Com%20essa%20mensagem%20pelo%20Aplicativo%20CompreMaisAki%20,%20ganhe%20Desconto%20de%20:%20${productDiscount}%20por%20cento+`);
+        Linking.openURL(`https://api.whatsapp.com/send?phone=${companyWhatsapp}&text=%20Mensagem%20vinda%20do%20App%20CompreMaisAki:%0A%Produto:%20${productName}%20;%20Preço%20sem%20Desconto:%20${productPrice};%20Validade%20da%20Promoção:%20${productValidade};%20Desconto:%20${productDiscount}%25%0A%20Com%20essa%20mensagem%20pelo%20Aplicativo%20CompreMaisAki%20%0A%20ganhe%20Desconto%20de%20:%20${productDiscount}%25+`);
       }catch(err){
         Alert.alert(
           'Ops!',

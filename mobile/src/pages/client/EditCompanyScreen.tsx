@@ -17,12 +17,11 @@ interface Props {
   city: string,
   uf: string,
   keywords: string;
-  max_prom: number;
   userToken: string,
   navigation: any
 }
 
-export default function SupplierAboutScreen(){
+export default function EditCompanyScreen(){
   const route = useRoute();
   const params = route.params as Props;
 
@@ -40,7 +39,6 @@ export default function SupplierAboutScreen(){
   const companyCity = params.city;
   const companyUf = params.uf;
   const companyKeywords = params.keywords;
-  const maxProms = params.max_prom;
   const userToken = params.userToken;
 
   const [name, setName] = useState(`${companyName}`);
@@ -52,8 +50,7 @@ export default function SupplierAboutScreen(){
   const [district, setDistrict] = useState(`${companyDistrict}`);
   const [city, setCity] = useState(`${companyCity}`);
   const [uf, setUf] = useState(`${companyUf}`);
-  const [keywords, setKeywords] = useState(`${companyKeywords}`)
-  const [max_proms] = useState(`${maxProms}`);
+  const [keywords, setKeywords] = useState(`${companyKeywords}`);
 
   async function handleConfirmEdit(){
       api.put(`companies/${companyId}`,{
@@ -303,14 +300,6 @@ export default function SupplierAboutScreen(){
           placeholder="Palavras-Chaves"
           autoCorrect={false}
           value={keywords}
-          onChangeText={setKeywords}
-          />
-
-<TextInput  
-          style={styles.input}
-          placeholder="Palavras-Chaves"
-          autoCorrect={false}
-          value={max_proms}
           onChangeText={setKeywords}
           />
         </View>
