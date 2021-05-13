@@ -19,7 +19,7 @@ export default function App(){
   trigger.setSeconds(0);
   Notifications.scheduleNotificationAsync({
     content: {
-      title: 'Confira as novidade no CompreMaisAki!',
+      title: 'Confira as novidades no CompreMaisAki!',
     },
     trigger: trigger,
   });

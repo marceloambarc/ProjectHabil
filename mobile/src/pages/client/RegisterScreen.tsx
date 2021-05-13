@@ -6,6 +6,7 @@ Image, TouchableOpacity, StyleSheet,
 Modal, Switch, Dimensions, 
 TouchableWithoutFeedback, Alert, 
 ActivityIndicator} from 'react-native';
+import { Feather } from '@expo/vector-icons';
 
 import { TextInputMask } from 'react-native-masked-text';
 import { useNavigation } from '@react-navigation/native';
@@ -75,8 +76,10 @@ export default function Register(){
   let ref_uf = useRef<TextInput>(null);
 
   const [password, setPassword] = useState('');
+  const [isPasswordSecure, setPasswordSecure] = useState(true);
   let ref_password = useRef<TextInput>(null);
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [isConfirmPasswordSecure, setConfirmPasswordSecure] = useState(true);
   let ref_confirmPassword = useRef<TextInput>(null);
 
   const [keywords, setKeywords] = useState('');
@@ -87,6 +90,7 @@ export default function Register(){
 
   const [term_is_true, setTermIsTrue] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
+
 
   const navigation = useNavigation();
 
@@ -438,6 +442,38 @@ export default function Register(){
     navigation.navigate('Início');
   }
 
+  function eyeView1(){
+    if(isPasswordSecure){
+      return(
+        <TouchableOpacity style={styles.passwordView} onPress={() => setPasswordSecure(false)}>
+          <Feather name="eye" size={24} color="black" />
+        </TouchableOpacity>
+      );
+    }else{
+      return(
+        <TouchableOpacity style={styles.passwordView} onPress={() => setPasswordSecure(true)}>
+          <Feather name="eye-off" size={24} color="black" />
+        </TouchableOpacity>
+      );
+    }
+  }
+
+  function eyeView2(){
+    if(isConfirmPasswordSecure){
+      return(
+        <TouchableOpacity style={styles.passwordView} onPress={() => setConfirmPasswordSecure(false)}>
+          <Feather name="eye" size={24} color="black" />
+        </TouchableOpacity>
+      );
+    }else{
+      return(
+        <TouchableOpacity style={styles.passwordView} onPress={() => setConfirmPasswordSecure(true)}>
+          <Feather name="eye-off" size={24} color="black" />
+        </TouchableOpacity>
+      );
+    }
+  }
+
   if(isLoading){
     return (
       <View style={{flex:1, justifyContent:'center',alignItems:'center'}}>
@@ -579,30 +615,35 @@ export default function Register(){
         </View>
 
         <View style={styles.passwordContainer}>
-          <TextInput
-          style={styles.passwordInput}
-          secureTextEntry={true}
-          placeholder="Senha"
-          autoCorrect={false}
-          value={password}
-          caretHidden={true}
-          onChangeText={setPassword}
-          ref={ref_password}
-          returnKeyType='next'
-          onSubmitEditing={() => ref_confirmPassword.current?.focus()}
-          />
+          <View style={styles.passwordSecureContainer}>
+            <TextInput
+            style={styles.passwordInput}
+            secureTextEntry={isPasswordSecure}
+            placeholder="Senha"
+            autoCorrect={false}
+            value={password}
+            onChangeText={setPassword}
+            ref={ref_password}
+            returnKeyType='next'
+            onSubmitEditing={() => ref_confirmPassword.current?.focus()}
+            />
+            {eyeView1()}
+          </View>
 
-          <TextInput
-          style={styles.passwordInput}
-          secureTextEntry={true}
-          placeholder="Confirme Senha"
-          autoCorrect={false}
-          caretHidden={true}
-          value={confirmPassword}
-          onChangeText={setConfirmPassword}
-          ref={ref_confirmPassword}
-          returnKeyType='send'
-          />
+          <View style={styles.passwordSecureContainer}>
+            <TextInput
+            style={styles.passwordInput}
+            secureTextEntry={isConfirmPasswordSecure}
+            placeholder="Confirme Senha"
+            autoCorrect={false}
+            value={confirmPassword}
+            onChangeText={setConfirmPassword}
+            ref={ref_confirmPassword}
+            returnKeyType='send'
+            />
+            {eyeView2()}
+          </View>
+          
         </View>
 
         <View style={styles.uploadedImagesContainer}>
@@ -739,7 +780,7 @@ const styles = StyleSheet.create({
   },
   passwordInput:{
     backgroundColor:'#a9acb1',
-    width:'90%',
+    width:'75%',
     marginTop: 15,
     color:'#222',
     fontSize: 17,
@@ -856,6 +897,16 @@ const styles = StyleSheet.create({
     marginBottom: 32,
   },
 
+   /*VIEW PASSWORD*/
+   passwordSecureContainer: {
+     flexDirection: 'row',
+     justifyContent: 'space-around'
+   },
+   passwordView: {
+     padding: 10,
+     paddingTop: 20,
+     marginVertical: 10
+   }
 });
 
 function useFocus(): [any, any] {

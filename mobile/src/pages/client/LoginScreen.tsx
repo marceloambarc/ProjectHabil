@@ -145,24 +145,24 @@ export default function Login(){
             />
 
           <View style={styles.passwordContainer}>
-          <View style={styles.passwordCol1}>
-          <TextInput
-          secureTextEntry={isSecure}
-          style={styles.passwordInput}
-          placeholder="Senha"
-          autoCorrect={false}
-          autoCompleteType="password"
-          value={password}
-          onChangeText={setPassword}
-          ref={ref_password}
-          onSubmitEditing={() => Keyboard.dismiss()}
-          />
-        </View>
+            <View style={styles.passwordCol1}>
+              <TextInput
+              secureTextEntry={isSecure}
+              style={styles.passwordInput}
+              placeholder="Senha"
+              autoCorrect={false}
+              autoCompleteType="password"
+              value={password}
+              onChangeText={setPassword}
+              ref={ref_password}
+              onSubmitEditing={() => Keyboard.dismiss()}
+              />
+            </View>
 
-        <View style={styles.passwordCol2}>
-          {eyeView()}
-        </View>
-      </View>
+            <View style={styles.passwordCol2}>
+              {eyeView()}
+            </View>
+          </View>
     
             <TouchableOpacity style={styles.btnSubmit} onPress={handleAccess}>
               <Text style={styles.submitText}>Acessar</Text>

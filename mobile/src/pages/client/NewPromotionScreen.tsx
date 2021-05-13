@@ -1,19 +1,19 @@
 import * as React from 'react';
 import { useState, useRef, useEffect } from 'react';
 import { View, Text, TextInput, 
-TouchableOpacity, StyleSheet, ScrollView, Image, Alert, Keyboard } from 'react-native';
+TouchableOpacity, StyleSheet, ScrollView, Image, Alert, Keyboard, Dimensions } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 
 import { Feather, Ionicons } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
 import * as ImageManipulator from 'expo-image-manipulator';
 import { TextInputMask } from 'react-native-masked-text';
-import api from '../../services/api';
 
 interface NewPromotionParams {
   companyId: string,
   userToken: string,
   max_prom: number;
+  productsLength: number;
 }
 
 export default function NewPromotionScreen(){
@@ -30,7 +30,7 @@ export default function NewPromotionScreen(){
 
   const [base, setBase] = useState('');
   const [image, setImage] = useState('');
-  const [productsLength, setProductsLength] = useState(0);
+  
 
   const navigation = useNavigation();
   const route = useRoute();
@@ -39,24 +39,10 @@ export default function NewPromotionScreen(){
   const company_id = params.companyId;
   const userToken = params.userToken;
   const max_prom = params.max_prom;
+  const products_length = params.productsLength
   const discount = parseInt(discountPrototype);
 
   const checkIsNan = isNaN(discount);
-
-  async function getProductsLength(){
-    api.get(`companies/products/company_id/${company_id}`).then(res => {
-      setProductsLength(res.data.length);
-    }).catch(err => {
-      Alert.alert(
-        'Ops!',
-        'Erro de Conexão, Por favor, tente novamente mais tarde.'
-      )
-    })
-  }
-
-  useEffect(() => {
-    getProductsLength();
-  },[])
 
   async function handleNextStepProduct() {
     if(!description){
@@ -114,7 +100,7 @@ export default function NewPromotionScreen(){
       );
       return;
     }
-    if(productsLength >= max_prom){
+    if(products_length >= max_prom){
       Alert.alert(
         'Ops!',
         'Você alcançou o máximo de Promoções, Contate o Administrador pela página de Suporte na barra lateral inicial.'
@@ -141,6 +127,15 @@ export default function NewPromotionScreen(){
             <Feather name="arrow-left" size={28} color="#e82041" />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Cadastrar Promoção</Text>
+      </View>
+    );
+  }
+
+  function MaxPromoHeader(){
+    return (
+      <View style={styles.maxPromoContainer}> 
+        <Text style={styles.maxPromoHeader}>Máximo de promoções Autorizadas</Text>
+        <Text style={styles.maxPromoSubtitle}>{products_length}/{max_prom}</Text>
       </View>
     );
   }
@@ -213,6 +208,7 @@ export default function NewPromotionScreen(){
   return(
     <ScrollView style={{ backgroundColor: '#191919' }}>
     <ProductsHeader />
+    <MaxPromoHeader />
     <View style={styles.background}>
       <View style={styles.container}>
 
@@ -339,13 +335,13 @@ const styles = StyleSheet.create({
     width: '100%',
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 30,
-    marginBottom: 30
+    marginTop: Dimensions.get('window').height * 0.04,
+    marginBottom: Dimensions.get('window').height * 0.01
   },
   btnSubmit:{
     backgroundColor: '#35AAFF',
     width:'90%',
-    marginBottom: 20,
+    marginBottom: Dimensions.get('window').height * 0.001,
     color:'#222',
     fontSize: 17,
     alignItems:'center',
@@ -359,7 +355,7 @@ const styles = StyleSheet.create({
   },
   uploadedImagesContainer: {
     flexDirection: 'row',
-    marginBottom: 20
+    marginBottom: Dimensions.get('window').height * 0.001
   },
   uploadedImage: {
     width: 64,
@@ -411,4 +407,23 @@ const styles = StyleSheet.create({
     flex:1,
     padding:10
   },
+
+  /*MAX PROMO HEADER*/
+  maxPromoContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '100%'
+  },
+  maxPromoHeader: {
+    fontWeight: 'bold',
+    fontSize: 16,
+    color: '#fff',
+    justifyContent: 'center',
+    textAlign: 'center'
+  },
+  maxPromoSubtitle:{
+    fontWeight: 'bold',
+    fontSize: 16,
+    color: '#fff'
+  }
 });

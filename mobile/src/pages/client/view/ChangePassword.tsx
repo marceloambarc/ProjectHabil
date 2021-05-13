@@ -19,6 +19,11 @@ export default function ChangePassword({navigation}:{navigation:any}){
   const [newPassword, setNewPassword] = useState('');
   const [confirmNewPassword, setConfirmNewPassword] = useState('');
 
+  const [isPasswordSecure, setIsPasswordSecure] = useState(true);
+  const [isNewPasswordSecure, setIsNewPasswordSecure] = useState(true);
+  const [isConfirmNewPasswordSecure, setIsConfirmNewPasswordSecure] = useState(true);
+
+
   const route = useRoute();
   const params = route.params as ChangePasswordProps;
 
@@ -83,6 +88,54 @@ export default function ChangePassword({navigation}:{navigation:any}){
       )
     }
   }
+
+  function eyeView1(){
+    if(isPasswordSecure){
+      return (
+        <TouchableOpacity style={styles.passwordView} onPress={() => setIsPasswordSecure(false)}>
+          <Feather name="eye" size={24} color="black" />
+        </TouchableOpacity>
+      );
+    }else{
+      return(
+        <TouchableOpacity style={styles.passwordView} onPress={() => setIsPasswordSecure(true)}>
+          <Feather name="eye-off" size={24} color="black" />
+        </TouchableOpacity>
+      );  
+    }
+  }
+
+  function eyeView2(){
+    if(isNewPasswordSecure){
+      return (
+        <TouchableOpacity style={styles.passwordView} onPress={() => setIsNewPasswordSecure(false)}>
+          <Feather name="eye" size={24} color="black" />
+        </TouchableOpacity>
+      );
+    }else{
+      return(
+        <TouchableOpacity style={styles.passwordView} onPress={() => setIsNewPasswordSecure(true)}>
+          <Feather name="eye-off" size={24} color="black" />
+        </TouchableOpacity>
+      );  
+    }
+  }
+
+  function eyeView3(){
+    if(isConfirmNewPasswordSecure){
+      return (
+        <TouchableOpacity style={styles.passwordView} onPress={() => setIsConfirmNewPasswordSecure(false)}>
+          <Feather name="eye" size={24} color="black" />
+        </TouchableOpacity>
+      );
+    }else{
+      return(
+        <TouchableOpacity style={styles.passwordView} onPress={() => setIsConfirmNewPasswordSecure(true)}>
+          <Feather name="eye-off" size={24} color="black" />
+        </TouchableOpacity>
+      );  
+    }
+  }
   
   return (
     <SafeAreaView>
@@ -100,32 +153,39 @@ export default function ChangePassword({navigation}:{navigation:any}){
 
       <View style={styles.bodyContainer}>
 
-        <TextInput 
-          style={styles.input}
-          placeholder="Insira sua Senha"
-          value={password}
-          onChangeText={setPassword}
-          caretHidden={true}
-          secureTextEntry={true}
-        />
+        <View style={styles.passwordContainer}>
+          <TextInput 
+            style={styles.input}
+            placeholder="Insira sua Senha"
+            value={password}
+            onChangeText={setPassword}
+            secureTextEntry={isPasswordSecure}
+          />
+          {eyeView1()}
+        </View>
 
-        <TextInput 
+        <View style={styles.passwordContainer}>
+          <TextInput 
+            style={styles.newInput}
+            placeholder="Insira a nova Senha"
+            value={newPassword}
+            onChangeText={setNewPassword}
+            secureTextEntry={isNewPasswordSecure}
+          />
+          {eyeView2()}
+        </View>
+        
+        <View style={styles.passwordContainer}>
+          <TextInput
           style={styles.newInput}
-          placeholder="Insira a nova Senha"
-          value={newPassword}
-          onChangeText={setNewPassword}
-          caretHidden={true}
-          secureTextEntry={true}
-        />
-
-        <TextInput
-        style={styles.newInput}
-          placeholder="Confirme Sua nova Senha"
-          value={confirmNewPassword}
-          onChangeText={setConfirmNewPassword}
-          caretHidden={true}
-          secureTextEntry={true}
-        />
+            placeholder="Confirme Sua nova Senha"
+            value={confirmNewPassword}
+            onChangeText={setConfirmNewPassword}
+            secureTextEntry={isConfirmNewPasswordSecure}
+          />
+          {eyeView3()}
+        </View>
+        
 
         <TouchableOpacity style={styles.btnSubmit} onPress={handleChangePassword}>
           <Text style={styles.submitText}>Alterar Senha</Text>
@@ -165,8 +225,8 @@ const styles = StyleSheet.create({
   },
   input: {
     backgroundColor:'#a9acb1',
-    width:'90%',
-    marginBottom: 40,
+    width:'80%',
+    marginBottom: 50,
     color:'#222',
     fontSize: 17,
     borderRadius:7,
@@ -174,9 +234,8 @@ const styles = StyleSheet.create({
   },
   newInput: {
     backgroundColor:'#a9acb1',
-    width:'90%',
-    marginBottom: 15,
-    marginTop: 10,
+    width:'80%',
+    marginBottom: 30,
     color:'#222',
     fontSize: 17,
     borderRadius:7,
@@ -189,10 +248,19 @@ const styles = StyleSheet.create({
     alignItems:'center',
     justifyContent: 'center',
     borderRadius: 7,
-    marginTop: 25
+    marginTop: 25,
   },
   submitText:{
     color: '#FFF',
     fontSize: 18
   },
+
+  /*PASSWORD VIEWS*/
+  passwordContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+  },
+  passwordView: {
+    padding: 10
+  }
 });

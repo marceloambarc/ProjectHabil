@@ -63,7 +63,7 @@ export default function SplashScreen(){
         </View>
 
         <View style={styles.advise}>
-          <Text style={styles.splashAdvise}>Digite na pesquisa os termos que você deseja.</Text>
+          <Text style={styles.splashAdvise}>Procure o que quiser na barra de Pesquisa.</Text>
           <Text style={styles.splashAdvise2}>Se deseja anunciar produtos/serviço entre no menu superior.</Text>
         </View>
       </View>

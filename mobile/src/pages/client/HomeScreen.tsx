@@ -25,6 +25,8 @@ export default function HomeScreen(){
   const companyCnpj = params.cnpj;
   const userToken = params.userToken;
 
+  const [productsLength, setProductsLength] = useState(0);
+
   const [isLoading, setIsLoading] = useState(true);
   const [name, setName] = useState('');
   const [image, setImage] = useState('');
@@ -65,9 +67,21 @@ export default function HomeScreen(){
     })
   }
 
+  async function getProductsLenght(){
+    api.get(`companies/products/company_id/${companyId}`).then(res => {
+      setProductsLength(res.data.length);
+    }).catch(err => {
+      Alert.alert(
+        'Ops!',
+        'Erro de Conexão, Por favor, tente novamente mais tarde.'
+      )
+    })
+  }
+
   useEffect(() => {
     if(!isLoading) return;
     getParams();
+    getProductsLenght();
     setIsLoading(false);
   },[]);
 
@@ -75,7 +89,8 @@ export default function HomeScreen(){
     navigation.navigate('NewPromotion',{
       companyId,
       userToken,
-      max_prom
+      max_prom,
+      productsLength
     })
   }
 
@@ -103,7 +118,6 @@ export default function HomeScreen(){
       city: city,
       uf: uf,
       keywords: keywords,
-      max_prom: max_prom,
       userToken: userToken
     });
   }
