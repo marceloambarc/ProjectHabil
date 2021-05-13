@@ -19,10 +19,10 @@ interface NewPromotionParams {
 export default function NewPromotionScreen(){
   const [name, setName] = useState('');
 
-  const [price, setPrice] = useState('');
+  const [price, setPrice] = useState('000');
   let ref_price = React.useRef<any>();
 
-  const [discountPrototype, setDiscountPrototype] = useState('');
+  const [discountPrototype, setDiscountPrototype] = useState('0');
   let ref_discount = useRef<TextInput>(null);
 
   const [description, setDescription] = useState('');
@@ -103,7 +103,7 @@ export default function NewPromotionScreen(){
     if(discount < 0){
       Alert.alert(
         'Erro',
-        `${discount}`
+        'Desconto inválido'
       );
       return;
     }
@@ -239,6 +239,7 @@ export default function NewPromotionScreen(){
           keyboardType="number-pad"
           placeholder={"Desconto"}
           autoCorrect={false}
+          value={discountPrototype}
           onChangeText={setDiscountPrototype}
           returnKeyType='next'
         />
