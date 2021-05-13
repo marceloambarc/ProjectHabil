@@ -29,6 +29,9 @@
         "backgroundColor": "#FFFFFF"
       },
       "useNextNotificationsApi": true,
+      "notification": {
+        "icon": "./assets/notificationLogo.png"
+      },
       "package": "com.habil.nsr"
     },
     "web": {

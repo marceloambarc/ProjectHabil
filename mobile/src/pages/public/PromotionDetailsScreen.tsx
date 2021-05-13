@@ -5,7 +5,6 @@ import { Feather, Fontisto, Ionicons, AntDesign } from '@expo/vector-icons';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import ImageZoom from 'react-native-image-pan-zoom';
 import { FontAwesome } from '@expo/vector-icons';
-import EditProductScreen from '../client/EditPromotionScreen';
 
 interface handleCompanyParams {
   companyName: any,
@@ -99,7 +98,7 @@ export default function PromotionDetailsScreen(){
 
   async function handleSendProductEmail(){
     if(productDiscount > 0){
-        Linking.openURL(`mailto:${ companyEmail }?subject=Mensagem vinda do App CompreMaisAki&body=
+        Linking.openURL(`mailto:${ companyEmail }?subject=Mensagem enviada pelo App CompreMaisAki&body=
         Produto: ${ productName };
         Preço sem Desconto: R$ ${ productPrice };
         Validade da Promoção: ${ productValidade };
@@ -111,7 +110,7 @@ export default function PromotionDetailsScreen(){
         `);
         return;
     }else{
-        Linking.openURL(`mailto:${ companyEmail }?subject=Mensagem vinda do App CompreMaisAki&body=
+        Linking.openURL(`mailto:${ companyEmail }?subject=Mensagem enviada pelo App CompreMaisAki&body=
         Produto: ${ productName };
         Preço: R$ ${ productPrice };
         Validade da Promoção: ${ productValidade };
