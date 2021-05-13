@@ -77,3 +77,9 @@
    background-color: #994311;
    width: 100px;
  }
+
+ @media only screen and (max-width: 1110px){
+   .control-map {
+       width: 95%
+   }
+}

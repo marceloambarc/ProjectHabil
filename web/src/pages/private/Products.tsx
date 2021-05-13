@@ -6,14 +6,15 @@ import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
 
 import Sidebar from '../../components/Sidebar';
+import UpperBar from '../../components/UpperBar';
 import Validation from '../../components/Validation';
-import CompanyName from '../../components/CompanyName';
 import api from '../../services/api';
 import { host, port, fromEmail, pass } from '../../services/email.json';
 
 import '../../styles/pages/controlmap.css';
 import '../../styles/pages/card.css';
 import '../../styles/pages/card-columns.css';
+
 
 interface Product {
   id: number;
@@ -342,8 +343,10 @@ function Products(){
 
   return(
     <div id="page-control-map">
+      
       <Sidebar role={role} />
       <main>
+      <UpperBar role={role} />
         <div className="control-map">
 
           <h1 style={{fontSize:'22px'}}>Novas Promoções Cadastradas</h1>
@@ -434,14 +437,12 @@ function Products(){
                     <td>{product.description}</td>
                     <td>{product.date}</td>
                     <td>
-                      <CompanyName
-                        companyProto={companies}
-                      />
+                      {companies.map(company => <p>{company.name}</p>)}
                     </td>
                     <td>
                       <Validation 
                         active={active} 
-                        validate={product.validade} 
+                        validate={product.validade}
                         promoName={product.name} 
                         productId={product.id} 
                         userToken={userToken} 

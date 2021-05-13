@@ -14,9 +14,7 @@ function Landing() {
   const [user, setUser] = useState('');
   const [password, setPassword] = useState('');
   const history = useHistory();
-
-  const tokenUsername = tokenCredentials.username;
-  const tokenPassword = tokenCredentials.password;
+  
   const tokenGrantType = tokenCredentials.grant_type;
 
   async function handleAccess(){
@@ -35,7 +33,7 @@ function Landing() {
         }
       });
     }catch(err){
-      alert('Tivemos um erro, entre em contato com Suporte');
+      alert(err);
     }
   }
 

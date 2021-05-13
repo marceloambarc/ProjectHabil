@@ -5,6 +5,7 @@ import { GiConfirmed } from 'react-icons/gi';
 import { FiAlertOctagon } from 'react-icons/fi';
 import { GiArmorUpgrade, GiArmorDowngrade } from 'react-icons/gi';
 
+import UpperBar from '../../components/UpperBar';
 import Sidebar from '../../components/Sidebar';
 import '../../styles/pages/controlmap.css';
 import '../../styles/pages/home.css';
@@ -247,6 +248,7 @@ function Moderators(){
     <div id="page-control-map">
       <Sidebar role={role} />
       <main>
+        <UpperBar role={role} />
         <div className="control-map">
 
           <div className="text">

@@ -125,23 +125,21 @@ export default function HomeScreen(){
   }
 
   async function handleCancelSecondStep(){
-    api.put(`companies/${companyId}`,{
-      is_active: 2
-    },{
+    api.delete(`companies/${companyId}`,{
       headers: {'Authorization': 'Bearer '+userToken}
-    }).then(() => {
+    }).then(res => {
       Alert.alert(
-        'Obrigado',
-        'Sua conta foi cancelada com sucesso! Esperamos que breve volte para o CompreMaisAki.'
-      );
-      navigation.navigate('Home');
+        'Ok',
+        'Empresa Cancelada, Aguardamos o seu retorno no CompreMaisAki.'
+      )
+      navigation.navigate('Main');
     }).catch(err => {
       Alert.alert(
         'Ops!',
-        'Tivemos um erro, entre em contato com o Suporte'
+        'Erro ao Cancelar empresa, verifique sua conexão e tente novamente.'
       );
-      navigation.navigate('Home');
-    })
+    });
+    navigation.navigate('Home');
   }
 
   async function handleCancelAccount() {

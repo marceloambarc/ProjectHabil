@@ -10,6 +10,9 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
+    "notification": {
+      "icon": "./assets/notificationLogo.png"
+    },
     "updates": {
       "fallbackToCacheTimeout": 0
     },
@@ -29,9 +32,6 @@
         "backgroundColor": "#FFFFFF"
       },
       "useNextNotificationsApi": true,
-      "notification": {
-        "icon": "./assets/notificationLogo.png"
-      },
       "package": "com.habil.nsr"
     },
     "web": {

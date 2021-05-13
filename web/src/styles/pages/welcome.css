@@ -127,3 +127,34 @@
 .smartphone {
   width: 700px;
 }
+
+@media only screen and (max-width: 1110px){
+  #page-welcome {
+    width: 100vw;
+    height: 100vh;
+    background: linear-gradient(329.54deg, #9edbe4 0%, #9edbe4 100%);
+  
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding-left: 5em!important;
+    padding-right: 5em!important;
+    padding-top: 1em!important;
+  }
+  .welcome-wrapper .enter-app-container {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    right: 0;
+    bottom: 15%;
+    
+    margin-bottom: 61px;
+  }
+  .landingImg1 {
+    width: 50%;
+    margin-bottom: 10px;
+  }
+  .smartphone {
+    width: 110%;
+  }
+}

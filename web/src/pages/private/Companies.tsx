@@ -5,6 +5,7 @@ import Modal from 'react-modal';
 import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
 
+import UpperBar from '../../components/UpperBar';
 import Sidebar from '../../components/Sidebar'
 import api from '../../services/api';
 import { Company } from '../../libs/companyProps';
@@ -394,6 +395,7 @@ function Products(){
     <div id="page-control-map">
       <Sidebar role={role} />
       <main>
+        <UpperBar role={role} />
         <div className="control-map">
 
           <h1 style={{fontSize:'22px'}}>Administração de Empresas</h1>

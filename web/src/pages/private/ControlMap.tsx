@@ -1,6 +1,7 @@
 import React, { useEffect, useState, createRef } from 'react';
 import Resizer from "react-image-file-resizer";
 
+import UpperBar from '../../components/UpperBar';
 import Sidebar from '../../components/Sidebar';
 import api from '../../services/api';
 import '../../styles/pages/controlmap.css';
@@ -201,6 +202,7 @@ function ControlMap(){
     <div id="page-control-map">
       <Sidebar role={role} />
       <main>
+        <UpperBar role={role} />
         <div className="control-map">
 
           <div className="text">

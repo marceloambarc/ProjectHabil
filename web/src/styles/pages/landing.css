@@ -112,3 +112,18 @@
 .landingImg {
     width: 400px;
 }
+
+@media only screen and (max-width: 1110px){
+    #page-landing {
+        width: 100vw;
+        height: 100vh;
+        background: linear-gradient(329.54deg, #ffff 0%, #ffff 100%);
+    
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        padding-left: 5em!important;
+        padding-right: 5em!important;
+        padding-top: 1em!important;
+    }
+}

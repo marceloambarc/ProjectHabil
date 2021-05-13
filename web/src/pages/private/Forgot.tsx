@@ -3,6 +3,7 @@ import { FaKey } from 'react-icons/fa';
 import randomWords from 'random-words';
 import md5 from 'md5';
 
+import UpperBar from '../../components/UpperBar';
 import Sidebar from '../../components/Sidebar'
 import api from '../../services/api';
 
@@ -174,6 +175,7 @@ function Forgot(){
     <div id="page-control-map">
       <Sidebar role={role} />
       <main>
+        <UpperBar role={role} />
         <div className="control-map">
 
           <h1 style={{fontSize:'22px'}}>Recuperação de Senha</h1>

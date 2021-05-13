@@ -5,10 +5,6 @@ import { Ionicons } from '@expo/vector-icons';
 import ImageZoom from 'react-native-image-pan-zoom';
 import api from '../../services/api';
 
-const splashBackgroundImage = '../../../assets/content_id.png';
-
-import tokenCredentials from '../../services/token.json';
-
 export default function SplashScreen(){
   const [isLoading, setIsLoading] = useState(true);
   const [img1, setImage1] = useState('');
@@ -63,8 +59,8 @@ export default function SplashScreen(){
         </View>
 
         <View style={styles.advise}>
-          <Text style={styles.splashAdvise}>Procure o que quiser na barra de Pesquisa.</Text>
-          <Text style={styles.splashAdvise2}>Se deseja anunciar produtos,serviços ou o seu negócio, acesse o menu superior.</Text>
+          <Text style={styles.splashAdvise}>Procure o que quiser na Barra de Pesquisa.</Text>
+          <Text style={styles.splashAdvise2}>Se deseja anunciar produtos, serviços ou seu negócio, acesse o menu superior.</Text>
         </View>
       </View>
 
