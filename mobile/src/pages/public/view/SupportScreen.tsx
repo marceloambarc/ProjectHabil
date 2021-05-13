@@ -1,12 +1,12 @@
 import * as React from 'react';
 import { useState } from 'react';
 import { View, Text, Image, TouchableOpacity, 
-StyleSheet, SafeAreaView, TextInput, Alert, Keyboard} from 'react-native';
+StyleSheet, SafeAreaView, TextInput, Alert, Keyboard, 
+TouchableWithoutFeedback } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 
-import mailgun from '../../../services/mailgun';
+import { MAIL_URL } from '../../../../url.json';
 import { host, port, fromEmail, pass } from '../../../../email.json';
-import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 
 export default function SupportScreen({navigation}:{navigation:any}){
   const [clientEmail, setClientEmail] = useState('');
@@ -17,32 +17,30 @@ export default function SupportScreen({navigation}:{navigation:any}){
 
   async function handleSupport() {
     async function supportFinish(){
-      await mailgun.post('mailer',{
-        host: host,
-        port: port,
-        fromEmail: fromEmail,
-        pass: pass,
-        toEmail: email,
-        title: title,
-        message: `email encaminhado por : ${clientEmail} - ${message} - ${content}`,
-        content: `email encaminhado por : ${clientEmail} - ${message} - ${content}`
-      },{
-        headers: {
-          'Content-Type': 'application/json'
-        }
+      fetch(`${MAIL_URL}`,{
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          host: host,
+          port: port,
+          fromEmail: fromEmail,
+          pass: pass,
+          toEmail: email,
+          title: `CompreMaisAki: ${message}`,
+          message: `Cliente: ${clientEmail},
+                    ${content}`,
+          content: `Cliente: ${clientEmail},
+                    ${content}`
+        })
       }).then(() => {
         Alert.alert(
-          "Concluído",
-          "Entraremos em contato em breve."
-        );
-        setClientEmail('');
-        setContent('');
-        setTitle('');
-        navigation.navigate('Início');
+          'Ok',
+          'Aguarde o contato com algum de nossos Administradores.'
+        )
       }).catch(err => {
         Alert.alert(
-          "Ops!",
-          `Tivemos um problema, Entre em contato diretamente pelo email ${email}`
+          'Ops!',
+          'Tivemos um erro, Aguarde alguns instantes.'
         )
       })
     }
