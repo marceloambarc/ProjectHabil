@@ -88,6 +88,8 @@ export default function HomeScreen(){
   async function handleNewPromotion(){
     navigation.navigate('NewPromotion',{
       companyId,
+      companyEmail: email,
+      companyName: name,
       userToken,
       max_prom,
       productsLength

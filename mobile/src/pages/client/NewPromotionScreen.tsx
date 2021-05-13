@@ -9,8 +9,13 @@ import * as ImagePicker from 'expo-image-picker';
 import * as ImageManipulator from 'expo-image-manipulator';
 import { TextInputMask } from 'react-native-masked-text';
 
+import  { MAIL_URL } from '../../../url.json';
+import { host, port, fromEmail, pass } from '../../../email.json';
+
 interface NewPromotionParams {
   companyId: string,
+  companyName: string,
+  companyEmail: string,
   userToken: string,
   max_prom: number;
   productsLength: number;
@@ -31,18 +36,56 @@ export default function NewPromotionScreen(){
   const [base, setBase] = useState('');
   const [image, setImage] = useState('');
   
+  const email = 'contato@habilinformatica.com.br'
 
   const navigation = useNavigation();
   const route = useRoute();
   const params = route.params as NewPromotionParams;
 
   const company_id = params.companyId;
+  const company_name = params.companyName;
+  const company_email = params.companyEmail;
   const userToken = params.userToken;
   const max_prom = params.max_prom;
   const products_length = params.productsLength
   const discount = parseInt(discountPrototype);
 
   const checkIsNan = isNaN(discount);
+
+  async function handleRequest(){
+    fetch(`${MAIL_URL}`,{
+      method: 'POST',
+      headers: {  'Content-Type': 'application/json'  },
+      body: JSON.stringify({
+        host: host,
+        port: port,
+        fromEmail: fromEmail,
+        pass: pass,
+        toEmail: email,
+        title: `CompreMaisAki: ${company_name} Solicitação: Aumento de Promoções`,
+        message: `Empresa: ${company_name};
+                  Email: ${company_email};
+                  Solicita Aumento no número de Promoções,
+                  Número Atual ${max_prom}`,
+        content: `Empresa: ${company_name};
+                  Email: ${company_email};
+                  Solicita Aumento no número de Promoções,
+                  Número Atual ${max_prom}`
+      })
+    }).then(() => {
+      Alert.alert(
+        'Ok',
+        'Pedido Encaminhado ao Suporte, aguarde Informações'
+      )
+      navigation.navigate('Home');
+    }).catch(err => {
+      Alert.alert(
+        'Ops!',
+        'Tivemos um Erro ao Solicitar Promoções.'
+      );
+      navigation.navigate('Home');
+    });
+  }
 
   async function handleNextStepProduct() {
     if(!description){
@@ -103,7 +146,19 @@ export default function NewPromotionScreen(){
     if(products_length >= max_prom){
       Alert.alert(
         'Ops!',
-        'Você alcançou o máximo de Promoções, Contate o Administrador pela página de Suporte na barra lateral inicial.'
+        'Você alcançou o máximo de Promoções, Contate o Administrador para liberar mais promoções.',
+        [
+          {
+            text: "Cancelar",
+            onPress: () => {},
+            style: 'cancel'
+          },
+          {
+            text: "Solicitar",
+            onPress: () => handleRequest(),
+            style: 'default'
+          }
+        ]
       );
       return;
     }

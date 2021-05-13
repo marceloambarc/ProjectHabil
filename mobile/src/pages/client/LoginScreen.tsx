@@ -148,6 +148,7 @@ export default function Login(){
             <View style={styles.passwordCol1}>
               <TextInput
               secureTextEntry={isSecure}
+              autoCapitalize="none"
               style={styles.passwordInput}
               placeholder="Senha"
               autoCorrect={false}

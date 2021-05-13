@@ -16,16 +16,16 @@ export default function SupportScreen({navigation}:{navigation:any}){
   const email = 'contato@habilinformatica.com.br'
 
   async function handleSupport() {
-    async function suportFinish(){
-      await mailgun.post('/',{
+    async function supportFinish(){
+      await mailgun.post('mailer',{
         host: host,
         port: port,
         fromEmail: fromEmail,
         pass: pass,
         toEmail: email,
         title: title,
-        message: `email encaminhado por : ${clientEmail} - ${message}`,
-        content: content
+        message: `email encaminhado por : ${clientEmail} - ${message} - ${content}`,
+        content: `email encaminhado por : ${clientEmail} - ${message} - ${content}`
       },{
         headers: {
           'Content-Type': 'application/json'
@@ -59,7 +59,7 @@ export default function SupportScreen({navigation}:{navigation:any}){
       'Deseja enviar este Email?',
       [
         {text: "Cancel", onPress: () => supportCancel(), style: "cancel"},
-        {text: "OK", onPress: () => suportFinish() }
+        {text: "OK", onPress: () => supportFinish() }
       ]
     );
   }

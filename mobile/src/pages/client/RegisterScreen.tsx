@@ -619,6 +619,7 @@ export default function Register(){
             <TextInput
             style={styles.passwordInput}
             secureTextEntry={isPasswordSecure}
+            autoCapitalize="none"
             placeholder="Senha"
             autoCorrect={false}
             value={password}
@@ -634,6 +635,7 @@ export default function Register(){
             <TextInput
             style={styles.passwordInput}
             secureTextEntry={isConfirmPasswordSecure}
+            autoCapitalize="none"
             placeholder="Confirme Senha"
             autoCorrect={false}
             value={confirmPassword}

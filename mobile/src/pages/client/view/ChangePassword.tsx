@@ -160,6 +160,7 @@ export default function ChangePassword({navigation}:{navigation:any}){
             value={password}
             onChangeText={setPassword}
             secureTextEntry={isPasswordSecure}
+            autoCapitalize="none"
           />
           {eyeView1()}
         </View>
@@ -171,6 +172,7 @@ export default function ChangePassword({navigation}:{navigation:any}){
             value={newPassword}
             onChangeText={setNewPassword}
             secureTextEntry={isNewPasswordSecure}
+            autoCapitalize="none"
           />
           {eyeView2()}
         </View>
@@ -182,6 +184,7 @@ export default function ChangePassword({navigation}:{navigation:any}){
             value={confirmNewPassword}
             onChangeText={setConfirmNewPassword}
             secureTextEntry={isConfirmNewPasswordSecure}
+            autoCapitalize="none"
           />
           {eyeView3()}
         </View>
