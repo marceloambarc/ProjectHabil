@@ -170,6 +170,7 @@ export default function NewPromotionScreen(){
       base,
       discount,
       userToken,
+      max_prom
     });
   }
 

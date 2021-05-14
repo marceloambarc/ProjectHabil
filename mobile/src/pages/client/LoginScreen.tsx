@@ -59,26 +59,47 @@ export default function Login(){
       );
       return;
     }
-
-    try {
-      await api.post('companies/logon',{
-        cnpj: cnpj,
-        password: password
+    api.post('companies/email',{
+      cnpj: cnpj
+    },{
+      headers: {'Authorization': 'Bearer '+userToken}
+    }).then(() => {
+      api.post('companies/cnpj',{
+        cnpj: cnpj
       },{
         headers: {'Authorization': 'Bearer '+userToken}
-      }).then(res => navigation.navigate('Home',{
-        id: res.data.id,
-        name: res.data.name,
-        image: res.data.image,
-        cnpj: cnpj,
-        userToken: userToken
-      }));
-    }catch(err){
+      }).then(res => {
+        api.post('companies/logon',{
+          cnpj:cnpj,
+          password:password
+        },{
+          headers: {'Authorization': 'Bearer '+userToken}
+        }).then(res => {
+          navigation.navigate('Home',{
+            cnpj: cnpj,
+            id: res.data.id,
+            image: res.data.image,
+            name: res.data.name,
+            userToken: userToken
+          })
+        }).catch(res => {
+          Alert.alert(
+            'Ops!',
+            'Senha Incorreta'
+          );
+        });
+      }).catch(err => {
+        Alert.alert(
+          'Ops!',
+          'Empresa em Análise, Aguarde o E-mail do Administrador.'
+        );
+      })
+    }).catch(err => {
       Alert.alert(
-        'Acesso Inválido',
-        'Tente novamente após alguns minutos.',
+        'Ops!',
+        'Empresa não cadastrada'
       );
-    }
+    });
   }
 
   async function handleRegister(){

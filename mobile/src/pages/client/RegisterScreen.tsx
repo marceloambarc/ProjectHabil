@@ -338,13 +338,6 @@ export default function Register(){
       return;
     }
 
-    if(!image){
-      Alert.alert(
-        'Erro',
-        'Inserir Imagem para sua empresa',
-      );
-    }
-
     api.post('companies/cnpj',{
       cnpj: cnpj
     },{
@@ -355,52 +348,59 @@ export default function Register(){
         'Empresa já Cadastrada'
       );
     }).catch(err => {
-
-      
-      api.post('companies',{
-        business: business,
-        cnpj: cnpj,
-        name: name,
-        phone: phone,
-        email: email,
-        address: address,
-        district: district,
-        city: city,
-        uf: uf,
-        password: password,
-        image: base,
-        keywords: keywords,
-        is_active: 0,
-        max_prom: 5
+      api.post('companies/email',{
+        cnpj: cnpj
       },{
-          headers: {'Authorization': 'Bearer '+userToken}
-      }).then(res => {
+        headers: {'Authorization': 'Bearer '+userToken}
+      }).then(() => {
         Alert.alert(
-          'Sucesso',
-          'Aguarde a confirmação do Administrador'
+          'Erro',
+          'Empresa já Cadastrada'
         );
-        setBusiness('');
-        setCnpj('');
-        setName('');
-        setPhone('');
-        setEmail('');
-        setAddress('');
-        setDistrict('');
-        setCity('');
-        setUf('');
-        setPassword('');
-        setImage('');
-        setBase('');
-        setKeywords('');
-        navigation.navigate("Início");
       }).catch(err => {
-        Alert.alert(
-          'Ops!',
-          'Tivemos um Erro, entre em contato com o Suporte.'
+        api.post('companies',{
+          business: business,
+          cnpj: cnpj,
+          name: name,
+          phone: phone,
+          email: email,
+          address: address,
+          district: district,
+          city: city,
+          uf: uf,
+          password: password,
+          image: base,
+          keywords: keywords,
+          is_active: 0,
+          max_prom: 5
+        },{
+            headers: {'Authorization': 'Bearer '+userToken}
+        }).then(res => {
+          Alert.alert(
+            'Sucesso!',
+            'Aguarde a confirmação do Administrador.'
           );
+          setBusiness('');
+          setCnpj('');
+          setName('');
+          setPhone('');
+          setEmail('');
+          setAddress('');
+          setDistrict('');
+          setCity('');
+          setUf('');
+          setPassword('');
+          setImage('');
+          setBase('');
+          setKeywords('');
+          navigation.navigate("Início");
+        }).catch(err => {
+          Alert.alert(
+            'Ops!',
+            'Tivemos um Erro, entre em contato com o Suporte.'
+            );
+        }); 
       });
-
-
     });
   }
 
@@ -416,6 +416,7 @@ export default function Register(){
       allowsEditing: true,
       quality: 1,
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      aspect: [3, 2],
     });
 
     if (result.cancelled) {

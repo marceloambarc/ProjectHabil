@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
-import { Text, View ,Image ,TextInput, ScrollView, StyleSheet, TouchableOpacity, Alert, Dimensions } from 'react-native';
-import { useRoute, useNavigation } from '@react-navigation/native';
+import { Text, View ,Image ,TextInput, ScrollView, 
+StyleSheet, TouchableOpacity, Alert, Dimensions } from 'react-native';
+import { useRoute, useNavigation, StackActions } from '@react-navigation/native';
 import { TextInputMask } from 'react-native-masked-text';
+import * as ImagePicker from 'expo-image-picker';
+import * as ImageManipulator from 'expo-image-manipulator';
 import api from '../../services/api';
 
 interface Props {
@@ -41,6 +44,7 @@ export default function EditCompanyScreen(){
   const companyKeywords = params.keywords;
   const userToken = params.userToken;
 
+  const [base, setBase] = useState(`${companyImage}`);
   const [name, setName] = useState(`${companyName}`);
   const [cnpj] = useState(`${companyCnpj}`);
   const [business, setBusiness] = useState(`${companyBusiness}`);
@@ -52,6 +56,8 @@ export default function EditCompanyScreen(){
   const [uf, setUf] = useState(`${companyUf}`);
   const [keywords, setKeywords] = useState(`${companyKeywords}`);
 
+  const [image, setImage] = useState('');
+
   async function handleConfirmEdit(){
       api.put(`companies/${companyId}`,{
         name,
@@ -62,19 +68,25 @@ export default function EditCompanyScreen(){
         district,
         city,
         uf,
+        image: base,
         keywords
       },{
         headers: {'Authorization': 'Bearer '+userToken}
       }).then(() => {
         Alert.alert(
-          'Sucesso!',
-          'Aguarde a verificação do Aministrador para acessar novamente.'
-        )
-        navigation.navigate('Início');
+          'Empresa Editada',
+          'Aguarde E-mail de Confirmação do Administrador.',
+          [
+            {
+              text: "Ok",
+              onPress: () => navigation.dispatch(StackActions.push('Main')),
+            }
+          ]
+        );
       }).catch(err => {
         Alert.alert(
           'Ops!',
-          'Erro ao se comunicar com o Servidor, Verifique sua conexão'
+          'Erro ao se comunicar com o Servidor, Verifique sua conexão.'
         );
       });
   }
@@ -200,22 +212,86 @@ export default function EditCompanyScreen(){
     )
   }
 
+  async function handleRemoveImage(){
+    Alert.alert(
+      'Remover Imagem',
+      'Você realmente deseja Remover a Image?',
+      [
+        {
+          text: "OK", onPress: () => setBase('')
+        },
+        {
+          text: "Cancelar",
+          onPress: () => {},
+          style: "cancel"
+        }
+      ]
+    )
+  }
+
+  async function handleSelectImage(){
+    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    
+    if (status !== 'granted') {
+      alert('Precisamos de acesso a images');
+      return;
+    }
+
+    const result = await ImagePicker.launchImageLibraryAsync({
+      allowsEditing: true,
+      quality: 1,
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      aspect: [3, 2],
+    });
+
+    if (result.cancelled) {
+      return;
+    }else{
+      const { uri: image } = result;
+      setImage(image);
+
+      const manipulatedImage = await ImageManipulator.manipulateAsync(
+        image,
+        [{ resize: {width: 250} }],
+        { compress: 1, base64: true }
+      );
+
+      setBase(manipulatedImage.base64!);
+    }
+  }
+
   return (
     <ScrollView>
       <View style={styles.background}>
         <View style={styles.container}>
           <Image
-              style={styles.cmaLogo}
-              source={require("../../../assets/cmatextlogo.png")}
-            />
-            <Text style={styles.editText}>
-              Edite os Dados Necessários,
-              Confirme no Botão no fim da página.
-            </Text>
-          <Image
-            source={{ uri: `data:image/jpeg;base64,${companyImage}` }}
-            style={{width: 250, height: 170, marginBottom: 20, borderRadius: 20}}
+            style={styles.cmaLogo}
+            source={require("../../../assets/cmatextlogo.png")}
           />
+          <Text style={styles.editText}>
+            Edite os Dados Necessários,
+            Confirme no Botão no fim da página.
+          </Text>
+          
+          
+            <Image
+              source={{ uri: `data:image/jpeg;base64,${base}` }}
+              style={{width: 250, height: 170, marginBottom: 20, borderRadius: 20}}
+            />
+
+          <View style={styles.galleryButtonRow}>
+            <View style={styles.galleryButtonCol1}>
+              <TouchableOpacity style={styles.btnCancel} onPress={handleRemoveImage}>
+                <Text style={styles.btnGalleryText}>Remover</Text>
+              </TouchableOpacity>
+            </View>
+            <View style={styles.galleryButtonCol2}>
+              <TouchableOpacity style={styles.btnSubmit} onPress={handleSelectImage}>
+                <Text style={styles.btnGalleryText}>Mudar Imagem</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+          
 
           <TextInput
           style={styles.input}
@@ -372,6 +448,17 @@ const styles = StyleSheet.create({
     borderRadius:7,
     padding:10
   },
+  btnCancel: {
+    backgroundColor: '#fa690a',
+    width: Dimensions.get('window').width * 0.32,
+    marginBottom: Dimensions.get('window').height * 0.05,
+    color:'#222',
+    fontSize: 17,
+    alignItems:'center',
+    justifyContent: 'center',
+    borderRadius: 7,
+    padding: Dimensions.get('window').width * 0.025
+  },
 
   btnSubmit:{
     backgroundColor: '#35AAFF',
@@ -408,5 +495,20 @@ const styles = StyleSheet.create({
   },
   btnCol: {
     width: Dimensions.get('window').width * .35
+  },
+  galleryButtonRow: {
+    paddingHorizontal: Dimensions.get('window').width * 0.01,
+    justifyContent: 'space-between',
+    flexDirection: 'row'
+  },
+  galleryButtonCol1: {
+    justifyContent: 'center',
+    width:'40%'
+  },
+  galleryButtonCol2: {
+    justifyContent: 'center'
+  },
+  btnGalleryText: {
+    color: '#FFF'
   }
 });

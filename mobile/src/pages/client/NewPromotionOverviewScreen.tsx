@@ -8,27 +8,44 @@ interface ProductDataRouteParams {
   name: string,
   price: string,
   description: string,
-  company_id: string,
+  company_id: number,
   image: string,
   base: string,
   discount: string,
   userToken: string,
+  max_prom: number,
+}
+
+interface Product {
+  id: number;
+  name: string;
+  price: string;
+  description: string;
+  date: string;
+  company_id: string;
+  image: string;
+  validade: string;
+  discount: string;
+  is_active: number;
 }
 
 export default function NewPromotionOverviewScreen(){
   const [isLoading, setIsLoading] = useState(true);
+  const [products, setProducts] = useState<Product[]>([]);
+  const [count, setCount] = useState(0);
   const navigation = useNavigation();
   const route = useRoute();
   const params = route.params as ProductDataRouteParams;
 
-  const productName = params.name;
+  const companyId = params.company_id;
 
+  const productName = params.name;
   const productPrice = params.price;
   const productDescription = params.description;
-  const companyId = params.company_id;
   const productImage = params.base;
   const productValidate = '';
   const productDiscount = params.discount;
+  const maxProm = params.max_prom;
   const userToken = params.userToken;
   const [date, setDate] = useState('');
 
@@ -46,43 +63,22 @@ export default function NewPromotionOverviewScreen(){
       getDate();
       setIsLoading(false);
     }, 1000);
-  },[])
+  },[]);
+
+  async function countProduct(){
+    {products.map(product => {
+      console.log(product);
+    })}
+  }
 
   async function handleCreateProduct(){
     var finalPrice = productPrice.replace('R$', '');
-    try{
-      api.post('products',{
-        name: productName,
-        price: finalPrice,
-        description: productDescription,
-        date: date,
-        company_id: companyId,
-        image: productImage,
-        validate: productValidate,
-        discount: productDiscount,
-        is_active: 0,
-      },{
-        headers: {
-          'Authorization': 'Bearer '+userToken
-        }
-      }).then(() => {
-        navigation.navigate('Home');
-        Alert.alert(
-          'Sucesso!',
-          'Registro Enviado! Aguarde confirmação do Administrador.',
-        );
-      }).catch(err => {
-        Alert.alert(
-          'Ops!',
-          'Erro ao Cadastrar sua Promoção, Entre em contato com o Suporte.'
-        )
-      })
-    }catch(err){
-      Alert.alert(
-        'Ops!',
-        'Tivemos Erro ao acessar o Servidor, Verifique sua Conexão',
-      );
-    }
+    
+    api.get('companies/all').then(res => {
+      console.log(res.data);
+    })
+    
+
   }
 
   if(isLoading){

@@ -75,14 +75,7 @@ function Forgot(){
     const encryptedKey = md5(key);
     const finalKey = encryptedKey.substring(1,9);
 
-    const activateResetPassword = await api.put(`companies/${company.id}`,{
-      reset_password: finalKey,
-      is_active: 1
-    },{
-      headers: {'Authorization': 'Bearer '+userToken}
-    });
-
-    fetch("http://habil.servehttp.com:5003/mailgun",{
+    fetch("http://177.10.0.125:5003/mailgun",{
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({       
@@ -93,7 +86,7 @@ function Forgot(){
         toEmail: company.email,
         title: 'Recuperação de Senha',
         message: 'Mensagem enviada pelo Aplicativo CompreMaisAki',
-        content: `Segue sua senha temporária para a troca de acessar o Aplicativo: 
+        content: `Segue sua senha temporária para a troca de acessar o Aplicativo:
         ${finalKey}`
       })
     }).then(res => {
@@ -105,11 +98,11 @@ function Forgot(){
       }).then(res => {
         alert('Sucesso');
       }).catch(err => {
-        alert('erro na emissao de nova chave.')
+        alert('erro na emissao de nova chave.');
       });
       getForgot();
     }).catch(err => {
-      alert('Erro no envio de recuperação da senha, Entre em contato com o suporte')
+      alert('Erro no envio de recuperação da senha, Entre em contato com o suporte');
     });
   }
 

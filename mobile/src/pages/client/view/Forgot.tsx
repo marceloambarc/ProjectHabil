@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { View, Text, SafeAreaView, 
 StyleSheet, Image, TouchableOpacity,
 TextInput, Alert, ActivityIndicator, Keyboard } from 'react-native';
+import { StackActions } from '@react-navigation/native';
 import { TextInputMask } from 'react-native-masked-text';
 import { Feather } from '@expo/vector-icons';
 
@@ -48,37 +49,55 @@ export default function Forgot({navigation}:{navigation:any}){
         "Insira seu CNPJ cadastrado",
       );
     }else{
-      const registeredCompany = await api.post(`companies/cnpj`,{
+      api.post(`companies/email`,{
         cnpj: `${cnpj}`
       },{
         headers: {'Authorization': 'Bearer '+userToken}
-      });
-      
-      if (!registeredCompany){
-        Alert.alert(
-          "Erro",
-          "Empresa fora do cadastro ou Inativa, entre em contato com o Suporte.",
-        );
-      }else {
-        const passwordReset = await api.put(`companies/${registeredCompany.data.id}`,{
-          reset_password: '00000001',
-          is_active: 1
-        },{
-          headers: {'Authorization': 'Bearer '+userToken}
-        }).then(res => {
-          Alert.alert(
-            'Aguarde',
-            'Enviaremos um E-mail para recuperação da sua senha.'
-          );
-          Keyboard.dismiss;
-          navigation.navigate('Início');
-        }).catch(err => {
+      }).then(res => {
+        const confirmEmail = res.data.email;
+        if(String(confirmEmail) != String(toEmail)){
           Alert.alert(
             'Ops!',
-            'Tivemos um erro, entre em contato com Suporte.'
-          )
-        });
-      }
+            'Este e-mail não está cadastrado nesta Empresa.'
+          );
+          Keyboard.dismiss();
+        }else{
+          api.post('companies/cnpj',{
+            cnpj: cnpj
+          },{
+            headers: {'Authorization': 'Bearer '+userToken}
+          }).then(res => {
+            api.put(`companies/${res.data.id}`,{
+              reset_password: '00000001',
+              is_active: 1
+            },{
+              headers: {'Authorization': 'Bearer '+userToken}
+            }).then(() => {
+              Alert.alert(
+                'Aguarde',
+                'Enviaremos um E-mail para recuperação da sua senha.'
+              );
+              Keyboard.dismiss();
+              navigation.dispatch(StackActions.push('Welcome'));
+            }).catch(err => {
+              Alert.alert(
+                'Ops!',
+                'Tivemos um erro, entre em contato com Suporte.'
+              );
+            })
+          }).catch(err => {
+            Alert.alert(
+              'Ops!',
+              'Empresa em Análise, aguarde E-mail do Administrador.'
+            )
+          });
+        }
+      }).catch(err => {
+        Alert.alert(
+          "Ops!",
+          "Empresa não Cadastrada.",
+        );
+      });
     }
   }
 
