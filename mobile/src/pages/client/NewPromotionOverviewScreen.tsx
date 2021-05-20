@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useEffect, useState } from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity, Alert, ActivityIndicator } from 'react-native';
-import { useNavigation, useRoute } from '@react-navigation/native';
+import { StackActions, useNavigation, useRoute } from '@react-navigation/native';
 import api from '../../services/api';
 
 interface ProductDataRouteParams {
@@ -9,6 +9,9 @@ interface ProductDataRouteParams {
   price: string,
   description: string,
   company_id: number,
+  company_name: string,
+  company_cnpj: string,
+  company_image: string,
   image: string,
   base: string,
   discount: string,
@@ -22,7 +25,7 @@ interface Product {
   price: string;
   description: string;
   date: string;
-  company_id: string;
+  company_id: number;
   image: string;
   validade: string;
   discount: string;
@@ -38,6 +41,9 @@ export default function NewPromotionOverviewScreen(){
   const params = route.params as ProductDataRouteParams;
 
   const companyId = params.company_id;
+  const companyCnpj = params.company_cnpj;
+  const companyName = params.company_name;
+  const companyImage = params.company_image;
 
   const productName = params.name;
   const productPrice = params.price;
@@ -65,20 +71,64 @@ export default function NewPromotionOverviewScreen(){
     }, 1000);
   },[]);
 
-  async function countProduct(){
-    {products.map(product => {
-      console.log(product);
-    })}
-  }
-
   async function handleCreateProduct(){
     var finalPrice = productPrice.replace('R$', '');
     
-    api.get('companies/all').then(res => {
-      console.log(res.data);
+    await api.get('companies/all').then(res => {
+      setProducts(res.data);
+    }).catch(err => {
+      Alert.alert(
+        'Ops!',
+        'Tivemos um erro, Verifique sua Conexão.'
+      )
     })
-    
 
+    products.map(product => {
+      if(product.company_id == companyId){
+        setCount(count + 1);
+      }
+    });
+
+    if(count >= maxProm){
+      Alert.alert(
+        'Ops!',
+        'Máximo de promoções atingida'
+      );
+    }else{
+      api.post('products',{
+        name: productName,
+        price: finalPrice,
+        description: productDescription,
+        date: date,
+        company_id: companyId,
+        image: productImage,
+        validate: productValidate,
+        discount: productDiscount,
+        is_active: 0,
+      },{
+        headers: {
+          'Authorization': 'Bearer '+userToken
+        }
+      }).then(() => {
+        Alert.alert(
+          'Sucesso!',
+          'Promoção Cadastrada, aguarde o E-mail do Administrador.'
+        )
+        navigation.dispatch(StackActions.push('Home',{
+          name: companyName,
+          id: companyId,
+          image: companyImage,
+          cnpj: companyCnpj,
+          userToken: userToken
+        }));
+      }).catch(err => {
+        Alert.alert(
+          'Ops!',
+          'Erro ao Cadastrar sua Promoção, Entre em contato com o Suporte.'
+        );
+      })
+    }
+    return;
   }
 
   if(isLoading){

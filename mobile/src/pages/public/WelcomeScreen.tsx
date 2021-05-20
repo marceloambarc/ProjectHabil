@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Text, View, TouchableOpacity, StyleSheet, Image, 
-Linking, TouchableHighlight, Alert, Dimensions } from 'react-native';
+Linking, TouchableWithoutFeedback, Alert, Dimensions } from 'react-native';
 import { SearchBar } from 'react-native-elements';
 import { Feather } from '@expo/vector-icons';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -13,13 +13,12 @@ import MainPath from '../../../src/pages/client/routes';
 import RegisterScreen from '../client/RegisterScreen';
 import SuportScreen from './view/SupportScreen';
 import About from './view/AboutScreen';
-import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 
 const welcomeBackgroundImage = "../../../assets/content_id.png";
 
 function WelcomeScreen({ navigation }:{ navigation:any }){
-  const [isLoading, setIsLoading] = useState(false);
   const [search, setSearch] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   const [base] = useState('data:image/png;base64');
   const [img2, setImage2] = useState('');
 
@@ -43,17 +42,10 @@ function WelcomeScreen({ navigation }:{ navigation:any }){
   },[])
 
   async function handleSearchTerm(){
-    try{
-        const searchTerm = search;
-        navigation.navigate('Supplier',{
-          searchTerm
-        });
-    }catch(err){
-      Alert.alert(
-        'Ops!',
-        'Ocorreu um Erro, entre em contato com o suporte.'
-      );
-    }
+    const searchTerm = search;
+    navigation.navigate('Supplier',{
+      searchTerm
+    });
   }
 
   function WelcomeHeader(){
@@ -71,9 +63,10 @@ function WelcomeScreen({ navigation }:{ navigation:any }){
       </View>
     );
   }
-
-  function SearchRow(){
-    return (
+ 
+  return (
+    <SafeAreaView>
+      <WelcomeHeader />
       <View style={styles.searchRow}>
         <View style={styles.searchBarContainer}>
           <SearchBar 
@@ -81,8 +74,7 @@ function WelcomeScreen({ navigation }:{ navigation:any }){
             placeholder="Procure Aki as promoções..."
             lightTheme
             round
-            autoCorrect={true}
-            onChangeText={setSearch}
+            onChangeText={(text) => setSearch(text)}
             value={search}
           />
         </View>
@@ -93,29 +85,22 @@ function WelcomeScreen({ navigation }:{ navigation:any }){
           </TouchableOpacity>
         </View>
       </View>
-    );
-  }
-
-  return (
-    <SafeAreaView>
-      <WelcomeHeader />
-      <SearchRow />
       <View style={styles.background}>
         <View style={styles.container}>
-            <TouchableWithoutFeedback style={styles.companyImageContainer} onPress={() => Linking.openURL("https://www.google.com/search?rlz=1C1CHBF_enBR866BR866&sxsrf=ALeKk030DPJvg9DthHm-93J6dOGCTrPIKg%3A1612875174528&ei=poUiYIfVH6Kf5OUPtu-0sAU&q=Compre+mais+Aki&oq=Compre+mais+Aki&gs_lcp=CgZwc3ktYWIQAzIICAAQCBANEB4yCAgAEA0QBRAeMggIABAIEA0QHjIKCAAQCBANEAoQHjoECCMQJzoFCAAQkQI6AggAOggILhDHARCjAjoECAAQQzoCCC46BAgAEAo6BQgAEMsBOgsILhDHARCvARDLAToHCAAQChDLAToNCC4QxwEQrwEQChDLAToFCCEQoAE6BAghEBVQ-KABWOTAAWCtyQFoAXAAeACAAc0CiAGQGJIBCDAuMTMuMy4xmAEAoAEBqgEHZ3dzLXdpesABAQ&sclient=psy-ab&ved=0ahUKEwiHwOCe7NzuAhWiD7kGHbY3DVYQ4dUDCA0&uact=5")}>
-              <ImageZoom cropWidth={420}
-                        cropHeight={390}
-                        imageWidth={420}
-                        imageHeight={390}>
-                <Image 
-                  style={styles.companyImage}
-                  source={{ uri: `${base},${img2}` }}
-                  resizeMode='contain'
-                />       
-              </ImageZoom>
-            </TouchableWithoutFeedback>
-          </View>
+          <TouchableWithoutFeedback style={styles.companyImageContainer}>
+            <ImageZoom cropWidth={420}
+                      cropHeight={390}
+                      imageWidth={420}
+                      imageHeight={390}>
+              <Image 
+                style={styles.companyImage}
+                source={{ uri: `${base},${img2}` }}
+                resizeMode='contain'
+              />       
+            </ImageZoom>
+          </TouchableWithoutFeedback>
         </View>
+      </View>
     </SafeAreaView>
   );
 }

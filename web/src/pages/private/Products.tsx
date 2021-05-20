@@ -443,9 +443,9 @@ function Products(){
                       <Validation 
                         active={active} 
                         validate={product.validade}
-                        promoName={product.name} 
-                        productId={product.id} 
-                        userToken={userToken} 
+                        promoName={product.name}
+                        productId={product.id}
+                        userToken={userToken}
                       />
                     </td>
                     <td>{product.discount} %</td>

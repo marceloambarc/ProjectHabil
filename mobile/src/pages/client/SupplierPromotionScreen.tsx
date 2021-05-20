@@ -19,7 +19,7 @@ interface Props{
   max_prom: number,
 }
 
-const baseURL = `${API_URL}/companies/products/company_id`;
+const baseURL = `${API_URL}/companies/products/company_id/all`;
 
 function ProductsHeader(){
   const navigation = useNavigation();
@@ -134,33 +134,62 @@ export default class App extends React.Component<Props> {
     });
   }
 
-  renderItem = ({item}:{item: any}) =>(
-      <TouchableWithoutFeedback onPress={() => this.handleView({item})}>
-        <View style={styles.listItem}>
+  items = ({item}:{item:any}) => {
+    if(item.is_active === 0){
+      return (
+        <View style={styles.listItemInactive}>
+        {/* IMAGE */}
+        <Image source={{uri: `data:image/jpeg;base64,${item.image}`}} style={styles.image} />
   
+        {/* CONTENT */}
+        <View style={styles.contentContainer}>
+          <Text style={styles.contentText}>{item.name}</Text>
+          <Text style={styles.contentTextPrice}>R$: {item.price}</Text>
+            <Text>{item.position}</Text>
+        </View>
+
+        <View style={styles.btnContainer}>
+          <TouchableOpacity style={styles.btnModify} onPress={() => this.handleDelete({item})}>
+            <Text style={{color:"red"}}>Deletar</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.btnModify} onPress={() => this.handleEdit({item})}>
+            <Text style={{color:"gold"}}>Editar</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+      );
+    }else{
+      return(
+        <TouchableWithoutFeedback onPress={() => this.handleView({item})}>
+          <View style={styles.listItem}>
           {/* IMAGE */}
           <Image source={{uri: `data:image/jpeg;base64,${item.image}`}} style={styles.image} />
     
-            {/* CONTENT */}
-            <View style={styles.contentContainer}>
-              <Text style={styles.contentText}>{item.name}</Text>
-              <Text style={styles.contentTextPrice}>R$: {item.price}</Text>
+          {/* CONTENT */}
+          <View style={styles.contentContainer}>
+            <Text style={styles.contentText}>{item.name}</Text>
+            <Text style={styles.contentTextPrice}>R$: {item.price}</Text>
               <Text>{item.position}</Text>
-            </View>
-          
-          {/* SIDE BUTTONS */}
+          </View>
+
           <View style={styles.btnContainer}>
             <TouchableOpacity style={styles.btnModify} onPress={() => this.handleDelete({item})}>
-                <Text style={{color:"red"}}>Deletar</Text>
+              <Text style={{color:"red"}}>Deletar</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.btnModify} onPress={() => this.handleEdit({item})}>
-                <Text style={{color:"gold"}}>Editar</Text>
+              <Text style={{color:"gold"}}>Editar</Text>
             </TouchableOpacity>
           </View>
-  
         </View>
       </TouchableWithoutFeedback>
-    
+      );
+    }
+  }
+
+  renderItem = ({item}:{item: any}) => (
+    <View>
+      {this.items({item})}
+    </View>
   )
 
   renderEmpty = () => {
@@ -223,6 +252,16 @@ const styles = StyleSheet.create({
     margin:10,
     padding:10,
     backgroundColor:'#FFF',
+    width:'80%',
+    flex:1,
+    alignSelf:'center',
+    flexDirection:'row',
+    borderRadius:5
+  },
+  listItemInactive:{
+    margin:10,
+    padding:10,
+    backgroundColor:'grey',
     width:'80%',
     flex:1,
     alignSelf:'center',

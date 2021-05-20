@@ -16,6 +16,8 @@ interface NewPromotionParams {
   companyId: string,
   companyName: string,
   companyEmail: string,
+  companyCnpj: string,
+  companyImage: string,
   userToken: string,
   max_prom: number;
   productsLength: number;
@@ -45,9 +47,11 @@ export default function NewPromotionScreen(){
   const company_id = params.companyId;
   const company_name = params.companyName;
   const company_email = params.companyEmail;
+  const company_image = params.companyImage;
+  const company_cnpj = params.companyCnpj;
   const userToken = params.userToken;
   const max_prom = params.max_prom;
-  const products_length = params.productsLength
+  const products_length = params.productsLength;
   const discount = parseInt(discountPrototype);
 
   const checkIsNan = isNaN(discount);
@@ -149,15 +153,15 @@ export default function NewPromotionScreen(){
         'Você alcançou o máximo de Promoções, Contate o Administrador para liberar mais promoções.',
         [
           {
+            text: "Solicitar",
+            onPress: () => handleRequest(),
+            style: 'default'
+          },
+          {
             text: "Cancelar",
             onPress: () => {},
             style: 'cancel'
           },
-          {
-            text: "Solicitar",
-            onPress: () => handleRequest(),
-            style: 'default'
-          }
         ]
       );
       return;
@@ -170,7 +174,9 @@ export default function NewPromotionScreen(){
       base,
       discount,
       userToken,
-      max_prom
+      max_prom,
+      company_name,
+
     });
   }
 

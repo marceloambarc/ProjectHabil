@@ -68,7 +68,7 @@ export default function HomeScreen(){
   }
 
   async function getProductsLenght(){
-    api.get(`companies/products/company_id/${companyId}`).then(res => {
+    api.get(`companies/products/company_id/all/${companyId}`).then(res => {
       setProductsLength(res.data.length);
     }).catch(err => {
       Alert.alert(
@@ -90,6 +90,8 @@ export default function HomeScreen(){
       companyId,
       companyEmail: email,
       companyName: name,
+      companyCnpj,
+      companyImage,
       userToken,
       max_prom,
       productsLength
