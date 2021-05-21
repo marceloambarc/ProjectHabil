@@ -149,11 +149,8 @@ export default class App extends React.Component<Props> {
         </View>
 
         <View style={styles.btnContainer}>
-          <TouchableOpacity style={styles.btnModify} onPress={() => this.handleDelete({item})}>
-            <Text style={{color:"red"}}>Deletar</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.btnModify} onPress={() => this.handleEdit({item})}>
-            <Text style={{color:"gold"}}>Editar</Text>
+          <TouchableOpacity style={styles.btnModify} onPress={() => {}}>
+            <Text style={{color:"#fff"}}>Inativo</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -187,9 +184,9 @@ export default class App extends React.Component<Props> {
   }
 
   renderItem = ({item}:{item: any}) => (
-    <View>
+    <>
       {this.items({item})}
-    </View>
+    </>
   )
 
   renderEmpty = () => {
@@ -261,7 +258,7 @@ const styles = StyleSheet.create({
   listItemInactive:{
     margin:10,
     padding:10,
-    backgroundColor:'grey',
+    backgroundColor:'silver',
     width:'80%',
     flex:1,
     alignSelf:'center',

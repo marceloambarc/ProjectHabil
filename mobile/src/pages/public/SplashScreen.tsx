@@ -98,11 +98,12 @@ const styles = StyleSheet.create({
   },
   splashTitle: {
     fontSize: 20,
-    color:'darkgrey'
+    color: '#4F4F4F',
+    fontWeight: "600",
   },
   splashText: {
     fontSize: 18,
-    color: 'silver',
+    color:'#696969',
     paddingBottom: 10
   },
   footer: {

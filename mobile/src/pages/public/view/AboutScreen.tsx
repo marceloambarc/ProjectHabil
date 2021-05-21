@@ -1,7 +1,7 @@
 import React from 'react';
 import { SafeAreaView, View, Text, Image, TouchableOpacity,
 TouchableWithoutFeedback, Linking, StyleSheet, Dimensions } from 'react-native';
-import { Feather, Ionicons, Entypo } from '@expo/vector-icons';
+import { Feather, Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 
 
 function handleWhatsLucas() {
@@ -13,7 +13,7 @@ function handleWhatsMarcio() {
 }
 
 function handleHabilSite() {
-  Linking.openURL("http://www.habilinformatica.com.br")
+  Linking.openURL(`http://www.habilinformatica.com.br/`)
 }
 
 export default function About({navigation}:{navigation:any}) {
@@ -55,9 +55,12 @@ export default function About({navigation}:{navigation:any}) {
               </View>
   
             </View>
-            <TouchableOpacity onPress={handleHabilSite}>
-              <Text style={styles.visitText}>Visite nosso Site <Entypo name="controller-next" size={24} color="black" /></Text>
-            </TouchableOpacity>
+            <View style={styles.habilSiteContainer}>
+                <Text style={styles.contactName}>Visite nosso Site</Text>
+                <TouchableOpacity style={styles.btnSupplierSite} onPress={handleHabilSite}>
+                  <MaterialCommunityIcons name="web" size={24} color="#FFF" />
+                </TouchableOpacity>
+              </View>
           </View>
         </View>
       </SafeAreaView>
@@ -118,7 +121,13 @@ const styles = StyleSheet.create({
     marginBottom: '40%'
   },
   habilContactCol: {
-    alignItems: 'center'
+    alignItems: 'center',
+    paddingHorizontal: Dimensions.get('window').width * 0.07,
+    paddingVertical: Dimensions.get('window').height * 0.001
+  },
+  habilSiteContainer: {
+    alignItems: 'center',
+    paddingTop: Dimensions.get('window').height * 0.03
   },
   contactName: {
     fontSize: 20,
@@ -133,4 +142,15 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#25d366'
   },
+  btnSupplierSite:{
+    borderRadius: 40,
+    height: 55,
+    width: 55,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#D42E26'
+  },
+  buttonSite: {
+    backgroundColor: "black"
+  }
 });

@@ -6,6 +6,7 @@ import Landing from './pages/Landing';
 
 import Companie from './pages/Companie';
 import Activate from './pages/Activate'
+import Privacy from './pages/Privacy';
 
 import ControlMap from './pages/private/ControlMap';
 import Companies from './pages/private/Companies';
@@ -31,6 +32,7 @@ function Routes() {
         <Route path="/companies" component={Companies} />
         <Route path="/moderators" component={Moderators} />
         <Route path="/forgot" component={Forgot} />
+        <Route path="/privacy" component={Privacy} />
         
       </Switch>
     </BrowserRouter>
