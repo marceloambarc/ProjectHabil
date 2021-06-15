@@ -13,7 +13,7 @@ export default function SupportScreen({navigation}:{navigation:any}){
   const [content, setContent] = useState('');
   const [title, setTitle] = useState('');
   const message = 'Suporte';
-  const email = 'contato@habilinformatica.com.br'
+  const email = 'ajuda@novasantarita.net.br'
 
   async function handleSupport() {
     async function supportFinish(){

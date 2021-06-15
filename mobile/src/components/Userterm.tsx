@@ -16,450 +16,260 @@ export default function Userterm() {
   return (
     <View style={styles.tcContainer}>
     <ScrollView>
-      <Text style={[styles.tcP, {fontSize: 12 + font}]}>
-A HABIL SOLUÇÕES EM INFORMÁTICA, escrita no CNPJ 02.048.638/0001-28, com sede em Canoas –
-RS, doravante denominada unicamente de <Text style={{fontWeight: "bold"}}>HÁBIL INFORMÁTICA</Text>, estabelece o presente 
-instrumento, denominado <Text style={{fontWeight: "bold"}}>TERMOS DE USO</Text> que permite aos usuários possuidores 
-de <Text style={{fontWeight: "bold"}}>CONTA</Text> no Aplicativo ou site <Text style={{fontWeight: "bold"}}>(CompreMaisAki)</Text> criarem contas para anuncio de suas 
-empresas <Text style={{fontWeight: "bold"}}>(APPS)</Text> das plataformas Android, iOS, HTML5 para o uso de outros Usuários 
-<Text style={{fontWeight: "bold"}}>(USUÁRIOS FINAIS)</Text> através de seus <Text style={{fontWeight: "bold"}}>SERVIÇOS DE DIVULGAÇÂO das Marcas de suas empresas, 
-e divulgação de seus produtos e Promoções.</Text>
+      <Text style={styles.tcT}>
+      Informações Gerais
       </Text>
-      <Text style={[styles.tcP, {fontSize: 12 + font}]}>
-Por este <Text style={{fontWeight: "bold"}}>TERMO DE USO</Text>, o USUÁRIO EMPREENDEDOR (Usuário que cadastra a empresa com os 
-dados da empresa) do APP COMPREMAISAKI fica ciente e concorda que ao utilizar o APP 
-COMPREMAISAKI para construir, desenvolver e publicar seu <Text style={{fontWeight: "bold"}}>APP</Text>, em qualquer plataforma de 
-celular ou qualquer loja de aplicativos, automaticamente aderirá e concordará em se submeter 
-integralmente às condições do presente <Text style={{fontWeight: "bold"}}>TERMO DE USO</Text> e qualquer de suas alterações futuras.
+      <Text style={[styles.tcP, {fontSize: 10 + font}]}>
+      A Presente Política de Privacidade contém informações a respeito do modo como tratamos, total ou parcialmente, de forma automatizada ou não, os dados pessoais dos usuários que acessam o aplicativo CompremaisAki. Seu objetivo é esclarecer os interessados acerca dos tipos de dados que são coletados, dos motivos da coleta e da forma como o usuário poderá atualizar, gerenciar ou excluir estas informações.
       </Text>
-      <Text style={[styles.tcP, {fontSize: 12 + font}]}>
-A <Text style={{fontWeight: "bold"}}>HÁBIL INFORMÁTICA</Text> se reserva no direito de atualizar e modificar os <Text style={{fontWeight: "bold"}}>TERMOS DE 
-USO</Text> periodicamente, sem notificar a sua base de o USUÁRIOS EMPREENDEDORES. Quaisquer 
-novos recursos que aumentem ou aprimorem os <Text style={{fontWeight: "bold"}}>SERVIÇOS</Text> atuais, incluindo a liberação ou 
-exclusão de novas ferramentas e funcionalidades, estarão sujeitos aos <Text style={{fontWeight: "bold"}}>TERMOS DE USO.</Text> O uso 
-continuado do SERVIÇO após qualquer alteração constituirá anuências às referidas mudanças. 
-O USUÁRIO EMPREENDEDOR poderá rever
-      </Text>
-      <Text style={[styles.tcP, {fontSize: 12 + font}]}>
-O USUÁRIO EMPREENDEDOR declara que está consciente de que a violação de qualquer das 
-disposições estipuladas neste instrumento poderá resultar no cancelamento de 
-sua <Text style={{fontWeight: "bold"}}>CONTA (“CONTA”)</Text> sem qualquer notificação, de modo que o USUÁRIO EMPREENDEDOR 
-ficará impossibilitado de criar <Text style={{fontWeight: "bold"}}>APPS</Text>, bem como poderá resultar na exclusão do <Text style={{fontWeight: "bold"}}>APPS</Text> do APP 
-COMPREMAISAKI e das lojas onde o APP poderá ter sido disponibilizado (Apple App Store e 
-Google Play), conjuntamente com todo seu conteúdo e sua base de dados.
+      <Text style={[styles.tcP, {fontSize: 10 + font}]}>
+      O presente documento foi elaborado em conformidade com a Lei Geral de Proteção de Dados Pessoais (Lei 13.709/18) e o Marco Civil da Internet (Lei 12.965/14). Ainda, o documento poderá ser atualizado em decorrência de eventual atualização normativa, razão pela qual se convida o usuário a consultar periodicamente esta seção.
       </Text>
       <Text style={styles.tcT}>
-        Nossas Responsabilidades
+      Coleta de dados do usuário
       </Text>
-      <Text style={[styles.tcP, {fontSize: 12 + font}]}>
-Quando permitido por lei, a <Text style={{fontWeight: "bold"}}>HÁBIL INFORMÁTICA</Text> e seus fornecedores ou distribuidores não se 
-responsabilizarão por perda de lucros, perda de faturamento (receita), perda de dados e 
-informações, perdas financeiras ou por danos indiretos, especiais, consequenciais, exemplares 
-ou punitivos
-      </Text>
-      <Text style={[styles.tcP, {fontSize: 12 + font}]}>
-Na medida permitida pela legislação, a responsabilidade total do APP COMPREMAISAKI e de 
-seus fornecedores e distribuidores, para qualquer reclamação sob estes termos, incluindo 
-quaisquer garantias implícitas, limita-se ao valor que você pagou, à <Text style={{fontWeight: "bold"}}>HÁBIL INFORMÁTICA</Text> para 
-usar os <Text style={{fontWeight: "bold"}}>SERVIÇOS</Text>. Fica a nosso critério se forneceremos os <Text style={{fontWeight: "bold"}}>SERVIÇOS</Text> a você novamente.
-Em todos os casos, a <Text style={{fontWeight: "bold"}}>HÁBIL INFORMÁTICA</Text> e seus fornecedores e distribuidores não serão 
-responsáveis por qualquer perda ou dano que não seja razoavelmente previsível.
+      <Text style={[styles.tcP, {fontSize: 10 + font}]}>
+      A Política de Privacidade do aplicativo CompremaisAki inclui assegurar que seus dados pessoais não serão divulgados a terceiros para fins comerciais, ficando restritos à Prefeitura Municipal de Nova Santa Rita e as empresas contratadas e órgãos públicos para as quais dados serão encaminhados para a realização do serviço solicitado, pesquisa de satisfação e campanhas ativas da PMNSR .
       </Text>
       <Text style={styles.tcT}>
-        Conteúdo
+      Quando e quais dados são coletados
       </Text>
       <Text style={[styles.tcP, {fontSize: 12 + font}]}>
-Conteúdo inclui texto, programas, scripts, gráficos, fotos, sons, imagens, músicas, vídeos, 
-combinações audiovisuais, animações, recursos interativos e outros materiais que O(S) 
-USUÁRIO(S) EMPREENDEDOR(ES) e o(s) Anunciante(s), têm acesso ou submetem a um <Text style={{fontWeight: "bold"}}>APP.</Text>
+      Os dados pessoais do usuário são recolhidos pelo aplicativo CompraemaisAki das seguinte formas:
       </Text>
+
+
+      <View style={{flexDirection: 'row'}}>
+            <Text style={[styles.tcP, {fontSize: 12 + font}]}>{'\u2022'}</Text>
+            <Text style={[styles.tcP, {flex: 1, paddingLeft: 5, fontSize: 12 + font}]}>Quando o usuário se cadastra no aplicativo: esses dados são os dados de identificação básicos de nome completo, CPF e e-mail.</Text>
+      </View>
+
+      <View style={{flexDirection: 'row'}}>
+            <Text style={[styles.tcP, {fontSize: 12 + font}]}>{'\u2022'}</Text>
+            <Text style={[styles.tcP, {flex: 1, paddingLeft: 5, fontSize: 12 + font}]}>Quando o usuário atualiza seus dados do aplicativo: neste caso o aplicativo pode solicitar os dados de nome, telefone, e-mail e CEP.</Text>
+      </View>
+
+      <View style={{flexDirection: 'row'}}>
+            <Text style={[styles.tcP, {fontSize: 12 + font}]}>{'\u2022'}</Text>
+            <Text style={[styles.tcP, {flex: 1, paddingLeft: 5, fontSize: 12 + font}]}>Quando um usuário acessa o aplicativo: neste caso o aplicativo pode coletar os dados de localização do usuário ou do local da ocorrência da solicitação, através do Google. Além disso, serão coletados todos os dados preenchidos nos formulários pelo usuário, referentes à cada tipo de serviço solicitado.</Text>
+      </View>
+
+      <Text style={styles.tcT}>
+      VERIFICAR SOBRE DADOS DE COMPRADORES E INFORMAÇÕES DE PAGAMENTO
+      </Text>
+
+
       <Text style={[styles.tcP, {fontSize: 12 + font}]}>
-O USUÁRIO EMPREENDEDOR é o proprietário do conteúdo que publica nos <Text style={{fontWeight: "bold"}}>APP's</Text> construídos
-na <Text style={{fontWeight: "bold"}}>HÁBIL INFORMÁTICA</Text>. O USUÁRIO EMPREENDEDOR declara ter conhecimento de que a 
-responsabilidade pelo conteúdo inserido nos <Text style={{fontWeight: "bold"}}>APPS</Text> é exclusiva do USUÁRIO EMPREENDEDOR 
-que a publicar, entende e concorda que a <Text style={{fontWeight: "bold"}}>HÁBIL INFORMÁTICA</Text> não pode ser responsável pelo 
-conteúdo postado ou compartilhado no <Text style={{fontWeight: "bold"}}>SERVIÇO</Text>.
-      </Text>
-      <Text style={[styles.tcP, {fontSize: 12 + font}]}>
-A <Text style={{fontWeight: "bold"}}>HÁBIL INFORMÁTICA</Text> proíbe a utilização ou transmissão de conteúdos impróprios 
-nos <Text style={{fontWeight: "bold"}}>APPS</Text> criados na <Text style={{fontWeight: "bold"}}>APLICATIVOS PARA CELULAR</Text>, conforme listado abaixo, mas não se
-limitando a:
-      </Text>
-      <Text style={styles.tcI}>
-1.  Vírus ou outros códigos maliciosos como worms, spywares ou códigos destrutivos
-      </Text>
-      <Text style={styles.tcI}>
-2.  Publicações que visam intimidar, assediar ou praticar bullying contra qualquer tipo de 
-usuário do Aplicativo.
-      </Text>
-      <Text style={styles.tcI}>
-3.  Discurso de ódio, seja ameaçador; incite violência; ou contenha violência gráfica ou 
-desnecessária. Discursos de ódio ou qualquer
-      </Text>
-      <Text style={styles.tcI}>
-4.  Conteúdos e discursos discriminatórios que infrinjam o Artigo 5º, inciso XLI, da 
-Constituição Federal.
-      </Text>
-      <Text style={[styles.tcP, {fontSize: 12 + font}]}>
-O USUÁRIO EMPREENDEDOR concorda ainda em usar o <Text style={{fontWeight: "bold"}}>SERVIÇO</Text> por sua própria conta e risco. 
-A <Text style={{fontWeight: "bold"}}>HÁBIL INFORMÁTICA</Text> não será responsável por quaisquer danos diretos, indiretos, incidentais, 
-especiais, consequenciais ou exemplares, incluindo, mas não limitado, a danos por perda de 
-lucros, boa vontade, uso, dados ou outras perdas intangíveis, em decorrência da utilização 
-imprópria de tais conteúdos.
-      </Text>
-      <Text style={[styles.tcP, {fontSize: 12 + font}]}>
-Todas as infrações relativas a direitos de propriedade intelectual dos conteúdos publicados e 
-compartilhados nos <Text style={{fontWeight: "bold"}}>APPS</Text> são de exclusiva responsabilidade do USUÁRIO EMPREENDEDOR que 
-o publicar, não podendo a <Text style={{fontWeight: "bold"}}>HÁBIL INFORMÁTICA</Text> em hipótese alguma ser responsabilizada pelo 
-uso indevido de tais conteúdos, reservando-se no direito de caso ter conhecimento de sua 
-ilegalidade ou uso indevido, cancelar a <Text style={{fontWeight: "bold"}}>CONTA</Text> do USUÁRIO EMPREENDEDOR e excluir 
-seus <Text style={{fontWeight: "bold"}}>APPS</Text>, sem qualquer notificação.
-      </Text>
-      <Text style={[styles.tcP, {fontSize: 12 + font}]}>
-Caso o USUÁRIO EMPREENDEDOR ou o <Text style={{fontWeight: "bold"}}>USUÁRIO FINAL</Text> encontre conteúdos ou materiais que 
-considere ofensivo ou que viole direitos de terceiros em <Text style={{fontWeight: "bold"}}>APPS</Text>, este deverá avisar 
-imediatamente o suporte e-mail ajuda@novasantarita.net.br e a <Text style={{fontWeight: "bold"}}>HÁBIL INFORMÁTICA</Text> se 
-compromete a investigar referida denúncia. A <Text style={{fontWeight: "bold"}}>HÁBIL INFORMÁTICA</Text> ainda está autorizada a 
-retirar o <Text style={{fontWeight: "bold"}}>APP</Text>, bem como cancelar a <Text style={{fontWeight: "bold"}}>CONTA</Text> do USUÁRIO EMPREENDEDOR em detrimento de 
-exigências emanados do poder judiciário.
-      </Text>
-      <Text style={[styles.tcP, {fontSize: 12 + font}]}>
-Caso a <Text style={{fontWeight: "bold"}}>HÁBIL INFORMÁTICA</Text> venha a ser acionada ou condenada judicialmente, por violações 
-cometidas pelo EMPREENDEDOR, em violação a estes <Text style={{fontWeight: "bold"}}>TERMOS DE USO</Text>, o USUÁRIO 
-EMPREENDEDOR declara e concorda que deverá ressarcir a <Text style={{fontWeight: "bold"}}>HÁBIL INFORMÁTICA</Text> dos valores 
-despendidos, corrigidos monetariamente, bem como das perdas e danos.
-      </Text>
-      <Text style={[styles.tcP, {fontSize: 12 + font}]}>
-O USUÁRIO EMPREENDEDOR concorda em ceder os direitos de uso de imagem, para o uso 
-pela <Text style={{fontWeight: "bold"}}>HÁBIL INFORMÁTICA</Text>, em mídia espontânea, sem prazo determinado, de forma gratuita, 
-sem que este possua o direito a qualquer tipo de remuneração em decorrência deste uso.
+      VERIFICAR SE EXISTE A POSSIBILIADE DE ACESSO ANÔNIMO - Para alguns serviços específicos, a solicitação pode ser feita de forma anônima. Neste caso, não há registro das informações pessoais do usuário, incluindo seus contatos. No caso de solicitações anônimas, o solicitante não receberá atualizações automáticas e não poderá acompanhar sua solicitação na área cadastrada dos canais de atendimento. Será possível acompanhar a solicitação apenas buscando pelo número do protocolo.
       </Text>
       <Text style={styles.tcT}>
-        Anúncio e Anunciantes
+      Para que finalidades utilizamos os dados pessoais do usuário
       </Text>
       <Text style={[styles.tcP, {fontSize: 12 + font}]}>
-O USUÁRIO EMPREENDEDOR concorda e está ciente que a <Text style={{fontWeight: "bold"}}>HÁBIL INFORMÁTICA</Text> poderá inserir 
-mídia e publicidade de terceiros, a seu critério e oportunidade, sem qualquer necessidade de
-notificação ou aviso.
+      Os dados pessoais do usuário coletados e armazenados pelo aplicativo CompremaisAki tem por finalidade:
       </Text>
+
+      <View style={{flexDirection: 'row'}}>
+            <Text style={[styles.tcP, {fontSize: 12 + font}]}>{'\u2022'}</Text>
+            <Text style={[styles.tcP, {flex: 1, paddingLeft: 5, fontSize: 12 + font}]}>Identificar o usuário de modo a garantir que as solicitações sejam abertas corretamente;</Text>
+      </View>
+
+      <View style={{flexDirection: 'row'}}>
+            <Text style={[styles.tcP, {fontSize: 12 + font}]}>{'\u2022'}</Text>
+            <Text style={[styles.tcP, {flex: 1, paddingLeft: 5, fontSize: 12 + font}]}>Facilitar e agilizar as compras de fornecedores de produtos e serviços com sede no Município de Nova Santa Rita;</Text>
+      </View>
+
+      <View style={{flexDirection: 'row'}}>
+            <Text style={[styles.tcP, {fontSize: 12 + font}]}>{'\u2022'}</Text>
+            <Text style={[styles.tcP, {flex: 1, paddingLeft: 5, fontSize: 12 + font}]}>Permitir o acesso do usuário a determinados conteúdos do aplicativo, exclusivo para usuários cadastrados;</Text>
+      </View>
+
+      <View style={{flexDirection: 'row'}}>
+            <Text style={[styles.tcP, {fontSize: 12 + font}]}>{'\u2022'}</Text>
+            <Text style={[styles.tcP, {flex: 1, paddingLeft: 5, fontSize: 12 + font}]}>Garantir a segurança do usuário na abertura de solicitação de compra e serviço.</Text>
+      </View>
+
+
       <Text style={[styles.tcP, {fontSize: 12 + font}]}>
-A <Text style={{fontWeight: "bold"}}>HÁBIL INFORMÁTICA</Text> pode divulgar anúncios/ofertas advindos de diversos anunciantes.   
+      O tratamento de dados pessoais para finalidades não previstas nesta Política de Privacidade somente ocorrerá mediante comunicação prévia ao usuário, de modo que os direitos e obrigações aqui previstos permanecem aplicáveis.
       </Text>
-      <Text style={[styles.tcP, {fontSize: 12 + font}]}>
-A <Text style={{fontWeight: "bold"}}>HÁBIL INFORMÁTICA</Text> não atua como prestador de serviços de consultoria ou ainda 
-intermediário ou participante em nenhum negócio jurídico entre o EMPREENDEDOR, <Text style={{fontWeight: "bold"}}>USUÁRIOS 
-FINAIS</Text> e os anunciantes, salvo anúncios da própria <Text style={{fontWeight: "bold"}}>HÁBIL INFORMÁTICA</Text>.
-      </Text>
+
       <Text style={styles.tcT}>
-      Termos de CONTA
+      Dados sensíveis
       </Text>
       <Text style={[styles.tcP, {fontSize: 12 + font}]}>
-O USUÁRIO EMPREENDEDOR declara e tem conhecimento que para a utilização do SERVIÇO, 
-deverá cumprir o disposto abaixo:  
+      <Text style={{fontWeight: "bold"}}>Não</Text> serão coletados dados sensíveis dos usuários, assim entendidos aqueles definidos nos arts. 9º e 10 do RGDP e nos arts. 11 e seguintes da Lei de Proteção de Dados Pessoais. Assim, dentre outros, não haverá coleta dos seguintes casos:
       </Text>
-      <Text style={styles.tcI}>
-1.  O USUÁRIO EMPREENDEDOR deve ser humano. <Text style={{fontWeight: "bold"}}>CONTAS</Text> registradas por “robôs” ou 
-qualquer outro método automatizado não serão permitidas.
-      </Text>
-      <Text style={styles.tcI}>
-2.  O USUÁRIO EMPREENDEDOR deve fornecer seu nome inteiro, um e-mail válido e 
-telefone quaisquer outras informações necessárias para completar o processo de 
-cadastro para criação da <Text style={{fontWeight: "bold"}}>CONTA</Text>, sendo responsável pela veracidade das informações 
-prestadas.
-      </Text>
-      <Text style={styles.tcI}>
-3.  O USUÁRIO EMPREENDEDOR é responsável por manter a segurança da sua <Text style={{fontWeight: "bold"}}>CONTA</Text> e 
-senha. A <Text style={{fontWeight: "bold"}}>HÁBIL INFORMÁTICA</Text> não pode e não será responsável por qualquer perda ou 
-dano de sua falha em cumprir com esta obrigação de segurança.
-      </Text>
-      <Text style={styles.tcI}>
-4. O USUÁRIO EMPREENDEDOR é responsável por todo e qualquer conteúdo publicado 
-(texto, dados, gráficos, imagens, fotos, vídeos, etc.) e por todas as atividades que 
-ocorrem na sua <Text style={{fontWeight: "bold"}}>CONTA</Text> (mesmo quando o conteúdo é publicado por outras pessoas que 
-tenham acesso à sua <Text style={{fontWeight: "bold"}}>CONTA</Text>).
-      </Text>
-      <Text style={styles.tcI}>
-5. O USUÁRIO EMPREENDEDOR não pode utilizar o <Text style={{fontWeight: "bold"}}>SERVIÇO</Text> para fins ilegais ou não 
-autorizados. O USUÁRIO EMPREENDEDOR não deve, no uso do <Text style={{fontWeight: "bold"}}>SERVIÇO</Text>, violar as leis 
-em sua jurisdição e na jurisdição do APP COMPREMAISAKI (incluindo, mas não se 
-limitando a leis de direitos autorais, de propriedade industrial e/ou intelectual).
-      </Text>
-      <Text style={styles.tcI}>
-6. O USUÁRIO EMPREENDEDOR deve deter todos os direitos autorais e de propriedade dos 
-conteúdos por ele publicados e compartilhados, ou possuir autorização dos detentores 
-de tais conteúdos para sua utilização em compartilhamento.
-      </Text>
-      <Text style={[styles.tcP, {fontSize: 12 + font}]}>
-Estes termos não conferem ao USUÁRIO EMPREENDEDOR e <Text style={{fontWeight: "bold"}}>USUÁRIOS FINAIS</Text> o direito de usar 
-quaisquer marcas ou logotipos utilizados na <Text style={{fontWeight: "bold"}}>HÁBIL INFORMÁTICA</Text>, sendo que a infração estará 
-sujeita a ações perante os órgãos responsáveis.
-      </Text>
+
+      <View style={{flexDirection: 'row'}}>
+            <Text style={[styles.tcP, {fontSize: 12 + font}]}>{'\u2022'}</Text>
+            <Text style={[styles.tcP, {flex: 1, paddingLeft: 5, fontSize: 12 + font}]}>Dados que revelem a origem racial ou étnica, as opiniões políticas, as convicções religiosas ou filosóficas, ou a filiação sindical do usuário;</Text>
+      </View>
+
+      <View style={{flexDirection: 'row'}}>
+            <Text style={[styles.tcP, {fontSize: 12 + font}]}>{'\u2022'}</Text>
+            <Text style={[styles.tcP, {flex: 1, paddingLeft: 5, fontSize: 12 + font}]}>Dados genéticos;</Text>
+      </View>
+
+      <View style={{flexDirection: 'row'}}>
+            <Text style={[styles.tcP, {fontSize: 12 + font}]}>{'\u2022'}</Text>
+            <Text style={[styles.tcP, {flex: 1, paddingLeft: 5, fontSize: 12 + font}]}>Dados biométricos para identificar uma pessoa de forma inequívoca;</Text>
+      </View>
+
+      <View style={{flexDirection: 'row'}}>
+            <Text style={[styles.tcP, {fontSize: 12 + font}]}>{'\u2022'}</Text>
+            <Text style={[styles.tcP, {flex: 1, paddingLeft: 5, fontSize: 12 + font}]}>Dados relativos à saúde do usuário;</Text>
+      </View>
+
+      <View style={{flexDirection: 'row'}}>
+            <Text style={[styles.tcP, {fontSize: 12 + font}]}>{'\u2022'}</Text>
+            <Text style={[styles.tcP, {flex: 1, paddingLeft: 5, fontSize: 12 + font}]}>Dados relativos à vida sexual ou à orientação sexual do usuário;</Text>
+      </View>
+
+      <View style={{flexDirection: 'row'}}>
+            <Text style={[styles.tcP, {fontSize: 12 + font}]}>{'\u2022'}</Text>
+            <Text style={[styles.tcP, {flex: 1, paddingLeft: 5, fontSize: 12 + font}]}>Dados relacionados a condenações penais ou a infrações ou com medidas de segurança conexas.</Text>
+      </View>
+
       <Text style={styles.tcT}>
-        Cancelamento e Término
+      Armazenamento de dados
       </Text>
       <Text style={[styles.tcP, {fontSize: 12 + font}]}>
-O USUÁRIO EMPREENDEDOR é o único responsável por enviar o Comando de cancelar 
-adequadamente a sua <Text style={{fontWeight: "bold"}}>CONTA</Text>, ressalvando-se o direito do APP COMPREMAISAKI de cancelar 
-a <Text style={{fontWeight: "bold"}}>CONTA</Text> do USUÁRIO EMPREENDEDOR conforme estabelecido neste instrumento. Para realizar 
-o cancelamento, o USUÁRIO EMPREENDEDOR deverá realizar a autenticação na área restrita do 
-Cadastro de empresas deverá acessara área de cadastro de empesa, e acessar o comando de
-CANCELAMENTO, por site ou App. Cancelamentos por telefone ou enviados para qualquer 
-endereço eletrônico não serão considerados válidos, e não será realizado.   
+      Os dados de uma solicitação e do solicitante são armazenados pela Prefeitura Municipal de Nova Santa Rita. Todos os dados registrados pelo aplicativo móvel são replicados para ambiente de datacenter seguro.
       </Text>
       <Text style={[styles.tcP, {fontSize: 12 + font}]}>
-Todo o conteúdo da <Text style={{fontWeight: "bold"}}>CONTA</Text> será bloqueado o acesso por 30 dias e após esse período poderá 
-ser excluído do <Text style={{fontWeight: "bold"}}>SERVIÇO</Text> devido ao cancelamento. Estas informações não podem ser 
-recuperadas uma vez que sua <Text style={{fontWeight: "bold"}}>CONTA</Text> seja cancelada.
+      O aplicativo CompremaisAki permite a recuperação de conta cuja senha de acesso tenha sido esquecida pelo usuário. Esse procedimento estará visível no aplicativo, e será acionado por meio do fornecimento do e-mail cadastrado pelo usuário.
       </Text>
-      <Text style={[styles.tcP, {fontSize: 12 + font}]}>
-A <Text style={{fontWeight: "bold"}}>HÁBIL INFORMÁTICA</Text>, a seu exclusivo critério, tem o direito de suspender ou encerrar 
-a <Text style={{fontWeight: "bold"}}>CONTA</Text> do USUÁRIO EMPREENDEDOR e recusar toda e qualquer utilização, por qualquer 
-pessoa, presente ou futura do <Text style={{fontWeight: "bold"}}>SERVIÇO</Text>, por qualquer motivo, a qualquer momento. Tal 
-encerramento do <Text style={{fontWeight: "bold"}}>SERVIÇO</Text> resultará na desativação ou exclusão da <Text style={{fontWeight: "bold"}}>CONTA</Text> do USUÁRIO 
-EMPREENDEDOR ou do acesso à sua <Text style={{fontWeight: "bold"}}>CONTA</Text>, e à perda e renúncia de todo o conteúdo em 
-sua <Text style={{fontWeight: "bold"}}>CONTA</Text>.
-      </Text>
+
       <Text style={styles.tcT}>
-        Modificações aos Serviços e Preços
+      Segurança dos dados pessoais armazenados
       </Text>
       <Text style={[styles.tcP, {fontSize: 12 + font}]}>
-A <Text style={{fontWeight: "bold"}}>HÁBIL INFORMÁTICA</Text> se reserva o direito de, a qualquer momento e de tempos em tempos, 
-modificar ou descontinuar, temporariamente ou permanentemente, o <Text style={{fontWeight: "bold"}}>SERVIÇO</Text> ou parte dele, 
-com ou sem aviso prévio.
+      O aplicativo se compromete a aplicar as medidas técnicas e organizativas aptas a proteger os dados pessoais de acessos não autorizados e de situações de destruição, perda, alteração, comunicação ou difusão de tais dados.
       </Text>
       <Text style={[styles.tcP, {fontSize: 12 + font}]}>
-A <Text style={{fontWeight: "bold"}}>HÁBIL INFORMÁTICA</Text> não deverá ser responsabilizada perante ao USUÁRIO EMPREENDEDOR 
-ou qualquer terceiro por qualquer modificação, suspensão ou descontinuação do <Text style={{fontWeight: "bold"}}>SERVIÇO</Text>.
+      Os dados pessoais armazenados são tratados com confidencialidade, dentro dos limites legais. No entanto, podemos divulgar suas informações pessoais caso sejamos obrigados pela lei para fazê-lo ou se você violar nossos Termos de Serviço.    
       </Text>
-      <Text style={[styles.tcP, {fontSize: 12 + font}]}>
-Esporadicamente, a <Text style={{fontWeight: "bold"}}>HÁBIL INFORMÁTICA</Text> pode emitir uma atualização que pode adicionar, 
-modificar e/ou remover funcionalidades do APP COMPREMAISAKI, do <Text style={{fontWeight: "bold"}}>APP</Text> ou do <Text style={{fontWeight: "bold"}}>SERVIÇO</Text>. 
-Essas atualizações poderão ser inseridas automaticamente sem nenhum aviso. No entanto, 
-a <Text style={{fontWeight: "bold"}}>HÁBIL INFORMÁTICA</Text> fará o possível para notificar o USUÁRIO EMPREENDEDOR em sua área 
-de membros antecipadamente de uma próxima atualização, incluindo detalhes sobre o que esta 
-inclui.
-      </Text>
+
       <Text style={styles.tcT}>
-        Como usar os serviços do APP COMPREMAISAKI   
+      Tempo de armazenamento dos dados
       </Text>
       <Text style={[styles.tcP, {fontSize: 12 + font}]}>
-      Primeiro, é necessário que o USUÁRIO EMPREENDEDOR siga as políticas disponibilizadas a você 
-nos <Text style={{fontWeight: "bold"}}>SERVIÇOS</Text> do APP COMPREMAISAKI.
+      Os dados pessoais do usuário são armazenados pelo aplicativo, por tempo indeterminado e durante o período necessário para a prestação do serviço ou o cumprimento das finalidades previstas no presente documento e termo de uso, conforme o disposto no inciso I do artigo 15 da Lei 13.709/18.
       </Text>
       <Text style={[styles.tcP, {fontSize: 12 + font}]}>
-Não faça o uso indevido de nossos <Text style={{fontWeight: "bold"}}>SERVIÇOS</Text>. Podemos suspender ou deixar de fornecer 
-nossos <Text style={{fontWeight: "bold"}}>SERVIÇOS</Text> caso o USUÁRIO EMPREENDEDOR descumpra qualquer uma de nossas 
-políticas ou se estivermos suspeitando e analisando qualquer atitude que considerarmos de má 
-conduta, conforme citado acima nos <Text style={{fontWeight: "bold"}}>TERMOS DE USO</Text>.
+      Os dados podem ser removidos ou anonimizados a pedido do usuário, excetuando os casos em que a lei oferecer outro tratamento.
       </Text>
       <Text style={[styles.tcP, {fontSize: 12 + font}]}>
-Vale reforçar que o uso dos <Text style={{fontWeight: "bold"}}>SERVIÇOS</Text> do APP COMPREMAISAKI não conferem ao USUÁRIO 
-EMPREENDEDOR a propriedade sobre direitos de propriedade intelectual sobre os <Text style={{fontWeight: "bold"}}>SERVIÇOS</Text> ou 
-sobre o conteúdo dos <Text style={{fontWeight: "bold"}}>APPS</Text> ou de qualquer conteúdo disposto nos domínios do APP 
-COMPREMAISAKI supra citados. Você não pode usar conteúdos de nossos <Text style={{fontWeight: "bold"}}>SERVIÇOS</Text> a menos 
-que obtenha permissão do proprietário de tais conteúdos ou que o faça por algum meio 
-permitido por lei.
+      Ainda, os dados pessoais dos usuários apenas podem ser conservados após o término de seu tratamento nas seguintes hipóteses previstas no artigo 16 da referida lei:
       </Text>
       <Text style={[styles.tcP, {fontSize: 12 + font}]}>
-Estes <Text style={{fontWeight: "bold"}}>TERMOS DE USO</Text> não conferem ao USUÁRIO EMPREENDEDOR o direito de usar quaisquer 
-marcas ou logotipos utilizados nos <Text style={{fontWeight: "bold"}}>SERVIÇOS</Text>.
+      I - cumprimento de obrigação legal ou regulatória pelo controlador;
       </Text>
       <Text style={[styles.tcP, {fontSize: 12 + font}]}>
-OS <Text style={{fontWeight: "bold"}}>SERVIÇOS</Text> exibem conteúdos que não são do APP COMPREMAISAKI em seus <Text style={{fontWeight: "bold"}}>APPS</Text> e estes 
-são de exclusiva responsabilidade do EMPREENDEDOR. A <Text style={{fontWeight: "bold"}}>HÁBIL INFORMÁTICA</Text> pode revisar o 
-conteúdo e definir se este é ilegal ou se fere uma de suas políticas ou dos seus fornecedores e 
-distribuidores, o que impedirá ou suspenderá a prestação de qualquer <Text style={{fontWeight: "bold"}}>SERVIÇO</Text>.
+      II - estudo por órgão de pesquisa, garantida, sempre que possível, a anonimização dos dados pessoais;
       </Text>
+      <Text style={[styles.tcP, {fontSize: 12 + font}]}>
+      III - transferência a terceiro, desde que respeitados os requisitos de tratamento de dados dispostos nesta Lei;
+      </Text>
+      <Text style={[styles.tcP, {fontSize: 12 + font}]}>
+      IV - uso exclusivo do controlador, vedado seu acesso por terceiro, e desde que anonimizados os dados.
+      </Text>
+
       <Text style={styles.tcT}>
-        Termos dos serviços de PUBLICAÇÃO dos Dados
+      Do tratamento dos dados pessoais
       </Text>
       <Text style={[styles.tcP, {fontSize: 12 + font}]}>
-O USUÁRIO EMPREENDEDOR é o único responsável pelos dados de sua empresa.
+            <Text style={{fontWeight: "bold"}}>4.1. Do responsável pelo tratamento dos dados (data controller)</Text> 
       </Text>
       <Text style={[styles.tcP, {fontSize: 12 + font}]}>
-O USUÁRIO EMPREENDEDOR deve fornecer todas as informações necessárias para que sua 
-empresa seja exposta na lista de empresas do aplicativo CompreMaisAki. No caso de não envio 
-destas informações, a <Text style={{fontWeight: "bold"}}>HÁBIL INFORMÁTICA</Text> não se responsabilizará pelo atraso e nem por suas 
-consequências ou quaisquer prejuízos que o USUÁRIO EMPREENDEDOR venha a ter por esta 
-causa. 
+      O controlador, responsável pelo tratamento dos dados pessoais do usuário, é a pessoa física ou jurídica, a autoridade pública, a agência ou outro organismo que, individualmente ou em conjunto com outras, determina as finalidades e os meios de tratamento dos dados pessoais.
+      </Text>
+      <Text style={[styles.tcP, {fontSize: 12 + font}]}>
+      Neste aplicativo, o responsável pelo tratamento dos dados pessoais coletados é a (alguma secretaria específica?) Prefeitura Municipal de Nova Santa Rita e as solicitações abertas pelo aplicativo são tratadas pelos órgãos públicos municipais competentes, referentes a cada tipo de serviço solicitado. Tanto a secretaria quando os órgãos citados, são partes componentes da Prefeitura Municipal de São Paulo, que poderá ser contatada pela Central 156, Portal SP156, Praças de atendimento ou Descomplica SP.
+      </Text>
+      <Text style={[styles.tcP, {fontSize: 12 + font}]}>
+            <Text style={{fontWeight: "bold"}}>4.2. Do operador de dados subcontratado (data processor)</Text> 
+      </Text>
+      <Text style={[styles.tcP, {fontSize: 12 + font}]}>
+      O operador de dados subcontratado é a pessoa física ou jurídica, a autoridade pública, a agência ou outro organismo que trata os dados pessoais sob supervisão do responsável pelo tratamento dos dados do usuário.
+      </Text>
+      <Text style={[styles.tcP, {fontSize: 12 + font}]}>
+      Nesse caso os dados pessoais do usuário serão tratados pela pessoa jurídica xxxxxxxxxx cujo contato é: e-mail: xxxxxxxx@xxxx.com.
+      </Text>
+      <Text style={[styles.tcP, {fontSize: 12 + font}]}>
+      Informamos que a Empresa Hábil Informática, CNPJ 02.048.638/0001-28 não representa a entidade governamental da PMNSR – Prefeitura Municipal de Nova Santa Rita, estando isenta de qualquer movimento de abrangência que preconiza, sobretudo, a abertura das medidas possíveis dos dados constantes do aplicativo, atuando exclusivamente de maneira a viabilizar o adequado processamento do aplicativo em nuvem da plataforma.
+      </Text>
+
+      <Text style={styles.tcT}>
+      Cancelamento de cadastro
+      </Text>
+      <Text style={[styles.tcP, {fontSize: 12 + font}]}>
+      No caso de cancelamento do cadastro, o registro dos dados fornecidos continua armazenado por tempo indeterminado.
+      </Text>
+
+      <Text style={styles.tcT}>
+      Compartilhamento de dados
+      </Text>
+      <Text style={[styles.tcP, {fontSize: 12 + font}]}>
+      O compartilhamento de dados do usuário ocorre apenas nos casos essenciais para o atendimento das finalidades do aplicativo. Os dados não ficarão disponíveis publicamente para outros usuários fora da hipótese acima.
+      </Text>
+      
+      <Text style={styles.tcT}>
+      Dever de não fornecer dados a terceiros
+      </Text>
+      <Text style={[styles.tcP, {fontSize: 12 + font}]}>
+      Durante a utilização do aplicativo, a fim de resguardar e de proteger os direitos de terceiros, o usuário do aplicativo deverá fornecer somente seus dados pessoais e não os de terceiros. 
+      </Text>
+
+      <Text style={styles.tcT}>
+      Cookies ou dados de navegação
+      </Text>
+      <Text style={[styles.tcP, {fontSize: 12 + font}]}>
+      Os cookies referem-se a arquivos de onde ficam armazenadas as informações relacionadas à navegação do usuário no aplicativo. Tais informações são relacionadas aos dados de acesso como local e horário de acesso e são armazenadas para que o servidor da plataforma possa lê-las posteriormente a fim de personalizar os serviços oferecidos.
+      </Text>
+      <Text style={[styles.tcP, {fontSize: 12 + font}]}>
+      O usuário do aplicativo CompremaisAki manifesta conhecer e aceitar que pode ser utilizado um sistema de coleta de dados de navegação mediante à utilização de cookies.
+      </Text>
+
+      <Text style={styles.tcT}>
+      Responsabilidade dos usuários no fornecimento de dados pessoais
+      </Text>
+      <Text style={[styles.tcP, {fontSize: 12 + font}]}>
+      Ao aceitar esta Política de Privacidade, você declara que todas as informações fornecidas ao aplicativo móvel CompremaisAki são verdadeiras, exatas, atuais e completas, pois é uma obrigação do usuário atualizá-las para manter a veracidade e a exatidão das informações. 
+      </Text>
+
+      <Text style={styles.tcT}>
+      Alterações para essa política de privacidade
+      </Text>
+      <Text style={[styles.tcP, {fontSize: 12 + font}]}>
+      A presente versão desta Política de Privacidade foi atualizada pela última vez em 09 de setembro de 2020. Reservamos o direito de modificar este documento a qualquer momento, então, é recomendável que o usuário revise-a com frequência.
+      </Text>
+      <Text style={[styles.tcP, {fontSize: 12 + font}]}>
+      Diante da fusão ou venda do aplicativo à outra empresa, os dados dos usuários podem ser transferidas para os novos proprietários para que a permanência dos serviços oferecidos.
+      </Text>
+      <Text style={[styles.tcP, {fontSize: 12 + font}]}>
+      Ao utilizar o serviço ou fornecer informações pessoais após eventuais modificações, o usuário demonstra sua concordância com as novas normas.
+      </Text>
+
+      <Text style={styles.tcT}>
+      Consentimento
+      </Text>
+      <Text style={[styles.tcP, {fontSize: 12 + font}]}>
+      Ao utilizar os serviços e fornecer as informações pessoais na plataforma, o usuário está consentindo com a presente Política de Privacidade e ao cadastrar-se, manifesta conhecer e pode exercitar seus direitos de cancelar seu cadastro, acessar e atualizar seus dados pessoais e garante a veracidade das informações por ele disponibilizadas. 
+      </Text>
+      <Text style={[styles.tcP, {fontSize: 12 + font}]}>
+      O usuário tem direito de retirar o seu consentimento a qualquer tempo, para tanto deve entrar em contato através do email: ajuda@novasantarita.net.br.
+      </Text>
+
+      <Text style={styles.tcT}>
+      Dúvidas, descumprimentos e denúncias de uso indevido
+      </Text>
+      <Text style={[styles.tcP, {fontSize: 12 + font}]}>
+      A competência para o conhecimento, processamento ou julgamento de qualquer feito judicial envolvendo a presente Política de Privacidade será do foro da comarca de Canoas, renunciando-se expressamente a qualquer outro foro, por mais privilegiado que seja. Para a solução de controvérsias decorrentes do presente instrumento será aplicado integralmente o Direito brasileiro.
       </Text>
       <Text style={[styles.tcP1, {fontSize: 12 + font}]}>
-No <Text style={{fontWeight: "bold"}}>SERVIÇO DE PUBLICAÇÃO</Text>, a <Text style={{fontWeight: "bold"}}>HÁBIL INFORMÁTICA</Text> se propõe a fazer a inserção 
-dos <Text style={{fontWeight: "bold"}}>APPS</Text> nas <Text style={{fontWeight: "bold"}}>LOJAS</Text> e não garante a aprovação ou aceitação da publicação de 
-nenhum APP criado pelo EMPREENDEDOR, para distribuição em outros provedores de 
-plataforma móvel.
-      </Text>
-      <Text style={[styles.tcP1, {fontSize: 12 + font}]}>
-Com a contratação dos serviços de <Text style={{fontWeight: "bold"}}>PUBLICAÇÃO</Text>, o USUÁRIO EMPREENDEDOR terá o direito a 
-submeter o <Text style={{fontWeight: "bold"}}>APP</Text> duas vezes. Se o pedido for negado pelo provedor da <Text style={{fontWeight: "bold"}}>LOJA</Text> por duas vezes, o 
-USUÁRIO EMPREENDEDOR pode cancelar sua <Text style={{fontWeight: "bold"}}>CONTA</Text>, não havendo, entretanto, reembolso sob 
-nenhuma circunstância conforme abaixo.
-      </Text>
-      <Text style={[styles.tcP1, {fontSize: 12 + font}]}>
-Caso as empresas Google INC. e Apple INC. façam alguma alteração em seus padrões e 
-exigências para que os aplicativos sejam publicados nas lojas da Play Store e App Store, 
-respectivamente, a <Text style={{fontWeight: "bold"}}>HÁBIL INFORMÁTICA</Text> não será responsabilizada em nenhum momento ou 
-circunstância pela interrupção dos serviços.
-      </Text>
-      <Text style={styles.tcT}>
-        Serviço de CRIAÇÃO DE CONTA nas Lojas
-      </Text>
-      <Text style={[styles.tcP, {fontSize: 12 + font}]}>
-O USUÁRIO EMPREENDEDOR fornecerá todas as informações necessárias para que sua conta 
-seja criada. No caso de não envio destas informações, a <Text style={{fontWeight: "bold"}}>HÁBIL INFORMÁTICA</Text> não se 
-responsabiliza pelo atraso e nem por suas consequências ou quaisquer prejuízos que o USUÁRIO 
-EMPREENDEDOR venha a ter por esta causa.
-      </Text>
-      <Text style={[styles.tcP, {fontSize: 12 + font}]}>
-No caso de suspensão ou banimento da conta nas <Text style={{fontWeight: "bold"}}>LOJAS</Text>, a <Text style={{fontWeight: "bold"}}>HÁBIL INFORMÁTICA</Text> não se 
-responsabiliza por quaisquer danos, prejuízos financeiros ou pessoais ou outras externalidades 
-causadas pela retirada dos <Text style={{fontWeight: "bold"}}>APPS</Text> das <Text style={{fontWeight: "bold"}}>LOJAS</Text> e não haverá reembolso em hipótese alguma, sem 
-exceções, para que todos sejam tratados de forma única. A <Text style={{fontWeight: "bold"}}>HÁBIL INFORMÁTICA</Text> não se 
-responsabiliza caso o USUÁRIO EMPREENDEDOR infrinja quaisquer políticas e não agirá em 
-nenhum momento como corresponsável e nem como intermediário. Nesta situação o USUÁRIO 
-EMPREENDEDOR deve entrar em contato com a <Text style={{fontWeight: "bold",color: "#119999"}} onPress={() => Linking.openURL('https://support.google.com/googleplay/android-developer#topic=3450769')}>GOOGLE PLAY</Text> e com a <Text style={{fontWeight: "bold",color: "#119999"}} onPress={() => Linking.openURL('https://developer.apple.com/support/')}>APP STORE</Text>.
-      </Text>
-      <Text style={styles.tcT}>
-        Direitos autorais e Propriedade de Conteúdo
-      </Text>
-      <Text style={[styles.tcP, {fontSize: 12 + font}]}>
-A <Text style={{fontWeight: "bold"}}>HÁBIL INFORMÁTICA</Text> não realiza seleção prévia do conteúdo, mas a <Text style={{fontWeight: "bold"}}>HÁBIL INFORMÁTICA</Text> e 
-seus representantes têm o direito (mas não a obrigação), a seu exclusivo critério, de recusar ou 
-remover qualquer conteúdo que seja disponibilizado através do <Text style={{fontWeight: "bold"}}>SERVIÇO</Text>.
-      </Text>
-      <Text style={styles.tcT}>
-        Privacidade
-      </Text>
-      <Text style={[styles.tcP, {fontSize: 12 + font}]}>
-O USUÁRIO EMPREENDEDOR e Imagens divulgadas devem respeitar todas as leis e 
-regulamentações aplicáveis de privacidade e Propriedade Intelectual e Industrial, seus termos e 
-condições.
-      </Text>
-      <Text style={styles.tcT}>
-        Condições Gerais
-      </Text>
-      <Text style={[styles.tcP, {fontSize: 12 + font}]}>
-O uso do <Text style={{fontWeight: "bold"}}>SERVIÇO</Text> é por própria conta e risco do EMPREENDEDOR. O <Text style={{fontWeight: "bold"}}>SERVIÇO</Text> é fornecido 
-“como está” e “conforme estiver disponível”.
-      </Text>
-      <Text style={[styles.tcP, {fontSize: 12 + font}]}>
-Apoio técnico está disponível somente através do e-mail para o COMPREMAISAKI.
-      </Text>
-      <Text style={[styles.tcP, {fontSize: 12 + font}]}>
-O USUÁRIO EMPREENDEDOR autoriza a utilização, reutilização e concede aos outros o direito 
-de usar e reutilizar o seu conteúdo, e qualquer reprodução ou simulação deste, em qualquer 
-forma de mídia ou tecnologia atualmente conhecida ou desenvolvida no futuro, durante e após 
-o uso de <Text style={{fontWeight: "bold"}}>SERVIÇOS</Text>, para quaisquer fins relacionados ao <Text style={{fontWeight: "bold"}}>SERVIÇO</Text>.
-      </Text>
-      <Text style={[styles.tcP, {fontSize: 12 + font}]}>
-O USUÁRIO EMPREENDEDOR entende que a <Text style={{fontWeight: "bold"}}>HÁBIL INFORMÁTICA</Text> se utiliza de terceiros e 
-servidores parceiros para o fornecimento dos hardwares, softwares, serviços de rede, 
-armazenamento e tecnologias relacionadas que são necessárias para executar o <Text style={{fontWeight: "bold"}}>SERVIÇO</Text>.
-      </Text>
-      <Text style={[styles.tcP, {fontSize: 12 + font}]}>
-Não caberá em nenhum momento o requerimento do código-fonte da plataforma, sendo ele de 
-direito exclusivo e permanente da <Text style={{fontWeight: "bold"}}>APLICATIVOS PARA CELULAR</Text>.
-      </Text>
-      <Text style={[styles.tcP, {fontSize: 12 + font}]}>
-O USUÁRIO EMPREENDEDOR não deve modificar, adaptar ou “hackear” o <Text style={{fontWeight: "bold"}}>SERVIÇO</Text>, ou modificar 
-outro website de modo a implicar falsamente que está associado com o <Text style={{fontWeight: "bold"}}>SERVIÇO</Text>, ou qualquer
-outro serviço do APP COMPREMAISAKI .
-      </Text>
-      <Text style={[styles.tcP, {fontSize: 12 + font}]}>
-O USUÁRIO EMPREENDEDOR concorda em não reproduzir ou duplicar ou copiar qualquer parte 
-do <Text style={{fontWeight: "bold"}}>SERVIÇO</Text> ou acesso ao <Text style={{fontWeight: "bold"}}>SERVIÇO</Text> sem permissão expressa e escrita do APP COMPREMAISAKI.
-      </Text>
-      <Text style={[styles.tcP, {fontSize: 12 + font}]}>
-A <Text style={{fontWeight: "bold"}}>HÁBIL INFORMÁTICA</Text> pode remover o conteúdo e <Text style={{fontWeight: "bold"}}>CONTAS</Text> que contenham conteúdo que 
-determinar, segundo critério exclusivo, como ilegal, imoral, ofensivo, ameaçador, calunioso, 
-difamatório ou questionável, ou que viole qualquer propriedade intelectual de qualquer parte 
-ou a estes <Text style={{fontWeight: "bold"}}>TERMOS DE USO</Text>.
-      </Text>
-      <Text style={[styles.tcP, {fontSize: 12 + font}]}>
-Abusos verbais, físicos, escritos ou outros (incluindo ameaças de insulto ou vingança) a qualquer 
-cliente, empregado, membro ou funcionário do APP COMPREMAISAKI, resultará no 
-cancelamento imediato da <Text style={{fontWeight: "bold"}}>CONTA</Text>.
-      </Text>
-      <Text style={[styles.tcP, {fontSize: 12 + font}]}>
-O USUÁRIO EMPREENDEDOR entende que o processamento técnico e a transmissão 
-do <Text style={{fontWeight: "bold"}}>SERVIÇO</Text>, incluindo seu conteúdo, podem ser transferidos sem criptografia e envolvem
-      </Text>
-      <Text style={styles.tcI}>
-(a) transmissões através de várias redes; e
-      </Text>
-      <Text style={styles.tcI}>
-(b) mudanças para se adequar e se adaptar às exigências técnicas para a conexão de redes ou 
-dispositivos.
-      </Text>
-      <Text style={[styles.tcP, {fontSize: 12 + font}]}>
-A <Text style={{fontWeight: "bold"}}>HÁBIL INFORMÁTICA</Text> não garante que:
-      </Text>
-      <Text style={styles.tcI}>
-1.  O <Text style={{fontWeight: "bold"}}>SERVIÇO</Text> atenderá às suas necessidades específicas;
-      </Text>
-      <Text style={styles.tcI}>
-2.  O <Text style={{fontWeight: "bold"}}>SERVIÇO</Text> será ininterrupto, pontual, seguro, ou livre de erros;
-      </Text>
-      <Text style={styles.tcI}>
-3. Os resultados que podem ser obtidos a partir da utilização do <Text style={{fontWeight: "bold"}}>SERVIÇO</Text> serão precisos 
-ou confiáveis;
-      </Text>
-      <Text style={styles.tcI}>
-4. A qualidade de quaisquer produtos, serviços, informações, ou outro material adquirido 
-ou obtido pelo USUÁRIO EMPREENDEDOR através do <Text style={{fontWeight: "bold"}}>SERVIÇO</Text> atenderá às suas 
-expectativas; e quaisquer erros no <Text style={{fontWeight: "bold"}}>SERVIÇO</Text> serão corrigidos.
-      </Text>
-      <Text style={[styles.tcP, {fontSize: 12 + font}]}>
-O USUÁRIO EMPREENDEDOR entende e concorda expressamente que a HÁBIL INFORMÁTICA 
-não será responsável por quaisquer danos diretos, indiretos, incidentais, especiais, 
-consequências, ou exemplares, incluindo, mas não limitado a danos por perda de lucros, boa 
-vontade, uso, dados, ou outras perdas intangíveis (mesmo se a <Text style={{fontWeight: "bold"}}>HÁBIL INFORMÁTICA</Text> tiver sido 
-avisado da possibilidade de tais danos), resultantes de:
-      </Text>
-      <Text style={styles.tcI}>
-1. o uso ou a incapacidade de usar o <Text style={{fontWeight: "bold"}}>SERVIÇO</Text>;
-      </Text>
-      <Text style={styles.tcI}>
-2. o custo de aquisição de bens e serviços resultantes de quaisquer bens, dados, 
-informações ou serviços comprados ou obtidos ou mensagens recebidas ou transações 
-efetuadas através do <Text style={{fontWeight: "bold"}}>SERVIÇO</Text>;
-      </Text>
-      <Text style={styles.tcI}>
-3. acesso não autorizado ou alteração das suas transmissões ou dados;
-      </Text>
-      <Text style={styles.tcI}>
-4. declarações ou condutas de terceiros sobre o <Text style={{fontWeight: "bold"}}>SERVIÇO</Text>; e
-      </Text>
-      <Text style={styles.tcI}>
-5. ou quaisquer outros assuntos relacionados ao <Text style={{fontWeight: "bold"}}>SERVIÇO</Text>.
-      </Text>
-      <Text style={[styles.tcP, {fontSize: 12 + font}]}>
-O USUÁRIO EMPREENDEDOR concorda em defender, indenizar e manter a <Text style={{fontWeight: "bold"}}>HÁBIL INFORMÁTICA</Text> 
-, seus administradores, diretores, funcionários e agentes de e contra quaisquer reivindicações, 
-responsabilidades, danos, perdas e despesas, incluindo honorários advocatícios e despesas, 
-decorrentes de ou em alguma forma relacionados com:
-      </Text>
-      <Text style={styles.tcI}>
-1. Seu acesso ou utilização do APP COMPREMAISAKI ou do <Text style={{fontWeight: "bold"}}>SERVIÇO</Text>;
-      </Text>
-      <Text style={styles.tcI}>
-2. Sua violação destes <Text style={{fontWeight: "bold"}}>TERMOS DE USO</Text>; ou
-      </Text>
-      <Text style={styles.tcI}>
-3. A violação de qualquer direito de terceiros, incluindo, mas não se limitando a qualquer 
-direito de propriedade intelectual, publicidade, de propriedade de confidencialidade, 
-privacidade ou direito por si ou por seu <Text style={{fontWeight: "bold"}}>APP</Text>.
-      </Text>
-      <Text style={[styles.tcP, {fontSize: 12 + font}]}>
-O não exercício ou a não imposição de qualquer direito ou disposição dos <Text style={{fontWeight: "bold"}}>TERMOS DE USO</Text> por 
-parte do APP COMPREMAISAKI não constituirá uma renúncia de tal direito ou disposição. 
-Os <Text style={{fontWeight: "bold"}}>TERMOS DE USO</Text> constituem o acordo integral entre o USUÁRIO EMPREENDEDOR e a <Text style={{fontWeight: "bold"}}>HÁBIL 
-INFORMÁTICA</Text> e regulam a utilização do <Text style={{fontWeight: "bold"}}>SERVIÇO</Text>, substituindo quaisquer contratos anteriores 
-entre o USUÁRIO EMPREENDEDOR e a <Text style={{fontWeight: "bold"}}>HÁBIL INFORMÁTICA</Text> referentes à <Text style={{fontWeight: "bold"}}>HÁBIL INFORMÁTICA</Text> 
-(incluindo, mas não limitado a todas as versões anteriores dos <Text style={{fontWeight: "bold"}}>TERMOS DE USO</Text>).
-      </Text>
-      <Text style={[styles.tcP1, {fontSize: 12 + font}]}>
-Última atualização: 22 de Março de 2021
+      Última atualização: 15 de Junho de 2021
       </Text>
     </ScrollView>
 
