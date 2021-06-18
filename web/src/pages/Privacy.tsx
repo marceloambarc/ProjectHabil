@@ -52,9 +52,7 @@ function Privacy(props:any) {
 
             <p>A Política de Privacidade do aplicativo CompremaisAki inclui assegurar que seus</p>
             <p>dados pessoais não serão divulgados a terceiros para fins comerciais, ficando</p>
-            <p>restritos à Prefeitura Municipal de Nova Santa Rita e as empresas contratadas e</p>
-            <p>órgãos públicos para as quais dados serão encaminhados para a realização do</p>
-            <p>serviço solicitado, pesquisa de satisfação e campanhas ativas da PMNSR .</p>
+            <p>restritos à Prefeitura Municipal de Nova Santa Rita.</p>
             <br></br>
             <br></br>
             <br></br>
@@ -70,12 +68,12 @@ function Privacy(props:any) {
             <br></br>
             <ul>
                 <li>
-                    <p>Quando o usuário se cadastra no aplicativo: esses dados são os dados de</p>
-                    <p>identificação básicos de nome completo, CPF e e-mail.</p>
+                    <p>Quando o usuário da empresa se cadastra no aplicativo: esses dados são os dados de</p>
+                    <p>identificação básicos de Razão Social, CNPJ, Ramo Empresarial, e-mail, Telefone, Endereço e Imagem da Empresa.</p>
                 </li>
                 <li>
-                    <p>Quando o usuário atualiza seus dados do aplicativo: neste caso o aplicativo</p>
-                    <p>pode solicitar os dados de nome, telefone, e-mail e CEP.</p>
+                    <p>Quando o usuário da empresa atualiza seus dados do aplicativo: neste caso o aplicativo</p>
+                    <p>pode solicitar os dados de Razão Social, CNPJ, Ramo Empresarial, e-mail, Telefone, Endereço e Imagem da Empresa.</p>
                 </li>
                 <li>
                     <p>Quando um usuário acessa o aplicativo: neste caso o aplicativo pode</p>
@@ -89,23 +87,6 @@ function Privacy(props:any) {
             <br></br>
             <br></br>
             <br></br>
-            
-            <li>VERIFICAR SOBRE DADOS DE COMPRADORES E INFORMAÇÕES DE PAGAMENTO</li>
-            <br></br>
-            <br></br>
-
-            <p>VERIFICAR SE EXISTE A POSSIBILIADE DE ACESSO ANÔNIMO - Para alguns</p>
-            <p>serviços específicos, a solicitação pode ser feita de forma anônima. Neste caso,</p>
-            <p>não há registro das informações pessoais do usuário, incluindo seus contatos. No</p>
-            <p>caso de solicitações anônimas, o solicitante não receberá atualizações</p>
-            <p>automáticas e não poderá acompanhar sua solicitação na área cadastrada dos</p>
-            <p>canais de atendimento. Será possível acompanhar a solicitação apenas buscando</p>
-            <p>pelo número do protocolo.</p>
-            <br></br>
-            <br></br>
-            <br></br>
-            <br></br>
-
             <li>Para que finalidades utilizamos os dados pessoais do usuário</li>
             <br></br>
             <br></br>
@@ -127,10 +108,6 @@ function Privacy(props:any) {
                 <li>
                     <p>Permitir o acesso do usuário a determinados conteúdos do aplicativo,</p>
                     <p>exclusivo para usuários cadastrados;</p>
-                </li>
-                <li>
-                    <p>Garantir a segurança do usuário na abertura de solicitação de compra e</p>
-                    <p>serviço.</p>
                 </li>
             </ul>
             <br></br>
@@ -162,9 +139,6 @@ function Privacy(props:any) {
                     <p>Dados Genéticos;</p>
                 </li>
                 <li>
-                    <p>Dados biométricos para identificar uma pessoa de forma inequívoca;</p>
-                </li>
-                <li>
                     <p>Dados relativos à saúde do usuário;</p>
                 </li>
                 <li>
@@ -184,13 +158,12 @@ function Privacy(props:any) {
             <br></br>
             <br></br>
 
-            <p>Os dados de uma solicitação e do solicitante são armazenados pela Prefeitura</p>
-            <p>Municipal de Nova Santa Rita. Todos os dados registrados pelo aplicativo móvel</p>
-            <p>são replicados para ambiente de datacenter seguro.</p>
+            <p>Os dados de uma solicitação e do solicitante são armazenados em um </p>
+            <p>servidor de domínio contratado pela PMNSR.</p>
             <br></br>
             <br></br>
 
-            <p>O aplicativo CompremaisAki permite a recuperação de conta cuja senha de</p>
+            <p>O aplicativo CompremaisAki permite a recuperação de Login e Senha cuja senha de</p>
             <p>acesso tenha sido esquecida pelo usuário. Esse procedimento estará visível no</p>
             <p>aplicativo, e será acionado por meio do fornecimento do e-mail cadastrado pelo</p>
             <p>usuário.</p>
@@ -229,7 +202,7 @@ function Privacy(props:any) {
             <br></br>
             <br></br>
 
-            <p>Os dados podem ser removidos ou anonimizados a pedido do usuário,</p>
+            <p>Os dados podem ser removidos ou inativados a pedido do usuário,</p>
             <p>excetuando os casos em que a lei oferecer outro tratamento.</p>
             <br></br>
             <br></br>
@@ -254,7 +227,7 @@ function Privacy(props:any) {
                 </li>
                 <li>
                     <p>uso exclusivo do controlador, vedado seu acesso por terceiro, e desde que</p>
-                    <p>anonimizados os dados.</p>
+                    <p>inativados os dados.</p>
                 </li>
             </ol>
             <br></br>
@@ -278,12 +251,10 @@ function Privacy(props:any) {
             <br></br>
 
             <p>Neste aplicativo, o responsável pelo tratamento dos dados pessoais coletados é a</p>
-            <p>Prefeitura Municipal de Nova Santa Rita e as</p>
+            <p>Secretaria de Indústria, Comércio e Desenvolvimento Prefeitura Municipal de Nova Santa Rita e as</p>
             <p>solicitações abertas pelo aplicativo são tratadas pelos órgãos públicos municipais</p>
             <p>competentes, referentes a cada tipo de serviço solicitado. Tanto a secretaria</p>
-            <p>quando os órgãos citados, são partes componentes da</p>
-            <p>PMNSR, que poderá ser contatada pela Central 156, Portal SP156, Praças de</p>
-            <p>atendimento ou Descomplica SP.</p>
+            <p>quando os órgãos citados, são partes componentes da PMNSR.</p>
             <br></br>
             <br></br>
 
@@ -296,11 +267,6 @@ function Privacy(props:any) {
             <p>supervisão do responsável pelo tratamento dos dados do usuário.</p>
             <br></br>
             <br></br>
-
-            <p>Nesse caso os dados pessoais do usuário serão tratados pela pessoa jurídica</p>
-            <p>xxxxxxxxxx cujo contato é: e-mail: xxxxxxxx@xxxx.com.</p>
-            <br></br>
-            <br></br>
             <br></br>
             <br></br>
 
@@ -308,7 +274,7 @@ function Privacy(props:any) {
             <p>representa a entidade governamental da PMNSR – Prefeitura Municipal de Nova</p>
             <p>Santa Rita, estando isenta de qualquer movimento de abrangência que preconiza,</p>
             <p>sobretudo, a abertura das medidas possíveis dos dados constantes do aplicativo,</p>
-            <p>atuando exclusivamente de maneira a viabilizar o adequado processamento do</p>
+            <p>atuando exclusivamente de maneira a viabilizar o adequado funcionamento do</p>
             <p>aplicativo em nuvem da plataforma.</p>
             <br></br>
             <br></br>

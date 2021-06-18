@@ -6,7 +6,7 @@ import logoImg from '../images/cmatextlogo.png';
 
 import '../styles/pages/welcome.css';
 
-import qrcode from '../images/qrcode.png';
+import qrcode from '../images/qrcodegoogleplay.jpeg';
 import applestore from '../images/appstore.png';
 import googleplay from '../images/googleplay.png';
 import smartphone from '../images/smartphone.png';
