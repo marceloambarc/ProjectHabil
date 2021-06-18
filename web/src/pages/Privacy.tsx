@@ -87,6 +87,7 @@ function Privacy(props:any) {
             <br></br>
             <br></br>
             <br></br>
+
             <li>Para que finalidades utilizamos os dados pessoais do usuário</li>
             <br></br>
             <br></br>
@@ -251,7 +252,7 @@ function Privacy(props:any) {
             <br></br>
 
             <p>Neste aplicativo, o responsável pelo tratamento dos dados pessoais coletados é a</p>
-            <p>Secretaria de Indústria, Comércio e Desenvolvimento Prefeitura Municipal de Nova Santa Rita e as</p>
+            <p>Secretaria de Indústria, Comércio e Desenvolvimento da Prefeitura Municipal de Nova Santa Rita e as</p>
             <p>solicitações abertas pelo aplicativo são tratadas pelos órgãos públicos municipais</p>
             <p>competentes, referentes a cada tipo de serviço solicitado. Tanto a secretaria</p>
             <p>quando os órgãos citados, são partes componentes da PMNSR.</p>

@@ -29,7 +29,7 @@ export default function Userterm() {
       Coleta de dados do usuário
       </Text>
       <Text style={[styles.tcP, {fontSize: 10 + font}]}>
-      A Política de Privacidade do aplicativo CompremaisAki inclui assegurar que seus dados pessoais não serão divulgados a terceiros para fins comerciais, ficando restritos à Prefeitura Municipal de Nova Santa Rita e as empresas contratadas e órgãos públicos para as quais dados serão encaminhados para a realização do serviço solicitado, pesquisa de satisfação e campanhas ativas da PMNSR .
+      A Política de Privacidade do aplicativo CompremaisAki inclui assegurar que seus dados pessoais não serão divulgados a terceiros para fins comerciais, ficando restritos à Prefeitura Municipal de Nova Santa Rita.
       </Text>
       <Text style={styles.tcT}>
       Quando e quais dados são coletados
@@ -41,12 +41,12 @@ export default function Userterm() {
 
       <View style={{flexDirection: 'row'}}>
             <Text style={[styles.tcP, {fontSize: 12 + font}]}>{'\u2022'}</Text>
-            <Text style={[styles.tcP, {flex: 1, paddingLeft: 5, fontSize: 12 + font}]}>Quando o usuário se cadastra no aplicativo: esses dados são os dados de identificação básicos de nome completo, CPF e e-mail.</Text>
+            <Text style={[styles.tcP, {flex: 1, paddingLeft: 5, fontSize: 12 + font}]}>Quando o usuário da empresa se cadastra no aplicativo: esses dados são os dados de identificação básicos de Razão Social, CNPJ, Ramo Empresarial, E-mail, Telefone, Endereço e Imagem da Empresa.</Text>
       </View>
 
       <View style={{flexDirection: 'row'}}>
             <Text style={[styles.tcP, {fontSize: 12 + font}]}>{'\u2022'}</Text>
-            <Text style={[styles.tcP, {flex: 1, paddingLeft: 5, fontSize: 12 + font}]}>Quando o usuário atualiza seus dados do aplicativo: neste caso o aplicativo pode solicitar os dados de nome, telefone, e-mail e CEP.</Text>
+            <Text style={[styles.tcP, {flex: 1, paddingLeft: 5, fontSize: 12 + font}]}>Quando o usuário da empresa atualiza seus dados do aplicativo: neste caso o aplicativo pode solicitar os dados de Razão Social, CNPJ, Ramo Empresarial, E-mail, Telefone, Endereço e Imagem da Empresa.</Text>
       </View>
 
       <View style={{flexDirection: 'row'}}>
@@ -54,14 +54,6 @@ export default function Userterm() {
             <Text style={[styles.tcP, {flex: 1, paddingLeft: 5, fontSize: 12 + font}]}>Quando um usuário acessa o aplicativo: neste caso o aplicativo pode coletar os dados de localização do usuário ou do local da ocorrência da solicitação, através do Google. Além disso, serão coletados todos os dados preenchidos nos formulários pelo usuário, referentes à cada tipo de serviço solicitado.</Text>
       </View>
 
-      <Text style={styles.tcT}>
-      VERIFICAR SOBRE DADOS DE COMPRADORES E INFORMAÇÕES DE PAGAMENTO
-      </Text>
-
-
-      <Text style={[styles.tcP, {fontSize: 12 + font}]}>
-      VERIFICAR SE EXISTE A POSSIBILIADE DE ACESSO ANÔNIMO - Para alguns serviços específicos, a solicitação pode ser feita de forma anônima. Neste caso, não há registro das informações pessoais do usuário, incluindo seus contatos. No caso de solicitações anônimas, o solicitante não receberá atualizações automáticas e não poderá acompanhar sua solicitação na área cadastrada dos canais de atendimento. Será possível acompanhar a solicitação apenas buscando pelo número do protocolo.
-      </Text>
       <Text style={styles.tcT}>
       Para que finalidades utilizamos os dados pessoais do usuário
       </Text>
@@ -82,11 +74,6 @@ export default function Userterm() {
       <View style={{flexDirection: 'row'}}>
             <Text style={[styles.tcP, {fontSize: 12 + font}]}>{'\u2022'}</Text>
             <Text style={[styles.tcP, {flex: 1, paddingLeft: 5, fontSize: 12 + font}]}>Permitir o acesso do usuário a determinados conteúdos do aplicativo, exclusivo para usuários cadastrados;</Text>
-      </View>
-
-      <View style={{flexDirection: 'row'}}>
-            <Text style={[styles.tcP, {fontSize: 12 + font}]}>{'\u2022'}</Text>
-            <Text style={[styles.tcP, {flex: 1, paddingLeft: 5, fontSize: 12 + font}]}>Garantir a segurança do usuário na abertura de solicitação de compra e serviço.</Text>
       </View>
 
 
@@ -113,11 +100,6 @@ export default function Userterm() {
 
       <View style={{flexDirection: 'row'}}>
             <Text style={[styles.tcP, {fontSize: 12 + font}]}>{'\u2022'}</Text>
-            <Text style={[styles.tcP, {flex: 1, paddingLeft: 5, fontSize: 12 + font}]}>Dados biométricos para identificar uma pessoa de forma inequívoca;</Text>
-      </View>
-
-      <View style={{flexDirection: 'row'}}>
-            <Text style={[styles.tcP, {fontSize: 12 + font}]}>{'\u2022'}</Text>
             <Text style={[styles.tcP, {flex: 1, paddingLeft: 5, fontSize: 12 + font}]}>Dados relativos à saúde do usuário;</Text>
       </View>
 
@@ -135,10 +117,10 @@ export default function Userterm() {
       Armazenamento de dados
       </Text>
       <Text style={[styles.tcP, {fontSize: 12 + font}]}>
-      Os dados de uma solicitação e do solicitante são armazenados pela Prefeitura Municipal de Nova Santa Rita. Todos os dados registrados pelo aplicativo móvel são replicados para ambiente de datacenter seguro.
+      Os dados de uma solicitação e do solicitante são armazenados em um servidor de domínio contratado pela PMNSR.
       </Text>
       <Text style={[styles.tcP, {fontSize: 12 + font}]}>
-      O aplicativo CompremaisAki permite a recuperação de conta cuja senha de acesso tenha sido esquecida pelo usuário. Esse procedimento estará visível no aplicativo, e será acionado por meio do fornecimento do e-mail cadastrado pelo usuário.
+      O aplicativo CompremaisAki permite a recuperação de Login e Senha cuja senha de acesso tenha sido esquecida pelo usuário. Esse procedimento estará visível no aplicativo, e será acionado por meio do fornecimento do E-mail cadastrado pelo usuário.
       </Text>
 
       <Text style={styles.tcT}>
@@ -158,7 +140,7 @@ export default function Userterm() {
       Os dados pessoais do usuário são armazenados pelo aplicativo, por tempo indeterminado e durante o período necessário para a prestação do serviço ou o cumprimento das finalidades previstas no presente documento e termo de uso, conforme o disposto no inciso I do artigo 15 da Lei 13.709/18.
       </Text>
       <Text style={[styles.tcP, {fontSize: 12 + font}]}>
-      Os dados podem ser removidos ou anonimizados a pedido do usuário, excetuando os casos em que a lei oferecer outro tratamento.
+      Os dados podem ser removidos ou inativados a pedido do usuário, excetuando os casos em que a lei oferecer outro tratamento.
       </Text>
       <Text style={[styles.tcP, {fontSize: 12 + font}]}>
       Ainda, os dados pessoais dos usuários apenas podem ser conservados após o término de seu tratamento nas seguintes hipóteses previstas no artigo 16 da referida lei:
@@ -173,7 +155,7 @@ export default function Userterm() {
       III - transferência a terceiro, desde que respeitados os requisitos de tratamento de dados dispostos nesta Lei;
       </Text>
       <Text style={[styles.tcP, {fontSize: 12 + font}]}>
-      IV - uso exclusivo do controlador, vedado seu acesso por terceiro, e desde que anonimizados os dados.
+      IV - uso exclusivo do controlador, vedado seu acesso por terceiro, e desde que inativados os dados.
       </Text>
 
       <Text style={styles.tcT}>
@@ -186,7 +168,7 @@ export default function Userterm() {
       O controlador, responsável pelo tratamento dos dados pessoais do usuário, é a pessoa física ou jurídica, a autoridade pública, a agência ou outro organismo que, individualmente ou em conjunto com outras, determina as finalidades e os meios de tratamento dos dados pessoais.
       </Text>
       <Text style={[styles.tcP, {fontSize: 12 + font}]}>
-      Neste aplicativo, o responsável pelo tratamento dos dados pessoais coletados é a (alguma secretaria específica?) Prefeitura Municipal de Nova Santa Rita e as solicitações abertas pelo aplicativo são tratadas pelos órgãos públicos municipais competentes, referentes a cada tipo de serviço solicitado. Tanto a secretaria quando os órgãos citados, são partes componentes da Prefeitura Municipal de São Paulo, que poderá ser contatada pela Central 156, Portal SP156, Praças de atendimento ou Descomplica SP.
+      Neste aplicativo, o responsável pelo tratamento dos dados pessoais coletados é a Secretaria de Indústria, Comércio e Desenvolvimento da Prefeitura Municipal de Nova Santa Rita e as solicitações abertas pelo aplicativo são tratadas pelos órgãos públicos municipais competentes, referentes a cada tipo de serviço solicitado. Tanto a secretaria quando os órgãos citados, são partes componentes da Prefeitura Municipal de São Paulo, que poderá ser contatada pela Central 156, Portal SP156, Praças de atendimento ou Descomplica SP.
       </Text>
       <Text style={[styles.tcP, {fontSize: 12 + font}]}>
             <Text style={{fontWeight: "bold"}}>4.2. Do operador de dados subcontratado (data processor)</Text> 
@@ -195,10 +177,7 @@ export default function Userterm() {
       O operador de dados subcontratado é a pessoa física ou jurídica, a autoridade pública, a agência ou outro organismo que trata os dados pessoais sob supervisão do responsável pelo tratamento dos dados do usuário.
       </Text>
       <Text style={[styles.tcP, {fontSize: 12 + font}]}>
-      Nesse caso os dados pessoais do usuário serão tratados pela pessoa jurídica xxxxxxxxxx cujo contato é: e-mail: xxxxxxxx@xxxx.com.
-      </Text>
-      <Text style={[styles.tcP, {fontSize: 12 + font}]}>
-      Informamos que a Empresa Hábil Informática, CNPJ 02.048.638/0001-28 não representa a entidade governamental da PMNSR – Prefeitura Municipal de Nova Santa Rita, estando isenta de qualquer movimento de abrangência que preconiza, sobretudo, a abertura das medidas possíveis dos dados constantes do aplicativo, atuando exclusivamente de maneira a viabilizar o adequado processamento do aplicativo em nuvem da plataforma.
+      Informamos que a Empresa Hábil Informática, CNPJ 02.048.638/0001-28 não representa a entidade governamental da PMNSR – Prefeitura Municipal de Nova Santa Rita, estando isenta de qualquer movimento de abrangência que preconiza, sobretudo, a abertura das medidas possíveis dos dados constantes do aplicativo, atuando exclusivamente de maneira a viabilizar o adequado funcionamento do aplicativo em nuvem da plataforma.
       </Text>
 
       <Text style={styles.tcT}>
@@ -243,7 +222,7 @@ export default function Userterm() {
       Alterações para essa política de privacidade
       </Text>
       <Text style={[styles.tcP, {fontSize: 12 + font}]}>
-      A presente versão desta Política de Privacidade foi atualizada pela última vez em 09 de setembro de 2020. Reservamos o direito de modificar este documento a qualquer momento, então, é recomendável que o usuário revise-a com frequência.
+      A presente versão desta Política de Privacidade foi atualizada pela última vez em 18 de junho de 2021. Reservamos o direito de modificar este documento a qualquer momento, então, é recomendável que o usuário revise-a com frequência.
       </Text>
       <Text style={[styles.tcP, {fontSize: 12 + font}]}>
       Diante da fusão ou venda do aplicativo à outra empresa, os dados dos usuários podem ser transferidas para os novos proprietários para que a permanência dos serviços oferecidos.
@@ -269,7 +248,7 @@ export default function Userterm() {
       A competência para o conhecimento, processamento ou julgamento de qualquer feito judicial envolvendo a presente Política de Privacidade será do foro da comarca de Canoas, renunciando-se expressamente a qualquer outro foro, por mais privilegiado que seja. Para a solução de controvérsias decorrentes do presente instrumento será aplicado integralmente o Direito brasileiro.
       </Text>
       <Text style={[styles.tcP1, {fontSize: 12 + font}]}>
-      Última atualização: 15 de Junho de 2021
+      Última atualização: 18 de Junho de 2021
       </Text>
     </ScrollView>
 

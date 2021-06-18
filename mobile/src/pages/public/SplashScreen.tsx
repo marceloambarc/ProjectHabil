@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, TouchableWithoutFeedback, Text, StyleSheet, Image, Button, Alert } from 'react-native';
+import { View, TouchableWithoutFeedback, Text, StyleSheet, Image, Button, Alert, Dimensions } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 import ImageZoom from 'react-native-image-pan-zoom';
@@ -45,10 +45,6 @@ export default function SplashScreen(){
         </View>
         <View style={styles.splashRow}>
           <View style={styles.splashTextContainer}>
-              <Image 
-              style={styles.welcomeLogo}
-              source={require('../../../assets/cmatextlogo.png')}
-            />
             <Text style={styles.splashTitle}>Bem-Vindo,</Text>
             <Text style={styles.splashText}>O app que leva as promoções de Nova Santa Rita até você.</Text>
           </View>
@@ -59,8 +55,10 @@ export default function SplashScreen(){
         </View>
 
         <View style={styles.advise}>
-          <Text style={styles.splashAdvise}>Procure o que quiser na Barra de Pesquisa.</Text>
-          <Text style={styles.splashAdvise2}>Se deseja anunciar produtos, serviços ou seu negócio, acesse o menu superior.</Text>
+          <Image 
+            style={styles.welcomeSubLogo}
+            source={require('../../../assets/02.png')}
+          />
         </View>
       </View>
 
@@ -114,7 +112,7 @@ const styles = StyleSheet.create({
   },
   advise: {
     alignItems: 'flex-start',
-    paddingHorizontal: 40
+    paddingHorizontal: 35
   },
   splashAdvise: {
     color: '#ff6600',
@@ -129,8 +127,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
   },
-  welcomeLogo: {
-    height: 40,
-    width: 200
+  welcomeSubLogo: {
+    height: Dimensions.get('window').height * 0.1,
+    width: Dimensions.get('window').width * .5
   }
 });
