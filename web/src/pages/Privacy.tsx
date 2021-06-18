@@ -278,11 +278,11 @@ function Privacy(props:any) {
             <br></br>
 
             <p>Neste aplicativo, o responsável pelo tratamento dos dados pessoais coletados é a</p>
-            <p>(alguma secretaria específica?) Prefeitura Municipal de Nova Santa Rita e as</p>
+            <p>Prefeitura Municipal de Nova Santa Rita e as</p>
             <p>solicitações abertas pelo aplicativo são tratadas pelos órgãos públicos municipais</p>
             <p>competentes, referentes a cada tipo de serviço solicitado. Tanto a secretaria</p>
-            <p>quando os órgãos citados, são partes componentes da Prefeitura Municipal de</p>
-            <p>São Paulo, que poderá ser contatada pela Central 156, Portal SP156, Praças de</p>
+            <p>quando os órgãos citados, são partes componentes da</p>
+            <p>PMNSR, que poderá ser contatada pela Central 156, Portal SP156, Praças de</p>
             <p>atendimento ou Descomplica SP.</p>
             <br></br>
             <br></br>
@@ -386,7 +386,7 @@ function Privacy(props:any) {
             <br></br>
 
             <p>A presente versão desta Política de Privacidade foi atualizada pela última vez em</p>
-            <p>09 de setembro de 2020. Reservamos o direito de modificar este documento a</p>
+            <p>18 de junho de 2021. Reservamos o direito de modificar este documento a</p>
             <p>qualquer momento, então, é recomendável que o usuário revise-a com</p>
             <p>frequência.</p>
             <br></br>
