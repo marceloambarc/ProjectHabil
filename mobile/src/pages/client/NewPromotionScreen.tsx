@@ -314,7 +314,7 @@ export default function NewPromotionScreen(){
         />
 
         <View style={styles.uploadedImagesContainer}>
-      
+
               <Image
                 source={{
                   uri: image !== ""? 
@@ -323,6 +323,9 @@ export default function NewPromotionScreen(){
                 style={styles.uploadedImage}
               />
   
+        </View>
+        <View style={styles.maxPromoContainer}>
+         <Text style={styles.promoImageText}>Imagem para identificar Promoção.</Text>
         </View>
 
         <View style={styles.btnContainer}>
@@ -487,5 +490,10 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 16,
     color: '#fff'
-  }
+  },
+  promoImageText:{
+    fontWeight: 'bold',
+    fontSize: 12,
+    color: '#fff'
+  },
 });

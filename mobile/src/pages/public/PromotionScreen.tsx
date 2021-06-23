@@ -17,6 +17,7 @@ interface Props {
     companyPhone: any,
     companyEmail: any,
     companyAddress: any,
+    companyComplement: any,
     companyDistrict: any,
     companyCity: any,
     companyUf: any,
@@ -67,7 +68,11 @@ function CompanyCard(){
   const companyBusiness = params.companyBusiness;
   const companyPhone = params.companyPhone;
   const companyEmail = params.companyEmail;
-  const companyAddress = params.companyAddress;
+
+  const companyAddressSplit = params.companyAddress;
+  const companyAddress = companyAddressSplit.split("/")[0];
+  const companyComplement = companyAddressSplit.split("/")[1];
+
   const companyDistrict = params.companyDistrict;
   const companyCity = params.companyCity;
   const companyUf = params.companyUf;
@@ -98,7 +103,7 @@ function CompanyCard(){
 
   async function handleGoogleMaps(){
     try{
-      Linking.openURL(`https://www.google.com/maps/dir/?api=1&destination=${companyAddress},${companyDistrict},${companyCity},${companyUf}`)
+      Linking.openURL(`https://www.google.com/maps/dir/?api=1&destination=${companyAddress}+-+${companyDistrict}+-+${companyCity}+-+${companyUf}`)
     }catch(err){
       Alert.alert(
         'Ops!',
@@ -157,6 +162,7 @@ function CompanyCard(){
             phone: companyPhone,
             email: companyEmail,
             address: companyAddress,
+            complement: companyComplement,
             district: companyDistrict,
             city: companyCity,
             uf: companyUf

@@ -18,6 +18,7 @@ import * as ImagePicker from 'expo-image-picker';
 import * as ImageManipulator from 'expo-image-manipulator';
 
 import Userterm from '../../components/Userterm';
+import Help from '../../components/Help';
 
 export default function Register(){
   const [isLoading, setIsLoading] = useState(false);
@@ -66,6 +67,9 @@ export default function Register(){
   const [address, setAddress] = useState('');
   let ref_address = useRef<TextInput>(null);
 
+  const [complement, setComplement] = useState('');
+  let ref_complement = useRef<TextInput>(null);
+
   const [district, setDistrict] = useState('');
   let ref_district = useRef<TextInput>(null);
 
@@ -87,9 +91,12 @@ export default function Register(){
 
   const [base, setBase] = useState('');
   const [image, setImage] = useState('');
+  const [isImage, setIsImage] = useState(false);
 
   const [term_is_true, setTermIsTrue] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
+
+  const [helpVisible, setHelpVisible] = useState(false);
 
 
   const navigation = useNavigation();
@@ -256,6 +263,20 @@ export default function Register(){
       return;
     }
 
+    
+    if(complement.length > 24){
+      Alert.alert(
+        'Erro',
+        'Complemento muito extenso'
+      );
+    }
+    setComplement('');
+    const wrongComplement = () => {
+        ref_complement.current?.focus();
+      wrongComplement();
+      return;
+    }
+
     if(district.length < 2){
       if(district.length > 24){
         Alert.alert(
@@ -338,6 +359,8 @@ export default function Register(){
       return;
     }
 
+    const finalAddress = address.concat("/" + complement);
+
     api.post('companies/cnpj',{
       cnpj: cnpj
     },{
@@ -364,7 +387,7 @@ export default function Register(){
           name: name,
           phone: phone,
           email: email,
-          address: address,
+          address: finalAddress,
           district: district,
           city: city,
           uf: uf,
@@ -432,11 +455,13 @@ export default function Register(){
       );
 
       setBase(manipulatedImage.base64!);
+      setIsImage(true);
     }
   }
 
   async function handleRemoveItem(){
     setImage('');
+    setIsImage(false);
   }
 
   async function handleHomeNavigation(){
@@ -475,6 +500,18 @@ export default function Register(){
     }
   }
 
+  function imageMessage(){
+    if (isImage){
+      return (
+        <Text style={[styles.uploadedImageText, styles.termText]}>Toque na imagem para remover.</Text>
+      );
+    }else{
+      return (
+        <Text style={[styles.uploadedImageText, styles.termText]}>Selecione Logotipo da sua empresa.</Text>
+      );
+    }
+  }
+
   if(isLoading){
     return (
       <View style={{flex:1, justifyContent:'center',alignItems:'center'}}>
@@ -493,6 +530,34 @@ export default function Register(){
           style={styles.headImage}
         />
         </TouchableWithoutFeedback>
+
+        {/*HELP MODAL*/}
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={helpVisible}
+          onRequestClose={() => setHelpVisible(false)}
+        >
+            
+              <View style={styles.modalView}>
+
+                {/* MODAL CONTENT */}
+                <Text style={styles.modalTitle}>Ajuda.</Text>
+                  
+                  <Help />
+
+                {/* MODAL CLOSE BUTTON */}
+                <TouchableOpacity
+                style={styles.hideBtn}
+                onPress={() => {
+                  setHelpVisible(!helpVisible);
+                }}
+                >
+                  <Text style={styles.hidebtnText}>Voltar</Text>
+                </TouchableOpacity>
+              </View>
+            
+          </Modal>
 
         <TextInput
         style={styles.input}
@@ -564,6 +629,17 @@ export default function Register(){
         value={address}
         onChangeText={setAddress}
         ref={ref_address}
+        returnKeyType='next'
+        onSubmitEditing={() => ref_complement.current?.focus()}
+        />
+
+        <TextInput
+        style={styles.input}
+        placeholder="Complemento"
+        autoCorrect={false}
+        value={complement}
+        onChangeText={setComplement}
+        ref={ref_complement}
         returnKeyType='next'
         onSubmitEditing={() => ref_district.current?.focus()}
         />
@@ -657,12 +733,11 @@ export default function Register(){
                   source={{uri: image !== ""? image : undefined}}
                   style={styles.uploadedImage}
                 />
-              <Text style={[styles.uploadedImageText, styles.termText]}>Toque na imagem para remover.</Text>
+                { imageMessage() }
             </View>
           </TouchableWithoutFeedback>
 
         </View>
-        
         <View style={styles.btnContainer}>
           <TouchableOpacity style={styles.btnSubmit} onPress={handleSelectImage}>
             <Text style={styles.submitText}>Selecionar Foto</Text>

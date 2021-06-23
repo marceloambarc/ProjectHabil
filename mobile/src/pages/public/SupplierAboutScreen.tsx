@@ -13,6 +13,7 @@ interface Props {
   phone: string,
   email: string,
   address: string,
+  complement: string,
   district: string,
   city: string,
   uf: string,
@@ -30,6 +31,7 @@ export default function SupplierAboutScreen({navigation}:{navigation:any}){
   const companyPhone = params.phone;
   const companyEmail = params.email;
   const companyAddress = params.address;
+  const companyComplement = params.complement;
   const companyDistrict = params.district;
   const companyCity = params.city;
   const companyUf = params.uf;
@@ -40,6 +42,7 @@ export default function SupplierAboutScreen({navigation}:{navigation:any}){
   const [phone] = useState(`${companyPhone}`);
   const [email] = useState(`${companyEmail}`);
   const [address] = useState(`${companyAddress}`);
+  const [complement] = useState(`${companyComplement}`);
   const [district] = useState(`${companyDistrict}`);
   const [city] = useState(`${companyCity}`);
   const [uf] = useState(`${companyUf}`);
@@ -112,6 +115,13 @@ export default function SupplierAboutScreen({navigation}:{navigation:any}){
           placeholder="Endereço"
           autoCorrect={false}
           value={address}
+          />
+
+          <TextInput
+          style={styles.input}
+          placeholder="Endereço"
+          autoCorrect={false}
+          value={complement}
           />
 
           <TextInput

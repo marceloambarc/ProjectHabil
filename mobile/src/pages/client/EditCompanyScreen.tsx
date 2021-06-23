@@ -16,6 +16,7 @@ interface Props {
   phone: string,
   email: string,
   address: string,
+  complement: string,
   district: string,
   city: string,
   uf: string,
@@ -37,7 +38,11 @@ export default function EditCompanyScreen(){
   const companyBusiness = params.business;
   const companyPhone = params.phone;
   const companyEmail = params.email;
-  const companyAddress = params.address;
+
+  const companyAddressSplit = params.address;
+  const companyAddress = companyAddressSplit.split("/")[0];
+  const companyComplement = companyAddressSplit.split("/")[1];
+  
   const companyDistrict = params.district;
   const companyCity = params.city;
   const companyUf = params.uf;
@@ -51,6 +56,7 @@ export default function EditCompanyScreen(){
   const [phone, setPhone] = useState(`${companyPhone}`);
   const [email, setEmail] = useState(`${companyEmail}`);
   const [address, setAddress] = useState(`${companyAddress}`);
+  const [complement, setComplement] = useState(`${companyComplement}`);
   const [district, setDistrict] = useState(`${companyDistrict}`);
   const [city, setCity] = useState(`${companyCity}`);
   const [uf, setUf] = useState(`${companyUf}`);
@@ -59,12 +65,14 @@ export default function EditCompanyScreen(){
   const [image, setImage] = useState('');
 
   async function handleConfirmEdit(){
+      const finalAddress = address.concat("/" + complement);
+
       api.put(`companies/${companyId}`,{
         name,
         business,
         phone,
         email,
-        address,
+        address: finalAddress,
         district,
         city,
         uf,
@@ -146,6 +154,14 @@ export default function EditCompanyScreen(){
       );
       return;
     }
+    
+    if(complement.length > 24){
+      Alert.alert(
+        'Erro',
+        'Complemento muito extenso'
+      );
+    }
+
     if(district.length < 2){
       if(district.length > 24){
         Alert.alert(
@@ -346,6 +362,14 @@ export default function EditCompanyScreen(){
           value={address}
           onChangeText={setAddress}
           />
+
+          <TextInput
+          style={styles.input}
+          placeholder="Complemento"
+          autoCorrect={false}
+          value={complement}
+          onChangeText={setComplement}
+          /> 
 
           <TextInput
           style={styles.input}

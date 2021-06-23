@@ -320,7 +320,8 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgb(1, 120, 149)'
   },
   titleText: {
-    paddingHorizontal: 20,
+    paddingHorizontal: 10,
+    alignItems: 'center',
     fontSize: 30,
     color: 'aliceblue'
   },
