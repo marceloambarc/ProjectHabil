@@ -2,7 +2,7 @@
   "expo": {
     "name": "Compre Mais Aki",
     "slug": "compreMaisAki",
-    "version": "3.2.1",
+    "version": "3.5.1",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
@@ -33,7 +33,7 @@
       },
       "useNextNotificationsApi": true,
       "package": "com.habil.nsr",
-      "versionCode": 5
+      "versionCode": 6
     },
     "web": {
       "favicon": "./assets/favicon.png"
