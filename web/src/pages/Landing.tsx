@@ -33,7 +33,7 @@ function Landing() {
         }
       });
     }catch(err){
-      alert(err);
+      alert('Login não permitido.');
     }
   }
 
@@ -44,7 +44,7 @@ function Landing() {
         <main>
           <h1>Administração <img src={logoImg} className="landingImg" alt="CompreMaisAki" /></h1>
           <p>verificação de dados App</p>
-          <p>AlphaTest 1.0.2</p>
+          <p>BetaTest 1.5.2</p>
 
           <div className="input-block">
             <label htmlFor="about">Usuário:</label>
@@ -73,7 +73,7 @@ function Landing() {
         </div>
         
         <button type="button" onClick={() => handleAccess()} className="enter-app">
-          <FiArrowRight size="26" color="#fff" />
+          <FiArrowRight className="pngWelcome" color="#fff" />
         </button>
         
       </div>

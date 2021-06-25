@@ -348,6 +348,16 @@ function Products(){
     }
   }
 
+  function renderPromos(){
+    if(isCanceled){
+      return;
+    }else{
+      return (
+        <th>Nº de Promoções</th>
+      );
+    }
+  }
+
   // TABELA EM COMPONENTE
   function renderTable(){
     if(isLoading){
@@ -366,7 +376,7 @@ function Products(){
           <th>Palavras-Chaves</th>
           <th>cnpj</th>
           <th>Telefone</th>
-          <th>Nº de Promoções</th>
+          { renderPromos() }
           <th>Email</th>
           <th>Endereço</th>
           <th>Bairro</th>
@@ -387,14 +397,6 @@ function Products(){
                 <td>{company.keywords}</td>
                 <td>{company.cnpj}</td>
                 <td>{company.phone}</td>
-                <td>
-                  <PromoInput 
-                    maxProm={company.max_prom} 
-                    companyId={company.id} 
-                    companyName={company.name} 
-                    userToken={userToken}
-                  />
-                </td>
                 <td className="email-column">{company.email}</td>
                 <td>{company.address}</td>
                 <td>{company.district}</td>

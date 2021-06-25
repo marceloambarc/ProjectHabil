@@ -195,10 +195,10 @@
     margin-bottom: 80px;
   }
   .welcome-wrapper .enter-app {
-    width: 360px;
-    height: 160px;
+    width: 90px;
+    height: 90px;
     background: #017895;
-    border-radius: 40px;
+    border-radius: 30px;
   
     display: flex;
     align-items: center;

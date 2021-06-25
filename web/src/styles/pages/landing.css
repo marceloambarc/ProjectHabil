@@ -115,10 +115,15 @@
     width: 400px;
 }
 
+.pngWelcome {
+    height: 20px;
+    width: 20px
+  }
+
 @media only screen and (max-width: 1110px){
     #page-landing {
         width: 100vw;
-        height: 100vh;
+        height: 100%;
         background: linear-gradient(329.54deg, #ffff 0%, #ffff 100%);
     
         display: flex;
@@ -140,5 +145,71 @@
         font-size: 24px;
         line-height: 34px;
         color:#017895;
+    }
+    .pngWelcome {
+        height: 26px;
+        width: 26px
+      }
+}
+
+@media only screen and (max-width: 700px){
+    #page-landing {
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(329.54deg, #ffff 0%, #ffff 100%);
+    
+        padding-left: 1em!important;
+        padding-right: 1em!important;
+        padding-top: 2em!important;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+    }
+    .page-landing .content-wrapper main {
+        max-width: 500px!important;
+    }
+    #page-landing .content-wrapper main h1{
+        font-size: 20px;
+        font-weight: 900;
+        line-height: 40px;
+        color:#017895;
+    }
+    
+    #page-landing .content-wrapper main p{
+        margin-top: 20px;
+        font-size: 24px;
+        line-height: 34px;
+        color:#017895;
+    }
+    .content-wrapper .location{
+        position: relative;
+        margin-top: 10%;
+        margin-bottom: 10%;
+    
+        font-size: 24px;
+        line-height: 22px;
+        color:#017895;
+    
+        display: flex;
+        flex-direction: column;
+    
+        text-align: right;
+    }
+    .content-wrapper .enter-app {
+        position: relative;
+        width: 80px;
+        height: 80px;
+        background: #017895;
+        border-radius: 30px;
+    
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 0px;
+    
+        transition: background-color 0.2s;
+    }
+    .input-block {
+        margin-top: 10%;
     }
 }
