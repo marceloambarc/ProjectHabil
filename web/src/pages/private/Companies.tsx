@@ -23,6 +23,8 @@ function Products(){
   const getUserToken = localStorage.getItem('userToken');
   const [userToken] = useState(`${getUserToken}`)
   const [companies, setCompanies] = useState<Company[]>([]);
+  const [canceledCompanies, setCanceledCompanies] = useState<Company[]>([]);
+  const [isCanceled, setIsCanceled] = useState(false);
   const [active, setActive] = useState(0);
   const [base] = useState('data:image/png;base64');
   const [isLoading, setIsLoading] = useState(true);
@@ -43,23 +45,38 @@ function Products(){
       setRole('guest');
     });
   }
-  
-  useEffect(() => {
-    if(!isLoading) return;
 
+  async function getCompanies(){
     api.get('companies/all').then(response => {
 
       //Realocar Resposta para UseState
       setCompanies(response.data);
 
-      getRoles();
+    }).catch(err => {
+      alert('Erro ao acessar Tabela de Empresas Canceladas.');
+    })
+  }
 
-      //Finalizar Carregamento
-      setIsLoading(false);
+  async function getCanceledCompanies(){
+    api.get('deleted_companies').then(response => {
+
+      //Realocar Resposta para UseState
+      setCanceledCompanies(response.data);
 
     }).catch(err => {
-      alert('Ops! Tivemos um Erro.');
+      alert('Erro ao acessar Tabela de Empresas.');
     })
+  }
+
+  useEffect(() => {
+    if(!isLoading) return;
+
+    getRoles();
+    getCompanies();
+    getCanceledCompanies()
+
+    //Finalizar Carregamento
+    setIsLoading(false);
   }, []);
 
   function openModal({company}:{company:Company}) {
@@ -99,14 +116,17 @@ function Products(){
   //-----VIEWS------//
   async function handleViewInactive(){
     setActive(0)
+    setIsCanceled(false);
   }
 
   async function handleViewActive(){
     setActive(1)
+    setIsCanceled(false);
   }
 
   async function handleViewCanceled(){
     setActive(2)
+    setIsCanceled(true);
   }
 
   // FUNÇÕES DE BOTOES
@@ -318,6 +338,16 @@ function Products(){
     )
   }
 
+  function renderCommands(){
+    if(isCanceled){
+      return;
+    }else{
+      return (
+        <th className="noWrap td">Comandos</th>
+      );
+    }
+  }
+
   // TABELA EM COMPONENTE
   function renderTable(){
     if(isLoading){
@@ -343,13 +373,14 @@ function Products(){
           <th>Cidade</th>
           <th>UF</th>
           <th>Foto</th>
-          <th className="noWrap td">Comandos</th>
+          { renderCommands() }
         </tr>
 
-        {companies.map(company => {
-          // ACTIVE MANIPULADO NO USESTATE()
-          if(company.is_active == active){
-            return(
+        {
+          isCanceled
+          ?
+          canceledCompanies.map(company => {
+            return (
                 <tr key={company.id}>
                 <td>{company.name}</td>
                 <td>{company.business}</td>
@@ -376,15 +407,51 @@ function Products(){
                     className="landingImg" alt="CompreMaisAki" 
                   />
                 </td>
-                <td>
-                  {renderButton({company})}
-                </td>
               </tr>
             );
-          }else{
-            return;
-          }
-        })}
+          })
+          :
+          companies.map(company => {
+            // ACTIVE MANIPULADO NO USESTATE()
+            if(company.is_active == active){
+              return(
+                  <tr key={company.id}>
+                  <td>{company.name}</td>
+                  <td>{company.business}</td>
+                  <td>{company.keywords}</td>
+                  <td>{company.cnpj}</td>
+                  <td>{company.phone}</td>
+                  <td>
+                    <PromoInput 
+                      maxProm={company.max_prom} 
+                      companyId={company.id} 
+                      companyName={company.name} 
+                      userToken={userToken}
+                    />
+                  </td>
+                  <td className="email-column">{company.email}</td>
+                  <td>{company.address}</td>
+                  <td>{company.district}</td>
+                  <td>{company.city}</td>
+                  <td>{company.uf}</td>
+                  <td onClick={() => handleExpandImage({company})}>
+                    <img 
+                      src={base + ',' + company.image} 
+                      style={{width: '30px',display: 'flex',justifyContent: 'center', cursor: 'pointer'}} 
+                      className="landingImg" alt="CompreMaisAki" 
+                    />
+                  </td>
+                  <td>
+                    {renderButton({company})}
+                  </td>
+                </tr>
+              );
+            }else{
+              return;
+            }
+          })
+        }
+        
         </tbody>
       </table>
       );
