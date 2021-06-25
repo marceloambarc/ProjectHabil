@@ -58,7 +58,7 @@ function Welcome() {
           </div>*/}
           <div className="enter-app-col2">
             <NavLink to="/login" className="enter-app">
-              <GrUserAdmin size="26" color="#fff" />
+              <GrUserAdmin className="pngEnter" color="#fff" />
             </NavLink>
           </div>
         </div>
