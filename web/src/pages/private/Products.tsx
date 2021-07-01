@@ -10,10 +10,12 @@ import UpperBar from '../../components/UpperBar';
 import Validation from '../../components/Validation';
 import api from '../../services/api';
 import { host, port, fromEmail, pass } from '../../services/email.json';
+import { mailer } from '../../services/mailer.json';
 
 import '../../styles/pages/controlmap.css';
 import '../../styles/pages/card.css';
 import '../../styles/pages/card-columns.css';
+import { getRoles } from '@testing-library/react';
 
 
 interface Product {
@@ -61,29 +63,47 @@ function Products(){
   const [viewImage, setViewImage] = useState('');
   const [viewName, setViewName] = useState('');
 
+  async function getRoles(){
+    api.get('admin/tk',{
+      headers: {'Authorization': 'Bearer '+userToken}
+    }).then(res => {
+      setRole(res.data.role);
+    }).catch(err => {
+      setRole('guest');
+    });
+  }
+
+  async function getProducts(){
+    api.get('products/all').then(products => {
+      setProducts(products.data);
+    }).catch(err => {
+      const errorstring = String(err);
+      const res = errorstring.replace(/\D/g,'');
+      if(res == '404'){
+        return
+      }else{
+        alert('Problema na conexão.');
+      }
+    })
+  }
+
+  async function getCompanies(){
+    api.get('companies').then(res => {
+      setCompanies(res.data);
+      
+    }).catch(err => {
+      alert('Erro ao Acessar as Empresas, verifique sua conexão');
+    });
+  }
+
   useEffect(() => {
     if(!isLoading) return;
 
-    api.get('products/all').then(products => {
-      setProducts(products.data);
-      api.get('admin/tk',{
-        headers: {'Authorization': 'Bearer '+userToken}
-      }).then(res => {
-        setRole(res.data.role);
-        api.get('companies').then(res => {
-          setCompanies(res.data);
-          setIsLoading(false);
-        }).catch(err => {
-          alert('Erro ao Acessar as Empresas, verifique sua conexão');
-        })
-      }).catch(err => {
-        setRole('guest');
-        setIsLoading(false);
-      });
-    }).catch(err => {
-      alert("Ops! Tivemos um erro");
-      setIsLoading(false);
-    });
+    getRoles();
+    getProducts();
+    getCompanies();
+    
+    setIsLoading(false);
   }, []);
 
   function openModal({product}:{product:Product}) {
@@ -122,11 +142,10 @@ function Products(){
         return company.email
       }
     });
-    console.log(email);
     api.delete(`products/${product.id}`,{
       headers: {'Authorization': 'Bearer '+userToken}
     }).then(() => {
-      fetch('http://habil.servehttp.com:5003/mailgun',{
+      fetch(`${mailer}/mailgun`,{
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -181,7 +200,7 @@ function Products(){
     },{
       headers: {'Authorization': 'Bearer '+userToken}
     }).then(res => {
-      fetch('http://habil.servehttp.com:5003/mailgun',{
+      fetch(`${mailer}/mailgun`,{
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -234,7 +253,7 @@ function Products(){
     },{
       headers: {'Authorization': 'Bearer '+userToken}
     }).then(() => {
-      fetch('http://habil.servehttp.com:5003/mailgun',{
+      fetch(`${mailer}/mailgun`,{
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

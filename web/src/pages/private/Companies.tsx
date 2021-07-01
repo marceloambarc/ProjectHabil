@@ -14,12 +14,13 @@ import '../../styles/pages/controlmap.css';
 import '../../styles/pages/companies_buttons.css';
 import '../../styles/pages/table.css';
 import { host, port, fromEmail, pass } from '../../services/email.json';
+import { mailer } from '../../services/mailer.json';
 import PromoInput from '../../components/PromoInput';
 
 Modal.setAppElement('#root')
 
 //SORT POR ÚLTIMAS CADASTRADAS
-function Products(){
+function Companies(){
   const getUserToken = localStorage.getItem('userToken');
   const [userToken] = useState(`${getUserToken}`)
   const [companies, setCompanies] = useState<Company[]>([]);
@@ -138,29 +139,30 @@ function Products(){
     },{
       headers: {'Authorization': 'Bearer '+userToken}
     }).then(() => {
-      fetch('http://habil.servehttp.com:5003/mailgun',{
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          host: host,
-          port: port,
-          fromEmail: fromEmail,
-          pass: pass,
-          toEmail: company.email,
-          title: 'Empresa Inativada',
-          message: `Sua empresa Foi Inativada Pelo Administrador do Sistema <a href="https://www.compremaisaki.com.br">COMPREMAISAKI</a>. 
-                    Entre em contato com o Suporte pelo Aplicativo para mais informações.`,
-          content: `Sua empresa Foi Inativada Pelo Administrador do Sistema <a href="https://www.compremaisaki.com.br">COMPREMAISAKI</a>. 
-                    Entre em contato com o Suporte pelo Aplicativo para mais informações.`
-        })
+      api.get('companies/all').then(response => {
+        setCompanies(response.data);
+        fetch(`${mailer}/mailgun`,{
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            host: host,
+            port: port,
+            fromEmail: fromEmail,
+            pass: pass,
+            toEmail: company.email,
+            title: 'Empresa Inativa',
+            message: 'Sua empresa Foi Inativada Pelo Administrador. Entre em contato com o Suporte pelo Aplicativo para mais informações.',
+            content: 'Sua empresa Foi Inativada Pelo Administrador. Entre em contato com o Suporte pelo Aplicativo para mais informações.'
+          })
+        }).then(() => {
+          alert('Email Enviado!');
+        }).catch(err => {
+          alert('Erro com a conexão com encaminhador de Email. Entre em contato com o suporte.');
+        });
       }).then(() => {
-        api.get('companies/all').then(response => {
-          setCompanies(response.data);
-        }).catch(() => {
-          alert('Tivemos um erro ao acessar as Empresas.');
-        })
+        alert('Empresa Inativada com Sucesso.');
       }).catch(err => {
-        alert('Tivemos um Erro para Enviar o E-mail de Informação.');
+        alert('Erro ao encaminhar Email de Inativação. Entre em contato com o suporte.');
       })
     }).catch(err => {
       alert('Tivemos um erro, entre em contato com o Suporte');
@@ -189,29 +191,30 @@ function Products(){
     api.delete(`companies/${company.id}`,{
       headers: {'Authorization': 'Bearer '+userToken}
     }).then(() => {
-      fetch('http://habil.servehttp.com:5003/mailgun',{
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          host: host,
-          port: port,
-          fromEmail: fromEmail,
-          pass: pass,
-          toEmail: company.email,
-          title: 'Cancelamento de Empresa',
-          message: 'Sua empresa Foi cancelada Pelo Administrador. Entre em contato com o Suporte pelo Aplicativo para mais informações.',
-          content: 'Sua empresa Foi cancelada Pelo Administrador. Entre em contato com o Suporte pelo Aplicativo para mais informações.'
-        })
-      }).then(() => {
-        api.get('companies/all').then(response => {
-          setCompanies(response.data);
+      api.get('companies/all').then(response => {
+        setCompanies(response.data);
+        fetch(`${mailer}/mailgun`,{
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            host: host,
+            port: port,
+            fromEmail: fromEmail,
+            pass: pass,
+            toEmail: company.email,
+            title: 'Empresa Cancelada',
+            message: 'Sua empresa Foi Cancelada Pelo Administrador. Entre em contato com o Suporte pelo Aplicativo para mais informações.',
+            content: 'Sua empresa Foi Cancelada Pelo Administrador. Entre em contato com o Suporte pelo Aplicativo para mais informações.'
+          })
         }).then(() => {
-          alert('Empresa excluída com Sucesso.');
+          alert('Email Enviado!');
         }).catch(err => {
-          alert('Erro ao encaminhar Email de Cancelamento. Entre em contato com o suporte.');
+          alert('Erro com a conexão com encaminhador de Email. Entre em contato com o suporte.');
         });
+      }).then(() => {
+        alert('Empresa Cancelada com Sucesso.');
       }).catch(err => {
-        alert('Erro com a conexão com encaminhador de Email. Entre em contato com o suporte.');
+        alert('Erro ao encaminhar Email de Cancelamento. Entre em contato com o suporte.');
       })
     }).catch(err => {
       alert('Tivemos um erro, entre em contato com o Suporte');
@@ -242,27 +245,30 @@ function Products(){
     },{
       headers: {'Authorization': 'Bearer '+userToken}
     }).then(() => {
-      fetch('http://habil.servehttp.com:5003/mailgun',{
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          host: host,
-          port: port,
-          fromEmail: fromEmail,
-          pass: pass,
-          toEmail: company.email,
-          title: 'Empresa Ativada',
-          message: 'Sua empresa Foi Ativada Pelo Administrador. Entre em contato com o Suporte pelo Aplicativo para mais informações.',
-          content: 'Sua empresa Foi Ativada Pelo Administrador. Entre em contato com o Suporte pelo Aplicativo para mais informações.'
-        })
+      api.get('companies/all').then(response => {
+        setCompanies(response.data);
+        fetch(`${mailer}/mailgun`,{
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            host: host,
+            port: port,
+            fromEmail: fromEmail,
+            pass: pass,
+            toEmail: company.email,
+            title: 'Empresa Ativada',
+            message: 'Sua empresa Foi Ativada Pelo Administrador. Entre em contato com o Suporte pelo Aplicativo para mais informações.',
+            content: 'Sua empresa Foi Ativada Pelo Administrador. Entre em contato com o Suporte pelo Aplicativo para mais informações.'
+          })
+        }).then(() => {
+          alert('Email Enviado!');
+        }).catch(err => {
+          alert('Erro com a conexão com encaminhador de Email. Entre em contato com o suporte.');
+        });
       }).then(() => {
-        api.get('companies/all').then(response => {
-          setCompanies(response.data);
-        }).catch(() => {
-          alert('Erro ao acessar as Empresas, verifique sua Conexão.')
-        })
-      }).catch(() => {
-        alert('Aconteceu um Erro ao enviar E-mail para Confirmação. Entre em contato com o Suporte.')
+        alert('Empresa Ativada com Sucesso.');
+      }).catch(err => {
+        alert('Erro ao encaminhar Email de Ativação. Entre em contato com o suporte.');
       })
     }).catch(err => {
       alert('Tivemos um erro, entre em contato com o Suporte');
@@ -519,4 +525,4 @@ function Products(){
   );
 }
 
-export default Products;
+export default Companies;
