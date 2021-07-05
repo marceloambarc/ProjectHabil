@@ -21,7 +21,15 @@ interface NewPromotionParams {
   userToken: string,
   max_prom: number;
   productsLength: number;
+  companyBusiness: string,
+  companyPhone: string,
+  companyAddress: string,
+  companyDistrict: string,
+  companyCity: string,
+  companyUf: string,
+  companyKeywords: string,
 }
+
 
 export default function NewPromotionScreen(){
   const [name, setName] = useState('');
@@ -49,6 +57,13 @@ export default function NewPromotionScreen(){
   const company_email = params.companyEmail;
   const company_image = params.companyImage;
   const company_cnpj = params.companyCnpj;
+  const company_business = params.companyBusiness;
+  const company_phone = params.companyPhone;
+  const company_address = params.companyAddress;
+  const company_district = params.companyDistrict;
+  const company_city = params.companyCity;
+  const company_uf = params.companyUf;
+  const company_keywords = params.companyKeywords;
   const userToken = params.userToken;
   const max_prom = params.max_prom;
   const products_length = params.productsLength;
@@ -171,12 +186,22 @@ export default function NewPromotionScreen(){
       price,
       description,
       company_id,
+      company_image,
+      company_cnpj,
+      company_name,
+      company_business,
+      company_phone,
+      company_email,
+      company_address,
+      company_district,
+      company_city,
+      company_uf,
+      company_keywords,
       base,
       discount,
       userToken,
       max_prom,
-      company_name,
-
+      
     });
   }
 

@@ -15,7 +15,6 @@ import { mailer } from '../../services/mailer.json';
 import '../../styles/pages/controlmap.css';
 import '../../styles/pages/card.css';
 import '../../styles/pages/card-columns.css';
-import { getRoles } from '@testing-library/react';
 
 
 interface Product {

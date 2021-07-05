@@ -12,6 +12,14 @@ interface ProductDataRouteParams {
   company_name: string,
   company_cnpj: string,
   company_image: string,
+  company_business: string,
+  company_phone: string,
+  company_email: string,
+  company_address: string,
+  company_district: string,
+  company_city: string,
+  company_uf: string,
+  company_keywords: string,
   image: string,
   base: string,
   discount: string,
@@ -44,6 +52,15 @@ export default function NewPromotionOverviewScreen(){
   const companyCnpj = params.company_cnpj;
   const companyName = params.company_name;
   const companyImage = params.company_image;
+  const maxProm = params.max_prom;
+  const companyBusiness = params.company_business;
+  const companyPhone = params.company_phone;
+  const companyEmail = params.company_email;
+  const companyAddress = params.company_address;
+  const companyDistrict = params.company_district;
+  const companyCity = params.company_city;
+  const companyUf = params.company_uf;
+  const companyKeywords = params.company_keywords;
 
   const productName = params.name;
   const productPrice = params.price;
@@ -51,7 +68,6 @@ export default function NewPromotionOverviewScreen(){
   const productImage = params.base;
   const productValidate = '';
   const productDiscount = params.discount;
-  const maxProm = params.max_prom;
   const userToken = params.userToken;
   const [date, setDate] = useState('');
 
@@ -119,7 +135,16 @@ export default function NewPromotionOverviewScreen(){
           id: companyId,
           image: companyImage,
           cnpj: companyCnpj,
-          userToken: userToken
+          max_prom: maxProm,
+          business: companyBusiness,
+          phone: companyPhone,
+          userToken: userToken,
+          email: companyEmail,
+          address: companyAddress,
+          disctrict: companyDistrict,
+          city: companyCity,
+          uf: companyUf,
+          keywords: companyKeywords
         }));
       }).catch(err => {
         Alert.alert(

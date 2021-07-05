@@ -92,6 +92,13 @@ export default function HomeScreen(){
       companyName: name,
       companyCnpj,
       companyImage,
+      companyBusiness: business,
+      companyPhone: phone,
+      companyAddress: address,
+      companyDistrict: district,
+      companyCity: city,
+      companyUf: uf,
+      companyKeywords: keywords,
       userToken,
       max_prom,
       productsLength
