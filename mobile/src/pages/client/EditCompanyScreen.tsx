@@ -66,7 +66,7 @@ export default function EditCompanyScreen(){
 
   async function handleConfirmEdit(){
       const finalAddress = address.concat("/" + complement);
-
+      
       api.put(`companies/${companyId}`,{
         name,
         business,

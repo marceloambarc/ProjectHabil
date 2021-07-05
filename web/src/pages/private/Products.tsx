@@ -89,7 +89,6 @@ function Products(){
   async function getCompanies(){
     api.get('companies').then(res => {
       setCompanies(res.data);
-      
     }).catch(err => {
       alert('Erro ao Acessar as Empresas, verifique sua conexão');
     });
@@ -103,7 +102,7 @@ function Products(){
     getCompanies();
     
     setIsLoading(false);
-  }, []);
+  }, [getProducts]);
 
   function openModal({product}:{product:Product}) {
     setIsOpen(true);
@@ -144,25 +143,22 @@ function Products(){
     api.delete(`products/${product.id}`,{
       headers: {'Authorization': 'Bearer '+userToken}
     }).then(() => {
-      fetch(`${mailer}/mailgun`,{
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          host: host,
-          port: port,
-          fromEmail: fromEmail,
-          pass: pass,
-          toEmail: /*WE NEED TO INSEERT HERE*/'',
-          title: 'Produto Cancelado',
-          message: `A Promoção ${product.name} Foi Inativada Pelo Administrador. Entre em contato com o Suporte pelo Aplicativo para mais informações.`,
-          content: `A Promoção ${product.name} Foi Inativada Pelo Administrador. Entre em contato com o Suporte pelo Aplicativo para mais informações.`
+      api.get('products/all').then(res => {
+        setProducts(res.data);
+        fetch(`${mailer}/mailgun`,{
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            host: host,
+            port: port,
+            fromEmail: fromEmail,
+            pass: pass,
+            toEmail: /*WE NEED TO INSEERT HERE*/'',
+            title: 'Produto Cancelado',
+            message: `A Promoção ${product.name} Foi Inativada Pelo Administrador. Entre em contato com o Suporte pelo Aplicativo para mais informações.`,
+            content: `A Promoção ${product.name} Foi Inativada Pelo Administrador. Entre em contato com o Suporte pelo Aplicativo para mais informações.`
+          })
         })
-      }).then(() => {
-        api.get('products/all').then(response => {
-          setProducts(response.data);
-        });
-      }).catch(err => {
-        alert('Aconteceu um Erro ao acessar os Produtos. Entre em contato com o Suporte.')
       })
     }).catch(err => {
       alert('Tivemos um erro, entre em contato com o Suporte');
@@ -176,11 +172,11 @@ function Products(){
       message: `Você tem certeza que deseja Deletar a Promoção ${product.name}`,
       buttons: [
         {
-          label: 'Não',
+          label: 'Sim',
           onClick: ()  => handleConfirmCanceled({product})
         },
         {
-          label: 'No',
+          label: 'Não',
           onClick: () => {}
         }
       ]
@@ -199,25 +195,22 @@ function Products(){
     },{
       headers: {'Authorization': 'Bearer '+userToken}
     }).then(res => {
-      fetch(`${mailer}/mailgun`,{
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          host: host,
-          port: port,
-          fromEmail: fromEmail,
-          pass: pass,
-          toEmail: email,
-          title: 'Produto Ativado',
-          message: `A Promoção ${product.name} Foi Ativado Pelo Administrador. Entre em contato com o Suporte pelo Aplicativo para mais informações.`,
-          content: `A Promoção ${product.name} Foi Ativado Pelo Administrador. Entre em contato com o Suporte pelo Aplicativo para mais informações.`
-        })
-      }).then(() => {
-        api.get('products/all').then(response => {
-          setProducts(response.data);
+      api.get('products/all').then(res => {
+        setProducts(res.data);
+        fetch(`${mailer}/mailgun`,{
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            host: host,
+            port: port,
+            fromEmail: fromEmail,
+            pass: pass,
+            toEmail: email,
+            title: 'Produto Ativado',
+            message: `A Promoção ${product.name} Foi Ativado Pelo Administrador. Entre em contato com o Suporte pelo Aplicativo para mais informações.`,
+            content: `A Promoção ${product.name} Foi Ativado Pelo Administrador. Entre em contato com o Suporte pelo Aplicativo para mais informações.`
+          })
         });
-      }).catch(() => {
-        alert('Erro ao carregar os produtos, verifique sua conexão.');
       })
     }).catch(err => {
       alert('Tivemos um erro, entre em contato com o Suporte');
@@ -230,11 +223,11 @@ function Products(){
       message: `Deseja Ativar a Promoção ${product.name}?`,
       buttons: [
         {
-          label: 'Não',
+          label: 'Sim',
           onClick: ()  => handleConfirmActive({product})
         },
         {
-          label: 'No',
+          label: 'Não',
           onClick: () => {}
         }
       ]
@@ -252,6 +245,8 @@ function Products(){
     },{
       headers: {'Authorization': 'Bearer '+userToken}
     }).then(() => {
+      api.get('products/all').then(res => {
+        setProducts(res.data);
       fetch(`${mailer}/mailgun`,{
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -265,12 +260,7 @@ function Products(){
           message: `A Promoção ${product.name} Foi Desativada Pelo Administrador. Entre em contato com o Suporte pelo Aplicativo para mais informações.`,
           content: `A Promoção ${product.name} Foi Desativada Pelo Administrador. Entre em contato com o Suporte pelo Aplicativo para mais informações.`
         })
-      }).then(() => {
-        api.get('products/all').then(response => {
-          setProducts(response.data);
-        }).catch(() => {
-          alert('Tivemos um problema de Carregar as Promoções, entre em contato com o Suporte.');
-        })
+      })
       }).catch(() => {
         alert('Erro ao Encaminhar o email de informação.');
       })
@@ -285,11 +275,11 @@ function Products(){
       message: `Deseja Desativar a Promoção ${product.name}?`,
       buttons: [
         {
-          label: 'Não',
+          label: 'Sim',
           onClick: ()  => handleConfirmInactive({product})
         },
         {
-          label: 'No',
+          label: 'Não',
           onClick: () => {}
         }
       ]
@@ -455,7 +445,12 @@ function Products(){
                     <td>{product.description}</td>
                     <td>{product.date}</td>
                     <td>
-                      {companies.map(company => <p>{company.name}</p>)}
+                      {companies.map(company =>
+                        company.id === product.company_id?
+                        <p>{company.name}</p>
+                        :
+                        <p></p>
+                        )}
                     </td>
                     <td>
                       <Validation 

@@ -143,7 +143,10 @@ function Companies(){
         setCompanies(response.data);
         fetch(`${mailer}/mailgun`,{
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: { 
+            'Content-Type': 'application/json',
+            'mode': 'node-cors'
+          },
           body: JSON.stringify({
             host: host,
             port: port,
@@ -195,7 +198,10 @@ function Companies(){
         setCompanies(response.data);
         fetch(`${mailer}/mailgun`,{
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: { 
+            'Content-Type': 'application/json',
+            'mode': 'node-cors'
+          },
           body: JSON.stringify({
             host: host,
             port: port,
@@ -249,7 +255,10 @@ function Companies(){
         setCompanies(response.data);
         fetch(`${mailer}/mailgun`,{
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: { 
+            'Content-Type': 'application/json',
+            'mode': 'node-cors'
+           }, 
           body: JSON.stringify({
             host: host,
             port: port,
