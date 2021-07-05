@@ -71,7 +71,7 @@ export default function EditCompanyScreen(){
         name,
         business,
         phone,
-        email,
+        email: email.toLocaleLowerCase(),
         address: finalAddress,
         district,
         city,

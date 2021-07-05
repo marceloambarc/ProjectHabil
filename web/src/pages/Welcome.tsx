@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { GrUserAdmin } from 'react-icons/gr';
+import { FiArrowRight } from 'react-icons/fi';
 import { NavLink } from 'react-router-dom';
 
 import logoImg from '../images/cmatextlogo.png';
@@ -48,14 +49,12 @@ function Welcome() {
 
         <div className="enter-app-container">
           
-          {/*----------ROTA ESCONDIDA PARA HOMOLOGACAO
-          
           <div className="enter-app-col1">
-            <p className="enter-text">Entrar</p>
+            <p className="enter-text">Cadastrar</p>
             <NavLink to="/client" className="enter-app">
-              <FiArrowRight size="26" color="#FFF" />
+              <FiArrowRight className="pngEnter" size="26" color="#FFF" />
             </NavLink>
-          </div>*/}
+          </div>
           <div className="enter-app-col2">
             <NavLink to="/login" className="enter-app">
               <GrUserAdmin className="pngEnter" color="#fff" />

@@ -386,7 +386,7 @@ export default function Register(){
           cnpj: cnpj,
           name: name,
           phone: phone,
-          email: email,
+          email: email.toLocaleLowerCase(),
           address: finalAddress,
           district: district,
           city: city,
