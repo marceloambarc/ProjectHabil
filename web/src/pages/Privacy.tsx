@@ -3,16 +3,9 @@ import React, {  useState } from 'react';
 import '../styles/pages/confirm.css';
 
 import logoImg from '../images/cmatextlogo.png';
-import tokenCredentials from '../services/token.json';
 
 //---CRIAR USEEFFECT PARA RETURN(<P>LOADING...<P>);
-function Privacy(props:any) {
-  const [company, setCompany] = useState('');
-  const [password, setPassword] = useState('');
-
-  const tokenUsername = tokenCredentials.username;
-  const tokenPassword = tokenCredentials.password;
-  const tokenGrantType = tokenCredentials.grant_type;
+function Privacy() {
 
   return (
     <div id="confirm-container">
