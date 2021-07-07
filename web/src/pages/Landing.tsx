@@ -44,7 +44,7 @@ function Landing() {
         <main>
           <h1>Administração <img src={logoImg} className="landingImg" alt="CompreMaisAki" /></h1>
           <p>verificação de dados App</p>
-          <p>BetaTest 1.5.2</p>
+          <p>BetaTest 2.0</p>
 
           <div className="input-block">
             <label htmlFor="about">Usuário:</label>

@@ -5,12 +5,12 @@
  
  #client-control-map main {
     flex: 1;
-    margin-top: 40px;
+    margin-top: 30px;
  }
  
  .client-control-map {
     width: 95%;
-    margin: 40px auto 15px;
+    margin: 91px auto 15px;
     margin-right: 40px;
  
     background: #FFFFFF;
@@ -180,4 +180,18 @@
    object-fit: cover;
    width: 100%;
    height: 100%;
+}
+
+#closeContainer {
+   position: absolute;
+   justify-content: center;
+   align-items: center;
+}
+
+#closeAppButon {
+   background:#017895;
+   height: 55px;
+   width: 55px;
+   border-radius: 25%;
+   margin-left: 100px;
 }

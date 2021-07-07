@@ -6,7 +6,6 @@ import Resizer from "react-image-file-resizer";
 
 import api from '../services/api';
 import tokenCredentials from '../services/token.json';
-import loadingImg from '../images/loading.gif';
 
 import '../styles/pages/client.css';
 import '../styles/pages/card.css';
@@ -26,6 +25,8 @@ interface Companies {
   companie: any,
 }
 
+const loadingImg = 'https://via.placeholder.com/400x200';
+
 //CLIENT SIDE - TODO
 function Client(){
   const [isLoading, setIsLoading] = useState(true);
@@ -44,7 +45,6 @@ function Client(){
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
 
-  const placeholder = 'https://via.placeholder.com/300x200';
   const fileInput1 = createRef<any>();
   const [isLoadingImage1, setIsLoadingImage1] = useState(false);
   const [isImage1Loaded, setIsImage1Loaded] = useState(true);
@@ -76,7 +76,7 @@ function Client(){
     function renderImg1(){
       if(isLoading){
         return (
-          <div style={{height: 200, width: 400}}>
+          <div style={{height: 200, width: 400, marginLeft: 40}}>
             <img src={loadingImg} className="image" alt="AdvImage" style={{width: "85%"}}/>
           </div>
           
@@ -274,12 +274,12 @@ function Client(){
   return(
     <div id="client-control-map">
       <main>
+        <div id="closeContainer">
+          <button onClick={() => handleCloseApp()} id="closeAppButon">
+            <IoCloseCircleOutline size={24} color="white" />
+          </button>
+        </div>
         <div className="client-control-map">
-          <div className="close-button">
-            <button onClick={() => handleCloseApp()}>
-            <IoCloseCircleOutline size={24} color="black" />
-            </button>
-          </div>
 
           <div className="logoCentralContainer">
               <img src={logoCentral} className="logoCentral" alt="CompreMaisAkiAdaptive-Icon" />
