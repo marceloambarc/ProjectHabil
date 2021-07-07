@@ -1,9 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, createRef } from 'react';
 import { IoCloseCircleOutline } from 'react-icons/io5';
 import { FiEye, FiEyeOff } from 'react-icons/fi';
 import Modal from 'react-modal';
+import Resizer from "react-image-file-resizer";
 
 import api from '../services/api';
+import tokenCredentials from '../services/token.json';
+import loadingImg from '../images/loading.gif';
 
 import '../styles/pages/client.css';
 import '../styles/pages/card.css';
@@ -25,6 +28,8 @@ interface Companies {
 
 //CLIENT SIDE - TODO
 function Client(){
+  const [isLoading, setIsLoading] = useState(true);
+  const [tokenVariable, setUserToken] = useState('');
   const [name, setName] = useState('');
   const [cnpj, setCnpj] = useState('');
   const [business, setBusiness] = useState('');
@@ -33,16 +38,27 @@ function Client(){
   const [address, setAddress] = useState('');
   const [complement, setComplement] = useState('');
   const [district, setDistrict] = useState('');
-  const [city, setCity] = useState('Nova Santa Rita');
-  const [uf, setUf] = useState('RS');
+  const [city] = useState('Nova Santa Rita');
+  const [uf] = useState('RS');
   const [keywords, setKeywords] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+
+  const placeholder = 'https://via.placeholder.com/300x200';
+  const fileInput1 = createRef<any>();
+  const [isLoadingImage1, setIsLoadingImage1] = useState(false);
+  const [isImage1Loaded, setIsImage1Loaded] = useState(true);
+  const [img1, setImg1] = useState('');
+  const [base] = useState('data:image/jpeg;base64');
 
   const [modalIsOpen, setIsOpen] = useState(false);
   const [showPassword, setShowPassword] = useState('password');
   const [showConfirmPassword, setShowConfirmPassword] = useState('password');
   const [isChecked, setIsChecked] = useState(false);
+
+  const tokenGrantType = tokenCredentials.grant_type;
+  const username = tokenCredentials.username;
+  const tokenPassword = tokenCredentials.password;
 
   function closeModal(){
     setIsOpen(false);
@@ -56,12 +72,195 @@ function Client(){
       }
   }
 
-  async function handleSelectImage(){
-    alert('Selecione a Imagem.');
+    //---REFATORAR CÓDIGOS--- "i++""
+    function renderImg1(){
+      if(isLoading){
+        return (
+          <div style={{height: 200, width: 400}}>
+            <img src={loadingImg} className="image" alt="AdvImage" style={{width: "85%"}}/>
+          </div>
+          
+        );
+      }else{
+        return(
+          <div style={{height: 200, width: 400, marginLeft: 40}}>
+            <img src={base + ',' + img1} className="image" alt="AdvImage" style={{width: "85%"}}/>
+          </div>
+        );
+      }
+    }
+
+  const resizeFile = (file:any) =>
+    new Promise((resolve:any) => {
+      Resizer.imageFileResizer(
+        file,
+        150,
+        150,
+        "PNG",
+        100,
+        0,
+        (uri) => {
+          resolve(uri);
+        },
+        "base64",
+        150,
+        150,
+      );
+    });
+
+    //TAKE THE FILEINPUT
+    async function handleChangeImage1(e:any) {
+      e.preventDefault();
+      const file = fileInput1.current?.files[0];
+      setIsLoadingImage1(true);
+      const image = await resizeFile(file);
+      const fileAdaptedRender = String(image).split(',').pop();
+      setImg1(fileAdaptedRender? fileAdaptedRender: '');
+  
+      setIsLoadingImage1(false);
+      setIsLoading(false);
+      setIsImage1Loaded(false);
+    }
+
+  async function handleFinish(){
+    const params = new URLSearchParams();
+    params.append('username', username)
+    params.append('password', tokenPassword)
+    params.append('grant_type', tokenGrantType)
+
+    const response = await api.post('token',params);
+    const userToken = response.data.access_token;
+    setUserToken(tokenVariable);
+
+    if(userToken != ''){
+      const finalAddress = address.concat("/", complement);
+      api.post('companies/cnpj',{
+        headers: {'Authorization': 'Bearer '+userToken}
+      }).then(res => {
+        alert('Erro, Empresa já Cadastrada');
+      }).catch(err => {
+        api.post('companies',{
+          name,
+          cnpj,
+          business,
+          phone: telephone,
+          email: email.toLocaleLowerCase(),
+          address: finalAddress,
+          district,
+          city,
+          uf,
+          keywords,
+          image: img1,
+          password,
+        },{
+          headers: {'Authorization': 'Bearer '+userToken}
+        }).then(res => {
+          setBusiness('');
+          setCnpj('');
+          setName('');
+          setTelephone('');
+          setEmail('');
+          setAddress('');
+          setDistrict('');
+          setPassword('');
+          setKeywords('');
+          window.location.href = '/';
+        }).catch(err => {
+          alert('Erro, Verifique sua conexão.');
+        });
+      })
+    }else{
+      alert('Não foi possível gerar credenciais, verifique sua conexão.');
+    }
   }
 
   async function handleCreate(){
-    alert('Concluído');
+    if(isChecked){
+      if(name != "" && name != undefined){
+        if(name.length < 3){
+          alert('Nome muito curto.');
+        }else{
+          if(cnpj.length != 14){
+            alert('CNPJ Inválido');
+          }
+          else{
+            if(business != "" && business != undefined){
+              if(business.length < 3){
+                alert('Ramo muito curto.');
+              }else{
+                if(telephone.length != 13){
+                  alert('Número Inválido')
+                }else{
+                  if(email != "" && email != undefined){
+                    if(email.length < 6){
+                      alert('Email Inválido.');
+                    }else{
+                      if(address != "" && address != undefined){
+                        if(address.length <= 3){
+                          alert('Endereço Inválido')
+                        }else{
+                          if(complement != undefined){
+                            setComplement('');
+                          }
+                          if(district != "" && district != undefined){
+                            if(district.length < 3){
+                              alert('Bairro muito curto.');
+                            }else{
+                              if(keywords != "" && keywords != undefined){
+                                if(keywords.length < 3){
+                                  alert('Palavra chave inválida, palavra muito curta.')
+                                }else{
+                                  if(password != "" && password != undefined){
+                                    if(password.length <= 3){
+                                      alert('Senha Muito Curta');
+                                    }else{
+                                      if(confirmPassword != "" && confirmPassword != undefined){
+                                        if(confirmPassword.length <= 3){
+                                          alert('Confirmação de Senha Muito Curta');
+                                        }else{
+                                          if(password != confirmPassword){
+                                            alert('Senhas não Conferem');
+                                          }else{
+                                            handleFinish();
+                                          }
+                                        }
+                                      }else{
+                                        alert('Confirme Sua senha');
+                                      }
+                                    }
+                                  }else{
+                                    alert('Insira sua Senha');
+                                  }
+                                }
+                              }else{
+                                alert('Insira suas Palavras chaves, separados por vírgulas.');
+                              }
+                            }
+                          }else{
+                            alert('Por Favor, Insira seu Bairro.');
+                          }
+                        }
+                      }else{
+                        alert('Insira seu Endereço');
+                      }
+                    }
+                  }else{  
+                    alert('Email Inválido.');
+                  }
+                }
+              }
+            }else{
+              alert('Por favor, Insira o Ramo Empresarial');
+            }
+          }
+        }
+      }else{
+        alert('Por favor, Insira o Nome Fantasia');
+      }
+    }else{
+      alert('Você deve aceitar os Termos de Uso');
+    }
+    
   }
 
   async function handleCheckbox(){
@@ -76,6 +275,11 @@ function Client(){
     <div id="client-control-map">
       <main>
         <div className="client-control-map">
+          <div className="close-button">
+            <button onClick={() => handleCloseApp()}>
+            <IoCloseCircleOutline size={24} color="black" />
+            </button>
+          </div>
 
           <div className="logoCentralContainer">
               <img src={logoCentral} className="logoCentral" alt="CompreMaisAkiAdaptive-Icon" />
@@ -87,7 +291,7 @@ function Client(){
                 <label htmlFor="name">Nome Fantasia:</label>
                 <input 
                   id="user" 
-                  maxLength={300}
+                  maxLength={30}
                   value={name}
                   onChange={event => setName(event.target.value)}
                   className="textInput"
@@ -98,10 +302,9 @@ function Client(){
                 <label htmlFor="cnpj">CNPJ:</label>
                 <input 
                   id="user" 
-                  maxLength={300}
+                  maxLength={14}
                   value={cnpj}
                   onChange={event => setCnpj(event.target.value)}
-                  type="number"
                   className="textInput"
                   placeholder="Seu CNPJ"
                 />
@@ -180,7 +383,6 @@ function Client(){
                   id="user" 
                   maxLength={300}
                   value={city}
-                  onChange={event => setCity(event.target.value)}
                   className="textInput"
                 />
               </div>
@@ -190,7 +392,6 @@ function Client(){
                   id="user" 
                   maxLength={300}
                   value={uf}
-                  onChange={event => setUf(event.target.value)}
                   className="textInput"
                 />
               </div>
@@ -232,7 +433,7 @@ function Client(){
                       onClick={() => setShowPassword('text')}
                       className="showPasswordButton"
                     >
-                      <FiEye size="24" color="green" />
+                      <FiEye size="24" color="#017895" />
                     </button>
                     
                     :
@@ -240,7 +441,7 @@ function Client(){
                       onClick={() => setShowPassword('password')}
                       className="showPasswordButton"
                     >
-                      <FiEyeOff size="24" color="green" />
+                      <FiEyeOff size="24" color="#017895" />
                     </button>
                     
                   }
@@ -268,14 +469,14 @@ function Client(){
                       onClick={() => setShowConfirmPassword('text')}
                       className="showPasswordButton"
                     >
-                      <FiEye size="24" color="green" />
+                      <FiEye size="24" color="#017895" />
                     </button>
                     :
                     <button
                     onClick={() => setShowConfirmPassword('password')}
                     className="showPasswordButton"
                   >
-                    <FiEyeOff size="24" color="green" />
+                    <FiEyeOff size="24" color="#017895" />
                   </button>
                   }
                 </div>
@@ -284,9 +485,18 @@ function Client(){
 
             <div className="formImage">
               <div className="photo-button-container">
-                <button onClick={() => handleSelectImage()} id="form-button" className="photo-button">
-                    <p>Selecione Foto</p>
-                </button>
+                
+
+              <label>Imagem 1:</label>
+              {renderImg1()}
+              
+              <div className="button-block">
+                <div className="image-handle">
+                  <input type='file' name='file' ref={fileInput1} className='changeImageButton' onChange={e => handleChangeImage1(e)} />
+                </div>
+              </div>
+
+
               </div>
             </div>
 
