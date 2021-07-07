@@ -21,11 +21,12 @@ function Welcome() {
 
         <main>
           <img src={logoImg} className="landingImg1" alt="CompreMaisAki" />
-          <h1>Bem-Vindo</h1>
-          <p>o app que leva</p>
-          <p>Nova Santa Rita</p>
-          <p>sempre com você.</p>
-
+          <div className="welcome-text">
+            <h1>Bem-Vindo</h1>
+            <p>o app que leva</p>
+            <p>Nova Santa Rita</p>
+            <p>sempre com você.</p>
+          </div>
           <div className="welcome-block">
 
             <div className="welcome-block-col">
@@ -50,9 +51,8 @@ function Welcome() {
         <div className="enter-app-container">
           
           <div className="enter-app-col1">
-            <p className="enter-text">Cadastrar</p>
-            <NavLink to="/client" className="enter-app">
-              <FiArrowRight className="pngEnter" size="26" color="#FFF" />
+            <NavLink to="/client" className="register-app">
+              <p className="enter-text">Cadastrar sua Empresa</p>
             </NavLink>
           </div>
           <div className="enter-app-col2">

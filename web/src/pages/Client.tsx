@@ -164,6 +164,7 @@ function Client(){
           setDistrict('');
           setPassword('');
           setKeywords('');
+          alert('Empresa Cadastrada! Aguarde a Confirmação do Administrador e acesse pelo seu Aplicativo!');
           window.location.href = '/';
         }).catch(err => {
           alert('Erro, Verifique sua conexão.');
