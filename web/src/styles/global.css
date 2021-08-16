@@ -8,6 +8,6 @@ body {
   background: #ebf2f5;
 }
 
-body, input, button, textarea {
+body, input, textarea, button, textarea {
   font: 600 18px Nunito, sans-serif;
 }

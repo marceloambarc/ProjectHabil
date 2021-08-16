@@ -172,13 +172,16 @@
     padding-top: 1em!important;
     overflow-x: visible;
   }
+  .location {
+    margin-right: 12px;
+  }
   .welcome-wrapper .enter-app-container {
     display: flex;
     flex-direction: column;
     position: absolute;
     right: 0;
     bottom: 15%;
-    
+
     margin-bottom: 61px;
   }
   .landingImg1 {

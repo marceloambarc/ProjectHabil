@@ -13,6 +13,7 @@ import Companies from './pages/private/Companies';
 import Products from './pages/private/Products';
 import Moderators from './pages/private/Moderators';
 import Forgot from './pages/private/Forgot';
+import WhatsApp from './pages/private/WhatsApp';
 
 function Routes() {
   return (
@@ -32,6 +33,7 @@ function Routes() {
         <Route path="/companies" component={Companies} />
         <Route path="/moderators" component={Moderators} />
         <Route path="/forgot" component={Forgot} />
+        <Route path="/WhatsApp" component={WhatsApp} />
         <Route path="/privacy" component={Privacy} />
         
       </Switch>

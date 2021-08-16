@@ -1,0 +1,50 @@
+.whatsapp-body {
+  padding-left: 2%;
+  padding-right: 2%;
+}
+
+.whatsapp-body h2 {
+  justify-items: center;
+  align-items: center;
+  text-align: center;
+}
+
+.input-block textarea {
+  width: 100%;
+  background: #017895;
+  border: 1px solid #017895;
+  border-radius: 20px;
+  outline: none;
+  color: #fff;
+  height: 54px;
+  padding: 0 16px;
+  margin-bottom: 5px;
+  padding: 10;
+  height: fit-content;
+}
+
+.qrcode-container {
+  justify-items: center;
+  align-items: center;
+  text-align: center;
+  padding: 20px 0px 10px 0px;
+}
+
+.whatsapp-button-block {
+  justify-items: center;
+  align-items: center;
+  text-align: center;
+  padding: 50px 30% 50px 30%;
+}
+
+.shootWhatsappGun {
+  background-color: #28a745;
+  width: 100%;
+  padding: 5px;
+}
+
+@media only screen and (max-width: 1110px){
+  .control-map {
+      width: 90%!important;
+  }
+}

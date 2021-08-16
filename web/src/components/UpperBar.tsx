@@ -1,5 +1,5 @@
 import React from 'react';
-import { FaKey } from 'react-icons/fa';
+import { FaKey, FaWhatsapp } from 'react-icons/fa';
 import { FiArrowLeft, FiArrowRight, FiHome, FiUser } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
 
@@ -38,6 +38,12 @@ export default function ({role} : Moderator){
       </div>
 
 				{renderModeratorsButton()}
+				<div className="upper-button-block">
+          <label>WhatsApp</label>
+          <Link to="/WhatsApp" className="upper-enter-path">
+            <FaWhatsapp size="26" color="white" />
+          </Link>
+        </div>
 
 				<div className="upper-button-block">
 					<label>Empresas</label>

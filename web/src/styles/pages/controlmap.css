@@ -80,6 +80,6 @@
 
  @media only screen and (max-width: 1110px){
    .control-map {
-       width: 95%
+       width: max-content;
    }
 }

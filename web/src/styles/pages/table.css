@@ -163,3 +163,19 @@ button:hover {
     align-items: center;
     margin-right: 10px;
 }
+
+@media only screen and (max-width: 1110px){
+    #moderators th{
+        font-size: 12px!important;
+    }
+    #companies th {
+        font-size: 9px;
+    }
+    #companies td {
+        color: black;
+        padding: 2px;
+        max-width: 90px;
+        overflow: hidden;
+        font-size: 9px;
+    }
+}

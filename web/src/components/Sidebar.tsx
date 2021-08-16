@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { FaKey } from 'react-icons/fa';
+import { FaKey, FaWhatsapp } from 'react-icons/fa';
 import { FiArrowLeft, FiArrowRight, FiHome, FiUser } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
 
@@ -56,6 +56,13 @@ export default function Sidebar({role} : Moderator) {
             <label>Senhas</label>
             <Link to="/forgot" className="enter-path">
               <FaKey size="26" color="white" />
+            </Link>
+          </div>
+
+          <div className="button-block">
+            <label>WhatsApp</label>
+            <Link to="/WhatsApp" className="enter-path">
+              <FaWhatsapp size="26" color="white" />
             </Link>
           </div>
 
