@@ -366,9 +366,30 @@ function Companies(){
   function renderPromos(){
     if(isCanceled){
       return;
-    }else{
+    }else if(active === 0){
+      return;
+    } else {
       return (
         <th>Nº de Promoções</th>
+      );
+    }
+  }
+
+  function renderPromoInput({company}:{company:Company}) {
+    if(isCanceled){
+      return;
+    } else if(active === 0) {
+      return;
+    } else {
+      return (
+        <td>
+          <PromoInput 
+            maxProm={company.max_prom} 
+            companyId={company.id} 
+            companyName={company.name} 
+            userToken={userToken}
+          />
+        </td>
       );
     }
   }
@@ -438,14 +459,7 @@ function Companies(){
                   <td>{company.keywords}</td>
                   <td>{company.cnpj}</td>
                   <td>{company.phone}</td>
-                  <td>
-                    <PromoInput 
-                      maxProm={company.max_prom} 
-                      companyId={company.id} 
-                      companyName={company.name} 
-                      userToken={userToken}
-                    />
-                  </td>
+                  { renderPromoInput({company}) }
                   <td className="email-column">{company.email}</td>
                   <td>{company.address}</td>
                   <td>{company.district}</td>

@@ -25,12 +25,12 @@
     padding-right: 2px;
     border-radius: 5px;
 
-    font-size: 16px;
+    font-size: 14px;
     color: white;
 }
 
 #moderators td {
-    font-size: 16px;
+    font-size: 14px;
     color: black;
 }
 
@@ -52,22 +52,22 @@
     padding-left: 2px;
     padding-right: 2px;
 
-    font-size: 11px;
+    font-size: 10px;
     color: white;
 }
 
 #companies td {
     background:  #d3d3d3;
     color: black;
-    padding: 4px;
+    padding: 2.5px;
 
-    font-size: 11px;
-    max-width: 170PX;
+    font-size: 10px;
+    max-width: 140PX;
     overflow: hidden;
 }
 
 #noWrap {
-    width: 60px;
+    width: 57px;
 }
 
 
@@ -88,7 +88,7 @@
 }
 
 #customers th {
-  padding: 12px 20px 12px 20px;
+  padding: 10px 20px 10px 20px;
   text-align: left;
   border-top: none;
   color: white;
@@ -141,7 +141,6 @@ button:hover {
 }
 .max-promo-row{
     flex-direction: column;
-    width: 50%;
 }
 
 .validate-input{ 
@@ -166,14 +165,14 @@ button:hover {
 
 @media only screen and (max-width: 1110px){
     #moderators th{
-        font-size: 12px!important;
+        font-size: 11px!important;
     }
     #companies th {
         font-size: 9px;
     }
     #companies td {
         color: black;
-        padding: 2px;
+        padding: 1.5px;
         max-width: 90px;
         overflow: hidden;
         font-size: 9px;
