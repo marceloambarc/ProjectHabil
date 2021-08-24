@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { FiAlertOctagon, FiCheck, FiCheckCircle, 
-FiAlertCircle, FiXCircle, FiBook, FiSearch } from 'react-icons/fi';
+FiAlertCircle, FiXCircle, FiBook, FiSearch, FiSend } from 'react-icons/fi';
 import Modal from 'react-modal';
 import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
@@ -31,6 +31,7 @@ function Companies(){
   const [isLoading, setIsLoading] = useState(true);
   const [role, setRole] = useState('');
   const [searchCnpj, setSearchCnpj] = useState('');
+  const [maxProm, setMaxProm] = useState(0);
 
   const [modalIsOpen, setIsOpen] = useState(false);
   const [viewImage, setViewImage] = useState('');
@@ -248,6 +249,7 @@ function Companies(){
     api.put(`companies/${company.id}`,{
       // 1 === Empresa ATIVA
       is_active: 1,
+      max_prom: maxProm
     },{
       headers: {'Authorization': 'Bearer '+userToken}
     }).then(() => {
@@ -258,7 +260,7 @@ function Companies(){
           headers: { 
             'Content-Type': 'application/json',
             'mode': 'node-cors'
-           }, 
+           },
           body: JSON.stringify({
             host: host,
             port: port,
@@ -342,13 +344,28 @@ function Companies(){
     setSearchCnpj(event);
   }
 
-  function renderSearch(){
+  function handleSetMaxProm(maxProm:any, event:string){
+    setMaxProm(parseInt(event));
+  }
+
+  function renderHeader(){
     return (
       <div className="search-button-row">
-        <input className="search-input" type="text" placeholder="Procure CNPJ" value={searchCnpj} onChange={event => handleSetSearchCnpj(event?.target.value)} />
-        <button className="aprove" onClick={() => {}}>
-          <FiSearch size="13" color="#FFF" />
-        </button>
+        <div className="search-button-col">
+        <h1 style={{fontSize:'10px'}}> </h1>
+          <input className="search-input" type="text" placeholder="Procure CNPJ" value={searchCnpj} onChange={event => handleSetSearchCnpj(event?.target.value)} />
+          <button className="aprove" onClick={() => {}}>
+            <FiSearch size="13" color="#FFF" />
+          </button>
+        </div>
+        <div className="search-button-col">
+          <div className="max-promo-row">
+            <div className="max-promo-col">
+            <h1 style={{fontSize:'10px', marginBottom: '-5px', color: '#017895'}}>Máx. Promoções para Aprovação.</h1>
+              <input className="max-promo-input" placeholder="Máx. Promoções para Aprovação" type="number" value={maxProm} onChange={event => handleSetMaxProm(maxProm, event.target.value)} />
+            </div>
+          </div>
+        </div>
       </div>
     )
   }
@@ -537,7 +554,7 @@ function Companies(){
               <button className="modalButton" onClick={closeModal}>FECHAR</button>
             </div>
           </Modal>
-          {renderSearch()}
+          {renderHeader()}
           {renderTitle()}
           {renderTable()}
 

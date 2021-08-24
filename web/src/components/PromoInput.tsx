@@ -32,7 +32,6 @@ export default function PromoInput({maxProm, companyId, companyName,userToken}:a
             <FiSend size="13" color="#FFF" />
           </button>
       </div>
-
     </div>
   );
 }

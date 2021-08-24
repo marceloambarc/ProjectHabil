@@ -133,7 +133,9 @@ button:hover {
 }
 
 .max-promo-input{
-    width: 40px;
+    width: 70px;
+    border-radius: 4px;
+    padding-left: 10px;
 }
 
 .max-promo-row{
@@ -149,7 +151,7 @@ button:hover {
     margin-right: 5px;
 }
 
-.search-button-row{
+.search-button-row {
     align-items: center;
     justify-content: center;
     margin: auto;
@@ -157,10 +159,16 @@ button:hover {
     display: flex;
 }
 
+.search-button-col {
+    margin-left: 70px
+}
+
 .search-input {
     justify-content: center;
     align-items: center;
     margin-right: 10px;
+    border-radius: 5px;
+    padding-left: 10px;
 }
 
 @media only screen and (max-width: 1110px){
