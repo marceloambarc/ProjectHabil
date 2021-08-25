@@ -11,3 +11,7 @@ body {
 body, input, textarea, button, textarea {
   font: 600 18px Nunito, sans-serif;
 }
+
+p {
+  font:  Nunito, sans-serif;
+}
