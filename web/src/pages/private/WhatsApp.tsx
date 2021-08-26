@@ -7,7 +7,7 @@ import Sidebar from '../../components/Sidebar';
 import UpperBar from '../../components/UpperBar';
 import '../../styles/pages/whatsapp.css';
 
-import zaptest from '../../services/zaptest';
+import zaptest from '../../services/whatsapp';
 import api from '../../services/api';
 import { COLLECTIONS_CMA } from '../../services/storage';
 
