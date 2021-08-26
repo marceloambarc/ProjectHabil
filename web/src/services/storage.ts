@@ -1,1 +1,0 @@
-export const COLLECTIONS_CMA = 'wwapp-cmacdlv1storage-vnewdt-10k10l19j2999';
