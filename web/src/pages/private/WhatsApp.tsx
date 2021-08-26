@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { MdSend } from 'react-icons/md';
 import { BsArrowReturnLeft } from 'react-icons/bs';
+import { useHistory } from 'react-router-dom'; 
 
 import Sidebar from '../../components/Sidebar';
 import UpperBar from '../../components/UpperBar';
@@ -26,13 +27,15 @@ function WhatsApp(){
   const [qrCodeScanned, setQrCodeScanned] = useState(false);
   const [qt, setQt] = useState(0);
 
+  const history = useHistory();
+
   async function getRoles(){
     api.get('admin/tk',{
       headers: {'Authorization': 'Bearer '+userToken}
     }).then(res => {
       setRole(res.data.role);
-    }).catch(err => {
-      setRole('guest');
+    }).catch(() => {
+      history.push("/app");
     });
   }
 
@@ -78,16 +81,22 @@ function WhatsApp(){
   }
 
   async function getQRCode() {
-    const storageDateProto = localStorage.getItem('wwapp-cmacdlv1storage-vnewdt-10k10l19j2999');
-    var OneDayProto = new Date().getTime() + (1 * 24 * 60 * 60 * 1000);
-    const OneDay = new Date(OneDayProto).getDate();
+    if(message === ''){
+      alert('A mensagem não pode ser vazia.');
+      return;
+    }
+    const storageDate = localStorage.getItem('wwapp-cmacdlv1storage-vnewdt-10k10l19j2999');
 
-    if(storageDateProto != null) {
-      const storageDate = new Date(storageDateProto).getDate();
-      if(OneDay >= storageDate) {
-        alert(`Você deve aguardar até o dia ${OneDay} para iniciar um novo envio.`);
-      } else {
+    if(storageDate != null) {
+      var OneDayProto = new Date(storageDate).getTime() + (1 * 24 * 60 * 60 * 1000);
+      const OneDay = new Date(OneDayProto).getDate();
+
+      const today = new Date().getDate();
+      if(today >= OneDay) {
+        console.log(OneDay, today);
         startWhatsapp();
+      } else {
+        alert(`Você deve aguardar até o dia ${OneDay} para iniciar um novo envio.`);
       }
     } else {
       startWhatsapp();
@@ -119,7 +128,6 @@ function WhatsApp(){
               <h2 style={{fontSize:'20px', color:'#017895'}}>total de números: {qt}</h2>
               <br></br>
               <h2 style={{fontSize:'20px', color:'#8fa7b3'}}>Você pode utilizar o Whatsapp normalmente.</h2>
-              <h2 style={{fontSize:'20px', color:'#8fa7b3'}}>Não utilize esta função novamente.</h2>
               <h2 style={{marginBottom: '60px', fontSize:'20px', color:'#8fa7b3'}}>O disparador interrompe automaticamente o processo.</h2>
               </div>
             </div>
@@ -189,11 +197,12 @@ function WhatsApp(){
           <div className="whatsapp-body">
             <div className="qrcode-container">
               <h1 style={{fontSize:'22px'}}>Envio de Whatsapp.</h1>
-              <h2 style={{fontSize:'20px', color:'#8fa7b3'}}>Escreva sua mensagem.</h2>
               <br></br>
-              <h2 style={{fontSize:'20px', color:'#8fa7b3'}}>Clique em Iniciar para Gerar QRCode </h2>
-              <h2 style={{fontSize:'20px', color:'#8fa7b3'}}>Escaneie o Código com Whatsapp {">"} Aparelhos conectados. </h2>
-              <h2 style={{fontSize:'20px', color:'#8fa7b3'}}>Aguarde até a Conclusão de envio.</h2>
+              <h2 style={{fontSize:'18px', color:'#8fa7b3'}}>Clique em Iniciar para Gerar QRCode </h2>
+              <h2 style={{fontSize:'18px', color:'#8fa7b3'}}>Escaneie o Código com Whatsapp {">"} Aparelhos conectados. </h2>
+              <h2 style={{fontSize:'18px', color:'#8fa7b3'}}>Aguarde até a Conclusão de envio.</h2>
+              <br></br>
+              <h2 style={{fontSize:'20px', color:'#017895'}}>Para segurança da Aplicação, está restrito apenas 1(uma) utilização desta função por dia.</h2>
             </div>
             <div className="input-block">
               <label htmlFor="about">Mensagem:</label>

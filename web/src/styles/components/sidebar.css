@@ -47,6 +47,11 @@ aside.app-sidebar footer label {
     justify-content: center;
 }
 
+.button-placeholder {
+    height: 108px;
+    width: 115px;
+}
+
 /* Index Button */
 
 aside.app-sidebar footer a,

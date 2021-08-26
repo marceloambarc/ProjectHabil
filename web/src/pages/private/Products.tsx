@@ -4,6 +4,7 @@ FiCheckCircle, FiAlertCircle, FiBook } from 'react-icons/fi';
 import Modal from 'react-modal';
 import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
+import { useHistory } from 'react-router-dom';
 
 import Sidebar from '../../components/Sidebar';
 import UpperBar from '../../components/UpperBar';
@@ -61,6 +62,7 @@ function Products(){
   const [modalIsOpen, setIsOpen] = useState(false);
   const [viewImage, setViewImage] = useState('');
   const [viewName, setViewName] = useState('');
+  const history = useHistory();
 
   async function getRoles(){
     api.get('admin/tk',{
@@ -68,7 +70,7 @@ function Products(){
     }).then(res => {
       setRole(res.data.role);
     }).catch(err => {
-      setRole('guest');
+      history.push('/login');
     });
   }
 

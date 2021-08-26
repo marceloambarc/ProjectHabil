@@ -22,6 +22,12 @@ export default function Sidebar({role} : Moderator) {
           </Link>
         </div>
       );
+    } else {
+      return (
+        <div className="button-placeholder">
+          
+        </div>
+      );
     }
   }
 

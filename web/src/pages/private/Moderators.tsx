@@ -4,6 +4,7 @@ import 'react-confirm-alert/src/react-confirm-alert.css';
 import { GiConfirmed } from 'react-icons/gi';
 import { FiAlertOctagon } from 'react-icons/fi';
 import { GiArmorUpgrade, GiArmorDowngrade } from 'react-icons/gi';
+import { useHistory } from 'react-router-dom'; 
 
 import UpperBar from '../../components/UpperBar';
 import Sidebar from '../../components/Sidebar';
@@ -23,203 +24,204 @@ interface Admin {
 
 //Esconder do SIDEBAR Para Moderadores
 function Moderators(){
-    //Realocar Token
-    const getUserToken = localStorage.getItem('userToken');
+  //Realocar Token
+  const getUserToken = localStorage.getItem('userToken');
 
-    const [admins, setAdmins] = useState<Admin[]>([]);
-    const [user, setUser] = useState('');
-    const [password, setPassword] = useState('');
-    const [confirmPassword, setConfirmPassword] = useState('');
-    const [userToken] = useState(`${getUserToken}`)
-    const [isLoading, setIsLoading] = useState(true);
-    const [role, setRole] = useState('');
+  const [admins, setAdmins] = useState<Admin[]>([]);
+  const [user, setUser] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [userToken] = useState(`${getUserToken}`)
+  const [isLoading, setIsLoading] = useState(true);
+  const [role, setRole] = useState('');
+  const history = useHistory();
 
-    async function loadAdmins(){
-      api.get('admin',{
-        headers: {'Authorization': 'Bearer '+userToken}
-      }).then(adm => {
-        setAdmins(adm.data);
-      }).catch(err => {
-        alert('Ops! Tivemos um erro.');
-      });
-    }
+  async function loadAdmins(){
+    api.get('admin',{
+      headers: {'Authorization': 'Bearer '+userToken}
+    }).then(adm => {
+      setAdmins(adm.data);
+    }).catch(err => {
+      alert('Ops! Tivemos um erro.');
+    });
+  }
 
-    async function getRoles(){
-      api.get('admin/tk',{
-        headers: {'Authorization': 'Bearer '+userToken}
-      }).then(res => {
-        setRole(res.data.role);
-      }).catch(err => {
-        setRole('guest');
-      });
-    }
+  async function getRoles(){
+    api.get('admin/tk',{
+      headers: {'Authorization': 'Bearer '+userToken}
+    }).then(res => {
+      setRole(res.data.role);
+    }).catch(err => {
+      history.push('/login');
+    });
+  }
 
-    useEffect(() => {
-      if(!isLoading) return;
-      //Carregamento dos ADMINS
-      loadAdmins();
-      getRoles();
-      //Finalizar Carregamento
-      setIsLoading(false);
-    }, []);
+  useEffect(() => {
+    if(!isLoading) return;
+    //Carregamento dos ADMINS
+    loadAdmins();
+    getRoles();
+    //Finalizar Carregamento
+    setIsLoading(false);
+  }, []);
 
-    async function handleCreateNewModerator(){
+  async function handleCreateNewModerator(){
         
-      if(password == confirmPassword){
-        api.post('admin',{
-          user,
-          password,
-          role: 'adm'
-        },{
-          headers: {'Authorization': 'Bearer '+userToken}
-        }).then(res => {
-          alert("Usuário Cadastrado!");
-          loadAdmins();
-        }).catch(err => {
-          alert('Tivemos um erro, entre em contato com o Suporte');
-        })
-      }else{
-        alert("Senha não confere.");
-      }
-    }
-
-    async function handleConfirmCanceled({admin}:{admin:Admin}){
-      api.delete(`admin/${admin.id}`,{
-        headers: {'Authorization': 'Bearer '+userToken}
-      }).then(res => {
-        alert("Usuário Deletado");
-        loadAdmins();
-      }).catch(err => {
-        alert("Tivemos um Erro.");
-      });
-    }
-
-    async function handleCanceled({admin}:{admin:Admin}){
-      confirmAlert({
-        title: `Deletar o usuário ${admin.user}?`,
-        message: `Você tem certeza que deseja deletar o usuário "${admin.user}"?`,
-        buttons: [
-          {
-            label: 'Sim',
-            onClick: ()  => handleConfirmCanceled({admin})
-          },
-          {
-            label: 'Não',
-            onClick: () => {}
-          }
-        ]
-      });
-    }
-
-    async function handleConfirmPromote({admin}:{admin:Admin}){
-      api.put(`admin/${admin.id}`,{
-        role: "adm"
+    if(password == confirmPassword){
+      api.post('admin',{
+        user,
+        password,
+        role: 'adm'
       },{
         headers: {'Authorization': 'Bearer '+userToken}
       }).then(res => {
-        alert("Usuário Promovido");
+        alert("Usuário Cadastrado!");
         loadAdmins();
       }).catch(err => {
-        alert("Tivemos um Erro.")
-      });
+        alert('Tivemos um erro, entre em contato com o Suporte');
+      })
+    }else{
+      alert("Senha não confere.");
     }
+  }
 
-    async function handlePromote({admin}:{admin:Admin}){
-      confirmAlert({
-        title: `Promover o usuário ${admin.user}?`,
-        message: `Você tem certeza que deseja promover o usuário "${admin.user}"?`,
-        buttons: [
-          {
-            label: 'Sim',
-            onClick: ()  => handleConfirmPromote({admin})
-          },
-          {
-            label: 'Não',
-            onClick: () => {}
-          }
-        ]
-      });
-    }
+  async function handleConfirmCanceled({admin}:{admin:Admin}){
+    api.delete(`admin/${admin.id}`,{
+      headers: {'Authorization': 'Bearer '+userToken}
+    }).then(res => {
+      alert("Usuário Deletado");
+      loadAdmins();
+    }).catch(err => {
+      alert("Tivemos um Erro.");
+    });
+  }
 
-    async function handleConfirmRelegate({admin}:{admin:Admin}){
-      api.put(`admin/${admin.id}`,{
-        role: "guest"
-      },{
-        headers: {'Authorization': 'Bearer '+userToken}
-      }).then(res => {
-        alert("Usuário Depreciado");
-        loadAdmins();
-      }).catch(err => {
-        alert("Tivemos um Erro.")
-      });
-    }
+  async function handleCanceled({admin}:{admin:Admin}){
+    confirmAlert({
+      title: `Deletar o usuário ${admin.user}?`,
+      message: `Você tem certeza que deseja deletar o usuário "${admin.user}"?`,
+      buttons: [
+        {
+          label: 'Sim',
+          onClick: ()  => handleConfirmCanceled({admin})
+        },
+        {
+          label: 'Não',
+          onClick: () => {}
+        }
+      ]
+    });
+  }
 
-    async function handleRelegate({admin}:{admin:Admin}){
-      confirmAlert({
-        title: `Relegar o usuário ${admin.user}?`,
-        message: `Você tem certeza que deseja relegar o usuário "${admin.user}"?`,
-        buttons: [
-          {
-            label: 'Sim',
-            onClick: ()  => handleConfirmRelegate({admin})
-          },
-          {
-            label: 'Não',
-            onClick: () => {}
-          }
-        ]
-      });
-    }
+  async function handleConfirmPromote({admin}:{admin:Admin}){
+    api.put(`admin/${admin.id}`,{
+      role: "adm"
+    },{
+      headers: {'Authorization': 'Bearer '+userToken}
+    }).then(res => {
+      alert("Usuário Promovido");
+      loadAdmins();
+    }).catch(err => {
+      alert("Tivemos um Erro.")
+    });
+  }
 
-    //---RENDERIZAR BOTOES---//
-    function renderButtons({admin}:{admin:Admin}){
-      if(admin.role == 'guest'){
-        return(
-          <div className="button-row">
-            <div className="button-col">
-              <button className="moderator-cancel" onClick={() => handleCanceled({admin})}>
-                <FiAlertOctagon size="13" color="#FFF" />
-              </button>
-            </div>
+  async function handlePromote({admin}:{admin:Admin}){
+    confirmAlert({
+      title: `Promover o usuário ${admin.user}?`,
+      message: `Você tem certeza que deseja promover o usuário "${admin.user}"?`,
+      buttons: [
+        {
+          label: 'Sim',
+          onClick: ()  => handleConfirmPromote({admin})
+        },
+        {
+          label: 'Não',
+          onClick: () => {}
+        }
+      ]
+    });
+  }
+
+  async function handleConfirmRelegate({admin}:{admin:Admin}){
+    api.put(`admin/${admin.id}`,{
+      role: "guest"
+    },{
+      headers: {'Authorization': 'Bearer '+userToken}
+    }).then(res => {
+      alert("Usuário Depreciado");
+      loadAdmins();
+    }).catch(err => {
+      alert("Tivemos um Erro.")
+    });
+  }
+
+  async function handleRelegate({admin}:{admin:Admin}){
+    confirmAlert({
+      title: `Relegar o usuário ${admin.user}?`,
+      message: `Você tem certeza que deseja relegar o usuário "${admin.user}"?`,
+      buttons: [
+        {
+          label: 'Sim',
+          onClick: ()  => handleConfirmRelegate({admin})
+        },
+        {
+          label: 'Não',
+          onClick: () => {}
+        }
+      ]
+    });
+  }
+
+  //---RENDERIZAR BOTOES---//
+  function renderButtons({admin}:{admin:Admin}){
+    if(admin.role == 'guest'){
+      return(
+        <div className="button-row">
+          <div className="button-col">
+            <button className="moderator-cancel" onClick={() => handleCanceled({admin})}>
+              <FiAlertOctagon size="13" color="#FFF" />
+            </button>
+          </div>
             
-            <div className="button-col">
-              <button className="moderator-promote" onClick={() => handlePromote({admin})}>
-                <GiArmorUpgrade size="13" color="#FFF" />
-              </button>
-            </div>
+          <div className="button-col">
+            <button className="moderator-promote" onClick={() => handlePromote({admin})}>
+              <GiArmorUpgrade size="13" color="#FFF" />
+            </button>
           </div>
-        );
-      }else{
-        return(
-          <div className="button-row">
-            <div className="button-col">
-              <button className="moderator-cancel" onClick={() => handleCanceled({admin})}>
-                <FiAlertOctagon size="13" color="#FFF" />
-              </button>
-            </div>
+        </div>
+      );
+    }else{
+      return(
+        <div className="button-row">
+          <div className="button-col">
+            <button className="moderator-cancel" onClick={() => handleCanceled({admin})}>
+              <FiAlertOctagon size="13" color="#FFF" />
+            </button>
+          </div>
             
-            <div className="button-col">
-              <button className="moderator-relegate" onClick={() => handleRelegate({admin})}>
-                <GiArmorDowngrade size="13" color="#FFF" />
-              </button>
-            </div>
+          <div className="button-col">
+            <button className="moderator-relegate" onClick={() => handleRelegate({admin})}>
+              <GiArmorDowngrade size="13" color="#FFF" />
+            </button>
           </div>
-        );
-      }
+        </div>
+      );
     }
+  }
 
-    // TABELA EM COMPONENT
-    function renderTable(){
-      if(isLoading){
-        return (
-          <div>
-            <h1>CARREGANDO...</h1>
-          </div>
-        );
-      }else{
-        return (
-          <table id="moderators">
-            <tbody>
+  // TABELA EM COMPONENT
+  function renderTable(){
+    if(isLoading){
+      return (
+        <div>
+          <h1>CARREGANDO...</h1>
+        </div>
+      );
+    }else{
+      return (
+        <table id="moderators">
+          <tbody>
             <tr>
               <th>Admin</th>
               <th>Função</th>
@@ -228,21 +230,21 @@ function Moderators(){
 
             {admins.map(admin => {
               
-                return(
-                    <tr key={admin.id}>
-                    <td>{admin.user}</td>
-                    <td>{admin.role}</td>
-                    <td>
-                      {renderButtons({admin})}
-                    </td>
-                  </tr>
-                );
+              return(
+                <tr key={admin.id}>
+                  <td>{admin.user}</td>
+                  <td>{admin.role}</td>
+                  <td>
+                    {renderButtons({admin})}
+                  </td>
+                </tr>
+              );
             })}
-            </tbody>
-          </table>
-        );
-      }
+          </tbody>
+        </table>
+      );
     }
+  }
 
   return(
     <div id="page-control-map">
@@ -254,8 +256,8 @@ function Moderators(){
           <div className="text">
             <h1>Moderadores</h1>
           </div>
-            <h2 className="imagesText"><img src={logoImg} className="landingImg" alt="CompreMaisAki" /></h2>
-            <h1 style={{fontSize:'20px', color:'#8fa7b3'}}>Adicionar Moderador</h1>
+          <h2 className="imagesText"><img src={logoImg} className="landingImg" alt="CompreMaisAki" /></h2>
+          <h1 style={{fontSize:'20px', color:'#8fa7b3'}}>Adicionar Moderador</h1>
           <div className="advRow">
             <div className="advCol">
               <div className="input-block">
@@ -285,18 +287,18 @@ function Moderators(){
           </div>
 
           <div className="button-block">
-              <button type="button" onClick={() => handleCreateNewModerator()} className="createModeratorButton">
-                <GiConfirmed size="26" color="#fff" />
-              </button>
-            </div>
+            <button type="button" onClick={() => handleCreateNewModerator()} className="createModeratorButton">
+              <GiConfirmed size="26" color="#fff" />
+            </button>
+          </div>
 
         </div>
 
         <div className="control-map">
-        <div className="table-container">
-          <h1>Moderadores Cadastrados</h1>
-          {renderTable()}
-        </div>
+          <div className="table-container">
+            <h1>Moderadores Cadastrados</h1>
+            {renderTable()}
+          </div>
         </div>
       </main>
     </div>
