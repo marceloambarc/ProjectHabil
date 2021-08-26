@@ -124,10 +124,10 @@ function WhatsApp(){
             <div className="whatsapp-body">
               <div className="qrcode-container">
               <h1 style={{fontSize:'22px'}}>Ok!</h1>
-              <h2 style={{fontSize:'20px', color:'#8fa7b3'}}>As mensagens estão sendo encaminhadas.</h2>
-              <h2 style={{fontSize:'20px', color:'#017895'}}>total de números: {qt}</h2>
+              <h2 style={{fontSize:'18px', color:'#8fa7b3'}}>As mensagens estão sendo encaminhadas.</h2>
+              <h2 style={{fontSize:'18px', color:'#017895'}}>total de números: {qt}</h2>
               <br></br>
-              <h2 style={{fontSize:'20px', color:'#8fa7b3'}}>Você pode utilizar o Whatsapp normalmente.</h2>
+              <h2 style={{fontSize:'18px', color:'#8fa7b3'}}>Você pode utilizar o Whatsapp normalmente.</h2>
               <h2 style={{marginBottom: '60px', fontSize:'20px', color:'#8fa7b3'}}>O disparador interrompe automaticamente o processo.</h2>
               </div>
             </div>
