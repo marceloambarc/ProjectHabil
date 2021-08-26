@@ -1,0 +1,24 @@
+#confirm-container {
+    width: 100vw;
+    max-width: 100%;
+    background: linear-gradient(329.54deg, #ffff 0%, #ffff 100%);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    padding-top: 10%;
+    padding-bottom: 10%;
+}
+
+#page-landing .content-wrapper {
+    position: relative;
+    width: 100%;
+    max-width: 100%;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    overflow-x: hidden;
+}

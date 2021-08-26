@@ -1,0 +1,6 @@
+{
+  "host": "smtp.novasantarita.rs.gov.br",
+  "port": "465",
+  "fromEmail": "nao-responda-app@novasantarita.rs.gov.br",
+  "pass": "pm@n5r4p"
+}
