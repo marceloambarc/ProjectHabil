@@ -4,6 +4,7 @@ FiAlertCircle, FiXCircle, FiBook, FiSearch, FiSend } from 'react-icons/fi';
 import Modal from 'react-modal';
 import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
+import { useHistory } from 'react-router-dom';
 
 import UpperBar from '../../components/UpperBar';
 import Sidebar from '../../components/Sidebar'
@@ -37,6 +38,8 @@ function Companies(){
   const [viewImage, setViewImage] = useState('');
   const [viewName, setViewName] = useState('');
 
+  const history = useHistory();
+
   //----CARREGAMENTO DE DADOS E LOADING INICIAL DE TELA ----///
   async function getRoles(){
     api.get('admin/tk',{
@@ -44,7 +47,7 @@ function Companies(){
     }).then(res => {
       setRole(res.data.role);
     }).catch(err => {
-      setRole('guest');
+      history.push('/login');
     });
   }
 

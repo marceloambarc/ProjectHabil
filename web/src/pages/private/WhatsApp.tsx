@@ -89,14 +89,14 @@ function WhatsApp(){
 
     if(storageDate != null) {
       var OneDayProto = new Date(storageDate).getTime() + (1 * 24 * 60 * 60 * 1000);
-      const OneDay = new Date(OneDayProto).getDate();
+      const OneDay = new Date(OneDayProto);
 
-      const today = new Date().getDate();
+      const today = new Date();
       if(today >= OneDay) {
-        console.log(OneDay, today);
         startWhatsapp();
       } else {
-        alert(`Você deve aguardar até o dia ${OneDay} para iniciar um novo envio.`);
+        alert(`Você já utilizou a função Whatsapp Hoje, aguarde até amanhã.`);
+        console.log(OneDay, today);
       }
     } else {
       startWhatsapp();

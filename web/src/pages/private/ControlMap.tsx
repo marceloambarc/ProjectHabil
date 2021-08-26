@@ -1,5 +1,6 @@
 import React, { useEffect, useState, createRef } from 'react';
 import Resizer from "react-image-file-resizer";
+import { useHistory } from 'react-router-dom';
 
 import UpperBar from '../../components/UpperBar';
 import Sidebar from '../../components/Sidebar';
@@ -30,6 +31,8 @@ function ControlMap(){
   const fileInput1 = createRef<any>();
   const fileInput2 = createRef<any>();
 
+  const history = useHistory();
+
   async function getImages(){
     await api.get('backgrounds/9').then(response => {
       setImg1(response.data.background_image1);
@@ -43,7 +46,7 @@ function ControlMap(){
     }).then(res => {
       setRole(res.data.role);
     }).catch(res => {
-      setRole('guest');
+      history.push('/login');
     });
   }
 

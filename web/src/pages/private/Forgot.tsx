@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { FaKey } from 'react-icons/fa';
 import randomWords from 'random-words';
 import md5 from 'md5';
+import { useHistory } from 'react-router-dom';
 
 import UpperBar from '../../components/UpperBar';
 import Sidebar from '../../components/Sidebar'
@@ -39,6 +40,7 @@ function Forgot(){
   const [active] = useState('1');
   const [isLoading, setIsLoading] = useState(true);
   const [role, setRole] = useState('');
+  const history = useHistory();
 
   //----CARREGAMENTO DE DADOS E LOADING INICIAL DE TELA ----///
 
@@ -59,7 +61,7 @@ function Forgot(){
     }).then(res => {
       setRole(res.data.role);
     }).catch(err => {
-      setRole('guest');
+      history.push('/login');
     });
   }
 
