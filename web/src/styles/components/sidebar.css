@@ -1,0 +1,92 @@
+aside.app-sidebar  {
+    position: fixed;
+    height: 100%;
+    padding-top: 34px;
+    padding-left: 7px;
+    padding-right: 2px;
+    padding-bottom: 34px;
+
+    background: linear-gradient(329.54deg, #ffff 0%, #ffff 100%);
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+}
+  
+aside.app-sidebar img {
+    width: 48px;
+}
+
+.button-wrapper {
+    position: relative;
+    width: 100%;
+
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+.button-block .enter-path {
+    margin-left: 7px;
+}
+
+.button-block label {
+    font-size: 12px;
+    display: flex;
+    color: #017895;
+}
+
+
+aside.app-sidebar footer label {
+    font-size: 12px;
+    display: flex;
+    color: #017895;
+    margin-bottom: 8px;
+    justify-content: center;
+}
+
+.button-placeholder {
+    height: 108px;
+    width: 115px;
+}
+
+/* Index Button */
+
+aside.app-sidebar footer a,
+aside.app-sidebar .home-button a,
+aside.app-sidebar footer button,
+aside.app-sidebar .home-button button,
+.button-block .enter-path  {
+    width: 48px;
+    height: 48px;
+  
+    border: 0;
+  
+    background: #017895;
+    border-radius: 16px;
+  
+    cursor: pointer;
+  
+    transition: background-color 0.2s;
+  
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.button-block a:hover,
+.button-block .enter-path:hover,
+aside.app-sidebar footer a:hover,
+aside.app-sidebar footer button:hover,
+aside.app-sidebar .home-button a:hover,
+aside.app-sidebar .home-button button:hover {
+    background: #17D6EB;
+}
+
+@media only screen and (max-width: 1110px){
+    aside.app-sidebar {
+        display: none
+    }
+}
