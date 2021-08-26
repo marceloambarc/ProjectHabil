@@ -4,6 +4,8 @@ import Welcome from './pages/Welcome';
 import Client from './pages/Client';
 import Landing from './pages/Landing';
 
+import Maintenance from './pages/Maintenance';
+
 import Companie from './pages/Companie';
 import Activate from './pages/Activate'
 import Privacy from './pages/Privacy';
@@ -19,13 +21,16 @@ function Routes() {
   return (
     <BrowserRouter>
       <Switch>
-        <Route path="/" exact component={Welcome} />
+      {/*  <Route path="/" exact component={Welcome} />
         <Route path="/client" component={Client} />
         <Route path="/companie/:id" component={Companie} />
 
-        <Route path="/login" component={Landing} />
+        <Route path="/login" component={Landing} /> */}
+
+        <Route path="/maintenance" component={Maintenance} />
         
         {/*fazer token para rota*/}
+        {/*
         <Route path="/activate/:id" component={Activate} />
         <Route path="/app" component={ControlMap} />
 
@@ -35,7 +40,7 @@ function Routes() {
         <Route path="/forgot" component={Forgot} />
         <Route path="/WhatsApp" component={WhatsApp} />
         <Route path="/privacy" component={Privacy} />
-        
+        */}
       </Switch>
     </BrowserRouter>
   );

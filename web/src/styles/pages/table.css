@@ -141,12 +141,13 @@ button:hover {
 .max-promo-row{
     flex-direction: row;
 }
-.max-promo-row{
+.max-promo-col{
     flex-direction: column;
+    margin-left: 5px;
 }
 
 .validate-input{ 
-    width: 120px;
+    width: 220px;
     font-size: small;
     margin-right: 5px;
 }
