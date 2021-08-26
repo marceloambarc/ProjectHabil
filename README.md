@@ -19,3 +19,6 @@ Under Construction.
 <p>v1 = 19/02/2021</p>
 <p>v1.0.2 = 06/04/2021</p>
 
+## BETA CONSTRUCTION
+<p>V1 06/07/2021</p>
+
