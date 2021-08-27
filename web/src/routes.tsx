@@ -6,7 +6,6 @@ import Landing from './pages/Landing';
 
 import Maintenance from './pages/Maintenance';
 
-import Companie from './pages/Companie';
 import Activate from './pages/Activate'
 import Privacy from './pages/Privacy';
 
@@ -17,17 +16,22 @@ import Moderators from './pages/private/Moderators';
 import Forgot from './pages/private/Forgot';
 import WhatsApp from './pages/private/WhatsApp';
 
+import Companie from './pages/client/Companie';
+import Promos from './pages/client/Promos';
+
 function Routes() {
   return (
     <BrowserRouter>
       <Switch>
-      <Route path="/" exact component={Welcome} />
+        <Route path="/" exact component={Welcome} />
+        <Route path="/login" component={Landing} />
+        <Route path="/maintenance" component={Maintenance} />
         <Route path="/client" component={Client} />
+
+        <Route path="/promos" component={Promos} />
         <Route path="/companie/:id" component={Companie} />
 
-        <Route path="/login" component={Landing} />
 
-        <Route path="/maintenance" component={Maintenance} />
         
         {/*fazer token para rota*/}
         <Route path="/activate/:id" component={Activate} />

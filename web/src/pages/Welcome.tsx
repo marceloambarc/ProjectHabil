@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { GrUserAdmin } from 'react-icons/gr';
-import { FiArrowRight } from 'react-icons/fi';
+import { FiEdit, FiArrowRight } from 'react-icons/fi';
 import { NavLink } from 'react-router-dom';
 
 import logoImg from '../images/cmatextlogo.png';
@@ -51,14 +51,21 @@ function Welcome() {
         <div className="enter-app-container">
           
           <div className="enter-app-col1">
-            <NavLink to="/client" className="register-app">
-              <p className="enter-text">Cadastrar sua Empresa</p>
-            </NavLink>
-          </div>
-          <div className="enter-app-col2">
-            <NavLink to="/login" className="enter-app">
-              <GrUserAdmin className="pngEnter" color="#fff" />
-            </NavLink>
+            <div className="enter-app-col1">
+              <NavLink to="/promos" className="enter-app">
+                <FiArrowRight className="pngEnter" color="#fff" />
+              </NavLink>
+            </div>
+            <div className="enter-app-col1">
+              <NavLink to="/client" className="enter-app">
+                <FiEdit className="pngEnter" color="#fff" />
+              </NavLink>
+            </div>
+            <div className="enter-app-col2">
+              <NavLink to="/login" className="enter-app">
+                <GrUserAdmin className="pngEnter" color="#fff" />
+              </NavLink>
+            </div>
           </div>
         </div>
       </div>

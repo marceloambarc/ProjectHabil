@@ -10,7 +10,7 @@ interface Moderator {
   role: any;
 }
 
-export default function ({role} : Moderator){
+export default function UpperBar({role} : Moderator){
 
   function renderModeratorsButton(){
 		if(role === 'adm'){

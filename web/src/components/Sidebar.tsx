@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { FaKey, FaWhatsapp } from 'react-icons/fa';
 import { FiArrowLeft, FiArrowRight, FiHome, FiUser } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
