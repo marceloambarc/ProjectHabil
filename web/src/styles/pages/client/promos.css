@@ -115,3 +115,14 @@
   display: table;
   clear: both;
 }
+
+@media (max-width: 800px) {
+  #promos-control-map {
+    display: flex;
+  }
+
+  .promos-col {
+    flex: 100%;
+    width: 1em;
+  }
+}
