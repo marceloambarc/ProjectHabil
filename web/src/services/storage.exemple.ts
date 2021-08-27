@@ -1,0 +1,1 @@
+export const COLLECTIONS_CMA = 'you-collection-localstorage';

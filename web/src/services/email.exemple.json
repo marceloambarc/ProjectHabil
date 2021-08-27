@@ -1,5 +1,5 @@
 {
-  "host": "smtp.exeple.com.br",
+  "host": "smtp.exemple.com.br",
   "port": "465",
   "fromEmail": "exemple@email.com.br",
   "pass": "password"

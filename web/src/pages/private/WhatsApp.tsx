@@ -7,7 +7,7 @@ import Sidebar from '../../components/Sidebar';
 import UpperBar from '../../components/UpperBar';
 import '../../styles/pages/whatsapp.css';
 
-import zaptest from '../../services/whatsapp';
+import whatsapp from '../../services/whatsapp';
 import api from '../../services/api';
 import { COLLECTIONS_CMA } from '../../services/storage';
 
@@ -58,12 +58,12 @@ function WhatsApp(){
   async function startWhatsapp() {
     localStorage.removeItem(`${COLLECTIONS_CMA}`);
     setLoadingQrCode(true);
-    await zaptest.get(`/whatsgun`).then(async res => {
+    await whatsapp.get(`/whatsgun`).then(async res => {
       setQrCodeImage(res.data.wbmResponse);
       startCounter();
       setLoadingQrCode(false);
       setIsQrCodeLoaded(true);
-      await zaptest.post('/whatsgun',{
+      await whatsapp.post('/whatsgun',{
         toSend: message
       }).then( async res => {
         const date = new Date();
