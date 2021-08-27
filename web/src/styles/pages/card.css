@@ -1,3 +1,7 @@
+::-webkit-scrollbar {
+  display: none;
+}
+
 .control-map h1 {
   justify-items: center;
   align-items: center;
@@ -12,7 +16,10 @@
   text-align: center;
   font-family: arial;
   border-radius: 10px;
-  padding: 20px;
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-top: 10px;
+  padding-bottom: 10px;
 }
 
 .card:hover {
@@ -22,12 +29,19 @@
   text-align: center;
   font-family: arial;
   border-radius: 10px;
-  padding: 20px;
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-top: 10px;
+  padding-bottom: 10px;
 }
   
 .card-title {
   padding-top: 10px;
   font-size: 16px;
+}
+
+.card-image {
+  width: 30%;
 }
   
 .card-price {
@@ -36,10 +50,12 @@
 }
 
 .card-text {
-  height: 50px;
+  height: 70px;
   color: #203f51;
   font-size: 11px;
   padding: 10px 7px 10px 7px;
+  text-overflow: ellipsis;
+  overflow:auto;
 }
   
 .card button {

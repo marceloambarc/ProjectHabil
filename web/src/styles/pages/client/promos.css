@@ -73,40 +73,45 @@
 
 .promos-not-searched {
   display: flex;
-  background-color: #fc7114;
   justify-items: center;
   align-items: center;
   justify-content: center;
-  margin-top: 25%;
-  margin-bottom: 25%;
+  margin-top: 14%;
+  margin-bottom: 20%;
 }
 
-.promos-area {
+.promos-not-searched-row {
   display: flex;
-  justify-items: center;
   align-items: center;
   justify-content: center;
+  flex-direction: column;
+}
+
+.not-searched-image {
+  width: 20%;
+}
+
+
+.promos-area {
   margin-top: 25px;
   margin-bottom: 25%;
 }
 
 .promos-row {
   display: flex;
-  flex-direction: row;
-  justify-content: space-around;
+  flex-wrap: wrap;
 
   padding: 0px 16px 0px 16px;
-  width: 100%;
 }
 
 .promos-col {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  width: 33,33%;
-  background-color: #fff;
+  float: left;
+  width: 33.33%;
 }
-
-.card-image {
-  width: 30%;
+  
+/* Clear floats after the columns */
+.promos-col:after {
+  content: "";
+  display: table;
+  clear: both;
 }
