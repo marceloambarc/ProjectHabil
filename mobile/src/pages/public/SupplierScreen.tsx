@@ -260,14 +260,31 @@ export default class App extends PureComponent<Props> {
     );
   };
 
+  renderBody = ({item}:{item:any}) => {
+    if(item.image === '') {
+      return(
+        <ImageBackground source={require('../../../assets/placeholder.jpeg')} style={styles.imageBackground}>
+          { this.renderPromo({item}) }
+          <TouchableOpacity style={styles.titleContainer} onPress={() => this.handleGoToPromotion({item})}>
+            <Text style={styles.titleText}>{item.name}</Text>
+          </TouchableOpacity>
+        </ImageBackground>
+      );
+    } else {
+      return(
+        <ImageBackground source={{uri: `data:image/jpeg;base64,${item.image}`}} style={styles.imageBackground}>
+          { this.renderPromo({item}) }
+          <TouchableOpacity style={styles.titleContainer} onPress={() => this.handleGoToPromotion({item})}>
+            <Text style={styles.titleText}>{item.name}</Text>
+          </TouchableOpacity>
+        </ImageBackground>
+      );
+    }
+  }
+
   renderItem = ({item}:{item:any}) => (
     <TouchableWithoutFeedback onPress={() => this.handleGoToPromotion({item})}>
-      <ImageBackground source={{uri: `data:image/jpeg;base64,${item.image}`}} style={styles.imageBackground}>
-        { this.renderPromo({item}) }
-        <TouchableOpacity style={styles.titleContainer} onPress={() => this.handleGoToPromotion({item})}>
-          <Text style={styles.titleText}>{item.name}</Text>
-        </TouchableOpacity>
-      </ImageBackground>
+      { this.renderBody({item}) }
     </TouchableWithoutFeedback>
   );
 

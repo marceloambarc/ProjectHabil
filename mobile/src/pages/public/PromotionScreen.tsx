@@ -135,11 +135,22 @@ function CompanyCard(){
           imageWidth={Dimensions.get('window').width * .6}
           imageHeight={Dimensions.get('window').height * .19}
         >
-          <Image 
-            source={{ uri: `data:image/jpeg;base64,${companyImage}`}}
-            style={styles.companyImage}
-            key={companyId}
-          />
+          {
+            companyImage === ''
+            ?
+              <Image 
+              source={require('../../../assets/placeholder.jpeg')}
+              style={styles.companyImage}
+              key={companyId}
+              />
+            :
+              <Image 
+              source={{ uri: `data:image/jpeg;base64,${companyImage}`}}
+              style={styles.companyImage}
+              key={companyId}
+              />
+          }
+
 
         </ImageZoom>
           <Text style={styles.companyName}>{ companyName }</Text>

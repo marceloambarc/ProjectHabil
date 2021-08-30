@@ -74,10 +74,20 @@ export default function SupplierAboutScreen({navigation}:{navigation:any}){
             imageHeight={Dimensions.get('window').height * 0.2}
           >
            
-            <Image
-              source={{ uri: `data:image/jpeg;base64,${companyImage}` }}
-              style={{width: Dimensions.get('window').width * 0.5, height: Dimensions.get('window').height * 0.2, marginBottom: Dimensions.get('window').height * 0.025, borderRadius: 20}}
+           {
+             companyImage === ''
+             ?
+             <Image
+             source={require('../../../assets/placeholder.jpeg')}
+             style={{width: Dimensions.get('window').width * 0.5, height: Dimensions.get('window').height * 0.2, marginBottom: Dimensions.get('window').height * 0.025, borderRadius: 20}}
+              />
+             :
+             <Image
+             source={{ uri: `data:image/jpeg;base64,${companyImage}` }}
+             style={{width: Dimensions.get('window').width * 0.5, height: Dimensions.get('window').height * 0.2, marginBottom: Dimensions.get('window').height * 0.025, borderRadius: 20}}
             />
+           }
+
           </ImageZoom>
 
           <TextInput
