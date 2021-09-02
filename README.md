@@ -41,7 +41,7 @@ Esse projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE.md) para
 
 ---
 
-Feito by Habil Informatica :wave: [Veja nosso site!](http://www.habilinformatica.com.br/)
+Feito by Habil Informática :wave: [Veja nosso site!](http://www.habilinformatica.com.br/)
 
 
 ## PROTÓTIPOS.
@@ -52,6 +52,7 @@ Feito by Habil Informatica :wave: [Veja nosso site!](http://www.habilinformatica
 
 ## ALPHA
 <p>0.0.2 = 07/01/2021</p>
+<p>
 <p>0.0.3 = 21/01/2021</p>
 <p>v1 = 19/02/2021</p>
 <p>v1.0.2 = 06/04/2021</p>
