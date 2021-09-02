@@ -1,5 +1,5 @@
 <h1 align="center">
-    <img alt="CompreMaisAki" title="Happy" src=".github/logo.png" />
+    <img alt="CompreMaisAki" title="Happy" src=".github/logo.png" width="20%" />
 </h1>
 
 <p align="center">
@@ -18,7 +18,7 @@
 <br>
 
 <p align="center">
-  <img alt="CompreMaisAki" src=".github/happy.png" width="100%">
+  <img alt="CompreMaisAki" src=".github/intro.png" width="100%">
 </p>
 
 ## 🚀 Tecnologias
