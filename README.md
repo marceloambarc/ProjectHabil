@@ -18,7 +18,7 @@
 <br>
 
 <p align="center">
-  <img alt="CompreMaisAki" src=".github/happy.png" width="100%">
+  <img alt="CompreMaisAki" src=".github/intro.png" width="100%">
 </p>
 
 ## 🚀 Tecnologias
