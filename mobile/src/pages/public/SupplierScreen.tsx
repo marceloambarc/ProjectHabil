@@ -303,6 +303,8 @@ export default class App extends PureComponent<Props> {
           ListFooterComponent={this.renderFooter}
           removeClippedSubviews={true}
           initialNumToRender={4}
+          maxToRenderPerBatch={5}
+          windowSize={7}
         />
       </SafeAreaView>
     )
