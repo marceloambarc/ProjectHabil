@@ -92,7 +92,7 @@ export default function NewPromotionOverviewScreen(){
     
     await api.get('companies/all').then(res => {
       setProducts(res.data);
-    }).catch(err => {
+    }).catch(() => {
       Alert.alert(
         'Ops!',
         'Tivemos um erro, Verifique sua Conexão.'
@@ -146,7 +146,7 @@ export default function NewPromotionOverviewScreen(){
           uf: companyUf,
           keywords: companyKeywords
         }));
-      }).catch(err => {
+      }).catch(() => {
         Alert.alert(
           'Ops!',
           'Erro ao Cadastrar sua Promoção, Entre em contato com o Suporte.'

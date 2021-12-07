@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View ,Image ,TextInput, ScrollView, 
-StyleSheet, Text, Dimensions, TouchableOpacity } from 'react-native';
+StyleSheet, Dimensions, TouchableOpacity } from 'react-native';
 import { useRoute } from '@react-navigation/native';
 import { Feather } from '@expo/vector-icons';
 import ImageZoom from 'react-native-image-pan-zoom';

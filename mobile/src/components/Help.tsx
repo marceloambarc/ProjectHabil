@@ -1,8 +1,5 @@
 import * as React from 'react';
-import { useState } from 'react';
-import { View, ScrollView, Text, StyleSheet, Linking,
-TouchableOpacity, Dimensions } from 'react-native';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { View, ScrollView, Text, StyleSheet, Dimensions } from 'react-native';
 
 export default function Help() {
   return (

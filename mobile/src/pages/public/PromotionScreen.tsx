@@ -1,11 +1,11 @@
 import React, { PureComponent } from 'react';
 import { View, Text, SafeAreaView, TouchableOpacity,
-StyleSheet, Image, TouchableWithoutFeedback, FlatList, Linking, Alert, Dimensions } from 'react-native';
+StyleSheet, Image, TouchableWithoutFeedback, FlatList, Linking, Alert, Dimensions,
+ScrollView } from 'react-native';
 import ImageZoom from 'react-native-image-pan-zoom';
 import { Feather, Fontisto, Ionicons, MaterialIcons, Entypo, AntDesign } from '@expo/vector-icons';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { API_URL } from '../../../url.json';
-import { ScrollView } from 'react-native-gesture-handler';
 
 interface Props {
     searchTerm: string,

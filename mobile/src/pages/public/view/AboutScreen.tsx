@@ -1,6 +1,6 @@
 import React from 'react';
 import { SafeAreaView, View, Text, Image, TouchableOpacity,
-TouchableWithoutFeedback, Linking, StyleSheet, Dimensions } from 'react-native';
+Linking, StyleSheet, Dimensions } from 'react-native';
 import { Feather, Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 
 

@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef } from 'react';
 import { View, Text, TextInput, 
-TouchableOpacity, StyleSheet, ScrollView, Image, Alert, Keyboard, Dimensions } from 'react-native';
+TouchableOpacity, StyleSheet, ScrollView, Image, Alert, Dimensions } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 
 import { Feather, Ionicons } from '@expo/vector-icons';

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useState } from 'react';
-import { View, ScrollView, Text, StyleSheet, Linking, 
+import { View, ScrollView, Text, StyleSheet,
 TouchableOpacity, Dimensions } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 

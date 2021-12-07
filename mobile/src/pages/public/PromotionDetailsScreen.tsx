@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, SafeAreaView, StyleSheet, Image, TouchableOpacity,
 ScrollView, Modal, Dimensions, Linking, Alert } from 'react-native';
-import { Feather, Fontisto, Ionicons, AntDesign } from '@expo/vector-icons';
+import { Feather, Fontisto, Ionicons, AntDesign, FontAwesome } from '@expo/vector-icons';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import ImageZoom from 'react-native-image-pan-zoom';
-import { FontAwesome } from '@expo/vector-icons';
 
 interface handleCompanyParams {
   companyName: any,

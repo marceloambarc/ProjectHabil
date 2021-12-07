@@ -1,9 +1,9 @@
 import * as React from 'react';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 import { View, Text, StyleSheet, KeyboardAvoidingView,
 TextInput, TouchableOpacity, Animated, ActivityIndicator, Alert, 
-Keyboard, TouchableWithoutFeedback, Platform, Dimensions } from 'react-native';
+Keyboard, TouchableWithoutFeedback, Dimensions } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { TextInputMask } from 'react-native-masked-text';
 import { Feather } from '@expo/vector-icons'
@@ -46,7 +46,7 @@ export default function Login(){
   let ref_cnpj = React.createRef<any>();
 
   const [password, setPassword] = useState('');
-  let ref_password = React.useRef<TextInput>(null);
+  let ref_password = useRef<TextInput>(null);
 
   const navigation = useNavigation();
   const [logo] = useState(new Animated.ValueXY({ x: 130, y: 130 }));
@@ -68,7 +68,7 @@ export default function Login(){
         cnpj: cnpj
       },{
         headers: {'Authorization': 'Bearer '+userToken}
-      }).then(res => {
+      }).then(() => {
         api.post('companies/logon',{
           cnpj:cnpj,
           password:password
@@ -82,19 +82,19 @@ export default function Login(){
             name: res.data.name,
             userToken: userToken
           })
-        }).catch(res => {
+        }).catch(() => {
           Alert.alert(
             'Ops!',
             'Senha Incorreta'
           );
         });
-      }).catch(err => {
+      }).catch(() => {
         Alert.alert(
           'Ops!',
           'Empresa em Análise, Aguarde o E-mail do Administrador.'
         );
       })
-    }).catch(err => {
+    }).catch(() => {
       Alert.alert(
         'Ops!',
         'Empresa não cadastrada'
@@ -140,6 +140,7 @@ export default function Login(){
   return (
     <KeyboardAvoidingView
       style={styles.background}>
+        
         <View style={styles.containerLogo}>
           <TouchableWithoutFeedback onPress={handleHomeNavigation}>
             <Animated.Image
@@ -151,7 +152,7 @@ export default function Login(){
               />
           </TouchableWithoutFeedback>
         </View>
-    
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <View style={styles.container}>
             <TextInputMask
             type={'cnpj'}
@@ -168,6 +169,7 @@ export default function Login(){
           <View style={styles.passwordContainer}>
             <View style={styles.passwordCol1}>
               <TextInput
+              ref={ref_password}
               secureTextEntry={isSecure}
               autoCapitalize="none"
               style={styles.passwordInput}
@@ -176,7 +178,6 @@ export default function Login(){
               autoCompleteType="password"
               value={password}
               onChangeText={setPassword}
-              ref={ref_password}
               onSubmitEditing={() => Keyboard.dismiss()}
               />
             </View>
@@ -197,7 +198,8 @@ export default function Login(){
               <Text style={styles.forgetText}>Esqueci minha Senha.</Text>
             </TouchableOpacity>
         </View>
-      </KeyboardAvoidingView>
+      </TouchableWithoutFeedback>
+    </KeyboardAvoidingView>
   );
 }
 
@@ -217,7 +219,7 @@ const styles = StyleSheet.create({
     alignItems:'center',
     justifyContent:'center',
     width: '90%',
-    paddingTop: Dimensions.get('window').height * 0.025
+    paddingTop: Dimensions.get('window').height * 0.050
   },
   input:{
     backgroundColor:'#a9acb1',

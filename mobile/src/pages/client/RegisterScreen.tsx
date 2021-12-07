@@ -365,12 +365,12 @@ export default function Register(){
       cnpj: cnpj
     },{
       headers: {'Authorization': 'Bearer '+userToken}
-    }).then(res => {
+    }).then(() => {
       Alert.alert(
         'Erro',
         'Empresa já Cadastrada'
       );
-    }).catch(err => {
+    }).catch(() => {
       api.post('companies/email',{
         cnpj: cnpj
       },{
@@ -380,7 +380,7 @@ export default function Register(){
           'Erro',
           'Empresa já Cadastrada'
         );
-      }).catch(err => {
+      }).catch(() => {
         api.post('companies',{
           business: business,
           cnpj: cnpj,
@@ -398,7 +398,7 @@ export default function Register(){
           max_prom: 5
         },{
             headers: {'Authorization': 'Bearer '+userToken}
-        }).then(res => {
+        }).then(() => {
           Alert.alert(
             'Sucesso!',
             'Aguarde a confirmação do Administrador.'
@@ -417,7 +417,7 @@ export default function Register(){
           setBase('');
           setKeywords('');
           navigation.navigate("Início");
-        }).catch(err => {
+        }).catch(() => {
           Alert.alert(
             'Ops!',
             'Tivemos um Erro, entre em contato com o Suporte.'
@@ -431,7 +431,7 @@ export default function Register(){
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
     
     if (status !== 'granted') {
-      alert('Precisamos de acesso a images');
+      Alert.alert('Ops!','Precisamos de acesso a images');
       return;
     }
 

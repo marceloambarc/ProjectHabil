@@ -220,7 +220,7 @@ export default class App extends PureComponent<Props> {
       return (
         <View style={styles.loading}>
           <Text style={{textAlign: 'center'}}>
-            <ActivityIndicator color="#fa690a" size="large" />
+            <ActivityIndicator color='#fa690a' size='large' />
           </Text>
         </View>
       )

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Text, View, TouchableOpacity, StyleSheet, Image, 
-Linking, TouchableWithoutFeedback, Alert, Dimensions } from 'react-native';
+import { Text, View, TouchableOpacity, StyleSheet, Image,
+TouchableWithoutFeedback, Alert, Dimensions } from 'react-native';
 import { SearchBar } from 'react-native-elements';
 import { Feather } from '@expo/vector-icons';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -13,8 +13,6 @@ import MainPath from '../../../src/pages/client/routes';
 import RegisterScreen from '../client/RegisterScreen';
 import SuportScreen from './view/SupportScreen';
 import About from './view/AboutScreen';
-
-const welcomeBackgroundImage = "../../../assets/content_id.png";
 
 function WelcomeScreen({ navigation }:{ navigation:any }){
   const [search, setSearch] = useState('');
