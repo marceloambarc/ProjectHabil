@@ -3,7 +3,7 @@ import { useNavigation } from '@react-navigation/native';
 import { SearchBar } from 'react-native-elements';
 import { Feather, AntDesign } from '@expo/vector-icons';
 import { View, Text, ImageBackground, TouchableOpacity, Image,
-  StyleSheet, TouchableWithoutFeedback, SafeAreaView, ActivityIndicator, Alert, FlatList } from 'react-native';
+  StyleSheet, TouchableWithoutFeedback, SafeAreaView, ActivityIndicator, Alert, FlatList, Platform, Dimensions } from 'react-native';
 
 import { API_URL } from '../../../url.json';
 
@@ -39,7 +39,8 @@ const baseURLProduct = `${API_URL}/products`
 export default class App extends PureComponent<Props> {
   state = {
     data: [],
-    loading: false,
+    loading: true,
+    loadingAll: true,
     searchGreyBar: '',
   };
 
@@ -48,14 +49,17 @@ export default class App extends PureComponent<Props> {
   }
 
   loadRepositories = async () => {
-    if(this.state.loading) return;
 
     const { route } = this.props;
     const params = route.params as Props;
     const searchTerm = params.searchTerm;
 
+    this.setState({
+      data: [],
+      loading: true 
+    });
+
     if (searchTerm == '' || searchTerm == undefined || searchTerm == ' '){
-      this.setState({ loading: true });
       const response = await fetch(`${baseURL}`);
       if(response.ok) {
         const repositories = await response.json();
@@ -63,12 +67,12 @@ export default class App extends PureComponent<Props> {
         this.setState({
           data: [...this.state.data, ...repositories],
           loading: false,
+          loadingAll: false,
           searchGreyBar: searchTerm,
         });
       }
       return;
     }else{
-      this.setState({ loading: true });
       const response = await fetch(`${baseURL}/keywords/${searchTerm}`);
       
       if(!response.ok) {
@@ -77,6 +81,7 @@ export default class App extends PureComponent<Props> {
         if(!response.ok){
           this.setState({
             loading: false,
+            loadingAll: false,
             searchGreyBar: searchTerm,
           });
         }else{
@@ -85,6 +90,7 @@ export default class App extends PureComponent<Props> {
           this.setState({
             data: [...this.state.data, ...respositories],
             loading: false,
+            loadingAll: false,
             searchTerm: searchTerm,
           });
         }
@@ -94,6 +100,7 @@ export default class App extends PureComponent<Props> {
         this.setState({
           data: [...this.state.data, ...repositories],
           loading: false,
+          loadingAll: false,
           searchGreyBar: searchTerm,
         });
       }
@@ -117,6 +124,7 @@ export default class App extends PureComponent<Props> {
           this.setState({
             data: [...this.state.data, ...repositories],
             loading: false,
+            loadingAll: false,
             searchGreyBar: searchTerm,
           });
         }
@@ -129,6 +137,7 @@ export default class App extends PureComponent<Props> {
           if(!response.ok){
             this.setState({
               loading: false,
+              loadingAll: false,
               searchGreyBar: searchTerm,
             });
           }else{
@@ -137,6 +146,7 @@ export default class App extends PureComponent<Props> {
             this.setState({
               data: [...this.state.data, ...respositories],
               loading: false,
+              loadingAll: false,
               searchTerm: searchTerm,
             });
           }
@@ -147,6 +157,7 @@ export default class App extends PureComponent<Props> {
           this.setState({
             data: [...this.state.data, ...repositories],
             loading: false,
+            loadingAll: false,
             searchGreyBar: searchTerm,
           });
         }
@@ -216,16 +227,8 @@ export default class App extends PureComponent<Props> {
   }
 
   renderEmpty = () => {
-    if(this.state.loading){
+    if(!this.state.loading){
       return (
-        <View style={styles.loading}>
-          <Text style={{textAlign: 'center'}}>
-            <ActivityIndicator color='#fa690a' size='large' />
-          </Text>
-        </View>
-      )
-    }else{
-      return  (
         <View style={styles.loading}>
           <View style={styles.notFoundContainer}>
             <Text style={styles.notFoundTxt}>
@@ -233,9 +236,23 @@ export default class App extends PureComponent<Props> {
             </Text>
           </View>
         </View>
-      )
+      );
+    }else{
+      return  (
+        <View style={styles.loading}>
+          <Text style={{textAlign: 'center'}}>
+          {
+            Platform.OS === 'android' ?
+            <ActivityIndicator color='#fa690a' size='large' />
+            :
+            <ActivityIndicator color='gray' size='large' />
+          }
+          </Text>
+        </View>
+      );
     }
   }
+
 
   renderPromo = ({item}:{item:any}) => {
     if(item.item) {
@@ -289,25 +306,36 @@ export default class App extends PureComponent<Props> {
   );
 
   render(){
-    return (
-      <SafeAreaView style={styles.repositoriesContainer}>
-        <WelcomeHeader />
-        <FlatList 
-          style={styles.list}
-          contentContainerStyle={styles.list}
-          data={this.state.data}
-          renderItem={this.renderItem}
-          keyExtractor={(item,index) => index.toString()}
-          ListEmptyComponent={this.renderEmpty}
-          ListHeaderComponent={this.renderHeader}
-          ListFooterComponent={this.renderFooter}
-          removeClippedSubviews={true}
-          initialNumToRender={4}
-          maxToRenderPerBatch={5}
-          windowSize={7}
-        />
-      </SafeAreaView>
-    )
+    if(this.state.loadingAll && Platform.OS == 'ios'){
+      return (
+        <SafeAreaView style={styles.repositoriesContainer}>
+          <WelcomeHeader />
+          <View style={styles.loading}>
+            <ActivityIndicator color='gray' size='large' />
+          </View>
+        </SafeAreaView>
+      );
+    }else{
+      return (
+        <SafeAreaView style={styles.repositoriesContainer}>
+          <WelcomeHeader />
+          <FlatList 
+            style={styles.list}
+            contentContainerStyle={styles.list}
+            data={this.state.data}
+            renderItem={this.renderItem}
+            keyExtractor={(item,index) => index.toString()}
+            ListEmptyComponent={this.renderEmpty}
+            ListHeaderComponent={this.renderHeader}
+            ListFooterComponent={this.renderFooter}
+            removeClippedSubviews={true}
+            initialNumToRender={4}
+            maxToRenderPerBatch={5}
+            windowSize={7}
+          />
+        </SafeAreaView>
+      )
+    }
   }
 }
 
@@ -404,7 +432,7 @@ const styles = StyleSheet.create({
     color: '#8f98a1',
     paddingLeft: '12%',
     paddingRight: '30%',
-    paddingTop: 2
+    paddingTop: 4
   },
 
     /*ISPROMO*/
@@ -435,7 +463,7 @@ const styles = StyleSheet.create({
     /*FOOTER*/
     loading: {
       alignSelf: 'center',
-      marginVertical: 20,
+      marginVertical: Dimensions.get('screen').height * 0.1,
     },
 
     notFoundContainer: {

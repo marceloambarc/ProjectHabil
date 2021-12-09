@@ -21,7 +21,7 @@
     ],
     "ios": {
       "supportsTablet": false,
-      "bundleIdentifier": "com.habil.nsr",
+      "bundleIdentifier": "com.habilinfo.nsr",
       "infoPlist": {
         "NSPhotoLibraryUsageDescription": "Este app usa biblioteca de fotos para inserir imagem para sua empresa."
       }
