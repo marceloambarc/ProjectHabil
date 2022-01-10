@@ -2,7 +2,7 @@
   "expo": {
     "name": "Compre Mais Aki",
     "slug": "compreMaisAki",
-    "version": "4.0.4",
+    "version": "4.0.6",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
@@ -23,7 +23,8 @@
       "supportsTablet": false,
       "bundleIdentifier": "com.habilinfo.nsr",
       "infoPlist": {
-        "NSPhotoLibraryUsageDescription": "Este app usa biblioteca de fotos para inserir imagem para sua empresa."
+        "NSPhotoLibraryUsageDescription": "Este app usa biblioteca de fotos para inserir a imagem de sua empresa.",
+        "NSCameraUsageDescription": "Este app usa a câmera para inserir a imagem vinculada à sua empresa."
       }
     },
     "android": {
